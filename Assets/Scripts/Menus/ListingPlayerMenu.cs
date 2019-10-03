@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Scripts.Games.Transitions;
 
 namespace Scripts.Menus
 {
@@ -23,6 +24,9 @@ namespace Scripts.Menus
 
         [SerializeField]
         private RectTransform contentListPlayer;
+
+        [SerializeField]
+        private TransitionMenuGame transitionMenuGame;
 
         private Dictionary<string, GameObject> listPlayerCase;
         private Dictionary<string, bool> listPlayerIsReady;
@@ -87,7 +91,7 @@ namespace Scripts.Menus
 
                 if(gameCanStart)
                 {
-                    /* TODO : Le démarrage de la partie */
+                    transitionMenuGame.InitGame();
                     Debug.Log("Launch GAME");
                 }
             }
@@ -96,7 +100,6 @@ namespace Scripts.Menus
         [PunRPC]
         private void SetReadyRPC(PhotonMessageInfo info)
         {
-            Debug.Log(info.Sender.UserId);
             photonView.RPC("SetReadyForAllClient", RpcTarget.All, info.Sender.UserId, !listPlayerIsReady[info.Sender.UserId]);
         }
 

@@ -241,7 +241,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 6e-43, w: 0.000000012493217}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -269,6 +269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 713701518}
   - component: {fileID: 713701517}
+  - component: {fileID: 713701519}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -329,6 +330,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &713701519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713701516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &730664180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 215306127936931071, guid: 9eef7882b08ed2b49bdf8bd77a7e4b6b,
@@ -1908,6 +1931,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 713701518}
     m_Modifications:
+    - target: {fileID: 6054162102893209879, guid: f07fb75304ee3804abd07d361676d38d,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8464617491324926008, guid: f07fb75304ee3804abd07d361676d38d,
         type: 3}
       propertyPath: m_Name

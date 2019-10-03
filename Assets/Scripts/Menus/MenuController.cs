@@ -61,6 +61,7 @@ namespace Scripts.Menus
             if(!PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.ConnectUsingSettings();
+                PhotonNetwork.AutomaticallySyncScene = true;
             }
         }
 
