@@ -7,21 +7,62 @@ namespace Scripts.Games.Transitions
 {
     public class TransitionMenuGame : MonoBehaviour
     {
+        private const int durationWaitingPhase = 3;
+
         [SerializeField]
-        private GameObject gameContainer;
+        private ObjectsInScene objectsInScene;
+
+        [SerializeField]
+        private GameObject transitionObject;
+
+        private int waitingForStart;
+
+        private string waitingGameStartText;
+
+        private void Start()
+        {
+            waitingForStart = durationWaitingPhase;
+            waitingGameStartText = "Waiting for game start";
+        }
 
         public bool InitGame()
         {
             PhotonNetwork.LoadLevel("GameScene");
-            Debug.Log(PhotonNetwork.IsMessageQueueRunning);
             return true;
         }
 
-        public bool StartGame()
+        private IEnumerator WaitingForStart()
         {
-            Debug.Log("GameStart");
-            gameContainer.SetActive(true);
-            return true;
+            objectsInScene.waitingCanvasGameObject.SetActive(true);
+            // TODO : Need rpc to synchro chrono
+            objectsInScene.waitingText.text = waitingGameStartText;
+
+            while (waitingForStart > 0)
+            {
+                objectsInScene.counterText.text = waitingForStart.ToString();
+
+                yield return new WaitForSeconds(1);
+                waitingForStart -= 1;
+            }
+
+            waitingForStart = durationWaitingPhase;
+
+            objectsInScene.waitingCanvasGameObject.SetActive(false);
+            // TODO : Need RPC to launch game
+            StartGameWithDefense();
+        }
+
+        public void WantToStartGame()
+        {
+            StartCoroutine(WaitingForStart());
+        }
+
+        public void StartGameWithDefense()
+        {
+            objectsInScene.mainCamera.SetActive(false);
+
+            objectsInScene.containerAttack.SetActive(false);
+            objectsInScene.containerDefense.SetActive(true);
         }
     }
 }

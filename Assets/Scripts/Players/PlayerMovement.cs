@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Scripts.Players
 {
-
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField]
         private Rigidbody players;
+
+        public bool canMove;
 
         private bool wantToGoForward;
         private bool wantToGoBack;
@@ -17,23 +18,15 @@ namespace Scripts.Players
 
         private void Start()
         {
+            canMove = false;
+
             wantToGoBack = false;
             wantToGoForward = false;
             wantToGoLeft = false;
             wantToGoRight = false;
         }
 
-        private void Update()
-        {
-            GetIntentPlayer();
-        }
-
-        private void FixedUpdate()
-        {
-            Movement();
-        }
-
-        private void GetIntentPlayer()
+        public void GetIntentPlayer()
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
@@ -70,7 +63,7 @@ namespace Scripts.Players
             }
         }
 
-        private void Movement()
+        public void Movement()
         {
             Vector3 movement = players.velocity;
             movement.x = Input.GetAxis("Horizontal") * 10;
