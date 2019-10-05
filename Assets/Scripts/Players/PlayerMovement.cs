@@ -69,8 +69,6 @@ namespace Scripts.Players
         [PunRPC]
         public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight)
         {
-            Debug.Log("for / back / left / right" + wantToGoForward + wantToGoBack + wantToGoLeft + wantToGoRight);
-
             this.wantToGoBack = wantToGoBack;
             this.wantToGoForward = wantToGoForward;
             this.wantToGoLeft = wantToGoLeft;
