@@ -1,13 +1,17 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using Scripts.Games;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.Players
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviourPunCallbacks
     {
+        private const int playerSpeed = 10;
+
         [SerializeField]
-        private Rigidbody players;
+        private ObjectsInScene objectsInScene;
 
         public bool canMove;
 
@@ -61,15 +65,26 @@ namespace Scripts.Players
             {
                 wantToGoRight = false;
             }
+
+            if(PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("checkMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight);
+            }
+        }
+
+        [PunRPC]
+        public void checkMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight)
+        {
+
         }
 
         public void Movement()
         {
-            Vector3 movement = players.velocity;
+            Vector3 movement = objectsInScene.playerRigidbody.velocity;
             movement.x = Input.GetAxis("Horizontal") * 10;
             movement.z = Input.GetAxis("Vertical") * 10;
-            
-            players.velocity = movement;
+
+            objectsInScene.playerRigidbody.velocity = movement;
         }
     }
 }

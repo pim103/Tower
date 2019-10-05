@@ -12,9 +12,6 @@ namespace Scripts.Games.Transitions
         [SerializeField]
         private ObjectsInScene objectsInScene;
 
-        [SerializeField]
-        private GameObject transitionObject;
-
         private int waitingForStart;
 
         private string waitingGameStartText;

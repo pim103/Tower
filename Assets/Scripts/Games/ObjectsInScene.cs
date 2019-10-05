@@ -30,5 +30,10 @@ namespace Scripts.Games
 
         [SerializeField]
         public GameObject containerAttack;
+
+        // =========================== PLAYER CHARACTER ========================
+
+        [SerializeField]
+        public Rigidbody playerRigidbody;
     }
 }
