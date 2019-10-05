@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Scripts.Players;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,8 +33,16 @@ namespace Scripts.Games
         public GameObject containerAttack;
 
         // =========================== PLAYER CHARACTER ========================
+        [SerializeField]
+        public GameObject[] playersGameObject;
 
         [SerializeField]
-        public Rigidbody playerRigidbody;
+        public PlayerMovement[] playersMovement;
+
+        [SerializeField]
+        public Rigidbody[] playersRigidbody;
+
+        [SerializeField]
+        public GameObject[] playersCamera;
     }
 }

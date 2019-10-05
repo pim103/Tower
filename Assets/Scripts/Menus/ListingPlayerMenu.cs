@@ -92,7 +92,6 @@ namespace Scripts.Menus
                 if(gameCanStart)
                 {
                     transitionMenuGame.InitGame();
-                    Debug.Log("Launch GAME");
                 }
             }
         }

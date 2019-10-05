@@ -6,24 +6,17 @@ using UnityEngine;
 
 namespace Scripts.Players
 {
-    public class PlayerMovement : MonoBehaviourPunCallbacks
+    public class PlayerMovement : PlayerIntent
     {
-        private const int playerSpeed = 10;
-
         [SerializeField]
-        private ObjectsInScene objectsInScene;
+        private PhotonView photonView;
 
+        public int playerIndex;
         public bool canMove;
 
-        private bool wantToGoForward;
-        private bool wantToGoBack;
-        private bool wantToGoLeft;
-        private bool wantToGoRight;
 
         private void Start()
         {
-            canMove = false;
-
             wantToGoBack = false;
             wantToGoForward = false;
             wantToGoLeft = false;
@@ -32,6 +25,7 @@ namespace Scripts.Players
 
         public void GetIntentPlayer()
         {
+            Debug.Log("playerIndex : " + playerIndex);
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 wantToGoForward = true;
@@ -57,7 +51,7 @@ namespace Scripts.Players
             {
                 wantToGoBack = false;
             }
-            if (Input.GetKeyUp(KeyCode.A))
+            if (Input.GetKeyUp(KeyCode.Q))
             {
                 wantToGoLeft = false;
             }
@@ -68,23 +62,19 @@ namespace Scripts.Players
 
             if(PhotonNetwork.IsConnected)
             {
-                photonView.RPC("checkMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight);
+                photonView.RPC("CheckMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight);
             }
         }
 
         [PunRPC]
-        public void checkMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight)
+        public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight)
         {
+            Debug.Log("for / back / left / right" + wantToGoForward + wantToGoBack + wantToGoLeft + wantToGoRight);
 
-        }
-
-        public void Movement()
-        {
-            Vector3 movement = objectsInScene.playerRigidbody.velocity;
-            movement.x = Input.GetAxis("Horizontal") * 10;
-            movement.z = Input.GetAxis("Vertical") * 10;
-
-            objectsInScene.playerRigidbody.velocity = movement;
+            this.wantToGoBack = wantToGoBack;
+            this.wantToGoForward = wantToGoForward;
+            this.wantToGoLeft = wantToGoLeft;
+            this.wantToGoRight = wantToGoRight;
         }
     }
 }

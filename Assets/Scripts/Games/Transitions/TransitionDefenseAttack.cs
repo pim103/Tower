@@ -6,10 +6,13 @@ namespace Scripts.Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 20;
+        private const int durationDefensePhase = 3;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
+
+        [SerializeField]
+        private GameController gameController;
 
         private int defenseTimer;
         private string defenseTimerText;
@@ -47,6 +50,17 @@ namespace Scripts.Games.Transitions
         {
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
+
+            objectsInScene.playersCamera[gameController.PlayerIndex].SetActive(true);
+
+            for (int i = 0; i < objectsInScene.playersMovement.Length; i++)
+            {
+                if(gameController.idToUserId[i] != null && gameController.idToUserId[i] != "")
+                {
+                    objectsInScene.playersGameObject[i].SetActive(true);
+                    objectsInScene.playersMovement[i].canMove = true;
+                }
+            }
         }
     }
 }
