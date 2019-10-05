@@ -52,8 +52,6 @@ namespace Scripts.Games {
             {
                 PlayerIndex = id;
             }
-
-            Debug.Log("Hote : " + PhotonNetwork.AuthValues.UserId + " userId " + userId + " id " + id);
         }
 
         // Start is called before the first frame update

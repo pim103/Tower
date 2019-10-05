@@ -33,6 +33,7 @@ namespace Scripts.Games
         public GameObject containerAttack;
 
         // =========================== PLAYER CHARACTER ========================
+
         [SerializeField]
         public GameObject[] playersGameObject;
 
@@ -44,5 +45,15 @@ namespace Scripts.Games
 
         [SerializeField]
         public GameObject[] playersCamera;
+
+        // ========================== ACCESS TO MAP CONTAINER ==================
+
+        [SerializeField]
+        public GameObject[] maps;
+
+        // ========================== OBJECT GENERATE IN MAP ==================
+
+        [SerializeField]
+        public GameObject simpleWall;
     }
 }

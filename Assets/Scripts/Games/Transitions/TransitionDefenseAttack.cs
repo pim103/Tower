@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Scripts.Games.Attacks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ namespace Scripts.Games.Transitions
 
         [SerializeField]
         private GameController gameController;
+
+        [SerializeField]
+        private InitAttackPhase initAttackPhase;
 
         private int defenseTimer;
         private string defenseTimerText;
@@ -38,29 +42,12 @@ namespace Scripts.Games.Transitions
             defenseTimer = durationDefensePhase;
             objectsInScene.waitingCanvasGameObject.SetActive(false);
 
-            StartAttackPhase();
+            initAttackPhase.StartAttackPhase();
         }
 
         public void StartDefenseCounter()
         {
             StartCoroutine(WaitingEndDefense());
-        }
-
-        public void StartAttackPhase()
-        {
-            objectsInScene.containerDefense.SetActive(false);
-            objectsInScene.containerAttack.SetActive(true);
-
-            objectsInScene.playersCamera[gameController.PlayerIndex].SetActive(true);
-
-            for (int i = 0; i < objectsInScene.playersMovement.Length; i++)
-            {
-                if(gameController.idToUserId[i] != null && gameController.idToUserId[i] != "")
-                {
-                    objectsInScene.playersGameObject[i].SetActive(true);
-                    objectsInScene.playersMovement[i].canMove = true;
-                }
-            }
         }
     }
 }

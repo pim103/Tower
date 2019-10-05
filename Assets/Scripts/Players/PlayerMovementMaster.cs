@@ -25,11 +25,6 @@ namespace Scripts.Players
             Rigidbody rigidbody = objectsInScene.playersRigidbody[playerIndex];
             PlayerIntent playerIntent = objectsInScene.playersMovement[playerIndex];
 
-            if(playerIndex == 1)
-            {
-                Debug.Log("" + playerIntent.wantToGoBack + playerIntent.wantToGoForward);
-            }
-
             int horizontalMove = 0;
             int verticalMove = 0;
 
