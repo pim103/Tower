@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using Scripts.Games.Players;
 using Scripts.Games.Transitions;
-using Scripts.Players;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

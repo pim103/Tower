@@ -1,4 +1,4 @@
-﻿using Scripts.Players;
+﻿using Scripts.Games.Players;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

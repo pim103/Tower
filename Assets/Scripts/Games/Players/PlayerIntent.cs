@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Players
+namespace Scripts.Games.Players
 {
     public abstract class PlayerIntent : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Players
+namespace Scripts.Games.Players
 {
     public class PlayerMovement : PlayerIntent
     {
@@ -25,7 +25,6 @@ namespace Scripts.Players
 
         public void GetIntentPlayer()
         {
-            Debug.Log("playerIndex : " + playerIndex);
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 wantToGoForward = true;
