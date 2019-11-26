@@ -16,6 +16,9 @@ namespace Scripts.Games.Attacks
         [SerializeField]
         private GameController gameController;
 
+        [SerializeField]
+        private ScriptsExposer se;
+
         private int[,] tempMap1;
         private int[,] tempMap2;
 
@@ -59,8 +62,13 @@ namespace Scripts.Games.Attacks
         {
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
+            objectsInScene.mainCamera.SetActive(false);
 
-            objectsInScene.playersCamera[gameController.PlayerIndex].SetActive(true);
+            int playerIndex = gameController.PlayerIndex;
+
+            objectsInScene.playerExposer[playerIndex].playerCamera.SetActive(true);
+
+            objectsInScene.playerExposer[playerIndex].player.InitPlayerStats(Players.Classes.WARRIOR);
 
             // TODO : Temp Method
             GenerateArray();
@@ -68,20 +76,20 @@ namespace Scripts.Games.Attacks
             // TODO : Temp condition
             if (gameController.PlayerIndex % 2 == 0)
             {
-                GeneratingMap(tempMap2, gameController.PlayerIndex);
+                GeneratingMap(tempMap2, playerIndex);
             }
             else
             {
-                GeneratingMap(tempMap1, gameController.PlayerIndex);
+                GeneratingMap(tempMap1, playerIndex);
             }
 
             // TODO : IF COOP, CHANGE POSITION OF PLAYERS ?
-            for (int i = 0; i < objectsInScene.playersMovement.Length; i++)
+            for (int i = 0; i < objectsInScene.playerExposer.Length; i++)
             {
                 if (gameController.idToUserId[i] != null && gameController.idToUserId[i] != "")
                 {
-                    objectsInScene.playersGameObject[i].SetActive(true);
-                    objectsInScene.playersMovement[i].canMove = true;
+                    objectsInScene.playerExposer[i].playerGameObject.SetActive(true);
+                    objectsInScene.playerExposer[i].playerMovement.canMove = true;
                 }
             }
         }
