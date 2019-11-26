@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using Scripts.Games.Attacks;
 using Scripts.Games.Players;
 using Scripts.Games.Transitions;
 using System.Collections;
@@ -18,9 +19,19 @@ namespace Scripts.Games {
         [SerializeField]
         private PlayerMovementMaster playerMovementMaster;
 
+        [SerializeField]
+        private ScriptsExposer se;
+
         public string[] idToUserId;
 
         public int PlayerIndex;
+
+        private bool idAssigned = false;
+
+        /*
+         * Flag to skip defensePhase
+         */
+        private bool byPassDefense = true;
 
         private IEnumerator CheckEndInit()
         {
@@ -48,23 +59,60 @@ namespace Scripts.Games {
         {
             idToUserId[id] = userId;
 
-            if(userId == PhotonNetwork.AuthValues.UserId)
+            if (userId == PhotonNetwork.AuthValues.UserId)
             {
                 PlayerIndex = id;
             }
+
+            idAssigned = true;
         }
+
+        // =================================== BYPASS DEFENSE METHOD ================================
+
+        private IEnumerator WaitForConnection()
+        {
+            while (!se.photonController.isInGame && PhotonNetwork.PlayerList.Length == 0)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            AssignId();
+
+            while (!idAssigned)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            se.initAttackPhase.StartAttackPhase();
+        }
+
+        private void ForceStartAttackPhase()
+        {
+            se.photonController.setupPhotonController(TypeLobby.BYPASS_DEFENSE);
+            se.photonController.ConnectToPhoton();
+
+            StartCoroutine(WaitForConnection());
+        }
+
+        // ================================== BASIC METHODS ======================================
 
         // Start is called before the first frame update
         void Start()
         {
             objectsInScene.mainCamera.SetActive(true);
-            idToUserId = new string[objectsInScene.playersMovement.Length];
+            idToUserId = new string[objectsInScene.playerExposer.Length];
+
+            if(byPassDefense)
+            {
+                ForceStartAttackPhase();
+                return;
+            }
 
             if (PhotonNetwork.IsConnected)
             {
                 StartCoroutine(CheckEndInit());
 
-                if(PhotonNetwork.IsMasterClient)
+                if (PhotonNetwork.IsMasterClient)
                 {
                     AssignId();
                 }
@@ -77,9 +125,9 @@ namespace Scripts.Games {
 
         private void Update()
         {
-            if (objectsInScene.playersMovement[PlayerIndex].canMove)
+            if (objectsInScene.playerExposer[PlayerIndex].playerMovement.canMove)
             {
-                objectsInScene.playersMovement[PlayerIndex].GetIntentPlayer();
+                objectsInScene.playerExposer[PlayerIndex].playerMovement.GetIntentPlayer();
             }
         }
 

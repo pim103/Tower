@@ -35,16 +35,7 @@ namespace Scripts.Games
         // =========================== PLAYER CHARACTER ========================
 
         [SerializeField]
-        public GameObject[] playersGameObject;
-
-        [SerializeField]
-        public PlayerMovement[] playersMovement;
-
-        [SerializeField]
-        public Rigidbody[] playersRigidbody;
-
-        [SerializeField]
-        public GameObject[] playersCamera;
+        public PlayerExposer[] playerExposer;
 
         // ========================== ACCESS TO MAP CONTAINER ==================
 

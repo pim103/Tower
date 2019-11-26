@@ -11,6 +11,9 @@ namespace Scripts.Games.Players
         [SerializeField]
         private PhotonView photonView;
 
+        [SerializeField]
+        private Player player;
+
         public int playerIndex;
         public bool canMove;
 
@@ -57,6 +60,15 @@ namespace Scripts.Games.Players
             if (Input.GetKeyUp(KeyCode.D))
             {
                 wantToGoRight = false;
+            }
+
+            if(Input.GetMouseButtonDown(0))
+            {
+                player.weapons[0].PlayMovement(player.movementPattern, 
+                    player.
+                    objectsInScene.
+                    playerExposer[playerIndex].
+                    playerHand);
             }
 
             if(PhotonNetwork.IsConnected)

@@ -14,7 +14,7 @@ namespace Scripts.Games.Players
 
         public void ApplyMovement()
         {
-            for (int i = 0; i < objectsInScene.playersMovement.Length; i++)
+            for (int i = 0; i < objectsInScene.playerExposer.Length; i++)
             {
                 Movement(i);
             }
@@ -22,8 +22,8 @@ namespace Scripts.Games.Players
 
         public void Movement(int playerIndex)
         {
-            Rigidbody rigidbody = objectsInScene.playersRigidbody[playerIndex];
-            PlayerIntent playerIntent = objectsInScene.playersMovement[playerIndex];
+            Rigidbody rigidbody = objectsInScene.playerExposer[playerIndex].playerRigidbody;
+            PlayerIntent playerIntent = objectsInScene.playerExposer[playerIndex].playerMovement;
 
             int horizontalMove = 0;
             int verticalMove = 0;
