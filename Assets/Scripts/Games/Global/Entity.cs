@@ -1,4 +1,5 @@
-﻿using Games.Global.Weapons;
+﻿using Games.Global.Pattern;
+using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Scripts.Games.Global

@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using Games.Global;
 using UnityEngine;
 
-namespace Scripts.Games.Global
+namespace Games.Global.Pattern
 {
     public class MovementPattern : MonoBehaviour
     {
