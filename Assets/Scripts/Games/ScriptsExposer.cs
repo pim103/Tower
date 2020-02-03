@@ -1,12 +1,14 @@
 ﻿using Scripts;
 using Scripts.Games.Attacks;
 using Scripts.Games.Global;
-using Scripts.Games.Global.Weapons;
 using System.Collections;
 using System.Collections.Generic;
+using Games.Attacks;
+using Games.Global.Weapons;
+using Scripts.Games;
 using UnityEngine;
 
-namespace Scripts.Games
+namespace Games
 {
     public class ScriptsExposer : MonoBehaviour
     {

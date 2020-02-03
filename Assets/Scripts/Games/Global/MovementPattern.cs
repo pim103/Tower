@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Games.Global;
 using UnityEngine;
 
 namespace Scripts.Games.Global
@@ -27,8 +28,10 @@ namespace Scripts.Games.Global
                             objectToMove.transform.Rotate((movement.value * movement.cadence) / movement.movementDuration, 0, 0);
                             break;
                         case PatternInstructions.ROTATE_LEFT:
+                            objectToMove.transform.Rotate(0, -((movement.value * movement.cadence) / movement.movementDuration), 0);
                             break;
                         case PatternInstructions.ROTATE_RIGHT:
+                            objectToMove.transform.Rotate(0, (movement.value * movement.cadence) / movement.movementDuration, 0);
                             break;
                         case PatternInstructions.FRONT:
                             break;

@@ -1,9 +1,9 @@
-﻿using Scripts.Games.Attacks;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
+using Games.Attacks;
+using Scripts.Games;
 using UnityEngine;
 
-namespace Scripts.Games.Transitions
+namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {

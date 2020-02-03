@@ -1,4 +1,4 @@
-﻿using Scripts.Games.Global.Weapons;
+﻿using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Scripts.Games.Global

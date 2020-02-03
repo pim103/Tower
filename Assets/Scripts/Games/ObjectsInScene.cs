@@ -1,10 +1,9 @@
-﻿using Scripts.Games.Players;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Games.Players;
+using Scripts.Games.Players;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Games
+namespace Games
 {
     public class ObjectsInScene : MonoBehaviour
     {

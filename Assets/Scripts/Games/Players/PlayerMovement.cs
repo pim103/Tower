@@ -1,10 +1,8 @@
 ﻿using Photon.Pun;
-using Scripts.Games;
-using System.Collections;
-using System.Collections.Generic;
+using Scripts.Games.Players;
 using UnityEngine;
 
-namespace Scripts.Games.Players
+namespace Games.Players
 {
     public class PlayerMovement : PlayerIntent
     {

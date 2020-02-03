@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Games.Global;
 using UnityEngine;
 
 namespace Scripts.Games.Global.Armors

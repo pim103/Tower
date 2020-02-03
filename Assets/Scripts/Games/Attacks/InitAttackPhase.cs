@@ -1,10 +1,8 @@
-﻿using Scripts.Games;
-using Scripts.Games.Transitions;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Games.Players;
+using Scripts.Games;
 using UnityEngine;
 
-namespace Scripts.Games.Attacks
+namespace Games.Attacks
 {
     public class InitAttackPhase : MonoBehaviour
     {
@@ -68,7 +66,7 @@ namespace Scripts.Games.Attacks
 
             objectsInScene.playerExposer[playerIndex].playerCamera.SetActive(true);
 
-            objectsInScene.playerExposer[playerIndex].player.InitPlayerStats(Players.Classes.WARRIOR);
+            objectsInScene.playerExposer[playerIndex].player.InitPlayerStats(Classes.WARRIOR);
 
             // TODO : Temp Method
             GenerateArray();

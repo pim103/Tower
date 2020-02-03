@@ -1,9 +1,7 @@
 ﻿using Scripts.Games.Players;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Games.Players
+namespace Games.Players
 {
     public class PlayerExposer : MonoBehaviour
     {

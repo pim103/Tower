@@ -1,9 +1,10 @@
-﻿using Scripts.Games.Global;
+﻿using Games.Global.Weapons;
+using Scripts.Games;
+using Scripts.Games.Global;
 using Scripts.Games.Global.Armors;
-using Scripts.Games.Global.Weapons;
 using UnityEngine;
 
-namespace Scripts.Games.Players
+namespace Games.Players
 {
     public enum Classes
     {

@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Scripts.Games.Global
+﻿namespace Games.Global
 {
     //Class for equipements
-    public abstract class Equipement : MonoBehaviour
+    public abstract class Equipement : Item
     {
-        public int lootRate;
         public int cost;
 
         // DEFINE METHOD TO USE GENERIC EQUIPEMENTS

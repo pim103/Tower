@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Scripts.Games.Global;
 using UnityEngine;
 
-namespace Scripts.Games.Global.Weapons
+namespace Games.Global.Weapons
 {
     public enum TypeEquipement
     {

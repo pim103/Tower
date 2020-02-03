@@ -1,6 +1,7 @@
 ﻿using Scripts.Games;
 using System.Collections;
 using System.Collections.Generic;
+using Games;
 using UnityEngine;
 
 namespace Scripts.Games.Players

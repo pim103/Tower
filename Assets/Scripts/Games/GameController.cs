@@ -5,9 +5,11 @@ using Scripts.Games.Players;
 using Scripts.Games.Transitions;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts;
+using Scripts.Games;
 using UnityEngine;
 
-namespace Scripts.Games {
+namespace Games {
     public class GameController : MonoBehaviourPunCallbacks
     {
         [SerializeField]
