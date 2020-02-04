@@ -22,5 +22,8 @@ namespace Games.Players
 
         [SerializeField]
         public Player player;
+        
+        [SerializeField]
+        public Transform playerTransform;
     }
 }

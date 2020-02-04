@@ -1,4 +1,4 @@
-﻿using Games.Global.Pattern;
+﻿using Games.Global.Patterns;
 using Scripts.Games.Global;
 using UnityEngine;
 
@@ -33,7 +33,7 @@ namespace Games.Global.Weapons
 
         public Effect[] effects;
 
-        public Pattern.Pattern[] pattern;
+        public Pattern[] pattern;
 
         public abstract void BasicAttack();
 

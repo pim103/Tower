@@ -52,6 +52,19 @@ namespace Scripts.Games.Players
             movement.z = verticalMove * PLAYER_SPEED;
 
             rigidbody.velocity = movement;
+
+            Camera playerCamera = objectsInScene.playerExposer[playerIndex].playerCamera.GetComponent<Camera>();
+            RaycastHit hit;
+            Ray cameraRay = playerCamera.ScreenPointToRay(playerIntent.mousePosition);
+
+            if (Physics.Raycast(cameraRay, out hit))
+            {
+                Vector3 point = hit.point;
+                point.y = 0;
+                Transform playerTransform = objectsInScene.playerExposer[playerIndex].playerTransform;
+                playerTransform.LookAt(point);
+                playerTransform.localEulerAngles = Vector3.up * playerTransform.localEulerAngles.y;
+            }
         }
     }
 }

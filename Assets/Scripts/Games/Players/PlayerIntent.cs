@@ -10,5 +10,6 @@ namespace Scripts.Games.Players
         public bool wantToGoBack;
         public bool wantToGoLeft;
         public bool wantToGoRight;
+        public Vector3 mousePosition;
     }
 }

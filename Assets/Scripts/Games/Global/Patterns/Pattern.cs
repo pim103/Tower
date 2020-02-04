@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Games.Global.Pattern
+namespace Games.Global.Patterns
 {
     /*
      * Enum listing instructions :
@@ -24,6 +24,8 @@ namespace Games.Global.Pattern
     public class Pattern : MonoBehaviour
     {
         public PatternInstructions inst;
+        
+        // Value can be an angle, a waiting time in ms and a size of translation
         public float value;
         public float movementDuration;
         public float cadence;

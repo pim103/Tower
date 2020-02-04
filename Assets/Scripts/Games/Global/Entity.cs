@@ -1,4 +1,4 @@
-﻿using Games.Global.Pattern;
+﻿using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 
@@ -25,6 +25,7 @@ namespace Scripts.Games.Global
         public int att = DEFAULT_ATT;
         public int speed = DEFAULT_SPEED;
 
+        // If needed, create WeaponExposer to get all scripts of a weapon
         public Weapon[] weapons;
 
         public TypeEntity typeEntity;

@@ -71,17 +71,18 @@ namespace Games.Players
 
             if(PhotonNetwork.IsConnected)
             {
-                photonView.RPC("CheckMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight);
+                photonView.RPC("CheckMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight, Input.mousePosition);
             }
         }
 
         [PunRPC]
-        public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight)
+        public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight, Vector3 mousePosition)
         {
             this.wantToGoBack = wantToGoBack;
             this.wantToGoForward = wantToGoForward;
             this.wantToGoLeft = wantToGoLeft;
             this.wantToGoRight = wantToGoRight;
+            this.mousePosition = mousePosition;
         }
     }
 }

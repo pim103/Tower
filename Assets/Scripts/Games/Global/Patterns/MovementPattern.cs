@@ -1,42 +1,47 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Games.Global.Pattern
+namespace Games.Global.Patterns
 {
     public class MovementPattern : MonoBehaviour
     {
-        private IEnumerator TriggerMovement(Pattern[] pattern, GameObject objectToMove)
+        private IEnumerator TriggerMovement(Patterns.Pattern[] pattern, GameObject objectToMove)
         {
+            // TODO need to interpret more than 1 action at the same time for diagonal or other
             int i = 0;
             while (i < pattern.Length)
             {
                 Pattern movement = pattern[i];
                 float movementDuration = movement.movementDuration;
+                Vector3 rot;
 
                 while (movementDuration > 0)
                 {
-                    Debug.Log(movementDuration);
                     switch (movement.inst)
                     {
                         case PatternInstructions.ROTATE_UP:
-                            objectToMove.transform.Rotate( -((movement.value * movement.cadence) / movement.movementDuration), 0, 0);
+                            objectToMove.transform.Rotate(-((movement.value * movement.cadence) / movement.movementDuration), 0, 0, Space.Self);
                             break;
                         case PatternInstructions.ROTATE_DOWN:
-                            objectToMove.transform.Rotate((movement.value * movement.cadence) / movement.movementDuration, 0, 0);
+                            objectToMove.transform.Rotate((movement.value * movement.cadence) / movement.movementDuration, 0, 0, Space.Self);
                             break;
                         case PatternInstructions.ROTATE_LEFT:
-                            objectToMove.transform.Rotate(0, -((movement.value * movement.cadence) / movement.movementDuration), 0);
+                            objectToMove.transform.Rotate(0, 0, -((movement.value * movement.cadence) / movement.movementDuration), Space.Self);
                             break;
                         case PatternInstructions.ROTATE_RIGHT:
-                            objectToMove.transform.Rotate(0, (movement.value * movement.cadence) / movement.movementDuration, 0);
+                            objectToMove.transform.Rotate(0, 0, (movement.value * movement.cadence) / movement.movementDuration, Space.Self);
                             break;
                         case PatternInstructions.FRONT:
+                            objectToMove.transform.Translate(0, 0, (movement.value * movement.cadence) / movement.movementDuration, Space.Self);
                             break;
                         case PatternInstructions.BACK:
+                            objectToMove.transform.Translate(0, 0, -((movement.value * movement.cadence) / movement.movementDuration), Space.Self);
                             break;
                         case PatternInstructions.LEFT:
+                            objectToMove.transform.Translate(-((movement.value * movement.cadence) / movement.movementDuration), 0, 0, Space.Self);
                             break;
                         case PatternInstructions.RIGHT:
+                            objectToMove.transform.Translate((movement.value * movement.cadence) / movement.movementDuration, 0, 0, Space.Self);
                             break;
                         case PatternInstructions.WAIT:
                             break;
@@ -53,7 +58,7 @@ namespace Games.Global.Pattern
             }
         }
 
-        public void PlayMovement(Pattern[] pattern, GameObject objectToMove)
+        public void PlayMovement(Patterns.Pattern[] pattern, GameObject objectToMove)
         {
             Debug.Log("Ok");
             StartCoroutine(TriggerMovement(pattern, objectToMove));
