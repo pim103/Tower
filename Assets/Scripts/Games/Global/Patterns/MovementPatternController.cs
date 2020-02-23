@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Games.Global.Patterns
 {
-    public class MovementPattern : MonoBehaviour
+    public class MovementPatternController : MonoBehaviour
     {
-        private IEnumerator TriggerMovement(Patterns.Pattern[] pattern, GameObject objectToMove)
+        private IEnumerator TriggerMovement(Pattern[] pattern, GameObject objectToMove)
         {
             // TODO need to interpret more than 1 action at the same time for diagonal or other
             int i = 0;
@@ -58,9 +58,8 @@ namespace Games.Global.Patterns
             }
         }
 
-        public void PlayMovement(Patterns.Pattern[] pattern, GameObject objectToMove)
+        public void PlayMovement(Pattern[] pattern, GameObject objectToMove)
         {
-            Debug.Log("Ok");
             StartCoroutine(TriggerMovement(pattern, objectToMove));
         }
     }

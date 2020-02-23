@@ -33,7 +33,7 @@ namespace Games {
         /*
          * Flag to skip defensePhase
          */
-        private bool byPassDefense = true;
+        public bool byPassDefense = true;
 
         private IEnumerator CheckEndInit()
         {

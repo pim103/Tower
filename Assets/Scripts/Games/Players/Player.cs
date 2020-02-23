@@ -1,5 +1,4 @@
 ﻿using Games.Global.Weapons;
-using Scripts.Games;
 using Scripts.Games.Global;
 using Scripts.Games.Global.Armors;
 using UnityEngine;
@@ -28,16 +27,14 @@ namespace Games.Players
 
         private Classes mainClass;
 
-        public void InitWeapon(string name)
+        public void InitWeapon(int idWeapon)
         {
             GameObject playerHand = objectsInScene.playerExposer[se.gameController.PlayerIndex].playerHand;
-            GameObject weapon = Instantiate(se.weaponList.GetWeaponWithName(name), playerHand.transform);
+            Weapon weapon = se.weaponList.GetWeaponWithId(idWeapon);
+            
+            weapon.InstantiateModel(playerHand.transform);
 
-            float scaleY = weapon.transform.localScale.y;
-
-            weapon.transform.localPosition = new Vector3(0, scaleY, 0);
-
-            weapons[0] = weapon.GetComponent<Weapon>();
+            weapons[0] = weapon;
         }
 
         public void InitPlayerStats(Classes classe)
@@ -75,7 +72,7 @@ namespace Games.Players
             }
 
             InitEquipementArray();
-            InitWeapon("BasicSword");
+            InitWeapon(1);
         }
     }
 }

@@ -372,14 +372,21 @@
                 <e p="Material.cs" t="Include" />
               </e>
               <e p="Patterns" t="Include">
-                <e p="MovementPattern.cs" t="Include" />
+                <e p="MovementPatternController.cs" t="Include" />
                 <e p="Pattern.cs" t="Include" />
               </e>
               <e p="Skill.cs" t="Include" />
               <e p="Weapons" t="Include">
+                <e p="Abilities" t="Include">
+                  <e p="AbilityManager.cs" t="Include" />
+                  <e p="ShortSwordAbiltiy.cs" t="Include" />
+                  <e p="SpearAbility.cs" t="Include" />
+                </e>
+                <e p="Spear.cs" t="Include" />
                 <e p="Sword.cs" t="Include" />
                 <e p="Weapon.cs" t="Include" />
                 <e p="WeaponList.cs" t="Include" />
+                <e p="WeaponParseJson.cs" t="Include" />
               </e>
             </e>
             <e p="ObjectsInScene.cs" t="Include" />
@@ -389,6 +396,7 @@
               <e p="PlayerIntent.cs" t="Include" />
               <e p="PlayerMovement.cs" t="Include" />
               <e p="PlayerMovementMaster.cs" t="Include" />
+              <e p="write.txt" t="Include" />
             </e>
             <e p="ScriptsExposer.cs" t="Include" />
             <e p="Transitions" t="Include">
@@ -414,6 +422,9 @@
             <e p="ShopMenu.cs" t="Include" />
           </e>
           <e p="PhotonController.cs" t="Include" />
+          <e p="Utils" t="Include">
+            <e p="JsonHelpers.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />

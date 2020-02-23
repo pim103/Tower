@@ -62,11 +62,7 @@ namespace Games.Players
 
             if(Input.GetMouseButtonDown(0))
             {
-                player.weapons[0].PlayMovement(player.movementPattern, 
-                    player.
-                    objectsInScene.
-                    playerExposer[playerIndex].
-                    playerHand);
+                player.weapons[0].BasicAttack(player.movementPatternController, player.objectsInScene.playerExposer[playerIndex].playerHand);
             }
 
             if(PhotonNetwork.IsConnected)

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Games.Global.Weapons.Abilities;
 using UnityEngine;
 
 namespace Games.Global.Weapons
@@ -8,38 +12,41 @@ namespace Games.Global.Weapons
         [SerializeField]
         private GameObject[] weaponsGameObject;
 
-        public Dictionary<string, GameObject> weaponsList;
-        public Dictionary<int, string> idWeaponsList;
+        public List<Weapon> weapons;
 
-        public GameObject GetWeaponWithName(string findName)
+        public Weapon GetWeaponWithName(string findName)
         {
-            return weaponsList[findName];
+            return weapons.First(we => we.equipementName == findName);
         }
 
-        public GameObject GetWeaponWithId(int id)
+        public Weapon GetWeaponWithId(int id)
         {
-            return weaponsList[idWeaponsList[id]];
+            return weapons.First(we => we.id == id);
         }
 
         private void InitWeaponDictionnary()
         {
-            int count = 0;
+            List<WeaponJsonObject> wJsonObjects = new List<WeaponJsonObject>();
 
-            foreach (var weapon in weaponsGameObject)
+            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/WeaponsJson"))
             {
-                string weaponName = weapon.name;
-                weaponsList.Add(weaponName, weapon);
-                idWeaponsList.Add(count, weaponName);
+                StreamReader reader = new StreamReader(filePath, true);
+            
+                wJsonObjects.AddRange(WeaponParseJson.ParseWeapon(reader));
+            }
 
-                count++;
+            foreach (WeaponJsonObject weaponJson in wJsonObjects)
+            {
+                Weapon loadedWeapon = weaponJson.ConvertToWeapon();
+                loadedWeapon.model = weaponsGameObject.First(go => go.name == loadedWeapon.modelName);
+                weapons.Add(loadedWeapon);
             }
         }
 
         private void Start()
         {
-            weaponsList = new Dictionary<string, GameObject>();
-            idWeaponsList = new Dictionary<int, string>();
-
+            AbilityManager.InitAbilities();
+            weapons = new List<Weapon>();
             InitWeaponDictionnary();
         }
     }

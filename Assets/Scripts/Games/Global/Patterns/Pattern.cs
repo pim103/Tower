@@ -21,7 +21,7 @@ namespace Games.Global.Patterns
         WAIT
     }
 
-    public class Pattern : MonoBehaviour
+    public class Pattern
     {
         public PatternInstructions inst;
         

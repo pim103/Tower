@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.Menus
-{
+{   
     public class MenuController : MonoBehaviour
     {
         [SerializeField]

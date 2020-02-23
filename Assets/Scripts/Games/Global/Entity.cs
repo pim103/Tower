@@ -1,6 +1,7 @@
 ﻿using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Games.Global
 {
@@ -30,7 +31,7 @@ namespace Scripts.Games.Global
 
         public TypeEntity typeEntity;
 
-        public MovementPattern movementPattern;
+        [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
