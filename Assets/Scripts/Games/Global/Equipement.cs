@@ -1,4 +1,5 @@
 ﻿using System;
+using Games.Global.Abilities;
 
 namespace Games.Global
 {
@@ -9,9 +10,9 @@ namespace Games.Global
 
         // DEFINE METHOD TO USE GENERIC EQUIPEMENTS
         // Method called when damage received
-        public Func<bool> OnDamageReceive;
+        public Func<AbilityParameters, bool> OnDamageReceive;
 
         // Method called when damage dealt
-        public Func<bool> OnDamageDealt;
+        public Func<AbilityParameters, bool> OnDamageDealt;
     }
 }

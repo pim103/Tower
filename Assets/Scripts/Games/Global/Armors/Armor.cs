@@ -17,6 +17,6 @@ namespace Scripts.Games.Global.Armors
         public int def;
         public TypeArmor typeArmor;
 
-        public Effect[] effects;
+        public List<TypeEffect> effects;
     } 
 }

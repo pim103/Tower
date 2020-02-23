@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Games.Global.Weapons.Abilities;
+using Games.Global.Abilities;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
@@ -139,13 +139,13 @@ namespace Games.Global.Weapons
             weapon.attSpeed = attSpeed;
             weapon.modelName = modelName;
 
-            weapon.OnDamageDealt = AbilityManager.GetAbility(type, onDamageDealt);
-            weapon.OnDamageReceive = AbilityManager.GetAbility(type, onDamageReceive);
+            weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt);
+            weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive);
 
             return weapon;
         }
     }
-    
+
     public static class WeaponParseJson
     {
         public static List<WeaponJsonObject> ParseWeapon(StreamReader file)

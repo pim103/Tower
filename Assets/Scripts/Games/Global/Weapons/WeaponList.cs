@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Games.Global.Weapons.Abilities;
+using Games.Global.Abilities;
 using UnityEngine;
 
 namespace Games.Global.Weapons

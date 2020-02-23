@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scripts.Games.Global;
+using UnityEngine;
 
 namespace Games.Global
 {
@@ -13,15 +14,27 @@ namespace Games.Global
         STUN
     }
 
-    public enum Target
+    public static class Effect
     {
-        SELF,
-        TARGET
-    }
-
-    public class Effect : MonoBehaviour
-    {
-        public TypeEffect typeEffect;
-        public Target target;
+        public static void TriggerEffect(TypeEffect type, Entity target)
+        {
+            switch (type)
+            {
+                case TypeEffect.AOE:
+                    break;
+                case TypeEffect.BURN:
+                    break;
+                case TypeEffect.STUN:
+                    break;
+                case TypeEffect.WEAK:
+                    break;
+                case TypeEffect.BLEED:
+                    break;
+                case TypeEffect.PIERCE:
+                    break;
+                case TypeEffect.POISON:
+                    break;
+            }
+        }
     }
 }
