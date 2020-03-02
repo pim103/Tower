@@ -1,4 +1,6 @@
-﻿using Games.Players;
+﻿using Games.Global;
+using Games.Global.Entities;
+using Games.Players;
 using Scripts.Games;
 using UnityEngine;
 
@@ -39,8 +41,22 @@ namespace Games.Attacks
         {
             int indexMap = playerIndex % 2 == 0 ? 0 : 1;
             GameObject currentMap = objectsInScene.maps[indexMap];
-            GameObject newObject;
 
+            Monster monster = se.dm.monsterList.GetMonsterById(1);
+
+            InstantiateParameters param = new InstantiateParameters();
+            param.item = monster;
+            param.type = TypeItem.Monster;
+
+            monster.InstantiateModel(param, Vector3.zero);
+            
+            Monster monster2 = se.dm.monsterList.GetMonsterById(1);
+
+            param.item = monster2;
+            param.type = TypeItem.Monster;
+
+            monster2.InstantiateModel(param, Vector3.one * 10);
+/*
             for (int i = 0; i < MAP_SIZE; i++)
             {
                 for (int j = 0; j < MAP_SIZE; j++)
@@ -52,7 +68,7 @@ namespace Games.Attacks
                     }
                 }
             }
-
+*/
             //TODO : SEND SIGNAL WHEN END OF GENERATION
         }
 

@@ -1,14 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using Games.Global.Abilities;
 
-namespace Scripts.Games.Global
+namespace Games.Global
 {
-    public abstract class Skill : MonoBehaviour
+    public class Skill
     {
-        public int effect;
         public int cost;
-
-        // DEFINE METHOD TO LAUNCH GENERIC SKILLS
+        public float startCooldownTimer;
+        public float castTime;
+        public int cooldown;
+        
+        public Func<AbilityParameters, bool> skill;
     }
 }

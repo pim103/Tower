@@ -1,9 +1,10 @@
-﻿using Games.Global.Patterns;
+﻿using System.Collections.Generic;
+using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Scripts.Games.Global
+namespace Games.Global
 {
     public enum TypeEntity
     {
@@ -13,7 +14,7 @@ namespace Scripts.Games.Global
     }
 
     // Class for mobs and players
-    public abstract class Entity : MonoBehaviour
+    public abstract class Entity : ItemModel
     {
         private const int DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
@@ -30,6 +31,8 @@ namespace Scripts.Games.Global
         public Weapon[] weapons;
 
         public TypeEntity typeEntity;
+
+        public List<TypeEffect> underEffects;
 
         [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 

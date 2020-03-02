@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics;
+using Games.Global.Weapons;
+using UnityEngine;
 
 namespace Games.Global
 {
@@ -10,9 +12,15 @@ namespace Games.Global
         Epic,
         Legendary
     }
+
+    public struct InstantiateParameters
+    {
+        public TypeItem type;
+        public object item;
+    }
     
     // Class needed to Equipement and Material
-    public class Item: MonoBehaviour
+    public class Item: ItemModel
     {
         public int id = -1;
 
@@ -20,22 +28,5 @@ namespace Games.Global
 
         // In percent
         public int lootRate = 100;
-
-        // Model Attribute
-        public string modelName = "";
-        public GameObject model = null;
-        public GameObject instantiateModel;
-
-        public void InstantiateModel(Transform parent = null)
-        {
-            GameObject modelWeapon = Instantiate(model, parent);
-            BoxCollider bc = modelWeapon.GetComponent<BoxCollider>();
-            bc.enabled = false;
-            instantiateModel = modelWeapon;
-
-            // TODO : need adaptation for the position of instantiate weapon
-            float scaleY = modelWeapon.transform.localScale.y;
-            modelWeapon.transform.localPosition = new Vector3(0, 0.5f, 0);
-        }
     }
 }

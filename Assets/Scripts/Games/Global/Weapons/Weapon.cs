@@ -41,6 +41,9 @@ namespace Games.Global.Weapons
         public void BasicAttack(MovementPatternController movementPatternController, GameObject objectToMove)
         {
             PlayMovement(movementPatternController, objectToMove);
+
+            BoxCollider bc = instantiateModel.GetComponent<BoxCollider>();
+            bc.enabled = true;
         }
 
         public void PlayMovement(MovementPatternController movementPatternController, GameObject objectToMove)

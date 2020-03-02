@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Games.Global;
 using Games.Global.Abilities;
-using UnityEditor.IMGUI.Controls;
+using Games.Global.Weapons;
 using UnityEngine;
 
-namespace Games.Global.Weapons
+namespace Utils
 {
-    public class WeaponJsonObject
+    public class WeaponJsonObject: ObjectParsed
     {
         private TypeEquipement type;
         private string nameWeapon;
         private int id;
-        
+
         private Rarity rarity;
         private int lootRate;
         private int cost;
-        
+
         private List<TypeEffect> effects;
         private int damage;
         private int attSpeed;
@@ -38,7 +38,7 @@ namespace Games.Global.Weapons
             }
         }
         
-        public void InsertValue(string key, string value)
+        public override void InsertValue(string key, string value)
         {
             switch (key)
             {
@@ -85,6 +85,11 @@ namespace Games.Global.Weapons
             }
         }
 
+        public override void DoSomething()
+        {
+            throw new NotImplementedException();
+        }
+
         public Weapon ConvertToWeapon()
         {
             Weapon weapon = null;
@@ -125,7 +130,7 @@ namespace Games.Global.Weapons
                     weapon = new Sword();
                     break;
                 case TypeEquipement.TWO_HAND_AXE:
-                    break;   
+                    break;
             }
 
             weapon.id = id;
@@ -139,107 +144,10 @@ namespace Games.Global.Weapons
             weapon.attSpeed = attSpeed;
             weapon.modelName = modelName;
 
-            weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt);
-            weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive);
+            weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.WEAPON);
+            weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.WEAPON);
 
             return weapon;
-        }
-    }
-
-    public static class WeaponParseJson
-    {
-        public static List<WeaponJsonObject> ParseWeapon(StreamReader file)
-        {
-            List<WeaponJsonObject> jsonObjects = new List<WeaponJsonObject>();
-            bool fileIsValid = false;
-
-            string line = "";
-            string key = "";
-            string value = "";
-            int indexComma;
-            int indexColon;
-            int indexEndOfArray;
-
-            bool isInArray = false;
-            
-            WeaponJsonObject jsonObject = new WeaponJsonObject();
-
-            while (!file.EndOfStream)
-            {
-                line = file.ReadLine();
-
-                // Check if file contain header name "weapons"
-                if (!fileIsValid && line != null && line.Contains("weapons"))
-                {
-                    fileIsValid = true;
-                    continue;
-                }
-                else if (!fileIsValid || line == null)
-                {
-                    continue;
-                }
-
-                indexComma = line.IndexOf(",");
-                if (indexComma == -1)
-                {
-                    indexComma = line.Length;
-                }
-                
-                if (!isInArray)
-                {
-                    if (line.Contains("}"))
-                    {
-                        jsonObjects.Add(jsonObject);
-                        jsonObject = new WeaponJsonObject();
-                    }
-
-                    // If condition if verify, array closed is the array with key = "weapons" => EndOfFile
-                    if (line.Contains("]") && !isInArray)
-                    {
-                        break;
-                    }
-                    
-                    //Get information from file
-                    indexColon = line.IndexOf(":");
-                
-                    if (indexColon == -1)
-                    {
-                        continue;
-                    }
-
-                    key = line.Substring(0, indexColon).Replace('"', ' ').Trim();
-                    value = line.Substring(indexColon + 1, indexComma - indexColon - 1).Replace('"', ' ').Trim();
-
-                    if (value.Contains("["))
-                    {
-                        isInArray = true;
-                        value = value.Replace("[", " ").Trim();
-                    }
-                }
-                else
-                {
-                    indexEndOfArray = line.IndexOf("]");
-                    if (indexEndOfArray == -1)
-                    {
-                        indexEndOfArray = indexComma;
-                    }
-                    else
-                    {
-                        isInArray = false;
-                    }
-                    
-                    value = line.Substring(0, indexEndOfArray).Replace('"', ' ').Trim();
-                }
-
-                if (value == "")
-                {
-                    continue;
-                }
-                
-                jsonObject.InsertValue(key, value);
-            }
-
-            return jsonObjects;
         }
     }
 }

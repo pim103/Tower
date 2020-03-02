@@ -1,4 +1,5 @@
-﻿using Games.Global.Weapons;
+﻿using Games.Global;
+using Games.Global.Weapons;
 using Scripts.Games.Global;
 using Scripts.Games.Global.Armors;
 using UnityEngine;
@@ -30,9 +31,13 @@ namespace Games.Players
         public void InitWeapon(int idWeapon)
         {
             GameObject playerHand = objectsInScene.playerExposer[se.gameController.PlayerIndex].playerHand;
-            Weapon weapon = se.weaponList.GetWeaponWithId(idWeapon);
-            
-            weapon.InstantiateModel(playerHand.transform);
+            Weapon weapon = se.dm.weaponList.GetWeaponWithId(idWeapon);
+
+            InstantiateParameters param = new InstantiateParameters();
+            param.item = weapon;
+            param.type = TypeItem.Weapon;
+
+            weapon.InstantiateModel(param, Vector3.zero, playerHand.transform);
 
             weapons[0] = weapon;
         }

@@ -1,0 +1,26 @@
+{
+    "groups":[
+        {
+            family: 5,
+			cost: 10,
+			id: 1,
+            monster:{
+				idMonster: 1,
+				name: "Basic Monster"
+				number: 2,
+                hp: 20,
+				def: 2,
+				att: 2,
+				speed: 1,
+				nbWeapon: 1,
+				skills: [
+					"ThrowPoison",
+					"EjectTarget"
+				],
+				on_damage_dealt: "Outch",
+				on_damage_receive: "Aie",
+				model: "BasicMonster"
+            },
+        },
+    ]
+}

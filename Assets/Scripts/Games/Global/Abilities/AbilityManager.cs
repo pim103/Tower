@@ -1,35 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global.Abilities.MobAbilities;
 using Games.Global.Abilities.WeaponsAbilities;
-using Games.Global.Weapons;
-using Scripts.Games.Global;
+using UnityEngine;
 
 namespace Games.Global.Abilities
 {
+    public enum AbilityDico
+    {
+        PLAYER,
+        MOB,
+        WEAPON
+    }
+
     public struct AbilityParameters
     {
         private List<Entity> origin;
         private List<Entity> target;
     }
-    
-    public class AbilityManager
+
+    public static class AbilityManager
     {
-        private static Dictionary<string, Func<AbilityParameters, bool>> methodList;
+        private static Dictionary<string, Func<AbilityParameters, bool>> methodWeaponList;
+
+        private static Dictionary<string, Func<AbilityParameters, bool>> methodMobList;
+
+        private static void InitMobAbilities()
+        {
+            methodMobList = new Dictionary<string, Func<AbilityParameters, bool>>();
+            
+            // Add Demon Abilities
+            methodMobList.Add("Aie", DemonSkill.Aie);
+            methodMobList.Add("Outch", DemonSkill.Outch);
+            methodMobList.Add("EjectTarget", DemonSkill.EjectTarget);
+            methodMobList.Add("ThrowPoison", DemonSkill.ThrowPoison);
+        }
+
+        private static void InitWeaponAbilities()
+        {
+            methodWeaponList = new Dictionary<string, Func<AbilityParameters, bool>>();
+            
+            // Add short sword abilities
+            methodWeaponList.Add("ApplyFire", ShortSwordAbiltiy.ApplyFire);
+            methodWeaponList.Add("KillHim", ShortSwordAbiltiy.KillHim);
+            
+            // Add spear abilities
+            methodWeaponList.Add("PierceHim", SpearAbility.PierceHim);
+            methodWeaponList.Add("Explode", SpearAbility.Explode);
+        }
 
         public static void InitAbilities()
         {
-            // Add short sword abilities
-            methodList.Add("ApplyFire", ShortSwordAbiltiy.ApplyFire);
-            methodList.Add("KillHim", ShortSwordAbiltiy.KillHim);
-            
-            // Add spear abilities
-            methodList.Add("PierceHim", SpearAbility.PierceHim);
-            methodList.Add("Explode", SpearAbility.Explode);
+            InitMobAbilities();
+            InitWeaponAbilities();
         }
-        
-        public static Func<AbilityParameters, bool> GetAbility(string methodName)
+
+        public static Func<AbilityParameters, bool> GetAbility(string methodName, AbilityDico dico)
         {
-            return methodList[methodName];
+            switch (dico)
+            {
+                case AbilityDico.MOB:
+                    return methodMobList[methodName];
+                    break;
+                case AbilityDico.PLAYER:
+                    break;
+                case AbilityDico.WEAPON:
+                    return methodWeaponList[methodName];
+                    break;
+            }
+
+            return null;
         }
     }
 }

@@ -360,6 +360,9 @@
             <e p="Global" t="Include">
               <e p="Abilities" t="Include">
                 <e p="AbilityManager.cs" t="Include" />
+                <e p="MobAbilities" t="Include">
+                  <e p="DemonSkill.cs" t="Include" />
+                </e>
                 <e p="WeaponsAbilities" t="Include">
                   <e p="ShortSwordAbiltiy.cs" t="Include" />
                   <e p="SpearAbility.cs" t="Include" />
@@ -371,14 +374,18 @@
                 <e p="HelmetArmor.cs" t="Include" />
                 <e p="LeggingsArmor.cs" t="Include" />
               </e>
+              <e p="DictionnaryManager.cs" t="Include" />
               <e p="Effects.cs" t="Include" />
               <e p="Entities" t="Include">
-                <e p="Boss.cs" t="Include" />
+                <e p="GroupsMonster.cs" t="Include" />
+                <e p="MobPrefab.cs" t="Include" />
                 <e p="Monster.cs" t="Include" />
+                <e p="MonsterList.cs" t="Include" />
               </e>
               <e p="Entity.cs" t="Include" />
               <e p="Equipement.cs" t="Include" />
               <e p="Item.cs" t="Include" />
+              <e p="ItemModel.cs" t="Include" />
               <e p="Materials" t="Include">
                 <e p="Material.cs" t="Include" />
               </e>
@@ -392,7 +399,7 @@
                 <e p="Sword.cs" t="Include" />
                 <e p="Weapon.cs" t="Include" />
                 <e p="WeaponList.cs" t="Include" />
-                <e p="WeaponParseJson.cs" t="Include" />
+                <e p="WeaponPrefab.cs" t="Include" />
               </e>
             </e>
             <e p="ObjectsInScene.cs" t="Include" />
@@ -429,7 +436,10 @@
           </e>
           <e p="PhotonController.cs" t="Include" />
           <e p="Utils" t="Include">
-            <e p="JsonHelpers.cs" t="Include" />
+            <e p="MobJsonObject.cs" t="Include" />
+            <e p="ObjectParsed.cs" t="Include" />
+            <e p="ParserJson.cs" t="Include" />
+            <e p="WeaponJsonObject.cs" t="Include" />
           </e>
         </e>
       </e>

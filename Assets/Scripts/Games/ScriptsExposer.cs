@@ -1,11 +1,7 @@
 ﻿using Scripts;
-using Scripts.Games.Attacks;
-using Scripts.Games.Global;
-using System.Collections;
-using System.Collections.Generic;
 using Games.Attacks;
+using Games.Global;
 using Games.Global.Weapons;
-using Scripts.Games;
 using UnityEngine;
 
 namespace Games
@@ -19,7 +15,7 @@ namespace Games
         public InitAttackPhase initAttackPhase;
 
         [SerializeField]
-        public WeaponList weaponList;
+        public DictionnaryManager dm;
 
         [SerializeField]
         public GameController gameController;
