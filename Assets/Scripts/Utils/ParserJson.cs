@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using Games.Global;
-using Games.Global.Abilities;
-using Games.Global.Weapons;
-using UnityEngine;
 
 namespace Utils
 {

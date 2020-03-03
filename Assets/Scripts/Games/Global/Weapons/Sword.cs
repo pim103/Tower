@@ -1,6 +1,5 @@
 ﻿using System;
 using Games.Global.Patterns;
-using Scripts.Games.Global;
 using PA_INST = Games.Global.Patterns.PatternInstructions;
 
 namespace Games.Global.Weapons

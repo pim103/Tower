@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using Games.Global.Weapons;
-using UnityEngine;
-
-namespace Games.Global
+﻿namespace Games.Global
 {
     public enum Rarity
     {

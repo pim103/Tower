@@ -1,7 +1,4 @@
-﻿using Scripts.Games.Global;
-using UnityEngine;
-
-namespace Games.Global
+﻿namespace Games.Global
 {
     public enum TypeEffect
     {

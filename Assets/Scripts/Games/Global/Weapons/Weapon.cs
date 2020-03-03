@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Games.Global.Patterns;
-using Scripts.Games.Global;
 using UnityEngine;
 
 namespace Games.Global.Weapons

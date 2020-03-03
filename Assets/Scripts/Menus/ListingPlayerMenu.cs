@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Menus;
+using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
-using Scripts.Games.Transitions;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class ListingPlayerMenu : MonoBehaviour, MenuInterface
     {

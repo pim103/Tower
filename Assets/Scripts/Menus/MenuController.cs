@@ -1,5 +1,4 @@
-﻿using Scripts.Menus;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Menus
 {   

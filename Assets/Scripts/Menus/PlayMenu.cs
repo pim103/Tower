@@ -1,8 +1,7 @@
-﻿using Menus;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class PlayMenu : MonoBehaviour, MenuInterface
     {

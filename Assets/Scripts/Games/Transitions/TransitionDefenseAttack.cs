@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Games.Attacks;
-using Scripts.Games;
 using UnityEngine;
 
 namespace Games.Transitions

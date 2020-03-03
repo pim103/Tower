@@ -1,7 +1,6 @@
 ﻿using Games.Global;
 using Games.Global.Entities;
 using Games.Players;
-using Scripts.Games;
 using UnityEngine;
 
 namespace Games.Attacks
