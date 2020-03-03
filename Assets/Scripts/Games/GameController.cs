@@ -5,6 +5,7 @@ using Scripts.Games.Players;
 using Scripts.Games.Transitions;
 using System.Collections;
 using System.Collections.Generic;
+using Games.Players;
 using Scripts;
 using Scripts.Games;
 using UnityEngine;
@@ -19,14 +20,9 @@ namespace Games {
         private TransitionMenuGame transitionMenuGame;
 
         [SerializeField]
-        private PlayerMovementMaster playerMovementMaster;
-
-        [SerializeField]
         private ScriptsExposer se;
 
-        public string[] idToUserId;
-
-        public int PlayerIndex;
+        public static int PlayerIndex;
 
         private bool idAssigned = false;
 
@@ -59,8 +55,6 @@ namespace Games {
         [PunRPC]
         private void ReturnId(string userId, int id)
         {
-            idToUserId[id] = userId;
-
             if (userId == PhotonNetwork.AuthValues.UserId)
             {
                 PlayerIndex = id;
@@ -88,12 +82,19 @@ namespace Games {
             se.initAttackPhase.StartAttackPhase();
         }
 
+        private IEnumerator WaitForDataLoading()
+        {
+            while (se.dm.monsterList == null || se.dm.weaponList == null)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            se.initAttackPhase.StartAttackPhase();
+        }
+
         private void ForceStartAttackPhase()
         {
-            se.photonController.setupPhotonController(TypeLobby.BYPASS_DEFENSE);
-            se.photonController.ConnectToPhoton();
-
-            StartCoroutine(WaitForConnection());
+            StartCoroutine(WaitForDataLoading());
         }
 
         // ================================== BASIC METHODS ======================================
@@ -102,7 +103,7 @@ namespace Games {
         void Start()
         {
             objectsInScene.mainCamera.SetActive(true);
-            idToUserId = new string[objectsInScene.playerExposer.Length];
+            PlayerIndex = 0;
 
             if(byPassDefense)
             {
@@ -110,39 +111,9 @@ namespace Games {
                 return;
             }
 
-            if (PhotonNetwork.IsConnected)
-            {
-                StartCoroutine(CheckEndInit());
-
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    AssignId();
-                }
-            }
-            else
-            {
-                transitionMenuGame.WantToStartGame();
-            }
+            transitionMenuGame.WantToStartGame();
         }
 
-        private void Update()
-        {
-            if (objectsInScene.playerExposer[PlayerIndex].playerMovement.canMove)
-            {
-                objectsInScene.playerExposer[PlayerIndex].playerMovement.GetIntentPlayer();
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            if(PhotonNetwork.IsMasterClient)
-            {
-                playerMovementMaster.ApplyMovement();
-            }
-            else
-            {
-                playerMovementMaster.Movement(PlayerIndex);
-            }
-        }
+        // TODO : Control player's movement here and not in PlayerMovement
     }
 }

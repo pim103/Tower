@@ -133,8 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7401777425161430231}
   - component: {fileID: 7401777425161430232}
-  - component: {fileID: 7401777425161430234}
-  - component: {fileID: 7401777425161430233}
   - component: {fileID: 7401777425161430235}
   - component: {fileID: 4043486432691114709}
   - component: {fileID: 1616889050918674922}
@@ -178,44 +176,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7401777425161430234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7401777425161430227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 7401777425161430233}
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &7401777425161430233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7401777425161430227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &7401777425161430235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,8 +193,8 @@ MonoBehaviour:
   wantToGoLeft: 0
   wantToGoRight: 0
   mousePosition: {x: 0, y: 0, z: 0}
-  photonView: {fileID: 7401777425161430234}
   player: {fileID: 4043486432691114709}
+  pe: {fileID: 1616889050918674922}
   playerIndex: 0
   canMove: 0
 --- !u!114 &4043486432691114709
@@ -249,14 +209,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da993f913f38760458a7940be505de23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelName: 
+  model: {fileID: 0}
+  instantiateModel: {fileID: 0}
   hp: 100
   def: 10
   att: 10
   speed: 10
+  weapons: []
   typeEntity: 0
-  movementPattern: {fileID: 5990262949680921091}
+  underEffects: 
+  movementPatternController: {fileID: 5990262949680921091}
   objectsInScene: {fileID: 0}
   se: {fileID: 0}
+  helmetArmor: {fileID: 0}
+  chestplateArmor: {fileID: 0}
+  leggingsArmor: {fileID: 0}
 --- !u!114 &1616889050918674922
 MonoBehaviour:
   m_ObjectHideFlags: 0

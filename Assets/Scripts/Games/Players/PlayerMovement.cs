@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using Scripts.Games.Players;
 using UnityEngine;
 
@@ -6,15 +7,15 @@ namespace Games.Players
 {
     public class PlayerMovement : PlayerIntent
     {
-        [SerializeField]
-        private PhotonView photonView;
+        private const int PLAYER_SPEED = 10;
 
         [SerializeField]
         private Player player;
 
+        [SerializeField] private PlayerExposer pe;
+
         public int playerIndex;
         public bool canMove;
-
 
         private void Start()
         {
@@ -22,6 +23,16 @@ namespace Games.Players
             wantToGoForward = false;
             wantToGoLeft = false;
             wantToGoRight = false;
+        }
+
+        private void Update()
+        {
+            GetIntentPlayer();
+        }
+
+        private void FixedUpdate()
+        {
+            Movement();
         }
 
         public void GetIntentPlayer()
@@ -65,9 +76,51 @@ namespace Games.Players
                 player.weapons[0].BasicAttack(player.movementPatternController, player.objectsInScene.playerExposer[playerIndex].playerHand);
             }
 
-            if(PhotonNetwork.IsConnected)
+            mousePosition = Input.mousePosition;
+        }
+        
+        public void Movement()
+        {
+            Rigidbody rigidbody = pe.playerRigidbody;
+
+            int horizontalMove = 0;
+            int verticalMove = 0;
+
+            if(wantToGoForward)
             {
-                photonView.RPC("CheckMovementRPC", RpcTarget.MasterClient, wantToGoForward, wantToGoBack, wantToGoLeft, wantToGoRight, Input.mousePosition);
+                verticalMove += 1;
+            }
+            else if(wantToGoBack)
+            {
+                verticalMove -= 1;
+            }
+
+            if(wantToGoLeft)
+            {
+                horizontalMove -= 1;
+            }
+            else if(wantToGoRight)
+            {
+                horizontalMove += 1;
+            }
+
+            Vector3 movement = rigidbody.velocity;
+            movement.x = horizontalMove * PLAYER_SPEED;
+            movement.z = verticalMove * PLAYER_SPEED;
+
+            rigidbody.velocity = movement;
+
+            Camera playerCamera = pe.playerCamera.GetComponent<Camera>();
+            RaycastHit hit;
+            Ray cameraRay = playerCamera.ScreenPointToRay(mousePosition);
+
+            if (Physics.Raycast(cameraRay, out hit))
+            {
+                Vector3 point = hit.point;
+                point.y = 0;
+                Transform playerTransform = pe.playerTransform;
+                playerTransform.LookAt(point);
+                playerTransform.localEulerAngles = Vector3.up * playerTransform.localEulerAngles.y;
             }
         }
 
