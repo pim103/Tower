@@ -1,5 +1,4 @@
 ﻿using System;
-using Photon.Pun;
 using Scripts.Games.Players;
 using UnityEngine;
 
@@ -124,7 +123,7 @@ namespace Games.Players
             }
         }
 
-        [PunRPC]
+        // OLD PUN RPC
         public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight, Vector3 mousePosition)
         {
             this.wantToGoBack = wantToGoBack;

@@ -1,8 +1,7 @@
-﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using Games;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Scripts.Games.Transitions
 {
@@ -25,7 +24,7 @@ namespace Scripts.Games.Transitions
 
         public bool InitGame()
         {
-            PhotonNetwork.LoadLevel("GameScene");
+            SceneManager.LoadScene("GameScene");
             return true;
         }
 

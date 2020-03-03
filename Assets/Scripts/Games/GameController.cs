@@ -1,17 +1,9 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
-using Scripts.Games.Attacks;
-using Scripts.Games.Players;
-using Scripts.Games.Transitions;
+﻿using Scripts.Games.Transitions;
 using System.Collections;
-using System.Collections.Generic;
-using Games.Players;
-using Scripts;
-using Scripts.Games;
 using UnityEngine;
 
 namespace Games {
-    public class GameController : MonoBehaviourPunCallbacks
+    public class GameController : MonoBehaviour
     {
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -33,54 +25,11 @@ namespace Games {
 
         private IEnumerator CheckEndInit()
         {
-            while (!PhotonNetwork.IsMessageQueueRunning)
-            {
-                yield return new WaitForSeconds(0.1f);
-            }
-
+            yield return new WaitForSeconds(0.1f);
             transitionMenuGame.WantToStartGame();
         }
 
-        private void AssignId()
-        {
-            var count = 0;
-
-            foreach (var player in PhotonNetwork.PlayerList)
-            {
-                photonView.RPC("ReturnId", RpcTarget.All, player.UserId, count);
-                count++;
-            }
-        }
-
-        [PunRPC]
-        private void ReturnId(string userId, int id)
-        {
-            if (userId == PhotonNetwork.AuthValues.UserId)
-            {
-                PlayerIndex = id;
-            }
-
-            idAssigned = true;
-        }
-
         // =================================== BYPASS DEFENSE METHOD ================================
-
-        private IEnumerator WaitForConnection()
-        {
-            while (!se.photonController.isInGame && PhotonNetwork.PlayerList.Length == 0)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            AssignId();
-
-            while (!idAssigned)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            se.initAttackPhase.StartAttackPhase();
-        }
 
         private IEnumerator WaitForDataLoading()
         {

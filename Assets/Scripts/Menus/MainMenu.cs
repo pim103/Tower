@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Menus;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,7 +61,6 @@ namespace Scripts.Menus
 
         public void InitMenu()
         {
-            mc.ConnectToPhoton();
             Debug.Log("Main Menu");
         }
     }
