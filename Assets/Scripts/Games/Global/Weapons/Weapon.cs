@@ -31,7 +31,7 @@ namespace Games.Global.Weapons
         public string equipementName;
         public TypeEquipement type;
         public int damage;
-        public int attSpeed;
+        public float attSpeed;
 
         public List<TypeEffect> effects;
 
@@ -40,15 +40,20 @@ namespace Games.Global.Weapons
         // Basic attack active trigger and play movement
         public void BasicAttack(MovementPatternController movementPatternController, GameObject objectToMove)
         {
-            PlayMovement(movementPatternController, objectToMove);
-
             BoxCollider bc = instantiateModel.GetComponent<BoxCollider>();
-            bc.enabled = true;
+
+            if (!bc.enabled)
+            {
+                bc.enabled = true;
+            
+                PlayMovement(movementPatternController, attSpeed, objectToMove, bc);
+            }
+            
         }
 
-        public void PlayMovement(MovementPatternController movementPatternController, GameObject objectToMove)
+        private void PlayMovement(MovementPatternController movementPatternController, float attSpeed, GameObject objectToMove, BoxCollider bc)
         {
-            movementPatternController.PlayMovement(pattern, objectToMove);
+            movementPatternController.PlayMovement(pattern, attSpeed, objectToMove, bc);
         }
     }
 }
