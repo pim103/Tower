@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Games.Global;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-namespace Scripts.Games.Global.Armors
+namespace Games.Global.Armors
 {
     public enum TypeArmor
     {

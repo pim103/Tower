@@ -1,10 +1,7 @@
-﻿using Scripts.Games.Transitions;
-using System.Collections;
-using System.Collections.Generic;
-using Games.Transitions;
+﻿using Games.Transitions;
 using UnityEngine;
 
-namespace Scripts.Games.Defenses
+namespace Games.Defenses
 {
     public class InitDefense : MonoBehaviour
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using Games.Global.Abilities;
+﻿using Games.Global.Abilities;
 using Games.Global.Entities;
 using UnityEngine;
 

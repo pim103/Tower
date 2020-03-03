@@ -1,7 +1,6 @@
 ﻿using Games.Global;
+using Games.Global.Armors;
 using Games.Global.Weapons;
-using Scripts.Games.Global;
-using Scripts.Games.Global.Armors;
 using UnityEngine;
 
 namespace Games.Players

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global.Abilities;
-using Scripts.Games.Global;
 
 namespace Games.Global.Entities
 {

@@ -1,5 +1,5 @@
-﻿using Scripts.Games.Transitions;
-using System.Collections;
+﻿using System.Collections;
+using Games.Transitions;
 using UnityEngine;
 
 namespace Games {

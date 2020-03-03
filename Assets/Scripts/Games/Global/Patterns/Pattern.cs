@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Games.Global.Patterns
+﻿namespace Games.Global.Patterns
 {
     /*
      * Enum listing instructions :

@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using Games;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Games.Transitions
+namespace Games.Transitions
 {
     public class TransitionMenuGame : MonoBehaviour
     {

@@ -1,7 +1,5 @@
-﻿using Scripts;
-using Games.Attacks;
+﻿using Games.Attacks;
 using Games.Global;
-using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Games

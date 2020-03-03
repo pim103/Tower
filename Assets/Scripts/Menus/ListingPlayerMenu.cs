@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Scripts.Games.Transitions;
+using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
 
