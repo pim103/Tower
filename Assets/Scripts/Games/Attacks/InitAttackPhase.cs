@@ -14,9 +14,6 @@ namespace Games.Attacks
         private ObjectsInScene objectsInScene;
 
         [SerializeField]
-        private GameController gameController;
-
-        [SerializeField]
         private ScriptsExposer se;
 
         private int[,] tempMap1;
@@ -35,6 +32,9 @@ namespace Games.Attacks
                     tempMap2[i, j] = Random.Range(1, 11) % 10;
                 }
             }
+
+            objectsInScene.playerExposer[GameController.PlayerIndex].playerGameObject.SetActive(true);
+            objectsInScene.playerExposer[GameController.PlayerIndex].playerMovement.canMove = true;
         }
 
         private void GeneratingMap(int[,] map, int playerIndex)
@@ -56,20 +56,6 @@ namespace Games.Attacks
             param.type = TypeItem.Monster;
 
             monster2.InstantiateModel(param, Vector3.one * 10);
-/*
-            for (int i = 0; i < MAP_SIZE; i++)
-            {
-                for (int j = 0; j < MAP_SIZE; j++)
-                {
-                    if (map[i, j] == 0)
-                    {
-                        newObject = Instantiate(objectsInScene.simpleWall, currentMap.transform);
-                        newObject.transform.position = new Vector3(i * 2 + (indexMap * 125), 2, -j * 2);
-                    }
-                }
-            }
-*/
-            //TODO : SEND SIGNAL WHEN END OF GENERATION
         }
 
         public void StartAttackPhase()
@@ -78,7 +64,7 @@ namespace Games.Attacks
             objectsInScene.containerAttack.SetActive(true);
             objectsInScene.mainCamera.SetActive(false);
 
-            int playerIndex = gameController.PlayerIndex;
+            int playerIndex = GameController.PlayerIndex;
 
             objectsInScene.playerExposer[playerIndex].playerCamera.SetActive(true);
 
@@ -88,23 +74,13 @@ namespace Games.Attacks
             GenerateArray();
 
             // TODO : Temp condition
-            if (gameController.PlayerIndex % 2 == 0)
+            if (GameController.PlayerIndex % 2 == 0)
             {
                 GeneratingMap(tempMap2, playerIndex);
             }
             else
             {
                 GeneratingMap(tempMap1, playerIndex);
-            }
-
-            // TODO : IF COOP, CHANGE POSITION OF PLAYERS ?
-            for (int i = 0; i < objectsInScene.playerExposer.Length; i++)
-            {
-                if (gameController.idToUserId[i] != null && gameController.idToUserId[i] != "")
-                {
-                    objectsInScene.playerExposer[i].playerGameObject.SetActive(true);
-                    objectsInScene.playerExposer[i].playerMovement.canMove = true;
-                }
             }
         }
     }

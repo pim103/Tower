@@ -9,9 +9,6 @@ namespace Games
     public class ScriptsExposer : MonoBehaviour
     {
         [SerializeField]
-        public PhotonController photonController;
-        
-        [SerializeField]
         public InitAttackPhase initAttackPhase;
 
         [SerializeField]

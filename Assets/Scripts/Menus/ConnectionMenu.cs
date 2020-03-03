@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Scripts.Menus;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class ConnectionMenu : MonoBehaviour, MenuInterface
     {
@@ -40,9 +39,7 @@ namespace Scripts.Menus
 
         public void InitMenu()
         {
-            mc.DisconnectToPhoton();
             Debug.Log("Connection Menu");
-            //throw new System.NotImplementedException();
         }
     }
 }

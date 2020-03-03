@@ -1,9 +1,7 @@
-﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Scripts.Menus;
 using UnityEngine;
 
-namespace Scripts.Menus
+namespace Menus
 {   
     public class MenuController : MonoBehaviour
     {
@@ -54,23 +52,6 @@ namespace Scripts.Menus
         public void QuitGame()
         {
             Application.Quit();
-        }
-
-        public void ConnectToPhoton()
-        {
-            if(!PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.ConnectUsingSettings();
-                PhotonNetwork.AutomaticallySyncScene = true;
-            }
-        }
-
-        public void DisconnectToPhoton()
-        {
-            if(PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.Disconnect();
-            }
         }
     }
 }

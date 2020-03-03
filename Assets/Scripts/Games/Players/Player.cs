@@ -30,7 +30,7 @@ namespace Games.Players
 
         public void InitWeapon(int idWeapon)
         {
-            GameObject playerHand = objectsInScene.playerExposer[se.gameController.PlayerIndex].playerHand;
+            GameObject playerHand = objectsInScene.playerExposer[GameController.PlayerIndex].playerHand;
             Weapon weapon = se.dm.weaponList.GetWeaponWithId(idWeapon);
 
             InstantiateParameters param = new InstantiateParameters();
