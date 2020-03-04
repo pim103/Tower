@@ -50,6 +50,7 @@ namespace Games.Players
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;
+            typeEntity = TypeEntity.PLAYER;
 
             switch(classe)
             {

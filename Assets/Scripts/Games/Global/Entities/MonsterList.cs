@@ -57,6 +57,8 @@ namespace Games.Global.Entities
             clone.modelName = orig.modelName;
             clone.model = orig.model;
 
+            clone.typeEntity = TypeEntity.MOB;
+
             clone.InitEquipementArray(orig.nbWeapon);
             
             return clone;

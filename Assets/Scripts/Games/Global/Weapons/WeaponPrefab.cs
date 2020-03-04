@@ -19,13 +19,17 @@ namespace Games.Global.Weapons
 
             Entity entity = null;
 
-            if (other.gameObject.layer == monsterLayer)
+            if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
             {
                 MobPrefab mobPrefab = other.GetComponent<MobPrefab>();
                 entity = mobPrefab.GetMonster();
-            } else if (other.gameObject.layer == playerLayer)
+            } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
             {
                 entity = other.transform.parent.GetComponent<Player>();
+            }
+            else
+            {
+                return;
             }
 
             AbilityParameters abilityParameters = new AbilityParameters();
