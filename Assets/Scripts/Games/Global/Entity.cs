@@ -74,6 +74,16 @@ namespace Games.Global
             {
                 armor.OnDamageReceive(abilityParameters);
             }
+
+            if (hp <= 0)
+            {
+                EntityDie();
+            }
+        }
+
+        public void EntityDie()
+        {
+            Destroy(instantiateModel);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Games.Attacks
             param.type = TypeItem.Monster;
 
             monster.InstantiateModel(param, Vector3.zero);
-            
+
             Monster monster2 = DataObject.MonsterList.GetMonsterById(1);
 
             param.item = monster2;
