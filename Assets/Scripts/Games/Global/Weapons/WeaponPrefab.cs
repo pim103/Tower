@@ -1,6 +1,9 @@
-﻿using Games.Global.Abilities;
+﻿using System.Diagnostics;
+using Games.Global.Abilities;
 using Games.Global.Entities;
+using Games.Players;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
 {
@@ -11,16 +14,26 @@ namespace Games.Global.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other);
-            MobPrefab mobPrefab = other.GetComponent<MobPrefab>();
-            Monster monster = mobPrefab.GetMonster();
+            int monsterLayer = LayerMask.NameToLayer("Monster");
+            int playerLayer = LayerMask.NameToLayer("Player");
+
+            Entity entity = null;
+
+            if (other.gameObject.layer == monsterLayer)
+            {
+                MobPrefab mobPrefab = other.GetComponent<MobPrefab>();
+                entity = mobPrefab.GetMonster();
+            } else if (other.gameObject.layer == playerLayer)
+            {
+                entity = other.transform.parent.GetComponent<Player>();
+            }
 
             AbilityParameters abilityParameters = new AbilityParameters();
             abilityParameters.originDamage = wielder;
-            abilityParameters.directTarget = monster;
+            abilityParameters.directTarget = entity;
 
             weapon.OnDamageDealt(abilityParameters); 
-            monster.TakeDamage(weapon.damage, abilityParameters);  
+            entity.TakeDamage(weapon.damage, abilityParameters);  
         }
 
         public void SetWeapon(Weapon weapon)

@@ -18,6 +18,10 @@ namespace Games.Attacks
         private int[,] tempMap1;
         private int[,] tempMap2;
 
+        private Monster monster2;
+
+        private bool endOfGeneration = false;
+
         public void GenerateArray()
         {
             tempMap1 = new int[MAP_SIZE, MAP_SIZE];
@@ -49,13 +53,21 @@ namespace Games.Attacks
 
             monster.InstantiateModel(param, Vector3.zero);
 
-            Monster monster2 = DataObject.MonsterList.GetMonsterById(1);
+            monster2 = DataObject.MonsterList.GetMonsterById(1);
 
             param.item = monster2;
             param.type = TypeItem.Monster;
 
             monster2.InstantiateModel(param, Vector3.one * 10);
             monster2.InitWeapon(1);
+        }
+
+        private void Update()
+        {
+            if (endOfGeneration)
+            {
+                monster2.BasicAttack();
+            }
         }
 
         public void StartAttackPhase()
@@ -82,6 +94,8 @@ namespace Games.Attacks
             {
                 GeneratingMap(tempMap1, playerIndex);
             }
+
+            endOfGeneration = true;
         }
     }
 }

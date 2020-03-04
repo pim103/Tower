@@ -34,5 +34,18 @@ namespace Games.Global.Entities
                 }
             }
         }
+
+        public override void BasicAttack()
+        {
+            if (weapons.Count > 0)
+            {
+                Transform mobHand = instantiateModel.transform.GetChild(0);
+                weapons[0].BasicAttack(movementPatternController, mobHand.gameObject);
+            }
+            else
+            {
+                Debug.Log("Basic attack of monster ?");
+            }
+        }
     }
 }

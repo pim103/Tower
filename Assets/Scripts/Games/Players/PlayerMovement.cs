@@ -70,7 +70,7 @@ namespace Games.Players
 
             if(Input.GetMouseButtonDown(0))
             {
-                player.weapons[0].BasicAttack(player.movementPatternController, player.objectsInScene.playerExposer[playerIndex].playerHand);
+                player.BasicAttack();
             }
 
             mousePosition = Input.mousePosition;

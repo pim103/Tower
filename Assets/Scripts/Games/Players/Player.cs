@@ -42,6 +42,11 @@ namespace Games.Players
             weapons.Add(weapon);
         }
 
+        public override void BasicAttack()
+        {
+            weapons[0].BasicAttack(movementPatternController, objectsInScene.playerExposer[GameController.PlayerIndex].playerHand);
+        }
+
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;

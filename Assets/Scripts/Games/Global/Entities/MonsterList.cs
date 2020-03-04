@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Games.Global.Patterns;
 using UnityEngine;
 using Utils;
 

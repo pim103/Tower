@@ -51,6 +51,8 @@ namespace Games.Global
         [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 
         public abstract void InitWeapon(int idWeapon);
+
+        public abstract void BasicAttack();
         
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
@@ -63,7 +65,10 @@ namespace Games.Global
             int damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
             hp -= damageReceived;
 
-            OnDamageReceive(abilityParameters);
+            if (OnDamageReceive != null)
+            {
+                OnDamageReceive(abilityParameters);
+            }
 
             foreach (Weapon weapon in weapons)
             {

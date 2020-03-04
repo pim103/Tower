@@ -1,6 +1,8 @@
 ﻿using Games.Global.Entities;
+using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Games.Global
 {
@@ -47,6 +49,7 @@ namespace Games.Global
                 case TypeItem.Monster:
                     MobPrefab mp = modelItem.GetComponent<MobPrefab>();
                     mp.SetMonster((Monster)param.item);
+                    ((Monster)param.item).movementPatternController = instantiateModel.AddComponent<MovementPatternController>();
                     break;
             }
         }
