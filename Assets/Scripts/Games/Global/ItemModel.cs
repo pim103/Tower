@@ -38,6 +38,7 @@ namespace Games.Global
 
                     WeaponPrefab wp = modelItem.GetComponent<WeaponPrefab>();
                     wp.SetWeapon((Weapon)param.item);
+                    wp.SetWielder((Entity)param.wielder);
 
                     // TODO : need adaptation for the position of instantiate weapon
                     float scaleY = modelItem.transform.localScale.y;

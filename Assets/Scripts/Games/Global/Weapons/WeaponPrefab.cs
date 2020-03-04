@@ -7,22 +7,20 @@ namespace Games.Global.Weapons
     public class WeaponPrefab : MonoBehaviour
     {
         private Weapon weapon;
+        private Entity wielder;
 
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log(other);
             MobPrefab mobPrefab = other.GetComponent<MobPrefab>();
             Monster monster = mobPrefab.GetMonster();
 
-            int damageReceived = (weapon.damage - monster.def) > 0 ? (weapon.damage - monster.def) : 0;
-            monster.hp -= damageReceived;
-
             AbilityParameters abilityParameters = new AbilityParameters();
-            monster.OnDamageDealt(abilityParameters);
+            abilityParameters.originDamage = wielder;
+            abilityParameters.directTarget = monster;
 
-            if (damageReceived > 0)
-            {
-                weapon.OnDamageDealt(abilityParameters);   
-            }
+            weapon.OnDamageDealt(abilityParameters); 
+            monster.TakeDamage(weapon.damage, abilityParameters);  
         }
 
         public void SetWeapon(Weapon weapon)
@@ -33,6 +31,16 @@ namespace Games.Global.Weapons
         public Weapon GetWeapon()
         {
             return weapon;
+        }
+        
+        public void SetWielder(Entity entity)
+        {
+            this.wielder = entity;
+        }
+
+        public Entity GetWielder()
+        {
+            return wielder;
         }
     }
 }

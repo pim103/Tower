@@ -41,7 +41,7 @@ namespace Games.Attacks
             int indexMap = playerIndex % 2 == 0 ? 0 : 1;
             GameObject currentMap = objectsInScene.maps[indexMap];
 
-            Monster monster = se.dm.monsterList.GetMonsterById(1);
+            Monster monster = DataObject.MonsterList.GetMonsterById(1);
 
             InstantiateParameters param = new InstantiateParameters();
             param.item = monster;
@@ -49,12 +49,13 @@ namespace Games.Attacks
 
             monster.InstantiateModel(param, Vector3.zero);
             
-            Monster monster2 = se.dm.monsterList.GetMonsterById(1);
+            Monster monster2 = DataObject.MonsterList.GetMonsterById(1);
 
             param.item = monster2;
             param.type = TypeItem.Monster;
 
             monster2.InstantiateModel(param, Vector3.one * 10);
+            monster2.InitWeapon(1);
         }
 
         public void StartAttackPhase()

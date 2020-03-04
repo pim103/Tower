@@ -81,11 +81,16 @@ namespace Utils
             }
         }
         
+        // Don't forget to clone fucking dumbass
         public Monster ConvertToMonster(Family family)
         {
-            
             Monster monster = new Monster();
             monster.id = id;
+
+            monster.initialAtt = att;
+            monster.initialDef = def;
+            monster.initialHp = hp;
+            monster.initialSpeed = speed;
             
             monster.mobName = mobName;
             monster.att = att;
@@ -155,7 +160,7 @@ namespace Utils
                 number = 0;
             }
         }
-        
+
         public void PrintAttribute()
         {
             Debug.Log("Object id : " + id);

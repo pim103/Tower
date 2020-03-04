@@ -14,8 +14,11 @@ namespace Games.Global.Abilities
 
     public struct AbilityParameters
     {
-        private List<Entity> origin;
-        private List<Entity> target;
+        public Entity originDamage;
+        public Entity directTarget;
+        
+        public List<Entity> allies;
+        public List<Entity> enemies;
     }
 
     public static class AbilityManager

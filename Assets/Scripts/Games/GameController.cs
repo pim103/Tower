@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Games.Global;
 using Games.Transitions;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace Games {
 
         private IEnumerator WaitForDataLoading()
         {
-            while (se.dm.monsterList == null || se.dm.weaponList == null)
+            while (DataObject.MonsterList == null || DataObject.WeaponList == null)
             {
                 yield return new WaitForSeconds(0.5f);
             }

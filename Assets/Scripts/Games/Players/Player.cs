@@ -27,18 +27,19 @@ namespace Games.Players
 
         private Classes mainClass;
 
-        public void InitWeapon(int idWeapon)
+        public override void InitWeapon(int idWeapon)
         {
             GameObject playerHand = objectsInScene.playerExposer[GameController.PlayerIndex].playerHand;
-            Weapon weapon = se.dm.weaponList.GetWeaponWithId(idWeapon);
+            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
 
             InstantiateParameters param = new InstantiateParameters();
             param.item = weapon;
             param.type = TypeItem.Weapon;
+            param.wielder = this;
 
             weapon.InstantiateModel(param, Vector3.zero, playerHand.transform);
 
-            weapons[0] = weapon;
+            weapons.Add(weapon);
         }
 
         public void InitPlayerStats(Classes classe)

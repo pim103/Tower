@@ -10,15 +10,18 @@ namespace Games.Global
         [SerializeField] private GameObject[] monsterGameObjects;
         [SerializeField] private GameObject[] weaponsGameObject;
 
-        public MonsterList monsterList;
-        public WeaponList weaponList;
-
         public void Start()
         {
             AbilityManager.InitAbilities();
             
-            monsterList = new MonsterList(monsterGameObjects);
-            weaponList = new WeaponList(weaponsGameObject);
+            DataObject.MonsterList = new MonsterList(monsterGameObjects);
+            DataObject.WeaponList = new WeaponList(weaponsGameObject);
         }
+    }
+
+    public static class DataObject
+    {
+        public static MonsterList MonsterList;
+        public static WeaponList WeaponList;
     }
 }

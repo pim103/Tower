@@ -13,6 +13,7 @@
     {
         public TypeItem type;
         public object item;
+        public object wielder;
     }
     
     // Class needed to Equipement and Material

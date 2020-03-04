@@ -49,9 +49,15 @@ namespace Games.Global.Entities
             clone.def = orig.def;
             clone.hp = orig.hp;
             clone.speed = orig.speed;
+            clone.initialAtt = orig.att;
+            clone.initialDef = orig.def;
+            clone.initialHp = orig.hp;
+            clone.initialSpeed = orig.speed;
             clone.modelName = orig.modelName;
             clone.model = orig.model;
 
+            clone.InitEquipementArray(orig.nbWeapon);
+            
             return clone;
         }
 
