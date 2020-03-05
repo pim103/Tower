@@ -1,15 +1,20 @@
 ﻿using Games.Transitions;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Games.Defenses
 {
     public class InitDefense : MonoBehaviour
     {
-        [SerializeField] private ScriptsExposer se;
+        [SerializeField] 
+        private ScriptsExposer se;
         
         [SerializeField]
         private TransitionDefenseAttack transitionDefenseAttack;
 
+        [SerializeField] 
+        private DefenseUIController defenseUIController;
+        
         [System.Serializable]
         public class MapsArrayClass
         {
@@ -21,7 +26,7 @@ namespace Games.Defenses
 
         private int currentLevel = 0;
         public GameObject currentMap;
-        private MapStats currentMapStats;
+        public MapStats currentMapStats;
         
         [SerializeField] 
         private GameObject gridCell;
@@ -29,7 +34,8 @@ namespace Games.Defenses
 
         [SerializeField] 
         private GameObject defenseCamera;
-        
+
+
         public void Init()
         {
             currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
@@ -40,6 +46,7 @@ namespace Games.Defenses
             {
                 Generate();
                 defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
+                defenseUIController.enabled = true;
                 transitionDefenseAttack.StartDefenseCounter();
             }
             else

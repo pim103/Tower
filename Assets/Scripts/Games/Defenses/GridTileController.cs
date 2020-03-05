@@ -2,11 +2,16 @@
 
 namespace Scripts.Games.Defenses
 {
-    public class GridColorChanger : MonoBehaviour
+    public class GridTileController : MonoBehaviour
     {
+        public GameObject content;
         public void ChangeColorToGreen()
         {
             GetComponent<Renderer>().material.color = Color.green;
+        }
+        public void ChangeColorToRed()
+        {
+            GetComponent<Renderer>().material.color = Color.red;
         }
 
         public void ChangeColorToCyan()
