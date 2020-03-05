@@ -69,7 +69,7 @@ namespace Games.Global.Weapons
 
         private void PoolProjectiles()
         {
-            GameObject proj = ProjectilePooler.SharedInstance.GetPooledObject(0);
+            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(0);
             WeaponPrefab weaponPrefab = instantiateModel.GetComponent<WeaponPrefab>();
 
             proj.transform.position = weaponPrefab.transform.position;

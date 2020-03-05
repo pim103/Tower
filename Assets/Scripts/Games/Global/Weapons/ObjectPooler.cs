@@ -19,9 +19,9 @@ namespace Games.Global.Weapons
 		}
 	}
 
-	public class ProjectilePooler : MonoBehaviour
+	public class ObjectPooler : MonoBehaviour
 	{
-		public static ProjectilePooler SharedInstance;
+		public static ObjectPooler SharedInstance;
 		public List<ObjectPoolItem> itemsToPool;
 
 		public List<List<GameObject>> pooledObjectsList;
