@@ -31,6 +31,8 @@ namespace Menus
 
             connectButton.onClick.AddListener(delegate {
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
+                mc.networking.InitializeWebsocketEndpoint();
+                mc.networking.StartConnection();
             });
 
             quitButton.onClick.AddListener(mc.QuitGame);

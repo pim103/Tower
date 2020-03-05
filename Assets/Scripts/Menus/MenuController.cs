@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Networking.Client;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Menus
 {   
@@ -6,6 +8,11 @@ namespace Menus
     {
         [SerializeField]
         private GameObject[] menus;
+
+        [FormerlySerializedAs("_endPoint")] [SerializeField] 
+        private string endPoint;
+        public TowersWebSocket networking;
+        
 
         public enum Menu
         {
@@ -27,6 +34,7 @@ namespace Menus
         private void Start()
         {
             ActivateMenu(Menu.Connection);
+            networking = new TowersWebSocket(endPoint);
         }
 
         public void ActivateMenu(Menu menuIndex)
