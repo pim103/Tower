@@ -980,7 +980,7 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   transitionMenuGame: {fileID: 194075441}
   se: {fileID: 194075448}
-  byPassDefense: 0
+  byPassDefense: 1
 --- !u!114 &194075444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1478,10 +1478,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195bf34b0b4174d8d6c14f5f2ef110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  se: {fileID: 194075448}
   transitionDefenseAttack: {fileID: 194075446}
   maps:
   - mapsInLevel:
     - {fileID: 108878155}
+  currentMap: {fileID: 0}
   gridCell: {fileID: 6078987784092374643, guid: edf50361f6ea3074d909cb16ced37c40,
     type: 3}
   defenseCamera: {fileID: 83993298}

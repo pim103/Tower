@@ -5,6 +5,8 @@ namespace Games.Defenses
 {
     public class InitDefense : MonoBehaviour
     {
+        [SerializeField] private ScriptsExposer se;
+        
         [SerializeField]
         private TransitionDefenseAttack transitionDefenseAttack;
 
@@ -33,9 +35,17 @@ namespace Games.Defenses
             currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
             currentMap.SetActive(true);
             currentMapStats = currentMap.GetComponent<MapStats>();
-            Generate();
-            defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
-            transitionDefenseAttack.StartDefenseCounter();
+
+            if (!se.gameController.byPassDefense)
+            {
+                Generate();
+                defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
+                transitionDefenseAttack.StartDefenseCounter();
+            }
+            else
+            {
+                se.initAttackPhase.StartAttackPhase();
+            }
         }
 
         private void Generate()

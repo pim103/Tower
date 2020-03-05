@@ -55,11 +55,11 @@ namespace Games {
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
 
-            if(byPassDefense)
-            {
-                ForceStartAttackPhase();
-                return;
-            }
+//            if(byPassDefense)
+//            {
+//                ForceStartAttackPhase();
+//                return;
+//            }
 
             transitionMenuGame.WantToStartGame();
         }
