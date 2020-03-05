@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Games.Global.Patterns

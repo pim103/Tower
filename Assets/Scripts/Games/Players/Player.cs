@@ -83,7 +83,7 @@ namespace Games.Players
             }
 
             InitEquipementArray();
-            InitWeapon(1);
+            InitWeapon(2);
         }
     }
 }

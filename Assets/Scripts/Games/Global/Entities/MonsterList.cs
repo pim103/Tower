@@ -30,6 +30,7 @@ namespace Games.Global.Entities
             groups.family = orig.family;
             groups.cost = orig.cost;
             groups.id = orig.id;
+            groups.radius = orig.radius;
             groups.monsterInGroups = orig.monsterInGroups;
 
             return groups;

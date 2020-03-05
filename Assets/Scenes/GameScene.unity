@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 65831185}
   - component: {fileID: 65831184}
   - component: {fileID: 65831183}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +608,7 @@ GameObject:
   - component: {fileID: 143649098}
   - component: {fileID: 143649097}
   - component: {fileID: 143649096}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1017,6 +1017,7 @@ MonoBehaviour:
   - {fileID: 1869628687301897144, guid: 7a9fd70c74bba1646b3d5dc141041112, type: 3}
   weaponsGameObject:
   - {fileID: 2378664726444040994, guid: ccf2f7922dfabc84b9ccf3bb85eb85ba, type: 3}
+  - {fileID: 3317028237736767607, guid: 8fd4e8559128a754faf215e5e5a389f3, type: 3}
 --- !u!1 &248994293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1858,6 +1859,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1495904574}
   - component: {fileID: 1495904576}
+  - component: {fileID: 1495904575}
   m_Layer: 0
   m_Name: ControllerAttack
   m_TagString: Untagged
@@ -1879,6 +1881,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495904575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495904573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe7dc23a7a8f9042b2d0985f9e4a206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsToPool:
+  - objectToPool: {fileID: 7472995417437858300, guid: e2449cd004457184e80b72efd73efc66,
+      type: 3}
+    amountToPool: 20
+    shouldExpand: 0
+  pooledObjects: []
 --- !u!114 &1495904576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,7 +2016,7 @@ GameObject:
   - component: {fileID: 1603137067}
   - component: {fileID: 1603137066}
   - component: {fileID: 1603137065}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2178,7 +2198,7 @@ GameObject:
   - component: {fileID: 1821934514}
   - component: {fileID: 1821934513}
   - component: {fileID: 1821934512}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
