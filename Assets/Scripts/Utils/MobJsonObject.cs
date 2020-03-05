@@ -9,7 +9,7 @@ namespace Utils
 {
     public class MobJsonObject
     {
-        private int id;
+        public int id;
         
         private string mobName;
         private int att;
@@ -17,6 +17,7 @@ namespace Utils
         private int hp;
         private int speed;
         private int nbWeapon;
+        private string weapon;
 
         private List<string> skills;
         private string onDamageDealt;
@@ -47,6 +48,9 @@ namespace Utils
                     break;
                 case "nbWeapon":
                     nbWeapon = Int32.Parse(value);
+                    break;
+                case "weapon":
+                    weapon = value;
                     break;
                 case "on_damage_dealt":
                     onDamageDealt = value;
@@ -99,6 +103,7 @@ namespace Utils
             monster.speed = speed;
             monster.nbWeapon = nbWeapon;
             monster.family = family;
+            monster.weaponOriginalName = weapon;
 
             monster.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB);
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
@@ -118,12 +123,12 @@ namespace Utils
     
     public class GroupsJsonObject: ObjectParsed
     {
-        private int id;
-        private Dictionary<int, MobJsonObject> mobs = new Dictionary<int, MobJsonObject>();
-        private Family family;
+        public int id;
+        public Dictionary<MobJsonObject, int> mobs = new Dictionary<MobJsonObject, int>();
+        public Family family;
         private int cost;
         private int radius = GroupsMonster.DEFAULT_RADIUS;
-        
+
         private MobJsonObject mob;
         private int number = 0;
         
@@ -159,7 +164,7 @@ namespace Utils
         {
             if (number != 0 || mob != null)
             {
-                mobs.Add(number, mob);
+                mobs.Add(mob, number);
                 mob = null;
                 number = 0;
             }
@@ -170,10 +175,10 @@ namespace Utils
             Debug.Log("Object id : " + id);
             Debug.Log("Family : " + family);
 
-            foreach (KeyValuePair<int, MobJsonObject> entry in mobs)
+            foreach (KeyValuePair<MobJsonObject, int> entry in mobs)
             {
-                Debug.Log("Nombre de monstre : " + entry.Key);
-                entry.Value.PrintAttribute();
+                Debug.Log("Nombre de monstre : " + entry.Value);
+                entry.Key.PrintAttribute();
             }
         }
         
@@ -185,11 +190,11 @@ namespace Utils
             groupsMonster.cost = cost;
             groupsMonster.family = family;
             groupsMonster.radius = radius;
-            groupsMonster.monsterInGroups = new Dictionary<int, Monster>();
+            groupsMonster.monsterInGroups = new Dictionary<int, int>();
 
-            foreach (KeyValuePair<int, MobJsonObject> mob in mobs)
+            foreach (KeyValuePair<MobJsonObject, int> mob in mobs)
             {
-                groupsMonster.monsterInGroups.Add(mob.Key, mob.Value.ConvertToMonster(family));
+                groupsMonster.monsterInGroups.Add(mob.Key.id, mob.Value);
             }
 
             return groupsMonster;

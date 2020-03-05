@@ -57,6 +57,7 @@ namespace Games.Global.Entities
             clone.initialSpeed = orig.speed;
             clone.modelName = orig.modelName;
             clone.model = orig.model;
+            clone.weaponOriginalName = orig.weaponOriginalName;
 
             clone.typeEntity = TypeEntity.MOB;
 
@@ -90,10 +91,11 @@ namespace Games.Global.Entities
             {
                 groupsList.Add(groupsJson.ConvertToMonsterGroups());
 
-                foreach (KeyValuePair<int, Monster> mob in groupsList[groupsList.Count - 1].monsterInGroups)
+                foreach (KeyValuePair<MobJsonObject, int> mob in groupsJson.mobs)
                 {
-                    mob.Value.model = monsterGameObjects.First(model => model.name == mob.Value.modelName);
-                    monsterList.Add(mob.Value);
+                    Monster monster = mob.Key.ConvertToMonster(groupsJson.family);
+                    monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
+                    monsterList.Add(monster);
                 }
             }
         }

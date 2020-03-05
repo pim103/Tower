@@ -6,6 +6,24 @@
     <e p="D:\OneDrive\Documents\JeuxPersos\Tower\Tower" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="NavMeshComponents" t="Include">
+          <e p="Editor" t="Include">
+            <e p="NavMeshAssetManager.cs" t="Include" />
+            <e p="NavMeshComponentsEditor.asmdef" t="Include" />
+            <e p="NavMeshComponentsGUIUtility.cs" t="Include" />
+            <e p="NavMeshLinkEditor.cs" t="Include" />
+            <e p="NavMeshModifierEditor.cs" t="Include" />
+            <e p="NavMeshModifierVolumeEditor.cs" t="Include" />
+            <e p="NavMeshSurfaceEditor.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="NavMeshComponents.asmdef" t="Include" />
+            <e p="NavMeshLink.cs" t="Include" />
+            <e p="NavMeshModifier.cs" t="Include" />
+            <e p="NavMeshModifierVolume.cs" t="Include" />
+            <e p="NavMeshSurface.cs" t="Include" />
+          </e>
+        </e>
         <e p="Scripts" t="Include">
           <e p="Games" t="Include">
             <e p="Attacks" t="Include">
@@ -13,7 +31,8 @@
               <e p="InitAttackPhase.cs" t="Include" />
             </e>
             <e p="Defenses" t="Include">
-              <e p="GridColorChanger.cs" t="Include" />
+              <e p="DefenseUIController.cs" t="Include" />
+              <e p="GridTileController.cs" t="Include" />
               <e p="HoverDetector.cs" t="Include" />
               <e p="InitDefense.cs" t="Include" />
               <e p="MapStats.cs" t="Include" />
@@ -66,7 +85,7 @@
                 <e p="Handgun.cs" t="Include" />
                 <e p="LongSword.cs" t="Include" />
                 <e p="Mace.cs" t="Include" />
-                <e p="ProjectilePooler.cs" t="Include" />
+                <e p="ObjectPooler.cs" t="Include" />
                 <e p="ProjectilesPrefab.cs" t="Include" />
                 <e p="Rifle.cs" t="Include" />
                 <e p="Sling.cs" t="Include" />
@@ -125,6 +144,8 @@
           </e>
         </e>
       </e>
+      <e p="NavMeshComponents.csproj" t="IncludeRecursive" />
+      <e p="NavMeshComponentsEditor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />

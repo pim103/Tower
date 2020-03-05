@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Games.Global;
 using Games.Transitions;
 using UnityEngine;
 
@@ -30,23 +29,6 @@ namespace Games {
             transitionMenuGame.WantToStartGame();
         }
 
-        // =================================== BYPASS DEFENSE METHOD ================================
-
-        private IEnumerator WaitForDataLoading()
-        {
-            while (DataObject.MonsterList == null || DataObject.WeaponList == null)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            se.initAttackPhase.StartAttackPhase();
-        }
-
-        private void ForceStartAttackPhase()
-        {
-            StartCoroutine(WaitForDataLoading());
-        }
-
         // ================================== BASIC METHODS ======================================
 
         // Start is called before the first frame update
@@ -54,12 +36,6 @@ namespace Games {
         {
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
-
-//            if(byPassDefense)
-//            {
-//                ForceStartAttackPhase();
-//                return;
-//            }
 
             transitionMenuGame.WantToStartGame();
         }

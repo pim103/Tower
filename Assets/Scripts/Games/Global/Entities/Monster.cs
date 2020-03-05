@@ -9,6 +9,7 @@ namespace Games.Global.Entities
         public int id;
         public string mobName;
         public int nbWeapon;
+        public string weaponOriginalName;
 
         public Family family;
         
@@ -32,6 +33,24 @@ namespace Games.Global.Entities
 
                     weapons.Add(weapon);
                 }
+            }
+        }
+
+        public void InitOriginalWeapon()
+        {
+            if (instantiateModel != null)
+            {
+                Transform mobHand = instantiateModel.transform.GetChild(0);
+                Weapon weapon = DataObject.WeaponList.GetWeaponWithName(weaponOriginalName);
+
+                InstantiateParameters param = new InstantiateParameters();
+                param.item = weapon;
+                param.type = TypeItem.Weapon;
+                param.wielder = this;
+
+                weapon.InstantiateModel(param, Vector3.zero, mobHand);
+
+                weapons.Add(weapon);
             }
         }
 

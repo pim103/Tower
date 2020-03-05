@@ -27,9 +27,9 @@ namespace Games.Global
             if (parent)
             {
                 localization = Vector3.zero;
-                modelItem.transform.localPosition = localization;
             }
 
+            modelItem.transform.localPosition = localization;
             instantiateModel = modelItem;
 
             switch (param.type)

@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defenseCam: {fileID: 83993301}
-  defenseUiController: {fileID: 934534611}
+  defenseUiController: {fileID: 0}
   objectInHand: {fileID: 0}
   oldHover: {fileID: 0}
   canPutItHere: 0
@@ -1014,7 +1014,7 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   transitionMenuGame: {fileID: 194075441}
   se: {fileID: 194075448}
-  byPassDefense: 0
+  byPassDefense: 1
 --- !u!114 &194075444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1827,7 +1827,7 @@ MonoBehaviour:
   itemsToPool:
   - objectToPool: {fileID: 1949570792918124025, guid: c2b584d409b507f4097fdcc90541efee,
       type: 3}
-    amountToPool: 20
+    amountToPool: 100
     shouldExpand: 0
   pooledObjects: []
 --- !u!1 &950462887
@@ -2514,6 +2514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe37adc1fbdcd543817525b4f398671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectPoolerDefense: {fileID: 934534612}
   objectsInScene: {fileID: 194075444}
   se: {fileID: 194075448}
 --- !u!1 &1591298428
