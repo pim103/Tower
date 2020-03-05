@@ -890,10 +890,8 @@ GameObject:
   - component: {fileID: 194075443}
   - component: {fileID: 194075441}
   - component: {fileID: 194075446}
-  - component: {fileID: 194075445}
   - component: {fileID: 194075444}
   - component: {fileID: 194075448}
-  - component: {fileID: 194075447}
   - component: {fileID: 194075449}
   m_Layer: 0
   m_Name: Controller
@@ -973,28 +971,6 @@ MonoBehaviour:
   - {fileID: 417258274}
   simpleWall: {fileID: 1148921971219003610, guid: 23eff33e2b6e5fa4eaf70daf6abc33c0,
     type: 3}
---- !u!114 &194075445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194075440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 0
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  viewIdField: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &194075446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,25 +986,6 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   gameController: {fileID: 194075443}
   initAttackPhase: {fileID: 1495904576}
---- !u!114 &194075447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194075440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f35ad3d2775ea6e428632639e6ebafbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wantToCreateWhenFailedJoin: 0
-  wantToJoinRoomAfterLobby: 0
-  wantToJoinLobbyAfterConnection: 0
-  typeLobbySelected: 0
-  isConnected: 0
-  isInLobby: 0
-  isInGame: 0
 --- !u!114 &194075448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1041,7 +998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4523cab1aad5b4a4db2a281a9e845a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonController: {fileID: 194075447}
   initAttackPhase: {fileID: 1495904576}
   dm: {fileID: 194075449}
   gameController: {fileID: 194075443}
@@ -1483,7 +1439,6 @@ GameObject:
   - component: {fileID: 950462892}
   - component: {fileID: 950462891}
   - component: {fileID: 950462890}
-  - component: {fileID: 950462889}
   m_Layer: 9
   m_Name: TempEndCube
   m_TagString: Untagged
@@ -1505,28 +1460,6 @@ Transform:
   m_Father: {fileID: 417258275}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &950462889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950462887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 0
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  viewIdField: 7
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &950462890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2461,7 +2394,6 @@ GameObject:
   - component: {fileID: 2020850825}
   - component: {fileID: 2020850824}
   - component: {fileID: 2020850828}
-  - component: {fileID: 2020850827}
   m_Layer: 9
   m_Name: TempEndCube
   m_TagString: Untagged
@@ -2541,28 +2473,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020850822}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2020850827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2020850822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 0
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  viewIdField: 2
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &2020850828
 MonoBehaviour:
   m_ObjectHideFlags: 0
