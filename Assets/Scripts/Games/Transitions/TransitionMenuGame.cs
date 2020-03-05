@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Games.Defenses;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,9 @@ namespace Games.Transitions
         [SerializeField]
         private ObjectsInScene objectsInScene;
 
+        [SerializeField] 
+        private InitDefense initDefense;
+        
         private int waitingForStart;
 
         private string waitingGameStartText;
@@ -59,6 +63,7 @@ namespace Games.Transitions
 
             objectsInScene.containerAttack.SetActive(false);
             objectsInScene.containerDefense.SetActive(true);
+            initDefense.Init();
         }
     }
 }
