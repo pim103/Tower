@@ -14,10 +14,15 @@ namespace Games.Global.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
+            TouchEntity(other);
+        }
+
+        public void TouchEntity(Collider other)
+        {
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int playerLayer = LayerMask.NameToLayer("Player");
 
-            Entity entity = null;
+            Entity entity;
 
             if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
             {

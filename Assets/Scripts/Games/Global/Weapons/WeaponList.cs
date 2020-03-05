@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 using Utils;
 
 namespace Games.Global.Weapons
@@ -25,46 +26,61 @@ namespace Games.Global.Weapons
             Weapon weapon = null;
 
             // If need specific attribute for weapon, init this after creation of weapon in the switch
-            switch (orig.type)
+            switch (orig.category)
             {
-                case TypeEquipement.AXE:
+                case CategoryWeapon.AXE:
+                    weapon = new Axe();
                     break;
-                case TypeEquipement.BOW:
+                case CategoryWeapon.BOW:
+                    weapon = new Bow();
                     break;
-                case TypeEquipement.MACE:
+                case CategoryWeapon.MACE:
+                    weapon = new Mace();
                     break;
-                case TypeEquipement.RIFLE:
+                case CategoryWeapon.RIFLE:
+                    weapon = new Rifle();
                     break;
-                case TypeEquipement.SLING:
+                case CategoryWeapon.SLING:
+                    weapon = new Sling();
                     break;
-                case TypeEquipement.SPEAR:
+                case CategoryWeapon.SPEAR:
                     weapon = new Spear();
                     break;
-                case TypeEquipement.STAFF:
+                case CategoryWeapon.STAFF:
+                    weapon = new Staff();
                     break;
-                case TypeEquipement.DAGGER:
+                case CategoryWeapon.DAGGER:
+                    weapon = new Dagger();
                     break;
-                case TypeEquipement.HAMMER:
+                case CategoryWeapon.HAMMER:
+                    weapon = new Hammer();
                     break;
-                case TypeEquipement.HALBERD:
+                case CategoryWeapon.HALBERD:
+                    weapon = new Halberd();
                     break;
-                case TypeEquipement.HANDGUN:
+                case CategoryWeapon.HANDGUN:
+                    weapon = new Handgun();
                     break;
-                case TypeEquipement.TRIDENT:
+                case CategoryWeapon.TRIDENT:
+                    weapon = new Trident();
                     break;
-                case TypeEquipement.CROSSBOW:
+                case CategoryWeapon.CROSSBOW:
+                    weapon = new Crossbow();
                     break;
-                case TypeEquipement.LONG_SWORD:
+                case CategoryWeapon.LONG_SWORD:
+                    weapon = new LongSword();
                     break;
-                case TypeEquipement.SHORT_SWORD:
+                case CategoryWeapon.SHORT_SWORD:
                     weapon = new Sword();
                     break;
-                case TypeEquipement.TWO_HAND_AXE:
+                case CategoryWeapon.TWO_HAND_AXE:
+                    weapon = new TwoHandedAxe();
                     break;
             }
 
             weapon.id = orig.id;
             weapon.damage = orig.damage;
+            weapon.category = orig.category;
             weapon.type = orig.type;
             weapon.effects = orig.effects;
             weapon.rarity = orig.rarity;
@@ -96,7 +112,7 @@ namespace Games.Global.Weapons
             foreach (Weapon weapon in weapons)
             {
                 Debug.Log(weapon);
-                Debug.Log(weapon.type);
+                Debug.Log(weapon.category);
                 Debug.Log(weapon.damage);
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace Games.Global.Patterns
+﻿using Games.Global.Weapons;
+
+namespace Games.Global.Patterns
 {
     /*
      * Enum listing instructions :

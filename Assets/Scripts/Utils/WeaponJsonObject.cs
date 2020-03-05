@@ -9,7 +9,8 @@ namespace Utils
 {
     public class WeaponJsonObject: ObjectParsed
     {
-        private TypeEquipement type;
+        private CategoryWeapon category;
+        private TypeWeapon type;
         private string nameWeapon;
         private int id;
 
@@ -27,7 +28,7 @@ namespace Utils
 
         public void PrintAttribute()
         {
-            Debug.Log("Object id : " + id + " name : " + nameWeapon + " type : " + type + " rarity : " + rarity);
+            Debug.Log("Object id : " + id + " name : " + nameWeapon + " type : " + category + " rarity : " + rarity);
             Debug.Log("Stats => dmg : " + damage + " att speed : " + attSpeed);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
             Debug.Log("Model Name : " + modelName);
@@ -48,8 +49,11 @@ namespace Utils
                 case "name":
                     nameWeapon = value;
                     break;
+                case "category":
+                    category = (CategoryWeapon)Int32.Parse(value);
+                    break;
                 case "type":
-                    type = (TypeEquipement)Int32.Parse(value);
+                    type = (TypeWeapon)Int32.Parse(value);
                     break;
                 case "rarity":
                     rarity = (Rarity)Int32.Parse(value);
@@ -95,46 +99,61 @@ namespace Utils
             Weapon weapon = null;
 
             // If need specific attribute for weapon, init this after creation of weapon in the switch
-            switch (type)
+            switch (category)
             {
-                case TypeEquipement.AXE:
+                case CategoryWeapon.AXE:
+                    weapon = new Axe();
                     break;
-                case TypeEquipement.BOW:
+                case CategoryWeapon.BOW:
+                    weapon = new Bow();
                     break;
-                case TypeEquipement.MACE:
+                case CategoryWeapon.MACE:
+                    weapon = new Mace();
                     break;
-                case TypeEquipement.RIFLE:
+                case CategoryWeapon.RIFLE:
+                    weapon = new Rifle();
                     break;
-                case TypeEquipement.SLING:
+                case CategoryWeapon.SLING:
+                    weapon = new Sling();
                     break;
-                case TypeEquipement.SPEAR:
+                case CategoryWeapon.SPEAR:
                     weapon = new Spear();
                     break;
-                case TypeEquipement.STAFF:
+                case CategoryWeapon.STAFF:
+                    weapon = new Staff();
                     break;
-                case TypeEquipement.DAGGER:
+                case CategoryWeapon.DAGGER:
+                    weapon = new Dagger();
                     break;
-                case TypeEquipement.HAMMER:
+                case CategoryWeapon.HAMMER:
+                    weapon = new Hammer();
                     break;
-                case TypeEquipement.HALBERD:
+                case CategoryWeapon.HALBERD:
+                    weapon = new Halberd();
                     break;
-                case TypeEquipement.HANDGUN:
+                case CategoryWeapon.HANDGUN:
+                    weapon = new Handgun();
                     break;
-                case TypeEquipement.TRIDENT:
+                case CategoryWeapon.TRIDENT:
+                    weapon = new Trident();
                     break;
-                case TypeEquipement.CROSSBOW:
+                case CategoryWeapon.CROSSBOW:
+                    weapon = new Crossbow();
                     break;
-                case TypeEquipement.LONG_SWORD:
+                case CategoryWeapon.LONG_SWORD:
+                    weapon = new LongSword();
                     break;
-                case TypeEquipement.SHORT_SWORD:
+                case CategoryWeapon.SHORT_SWORD:
                     weapon = new Sword();
                     break;
-                case TypeEquipement.TWO_HAND_AXE:
+                case CategoryWeapon.TWO_HAND_AXE:
+                    weapon = new TwoHandedAxe();
                     break;
             }
 
             weapon.id = id;
             weapon.damage = damage;
+            weapon.category = category;
             weapon.type = type;
             weapon.effects = effects;
             weapon.rarity = rarity;

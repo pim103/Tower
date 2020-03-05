@@ -269,7 +269,6 @@ GameObject:
   m_Component:
   - component: {fileID: 713701518}
   - component: {fileID: 713701517}
-  - component: {fileID: 713701519}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -303,6 +302,7 @@ MonoBehaviour:
   - {fileID: 1301812937}
   - {fileID: 8852154383864112431}
   - {fileID: 492313960758269680}
+  endPoint: wss://towers.heolia.eu/websocket
 --- !u!4 &713701518
 Transform:
   m_ObjectHideFlags: 0
@@ -330,19 +330,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &713701519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 713701516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f386608f28a6d8544ba1f84690937f31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  call: '{"_CLASS":"Player", "_METHOD":"Hello", "_ARGS":[{"allo":1, "allo2":2}]}'
 --- !u!1 &730664180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 215306127936931071, guid: 9eef7882b08ed2b49bdf8bd77a7e4b6b,
