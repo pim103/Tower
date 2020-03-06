@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Entities
 {
@@ -61,11 +62,14 @@ namespace Games.Global.Entities
                 monster.InitOriginalWeapon();
             }
         }
-        
+
         public void InstantiateMonster(Vector3 position, List<int> equipment)
         {
             InstantiateParameters param;
             Monster monster;
+            int nbMonsterInit = 0;
+
+            Vector3 origPos = position;
 
             foreach (KeyValuePair<int, int> mobs in monsterInGroups)
             {
@@ -80,11 +84,11 @@ namespace Games.Global.Entities
                     monster.InstantiateModel(param, position);
                     monster.idInitialisation = idMobInit;
                     idMobInit++;
+                    nbMonsterInit++;
 
                     InitSpecificEquipment(monster, equipment);
 
-                    // TODO : algo pour placement des monstres
-                    position.x += 1;
+                    position = origPos + GroupsPosition.position[nbMonsterInit];
                     
                     DataObject.monsterInScene.Add(monster);
                 }

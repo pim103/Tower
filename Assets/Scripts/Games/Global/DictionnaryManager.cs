@@ -3,6 +3,7 @@ using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global
 {
@@ -14,6 +15,7 @@ namespace Games.Global
         public void Start()
         {
             AbilityManager.InitAbilities();
+            GroupsPosition.InitPosition();
             
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
