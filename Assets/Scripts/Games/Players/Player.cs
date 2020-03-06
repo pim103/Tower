@@ -38,6 +38,7 @@ namespace Games.Players
             param.wielder = this;
 
             weapon.InstantiateModel(param, Vector3.zero, playerHand.transform);
+            weapon.InitPlayerSkill(mainClass);
 
             weapons.Add(weapon);
 

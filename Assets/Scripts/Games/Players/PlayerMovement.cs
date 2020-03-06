@@ -68,7 +68,7 @@ namespace Games.Players
                 wantToGoRight = false;
             }
 
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButton(0))
             {
                 player.BasicAttack();
             }

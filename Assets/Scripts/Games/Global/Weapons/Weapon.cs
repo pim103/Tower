@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Games.Global.Patterns;
+using Games.Players;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -43,6 +44,10 @@ namespace Games.Global.Weapons
 
         public Pattern[] pattern;
 
+        public Skill skill1;
+        public Skill skill2;
+        public Skill skill3;
+
         // Basic attack active trigger and play movement
         public void BasicAttack(MovementPatternController movementPatternController, GameObject objectToMove)
         {
@@ -84,5 +89,7 @@ namespace Games.Global.Weapons
             
             pp.weaponOrigin = instantiateModel.GetComponent<WeaponPrefab>();
         }
+
+        public abstract void InitPlayerSkill(Classes classe);
     }
 }
