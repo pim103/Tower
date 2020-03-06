@@ -81,6 +81,11 @@ namespace Games.Global.Entities
             }
         }
 
+        public override void BasicDefense()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
         {
             base.TakeDamage(initialDamage, abilityParameters);

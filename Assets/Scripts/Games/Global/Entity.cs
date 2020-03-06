@@ -53,6 +53,7 @@ namespace Games.Global
         public abstract bool InitWeapon(int idWeapon);
 
         public abstract void BasicAttack();
+        public abstract void BasicDefense();
         
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {

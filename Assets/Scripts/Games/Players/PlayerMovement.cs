@@ -71,6 +71,14 @@ namespace Games.Players
             if(Input.GetMouseButton(0))
             {
                 player.BasicAttack();
+            } 
+            else if (Input.GetMouseButtonDown(1))
+            {
+                player.BasicDefense();
+            } 
+            else if (Input.GetMouseButtonUp(1))
+            {
+                player.DesactiveBasicDefense();
             }
 
             mousePosition = Input.mousePosition;
