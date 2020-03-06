@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Games.Global;
+using UnityEngine;
 
 namespace Games.Players
 {
@@ -34,6 +35,15 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
+            if (player.underEffects.Contains(TypeEffect.STUN))
+            {
+                wantToGoBack = false;
+                wantToGoForward = false;
+                wantToGoLeft = false;
+                wantToGoRight = false;
+                return;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 wantToGoForward = true;

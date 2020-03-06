@@ -86,6 +86,7 @@ namespace Games.Players
                 case Classes.RANGER:
                     break;
                 case Classes.WARRIOR:
+                    nbShieldBlock = 0;
                     isBlocking = false;
                     break;
             }
@@ -135,12 +136,14 @@ namespace Games.Players
             if (isBlocking)
             {
                 nbShieldBlock++;
+                Debug.Log("NbShieldBlock : " + nbShieldBlock);
 
-                if (nbShieldBlock == 4)
+                if (nbShieldBlock > 4)
                 {
+                    // TODO : add effect
                     Debug.Log("Stun");
-                    nbShieldBlock = 0;
-                    isBlocking = false;
+                    ApplyEffect(TypeEffect.STUN, 3);
+                    DesactiveBasicDefense();
                 }
 
                 return;

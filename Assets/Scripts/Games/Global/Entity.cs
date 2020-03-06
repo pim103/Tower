@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Games.Global.Abilities;
 using Games.Global.Armors;
@@ -53,8 +54,18 @@ namespace Games.Global
         public abstract bool InitWeapon(int idWeapon);
 
         public abstract void BasicAttack();
+
         public abstract void BasicDefense();
-        
+
+        public IEnumerator EffectTime(TypeEffect type, int durationInSeconds)
+        {
+            underEffects.Add(type);
+            yield return new WaitForSeconds(durationInSeconds);
+
+            int index = underEffects.FindIndex(typeInList => typeInList == type);
+            underEffects.RemoveAt(index);
+        }
+
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
             weapons = new List<Weapon>();
@@ -80,6 +91,11 @@ namespace Games.Global
             {
                 armor.OnDamageReceive(abilityParameters);
             }
+        }
+
+        public void ApplyEffect(TypeEffect effect, int duration)
+        {
+            StartCoroutine(EffectTime(effect, duration));
         }
     }
 }
