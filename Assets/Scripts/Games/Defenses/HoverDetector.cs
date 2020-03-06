@@ -1,6 +1,7 @@
 ﻿using Games.Defenses;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace Scripts.Games.Defenses
 {
@@ -17,7 +18,9 @@ namespace Scripts.Games.Defenses
         private DefenseUIController defenseUiController;
         
         public GameObject objectInHand;
-
+        public GameObject lastObjectPutInPlay;
+        public GridTileController lastTileWithContent;
+        
         private LayerMask mouseMask;
         public GameObject oldHover;
 
@@ -30,6 +33,11 @@ namespace Scripts.Games.Defenses
         private GameObject dest;
 
         private NavMeshPath path;
+
+        [SerializeField] 
+        private GameObject WarningPanel;
+        [SerializeField] 
+        private Text WarningPanelText;
         private void Start()
         {
             mouseMask = LayerMask.GetMask("Grid");
@@ -41,8 +49,6 @@ namespace Scripts.Games.Defenses
             if (Physics.Raycast(ray, out hit, 100f, mouseMask))
             {
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                path = new NavMeshPath(); 
-                NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
                 //Debug.Log(hit.collider.name);
                 
                     if (currentTileController.content || path.status != NavMeshPathStatus.PathComplete)
@@ -53,6 +59,7 @@ namespace Scripts.Games.Defenses
                     else
                     {
                         currentTileController.ChangeColorToGreen();
+                        WarningPanel.SetActive(false);
                         canPutItHere = true;
                     }
 
@@ -73,28 +80,36 @@ namespace Scripts.Games.Defenses
                 {
                     if (canPutItHere && objectInHand)
                     {
-                        currentTileController.content = objectInHand;
-                        objectInHand = null;
-                        defenseUiController.PutObjectInHand();
+                        currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
+                        path = new NavMeshPath(); 
+                        NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
+                        if (path.status == NavMeshPathStatus.PathComplete)
+                        {
+                            lastObjectPutInPlay = objectInHand;
+                            lastTileWithContent = currentTileController;
+                            currentTileController.content = objectInHand;
+                            objectInHand = null;
+                            defenseUiController.PutObjectInHand();
+                        }
                     }
                     else if (!canPutItHere && !objectInHand)
                     {
                         objectInHand = currentTileController.content;
+                        lastObjectPutInPlay = null;
                         currentTileController.content = null;
                     }
                 }
 
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
-                    if (!canPutItHere && currentTileController.content.layer == LayerMask.NameToLayer("Wall") &&
+                    if (!canPutItHere && currentTileController.content && currentTileController.content.layer == LayerMask.NameToLayer("Wall") &&
                         !objectInHand)
                     {
                         currentTileController.content.SetActive(false);
                         currentTileController.content = null;
                         defenseUiController.currentWallNumber += 1;
                         defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
-                    }
-                    if (objectInHand)
+                    } else if (objectInHand)
                     {
                         objectInHand.SetActive(false);
                         objectInHand = null;
@@ -110,6 +125,24 @@ namespace Scripts.Games.Defenses
                     oldHover.GetComponent<GridTileController>().ChangeColorToCyan();
                     oldHover = null;
                 }
+            }
+        }
+        
+        private void LateUpdate()
+        {
+            path = new NavMeshPath(); 
+            NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
+            if (path.status != NavMeshPathStatus.PathComplete)
+            {
+                if (!objectInHand)
+                {
+                    objectInHand = lastObjectPutInPlay;
+                    lastTileWithContent.content = null;
+                    lastObjectPutInPlay = null;
+                }
+                
+                WarningPanel.SetActive(true);
+                WarningPanelText.text = "Chemin bloqué : Bougez le bloc ou cliquez droit pour annuler";
             }
         }
     }
