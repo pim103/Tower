@@ -15,14 +15,22 @@ namespace Games.Global.Entities
         
         public List<Skill> skills;
 
-        public override void InitWeapon(int idWeapon)
+        public TypeWeapon constraint;
+
+        public override bool InitWeapon(int idWeapon)
         {
             if (weapons.Count < nbWeapon)
             {
                 if (instantiateModel != null)
                 {
-                    Transform mobHand = instantiateModel.transform.GetChild(0);
                     Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+
+                    if (constraint != weapon.type)
+                    {
+                        return false;
+                    }
+                    
+                    Transform mobHand = instantiateModel.transform.GetChild(0);
 
                     InstantiateParameters param = new InstantiateParameters();
                     param.item = weapon;
@@ -32,8 +40,12 @@ namespace Games.Global.Entities
                     weapon.InstantiateModel(param, Vector3.zero, mobHand);
 
                     weapons.Add(weapon);
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public void InitOriginalWeapon()

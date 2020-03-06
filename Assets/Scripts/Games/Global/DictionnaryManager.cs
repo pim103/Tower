@@ -1,4 +1,5 @@
-﻿using Games.Global.Abilities;
+﻿using System.Collections.Generic;
+using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -23,5 +24,7 @@ namespace Games.Global
     {
         public static MonsterList MonsterList;
         public static WeaponList WeaponList;
+
+        public static List<Monster> monsterInScene = new List<Monster>();
     }
 }

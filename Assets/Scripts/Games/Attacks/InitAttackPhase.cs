@@ -57,7 +57,7 @@ namespace Games.Attacks
             }
 
             tempMap2[MAP_SIZE / 4, MAP_SIZE / 4] = (int)TypeData.Group + ":" + "1" + ":" + "[]";
-            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[]";
+            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
 
             objectsInScene.playerExposer[GameController.PlayerIndex].playerGameObject.SetActive(true);
             objectsInScene.playerExposer[GameController.PlayerIndex].playerMovement.canMove = true;
@@ -150,30 +150,19 @@ namespace Games.Attacks
                     }
                 }
             }
-            /*
-            Monster monster = DataObject.MonsterList.GetMonsterById(1);
-
-            InstantiateParameters param = new InstantiateParameters();
-            param.item = monster;
-            param.type = TypeItem.Monster;
-
-            monster.InstantiateModel(param, Vector3.zero);
-
-            monster2 = DataObject.MonsterList.GetMonsterById(1);
-
-            param.item = monster2;
-            param.type = TypeItem.Monster;
-
-            monster2.InstantiateModel(param, Vector3.one * 10);
-            monster2.InitWeapon(2);
-            */
         }
 
         private void Update()
         {
             if (endOfGeneration)
             {
-//                monster2.BasicAttack();
+                if (DataObject.monsterInScene != null)
+                {
+                    foreach (Monster monster in DataObject.monsterInScene)
+                    {
+                        monster.BasicAttack();
+                    }   
+                }
             }
         }
 

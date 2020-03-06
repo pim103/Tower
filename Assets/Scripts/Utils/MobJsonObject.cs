@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Entities;
+using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Utils
@@ -18,6 +19,8 @@ namespace Utils
         private int speed;
         private int nbWeapon;
         private string weapon;
+
+        private TypeWeapon constraint;
 
         private List<string> skills;
         private string onDamageDealt;
@@ -51,6 +54,9 @@ namespace Utils
                     break;
                 case "weapon":
                     weapon = value;
+                    break;
+                case "constraint":
+                    constraint = (TypeWeapon)Int32.Parse(value);
                     break;
                 case "on_damage_dealt":
                     onDamageDealt = value;
@@ -104,6 +110,7 @@ namespace Utils
             monster.nbWeapon = nbWeapon;
             monster.family = family;
             monster.weaponOriginalName = weapon;
+            monster.constraint = constraint;
 
             monster.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB);
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;

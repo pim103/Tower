@@ -24,12 +24,11 @@ namespace Games.Global
         {
             GameObject modelItem = Instantiate(model, parent);
             
-            if (parent)
+            if (!parent)
             {
-                localization = Vector3.zero;
+                modelItem.transform.localPosition = localization;
             }
 
-            modelItem.transform.localPosition = localization;
             instantiateModel = modelItem;
 
             switch (param.type)
@@ -43,12 +42,13 @@ namespace Games.Global
                     wp.SetWielder((Entity)param.wielder);
 
                     // TODO : need adaptation for the position of instantiate weapon
-                    float scaleY = modelItem.transform.localScale.y;
-                    modelItem.transform.localPosition = new Vector3(0, 0.5f, 0);
+//                    float scaleY = modelItem.transform.localScale.y;
+//                    modelItem.transform.localPosition = new Vector3(0, 0.5f, 0);
                     break;
                 case TypeItem.Monster:
                     MobPrefab mp = modelItem.GetComponent<MobPrefab>();
-                    mp.SetMonster((Monster)param.item);
+                    mp.SetMonster((
+                        Monster)param.item);
                     ((Monster)param.item).movementPatternController = instantiateModel.AddComponent<MovementPatternController>();
                     break;
             }

@@ -27,7 +27,7 @@ namespace Games.Players
 
         private Classes mainClass;
 
-        public override void InitWeapon(int idWeapon)
+        public override bool InitWeapon(int idWeapon)
         {
             GameObject playerHand = objectsInScene.playerExposer[GameController.PlayerIndex].playerHand;
             Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
@@ -40,6 +40,8 @@ namespace Games.Players
             weapon.InstantiateModel(param, Vector3.zero, playerHand.transform);
 
             weapons.Add(weapon);
+
+            return true;
         }
 
         public override void BasicAttack()

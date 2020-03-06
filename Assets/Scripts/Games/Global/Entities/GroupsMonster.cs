@@ -33,7 +33,35 @@ namespace Games.Global.Entities
 
         private List<Monster> monsters;
 
-        public void InstantiateMonster(Vector3 position, List<int> equipement)
+        private void InitSpecificEquipment(Monster monster, List<int> equipment)
+        {
+            int nbWeaponFound = 0;
+            
+            foreach (int id in equipment)
+            {
+                // Is a weapon
+                if (id < 1000)
+                {
+                    if (monster.InitWeapon(id))
+                    {
+                        nbWeaponFound++;   
+                    }
+                }
+                // Is an armor
+                else
+                {
+                    // TODO : init armor
+                }
+                
+            }
+
+            if (nbWeaponFound == 0)
+            {
+                monster.InitOriginalWeapon();
+            }
+        }
+        
+        public void InstantiateMonster(Vector3 position, List<int> equipment)
         {
             InstantiateParameters param;
             Monster monster;
@@ -49,14 +77,15 @@ namespace Games.Global.Entities
                     param.type = TypeItem.Monster;
 
                     monster.InstantiateModel(param, position);
-                    monster.InitOriginalWeapon();
+                    
+                    InitSpecificEquipment(monster, equipment);
 
                     // TODO : algo pour placement des monstres
                     position.x += 1;
+                    
+                    DataObject.monsterInScene.Add(monster);
                 }
             }
-
-            // Todo : init equipment
         }
     }
 }

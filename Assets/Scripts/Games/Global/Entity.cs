@@ -50,7 +50,7 @@ namespace Games.Global
 
         [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 
-        public abstract void InitWeapon(int idWeapon);
+        public abstract bool InitWeapon(int idWeapon);
 
         public abstract void BasicAttack();
         
