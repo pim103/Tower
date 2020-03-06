@@ -11,27 +11,10 @@
         STUN
     }
 
-    public static class Effect
+    public struct Effect
     {
-        public static void TriggerEffect(TypeEffect type, Entity target)
-        {
-            switch (type)
-            {
-                case TypeEffect.AOE:
-                    break;
-                case TypeEffect.BURN:
-                    break;
-                case TypeEffect.STUN:
-                    break;
-                case TypeEffect.WEAK:
-                    break;
-                case TypeEffect.BLEED:
-                    break;
-                case TypeEffect.PIERCE:
-                    break;
-                case TypeEffect.POISON:
-                    break;
-            }
-        }
+        public TypeEffect typeEffect;
+        public int level;
+        public float durationInSeconds;
     }
 }

@@ -136,13 +136,9 @@ namespace Games.Players
             if (isBlocking)
             {
                 nbShieldBlock++;
-                Debug.Log("NbShieldBlock : " + nbShieldBlock);
-
                 if (nbShieldBlock > 4)
                 {
-                    // TODO : add effect
-                    Debug.Log("Stun");
-                    ApplyEffect(TypeEffect.STUN, 3);
+                    ApplyEffect(TypeEffect.STUN, 3, 1);
                     DesactiveBasicDefense();
                 }
 

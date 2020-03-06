@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Patterns;
@@ -42,12 +43,11 @@ namespace Games.Global
 
         // If needed, create WeaponExposer to get all scripts of a weapon
         public List<Weapon> weapons;
-
         public List<Armor> armors;
 
         public TypeEntity typeEntity;
 
-        public List<TypeEffect> underEffects;
+        public List<Effect> underEffects;
 
         [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 
@@ -57,12 +57,32 @@ namespace Games.Global
 
         public abstract void BasicDefense();
 
-        public IEnumerator EffectTime(TypeEffect type, int durationInSeconds)
+        public IEnumerator EffectTime(Effect effect)
         {
-            underEffects.Add(type);
-            yield return new WaitForSeconds(durationInSeconds);
+            int index;
+            Effect effectInList;
+            if ((index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect)) != -1)
+            {
+                effectInList = underEffects[index];
+                effectInList.level += 1;
+                effectInList.durationInSeconds += effect.durationInSeconds;
+                underEffects[index] = effectInList;
+                
+                yield break;
+            }
 
-            int index = underEffects.FindIndex(typeInList => typeInList == type);
+            underEffects.Add(effect);
+
+            index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect);
+            effectInList = underEffects[index];
+
+            while (effectInList.durationInSeconds > 0)
+            {
+                yield return new WaitForSeconds(0.5f);
+                effectInList.durationInSeconds -= 0.5f;
+            }
+
+            index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect);
             underEffects.RemoveAt(index);
         }
 
@@ -70,6 +90,7 @@ namespace Games.Global
         {
             weapons = new List<Weapon>();
             armors = new List<Armor>();
+            underEffects = new List<Effect>();
         }
 
         public virtual void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
@@ -93,9 +114,13 @@ namespace Games.Global
             }
         }
 
-        public void ApplyEffect(TypeEffect effect, int duration)
+        public void ApplyEffect(TypeEffect typeEffect, int duration, int level)
         {
-            StartCoroutine(EffectTime(effect, duration));
+            Effect effect = new Effect();
+            effect.level = level;
+            effect.durationInSeconds = duration;
+            effect.typeEffect = typeEffect;
+            StartCoroutine(EffectTime(effect));
         }
     }
 }

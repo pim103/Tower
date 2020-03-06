@@ -35,7 +35,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (player.underEffects.Contains(TypeEffect.STUN))
+            if (player.underEffects.Exists(effect => effect.typeEffect == TypeEffect.STUN))
             {
                 wantToGoBack = false;
                 wantToGoForward = false;
