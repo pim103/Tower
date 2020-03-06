@@ -1,91 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Text;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-/// <summary>
-/// Superclass for all items
-/// </summary>
-public class Item : ScriptableObject, IMoveable, IDescribable
+[CreateAssetMenu(menuName ="Items/Item")]
+public class Item : ScriptableObject
 {
-    /// <summary>
-    /// Icon used when moving and placing the items
-    /// </summary>
-    [SerializeField]
-    private Sprite icon;
+    [SerializeField] string id;
+    public string ID { get { return id; } }
+    public string ItemName;
+    public Sprite Icon;
+    [Range(1,999)]
+    public int MaximumStacks = 1;
 
-    /// <summary>
-    /// The size of the stack, less than 2 is not stackable
-    /// </summary>
-    [SerializeField]
-    private int stackSize;
+    [Space]
+    [Header("Description of the item")]
+    [SerializeField] string ItemDescription;
 
-    /// <summary>
-    /// The item's title
-    /// </summary>
-    [SerializeField]
-    private string title;
+    protected static readonly StringBuilder sb = new StringBuilder();
 
-    /// <summary>
-    /// The item's quality
-    /// </summary>
-    [SerializeField]
-    private Quality quality;
-
-    [SerializeField]
-    private int price;
-
-    /// <summary>
-    /// Property for accessing the icon
-    /// </summary>
-    public Sprite MyIcon
+    #if UNITY_EDITOR
+    protected virtual void OnValidate()
     {
-        get
-        {
-            return icon;
-        }
+        string path = AssetDatabase.GetAssetPath(this);
+        id = AssetDatabase.AssetPathToGUID(path);
+    }
+    #endif
+
+    public virtual Item GetCopy()
+    {
+        return this;
     }
 
-    /// <summary>
-    /// Property for accessing the stacksize
-    /// </summary>
-    public int MyStackSize
+    public virtual void Destroy()
     {
-        get
-        {
-            return stackSize;
-        }
+
     }
 
-    public Quality MyQuality
+    public virtual string GetItemType()
     {
-        get
-        {
-            return quality;
-        }
+        return "";
     }
 
-    public string MyTitle
-    {
-        get
-        {
-            return title;
-        }
-    }
-
-    public int MyPrice
-    {
-        get
-        {
-            return price;
-        }
-    }
-
-    /// <summary>
-    /// Returns a description of this specific item
-    /// </summary>
-    /// <returns></returns>
     public virtual string GetDescription()
     {
-        return string.Format("<color={0}>{1}</color>", QualityColor.MyColors[MyQuality], MyTitle);
+        /*if (ItemDescription == "COIN_DESCRIPTION")
+        {
+            return LocalizationManager.Instance.GetText("COIN_DESCRIPTION");
+        }
+        else if (ItemDescription == "REPAIR_KIT_DESCRIPTION")
+        {
+            return LocalizationManager.Instance.GetText("REPAIR_KIT_DESCRIPTION");
+        }*/
+        return "";
     }
 }

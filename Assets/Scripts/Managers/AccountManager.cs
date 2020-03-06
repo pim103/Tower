@@ -32,8 +32,8 @@ public class AccountManager : MonoBehaviour
     [SerializeField]
     private int stoneOre;
 
-    [SerializeField]
-    private Craft craft;
+    /*[SerializeField]
+    private Craft craft;*/
 
     [SerializeField]
     private Text goldBarText;
@@ -75,7 +75,7 @@ public class AccountManager : MonoBehaviour
     {
         yield return actionRoutine = StartCoroutine(ActionRoutine(castable));
 
-        craft.AdddItemsToInventory();
+        //craft.AdddItemsToInventory();
     }
 
     private IEnumerator ActionRoutine(ICastable castable)
