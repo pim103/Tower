@@ -1,5 +1,6 @@
 ﻿using Games.Defenses;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Scripts.Games.Defenses
 {
@@ -23,6 +24,12 @@ namespace Scripts.Games.Defenses
         public bool canPutItHere;
         private GridTileController currentTileController;
 
+        [SerializeField] 
+        private GameObject startPos;
+        [SerializeField] 
+        private GameObject dest;
+
+        private NavMeshPath path;
         private void Start()
         {
             mouseMask = LayerMask.GetMask("Grid");
@@ -33,11 +40,12 @@ namespace Scripts.Games.Defenses
             ray = defenseCam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100f, mouseMask))
             {
-                Debug.Log(hit.collider.name);
-                if (hit.collider.gameObject != oldHover)
-                {
-                    currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                    if (currentTileController.content)
+                currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
+                path = new NavMeshPath(); 
+                NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
+                //Debug.Log(hit.collider.name);
+                
+                    if (currentTileController.content || path.status != NavMeshPathStatus.PathComplete)
                     {
                         currentTileController.ChangeColorToRed();
                         canPutItHere = false;
@@ -48,13 +56,13 @@ namespace Scripts.Games.Defenses
                         canPutItHere = true;
                     }
 
-                    if (oldHover)
+                    if (oldHover && oldHover!=hit.collider.gameObject)
                     {
                         oldHover.GetComponent<GridTileController>().ChangeColorToCyan();
                     }
 
                     oldHover = hit.collider.gameObject;
-                }
+                
 
                 if (objectInHand)
                 {
@@ -67,6 +75,7 @@ namespace Scripts.Games.Defenses
                     {
                         currentTileController.content = objectInHand;
                         objectInHand = null;
+                        defenseUiController.PutObjectInHand();
                     }
                     else if (!canPutItHere && !objectInHand)
                     {
