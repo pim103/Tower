@@ -4,6 +4,7 @@ using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 namespace Games.Players
@@ -24,6 +25,8 @@ namespace Games.Players
         [SerializeField]
         public ScriptsExposer se;
 
+        [SerializeField] public Slider hpBar;
+
         public HelmetArmor helmetArmor;
         public ChestplateArmor chestplateArmor;
         public LeggingsArmor leggingsArmor;
@@ -35,6 +38,12 @@ namespace Games.Players
          */
         public int nbShieldBlock = 0;
         public bool isBlocking = false;
+        
+        private void Update()
+        {
+            float diff = (float) hp / (float) initialHp;
+            hpBar.value = diff;
+        }
 
         public override bool InitWeapon(int idWeapon)
         {
@@ -123,9 +132,12 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     break;
-                default:
-                    break;
             }
+
+            initialAtt = att;
+            initialDef = def;
+            initialHp = hp;
+            initialSpeed = speed;
 
             InitEquipementArray();
             InitWeapon(2);

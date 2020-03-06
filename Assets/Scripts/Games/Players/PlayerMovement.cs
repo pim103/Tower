@@ -37,7 +37,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (player.underEffects.ContainsKey(TypeEffect.Stun))
+            if (player.underEffects.ContainsKey(TypeEffect.Stun) || player.underEffects.ContainsKey(TypeEffect.Sleep))
             {
                 wantToGoBack = false;
                 wantToGoForward = false;

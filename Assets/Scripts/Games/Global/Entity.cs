@@ -64,7 +64,7 @@ namespace Games.Global
             Effect effectInList;
 
             if (underEffects.ContainsKey(effect.typeEffect))
-            {;
+            {
                 effectInList = underEffects[effect.typeEffect];
                 effectInList.UpdateEffect(effect);
 
@@ -130,6 +130,11 @@ namespace Games.Global
             foreach (Armor armor in armors)
             {
                 armor.OnDamageReceive(abilityParameters);
+            }
+
+            if (underEffects.ContainsKey(TypeEffect.Sleep))
+            {
+                underEffects.Remove(TypeEffect.Sleep);
             }
         }
 
