@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Games.Global.Abilities;
 using Games.Global.Weapons;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Games.Global.Entities
 {
     public class Monster: Entity
     {
+        public int idInitialisation;
         public int id;
         public string mobName;
         public int nbWeapon;
@@ -77,6 +79,24 @@ namespace Games.Global.Entities
             {
                 Debug.Log("Basic attack of monster ?");
             }
+        }
+
+        public override void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
+        {
+            base.TakeDamage(initialDamage, abilityParameters);
+            
+            if (hp <= 0)
+            {
+                EntityDie();
+            }
+        }
+
+        private void EntityDie()
+        {
+            int index = DataObject.monsterInScene.FindIndex(monster => monster.idInitialisation == idInitialisation);
+            DataObject.monsterInScene.RemoveAt(index);
+            
+            Destroy(instantiateModel);
         }
     }
 }

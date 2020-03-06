@@ -22,6 +22,7 @@ namespace Games.Global.Entities
     public class GroupsMonster
     {
         public const int DEFAULT_RADIUS = 1;
+        private static int idMobInit = 0;
 
         public int id;
         public Family family;
@@ -77,7 +78,9 @@ namespace Games.Global.Entities
                     param.type = TypeItem.Monster;
 
                     monster.InstantiateModel(param, position);
-                    
+                    monster.idInitialisation = idMobInit;
+                    idMobInit++;
+
                     InitSpecificEquipment(monster, equipment);
 
                     // TODO : algo pour placement des monstres

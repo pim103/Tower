@@ -60,7 +60,7 @@ namespace Games.Global
             armors = new List<Armor>();
         }
 
-        public void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
+        public virtual void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
         {
             int damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
             hp -= damageReceived;
@@ -79,16 +79,6 @@ namespace Games.Global
             {
                 armor.OnDamageReceive(abilityParameters);
             }
-
-            if (hp <= 0)
-            {
-                EntityDie();
-            }
-        }
-
-        public void EntityDie()
-        {
-            Destroy(instantiateModel);
         }
     }
 }
