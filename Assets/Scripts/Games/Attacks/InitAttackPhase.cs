@@ -104,7 +104,6 @@ namespace Games.Attacks
                     wantToLeave = true;
                 }
 
-                Debug.Log(valueToParse.Substring(0, indexComma));
                 idEquipements.Add(Int32.Parse(valueToParse.Substring(0, indexComma)));
 
                 if (!wantToLeave)

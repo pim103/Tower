@@ -1,4 +1,6 @@
-﻿using Games.Global;
+﻿using System.Diagnostics;
+using System.Linq;
+using Games.Global;
 using UnityEngine;
 
 namespace Games.Players
@@ -35,7 +37,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (player.underEffects.Exists(effect => effect.typeEffect == TypeEffect.STUN))
+            if (player.underEffects.ContainsKey(TypeEffect.Stun))
             {
                 wantToGoBack = false;
                 wantToGoForward = false;

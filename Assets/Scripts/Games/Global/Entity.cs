@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
@@ -8,6 +9,7 @@ using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global
 {
@@ -47,7 +49,7 @@ namespace Games.Global
 
         public TypeEntity typeEntity;
 
-        public List<Effect> underEffects;
+        public Dictionary<TypeEffect, Effect> underEffects;
 
         [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
 
@@ -59,38 +61,55 @@ namespace Games.Global
 
         public IEnumerator EffectTime(Effect effect)
         {
-            int index;
             Effect effectInList;
-            if ((index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect)) != -1)
-            {
-                effectInList = underEffects[index];
-                effectInList.level += 1;
-                effectInList.durationInSeconds += effect.durationInSeconds;
-                underEffects[index] = effectInList;
-                
+
+            if (underEffects.ContainsKey(effect.typeEffect))
+            {;
+                effectInList = underEffects[effect.typeEffect];
+                effectInList.UpdateEffect(effect);
+
+                underEffects[effect.typeEffect] = effectInList;
                 yield break;
             }
 
-            underEffects.Add(effect);
+            underEffects.Add(effect.typeEffect, effect);
 
-            index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect);
-            effectInList = underEffects[index];
-
+            effectInList = underEffects[effect.typeEffect];
             while (effectInList.durationInSeconds > 0)
             {
                 yield return new WaitForSeconds(0.5f);
+
+                switch (effectInList.typeEffect)
+                {
+                    case TypeEffect.Burn:
+                        if (underEffects.ContainsKey(TypeEffect.Sleep))
+                        {
+                            underEffects.Remove(TypeEffect.Sleep);
+                        }
+
+                        hp -= 2;
+                        break;
+                    case TypeEffect.Bleed:
+                        hp -= (1 * effectInList.level);
+                        break;
+                    case TypeEffect.Poison:
+                        hp -= 1;
+                        break;
+                }
+
+                effectInList = underEffects[effect.typeEffect];
                 effectInList.durationInSeconds -= 0.5f;
+                underEffects[effect.typeEffect] = effectInList;
             }
 
-            index = underEffects.FindIndex(currentEffect => currentEffect.typeEffect == effect.typeEffect);
-            underEffects.RemoveAt(index);
+            underEffects.Remove(effect.typeEffect);
         }
 
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
             weapons = new List<Weapon>();
             armors = new List<Armor>();
-            underEffects = new List<Effect>();
+            underEffects = new Dictionary<TypeEffect, Effect>();
         }
 
         public virtual void TakeDamage(int initialDamage, AbilityParameters abilityParameters)

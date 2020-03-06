@@ -6,6 +6,7 @@ namespace Games.Global.Abilities.WeaponsAbilities
     {
         public static bool ApplyFire(AbilityParameters param)
         {
+            param.directTarget.ApplyEffect(TypeEffect.Bleed, 5, 1);
             Debug.Log("Burn !");
             return false;
         }

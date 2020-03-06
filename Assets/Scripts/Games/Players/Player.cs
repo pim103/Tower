@@ -138,7 +138,7 @@ namespace Games.Players
                 nbShieldBlock++;
                 if (nbShieldBlock > 4)
                 {
-                    ApplyEffect(TypeEffect.STUN, 3, 1);
+                    ApplyEffect(TypeEffect.Stun, 3, 1);
                     DesactiveBasicDefense();
                 }
 
