@@ -1,24 +1,32 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections;
 using Games.Global;
+using Games.Global.Patterns;
+using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Games.Players
 {
-    public class PlayerMovement : PlayerIntent
+    public class PlayerPrefab : PlayerIntent, EffectInterface
     {
         private const int PLAYER_SPEED = 10;
 
-        [SerializeField]
-        private Player player;
+        public Player player;
 
-        [SerializeField] private PlayerExposer pe;
+        [SerializeField] private PlayerExposer playerExposer;
+        [SerializeField] private MovementPatternController movementPatternController;
+        [SerializeField] private Slider hpBar;
 
         public int playerIndex;
         public bool canMove;
 
         private void Start()
         {
+            player = new Player();
+            player.SetPlayerExposer(playerExposer);
+            player.InitPlayerStats(Classes.Warrior);
+            player.effectInterface = this;
+
             wantToGoBack = false;
             wantToGoForward = false;
             wantToGoLeft = false;
@@ -28,6 +36,9 @@ namespace Games.Players
         private void Update()
         {
             GetIntentPlayer();
+
+            float diff = (float) player.hp / (float) player.initialHp;
+            hpBar.value = diff;
         }
 
         private void FixedUpdate()
@@ -98,7 +109,7 @@ namespace Games.Players
         
         public void Movement()
         {
-            Rigidbody rigidbody = pe.playerRigidbody;
+            Rigidbody rigidbody = playerExposer.playerRigidbody;
 
             int horizontalMove = 0;
             int verticalMove = 0;
@@ -127,7 +138,7 @@ namespace Games.Players
 
             rigidbody.velocity = movement;
 
-            Camera playerCamera = pe.playerCamera.GetComponent<Camera>();
+            Camera playerCamera = playerExposer.playerCamera.GetComponent<Camera>();
             RaycastHit hit;
             Ray cameraRay = playerCamera.ScreenPointToRay(mousePosition);
 
@@ -135,20 +146,48 @@ namespace Games.Players
             {
                 Vector3 point = hit.point;
                 point.y = 0;
-                Transform playerTransform = pe.playerTransform;
+                Transform playerTransform = playerExposer.playerTransform;
                 playerTransform.LookAt(point);
                 playerTransform.localEulerAngles = Vector3.up * playerTransform.localEulerAngles.y;
             }
         }
-
-        // OLD PUN RPC
-        public void CheckMovementRPC(bool wantToGoForward, bool wantToGoBack, bool wantToGoLeft, bool wantToGoRight, Vector3 mousePosition)
+        
+        public void AddItemInHand(Weapon weapon)
         {
-            this.wantToGoBack = wantToGoBack;
-            this.wantToGoForward = wantToGoForward;
-            this.wantToGoLeft = wantToGoLeft;
-            this.wantToGoRight = wantToGoRight;
-            this.mousePosition = mousePosition;
+            GameObject weaponGameObject = Instantiate(weapon.model, playerExposer.playerHand.transform);
+            WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
+            weapon.weaponPrefab = weaponPrefab;
+            weaponPrefab.SetWielder(player);
+            weaponPrefab.SetWeapon(weapon);
+        }
+
+        public void PlayBasicAttack(WeaponPrefab weaponPrefab)
+        {
+            weaponPrefab.BasicAttack(movementPatternController, playerExposer.playerHand);
+        }
+
+        public void StartCoroutineEffect(Effect effect)
+        {
+            StartCoroutine(PlayEffectOnTime(effect));
+        }
+
+        public IEnumerator PlayEffectOnTime(Effect effect)
+        {
+            player.underEffects.Add(effect.typeEffect, effect);
+
+            Effect effectInList = player.underEffects[effect.typeEffect];
+            while (effectInList.durationInSeconds > 0)
+            {
+                yield return new WaitForSeconds(0.5f);
+
+                player.TriggerEffect(effectInList);
+
+                effectInList = player.underEffects[effect.typeEffect];
+                effectInList.durationInSeconds -= 0.5f;
+                player.underEffects[effect.typeEffect] = effectInList;
+            }
+
+            player.underEffects.Remove(effect.typeEffect);
         }
     }
 }

@@ -23,16 +23,16 @@ namespace Games.Global.Weapons
         {
             switch (classe)
             {
-                case Classes.MAGE:
+                case Classes.Mage:
                     skill1 = new Skill();
                     skill2 = new Skill();
                     skill3 = new Skill();
                     break;
-                case Classes.ROGUE:
+                case Classes.Rogue:
                     break;
-                case Classes.RANGER:
+                case Classes.Ranger:
                     break;
-                case Classes.WARRIOR:
+                case Classes.Warrior:
                     break;
             }
         }

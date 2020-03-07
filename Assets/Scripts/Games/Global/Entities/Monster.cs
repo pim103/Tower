@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Abilities;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -19,89 +20,60 @@ namespace Games.Global.Entities
 
         public TypeWeapon constraint;
 
-        public override bool InitWeapon(int idWeapon)
+        private MonsterPrefab monsterPrefab;
+
+        public void BasicAttack()
         {
-            if (weapons.Count < nbWeapon)
-            {
-                if (instantiateModel != null)
-                {
-                    Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
-
-                    if (constraint != weapon.type)
-                    {
-                        return false;
-                    }
-                    
-                    Transform mobHand = instantiateModel.transform.GetChild(0);
-
-                    InstantiateParameters param = new InstantiateParameters();
-                    param.item = weapon;
-                    param.type = TypeItem.Weapon;
-                    param.wielder = this;
-
-                    weapon.InstantiateModel(param, Vector3.zero, mobHand);
-
-                    weapons.Add(weapon);
-
-                    return true;
-                }
-            }
-
-            return false;
+            monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
         }
-
-        public void InitOriginalWeapon()
-        {
-            if (instantiateModel != null)
-            {
-                Transform mobHand = instantiateModel.transform.GetChild(0);
-                Weapon weapon = DataObject.WeaponList.GetWeaponWithName(weaponOriginalName);
-
-                InstantiateParameters param = new InstantiateParameters();
-                param.item = weapon;
-                param.type = TypeItem.Weapon;
-                param.wielder = this;
-
-                weapon.InstantiateModel(param, Vector3.zero, mobHand);
-
-                weapons.Add(weapon);
-            }
-        }
-
-        public override void BasicAttack()
-        {
-            if (weapons.Count > 0)
-            {
-                Transform mobHand = instantiateModel.transform.GetChild(0);
-                weapons[0].BasicAttack(movementPatternController, mobHand.gameObject);
-            }
-            else
-            {
-                Debug.Log("Basic attack of monster ?");
-            }
-        }
-
+        
         public override void BasicDefense()
         {
             throw new System.NotImplementedException();
         }
 
-        public override void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
+        public override void ApplyDamage(int directDamage)
         {
-            base.TakeDamage(initialDamage, abilityParameters);
-            
+            base.ApplyDamage(directDamage);
+
             if (hp <= 0)
             {
-                EntityDie();
+                monsterPrefab.EntityDie();
             }
         }
 
-        private void EntityDie()
+        public void SetMonsterPrefab(MonsterPrefab newMonsterPrefab)
         {
-            int index = DataObject.monsterInScene.FindIndex(monster => monster.idInitialisation == idInitialisation);
-            DataObject.monsterInScene.RemoveAt(index);
-            
-            Destroy(instantiateModel);
+            monsterPrefab = newMonsterPrefab;
+        }
+
+        public bool InitWeapon(int idWeapon)
+        {
+            if (weapons.Count < nbWeapon)
+            {
+                Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+
+                if (constraint != weapon.type)
+                {
+                    return false;
+                }
+
+                monsterPrefab.AddItemInHand(weapon);
+                weapons.Add(weapon);
+
+                return true;
+            }
+
+            return false;
+        }
+        
+        public void InitOriginalWeapon()
+        {
+            Weapon weapon = DataObject.WeaponList.GetWeaponWithName(weaponOriginalName);
+
+            monsterPrefab.AddItemInHand(weapon);
+
+            weapons.Add(weapon);
         }
     }
 }

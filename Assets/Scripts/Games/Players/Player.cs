@@ -11,74 +11,49 @@ namespace Games.Players
 {
     public enum Classes
     {
-        WARRIOR,
-        RANGER,
-        ROGUE,
-        MAGE
+        Warrior,
+        Ranger,
+        Rogue,
+        Mage
     }
 
     public class Player : Entity
     {
-        [SerializeField]
-        public ObjectsInScene objectsInScene;
-
-        [SerializeField]
-        public ScriptsExposer se;
-
-        [SerializeField] public Slider hpBar;
-
         public HelmetArmor helmetArmor;
         public ChestplateArmor chestplateArmor;
         public LeggingsArmor leggingsArmor;
 
-        private Classes mainClass;
+        private PlayerExposer playerExposer;
+
+        public Classes mainClass;
         
         /*
          * Specific Warrior
          */
         public int nbShieldBlock = 0;
         public bool isBlocking = false;
+
+        public void SetPlayerExposer(PlayerExposer playerExposer)
+        {
+            this.playerExposer = playerExposer;
+        }
+
+        public void BasicAttack()
+        {
+            playerExposer.playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+        }
         
-        private void Update()
-        {
-            float diff = (float) hp / (float) initialHp;
-            hpBar.value = diff;
-        }
-
-        public override bool InitWeapon(int idWeapon)
-        {
-            GameObject playerHand = objectsInScene.playerExposer[GameController.PlayerIndex].playerHand;
-            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
-
-            InstantiateParameters param = new InstantiateParameters();
-            param.item = weapon;
-            param.type = TypeItem.Weapon;
-            param.wielder = this;
-
-            weapon.InstantiateModel(param, Vector3.zero, playerHand.transform);
-            weapon.InitPlayerSkill(mainClass);
-
-            weapons.Add(weapon);
-
-            return true;
-        }
-
-        public override void BasicAttack()
-        {
-            weapons[0].BasicAttack(movementPatternController, objectsInScene.playerExposer[GameController.PlayerIndex].playerHand);
-        }
-
         public override void BasicDefense()
         {
             switch (mainClass)
             {
-                case Classes.MAGE:
+                case Classes.Mage:
                     break;
-                case Classes.ROGUE:
+                case Classes.Rogue:
                     break;
-                case Classes.RANGER:
+                case Classes.Ranger:
                     break;
-                case Classes.WARRIOR:
+                case Classes.Warrior:
                     isBlocking = true;
                     break;
             }
@@ -88,13 +63,13 @@ namespace Games.Players
         {
             switch (mainClass)
             {
-                case Classes.MAGE:
+                case Classes.Mage:
                     break;
-                case Classes.ROGUE:
+                case Classes.Rogue:
                     break;
-                case Classes.RANGER:
+                case Classes.Ranger:
                     break;
-                case Classes.WARRIOR:
+                case Classes.Warrior:
                     nbShieldBlock = 0;
                     isBlocking = false;
                     break;
@@ -108,25 +83,25 @@ namespace Games.Players
 
             switch(classe)
             {
-                case Classes.MAGE:
+                case Classes.Mage:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
                     break;
-                case Classes.WARRIOR:
+                case Classes.Warrior:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
                     break;
-                case Classes.ROGUE:
+                case Classes.Rogue:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
                     break;
-                case Classes.RANGER:
+                case Classes.Ranger:
                     att = 10;
                     def = 2;
                     speed = 10;
@@ -141,6 +116,16 @@ namespace Games.Players
 
             InitEquipementArray();
             InitWeapon(2);
+        }
+
+        public void InitWeapon(int idWeapon)
+        {
+            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+
+            playerExposer.playerPrefab.AddItemInHand(weapon);
+            weapon.InitPlayerSkill(mainClass);
+
+            weapons.Add(weapon);
         }
 
         public override void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
@@ -158,10 +143,15 @@ namespace Games.Players
             }
 
             base.TakeDamage(initialDamage, abilityParameters);
+        }
+        
+        public override void ApplyDamage(int directDamage)
+        {
+            base.ApplyDamage(directDamage);
 
             if (hp <= 0)
             {
-                //TODO : Destroy player
+                // TODO : destroy player
             }
         }
     }

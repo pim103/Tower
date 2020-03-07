@@ -1019,7 +1019,7 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   transitionMenuGame: {fileID: 194075441}
   se: {fileID: 194075448}
-  byPassDefense: 0
+  byPassDefense: 1
 --- !u!114 &194075444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2844,6 +2844,7 @@ GameObject:
   - component: {fileID: 1495904574}
   - component: {fileID: 1495904576}
   - component: {fileID: 1495904575}
+  - component: {fileID: 1495904577}
   m_Layer: 0
   m_Name: ControllerAttack
   m_TagString: Untagged
@@ -2898,6 +2899,18 @@ MonoBehaviour:
   objectPoolerDefense: {fileID: 934534612}
   objectsInScene: {fileID: 194075444}
   se: {fileID: 194075448}
+--- !u!114 &1495904577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495904573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf763f0d9e3b9e448284d5b4cc7c7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1591298428
 GameObject:
   m_ObjectHideFlags: 0

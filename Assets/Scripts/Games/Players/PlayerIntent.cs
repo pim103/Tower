@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Games.Global;
+using UnityEngine;
 
 namespace Games.Players
 {

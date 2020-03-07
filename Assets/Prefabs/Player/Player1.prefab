@@ -226,7 +226,6 @@ GameObject:
   - component: {fileID: 7401777425161430231}
   - component: {fileID: 7401777425161430232}
   - component: {fileID: 7401777425161430235}
-  - component: {fileID: 4043486432691114709}
   - component: {fileID: 1616889050918674922}
   - component: {fileID: 5990262949680921091}
   m_Layer: 8
@@ -285,45 +284,11 @@ MonoBehaviour:
   wantToGoLeft: 0
   wantToGoRight: 0
   mousePosition: {x: 0, y: 0, z: 0}
-  player: {fileID: 4043486432691114709}
-  pe: {fileID: 1616889050918674922}
+  playerExposer: {fileID: 1616889050918674922}
+  movementPatternController: {fileID: 5990262949680921091}
+  hpBar: {fileID: 3859966404143106688}
   playerIndex: 0
   canMove: 0
---- !u!114 &4043486432691114709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7401777425161430227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da993f913f38760458a7940be505de23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modelName: 
-  model: {fileID: 0}
-  instantiateModel: {fileID: 0}
-  initialHp: 0
-  initialDef: 0
-  initialAtt: 0
-  initialSpeed: 0
-  hp: 100
-  def: 10
-  att: 10
-  speed: 10
-  weapons: []
-  armors: []
-  typeEntity: 0
-  movementPatternController: {fileID: 5990262949680921091}
-  objectsInScene: {fileID: 0}
-  se: {fileID: 0}
-  hpBar: {fileID: 3859966404143106688}
-  helmetArmor: {fileID: 0}
-  chestplateArmor: {fileID: 0}
-  leggingsArmor: {fileID: 0}
-  nbShieldBlock: 0
-  isBlocking: 0
 --- !u!114 &1616889050918674922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,11 +302,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameObject: {fileID: 7401777425161430227}
-  playerMovement: {fileID: 7401777425161430235}
+  playerPrefab: {fileID: 7401777425161430235}
   playerRigidbody: {fileID: 7401777425161430232}
   playerCamera: {fileID: 7401777426190087308}
   playerHand: {fileID: 7348560538528900300}
-  player: {fileID: 4043486432691114709}
   playerTransform: {fileID: 7680907652477755037}
 --- !u!114 &5990262949680921091
 MonoBehaviour:
@@ -611,6 +575,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 6407759940705221171, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -620,11 +589,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6407759940705221171, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7f42235f97e66f49b5f921a6149e73c, type: 3}

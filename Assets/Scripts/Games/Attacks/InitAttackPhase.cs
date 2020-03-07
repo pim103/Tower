@@ -5,7 +5,9 @@ using Games.Global.Entities;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
+using Utils;
 using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Games.Attacks
@@ -19,6 +21,7 @@ namespace Games.Attacks
 
     public class InitAttackPhase : MonoBehaviour
     {
+        private static int idMobInit = 0;
         public const int MAP_SIZE = 25;
 
         [SerializeField] 
@@ -58,9 +61,6 @@ namespace Games.Attacks
 
             tempMap2[MAP_SIZE / 4, MAP_SIZE / 4] = (int)TypeData.Group + ":" + "1" + ":" + "[]";
             tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
-
-            objectsInScene.playerExposer[GameController.PlayerIndex].playerGameObject.SetActive(true);
-            objectsInScene.playerExposer[GameController.PlayerIndex].playerMovement.canMove = true;
         }
 
         public (TypeData, int, List<int>) ParseString(string lineToParse)
@@ -137,7 +137,7 @@ namespace Games.Attacks
                         case TypeData.Group:
                             Vector3 newPos = new Vector3(i * 2 + (indexMap * 125), 1.5f, -j * 2);
                             GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
-                            groups.InstantiateMonster(newPos, idEquipements);
+                            InstantiateGroupsMonster(groups, newPos, idEquipements);
                             break;
                         case TypeData.Trap:
                             break;
@@ -169,28 +169,67 @@ namespace Games.Attacks
         {
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
-            objectsInScene.mainCamera.SetActive(false);
-
-            int playerIndex = GameController.PlayerIndex;
-
-            objectsInScene.playerExposer[playerIndex].playerCamera.SetActive(true);
-
-            objectsInScene.playerExposer[playerIndex].player.InitPlayerStats(Classes.WARRIOR);
-
+            
             // TODO : Temp Method
             GenerateArray();
 
             // TODO : Temp condition
             if (GameController.PlayerIndex % 2 == 0)
             {
-                GeneratingMap(tempMap2, playerIndex);
+                GeneratingMap(tempMap2, GameController.PlayerIndex);
             }
             else
             {
-                GeneratingMap(tempMap1, playerIndex);
+                GeneratingMap(tempMap1, GameController.PlayerIndex);
             }
 
+            ActivePlayer();
+
             endOfGeneration = true;
+        }
+
+        private void ActivePlayer()
+        {
+            objectsInScene.mainCamera.SetActive(false);
+
+            objectsInScene.playerExposer[GameController.PlayerIndex].playerGameObject.SetActive(true);
+            objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab.canMove = true;
+
+            objectsInScene.playerExposer[GameController.PlayerIndex].playerCamera.SetActive(true);
+        }
+
+        public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
+        {
+            InstantiateParameters param;
+            Monster monster;
+            int nbMonsterInit = 0;
+
+            Vector3 origPos = position;
+
+            foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
+            {
+                for (int i = 0; i < mobs.Value; i++)
+                {
+                    monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
+
+                    GameObject monsterGameObject = Instantiate(monster.model);
+                    monsterGameObject.transform.position = position;
+                    
+                    monster.idInitialisation = idMobInit;
+                    idMobInit++;
+                    nbMonsterInit++;
+
+                    MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
+                    monster.SetMonsterPrefab(monsterPrefab);
+                    monsterPrefab.SetMonster(monster);
+
+                    groups.InitSpecificEquipment(monster, equipment);
+
+                    position = origPos + GroupsPosition.position[nbMonsterInit];
+
+                    DataObject.monsterInScene.Add(monster);
+                }
+            }
         }
     }
 }

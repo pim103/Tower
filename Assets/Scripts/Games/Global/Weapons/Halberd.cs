@@ -15,13 +15,13 @@ namespace Games.Global.Weapons
         {
             switch (classe)
             {
-                case Classes.MAGE:
+                case Classes.Mage:
                     break;
-                case Classes.ROGUE:
+                case Classes.Rogue:
                     break;
-                case Classes.RANGER:
+                case Classes.Ranger:
                     break;
-                case Classes.WARRIOR:
+                case Classes.Warrior:
                     break;
             }
         }

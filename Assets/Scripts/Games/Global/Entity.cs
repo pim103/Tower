@@ -21,8 +21,10 @@ namespace Games.Global
     }
 
     // Class for mobs and players
-    public abstract class Entity : ItemModel
+    public abstract class Entity: ItemModel
     {
+        private ItemModel itemModel;
+        
         private const int DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
         private const int DEFAULT_ATT = 10;
@@ -51,58 +53,48 @@ namespace Games.Global
 
         public Dictionary<TypeEffect, Effect> underEffects;
 
-        [FormerlySerializedAs("movementPattern")] public MovementPatternController movementPatternController;
-
-        public abstract bool InitWeapon(int idWeapon);
-
-        public abstract void BasicAttack();
+        public EffectInterface effectInterface;
 
         public abstract void BasicDefense();
 
-        public IEnumerator EffectTime(Effect effect)
+        public void ApplyEffect(TypeEffect typeEffect, int duration, int level)
         {
-            Effect effectInList;
-
+            Effect effect = new Effect();
+            effect.level = level;
+            effect.durationInSeconds = duration;
+            effect.typeEffect = typeEffect;
+            
             if (underEffects.ContainsKey(effect.typeEffect))
             {
-                effectInList = underEffects[effect.typeEffect];
+                Effect effectInList = underEffects[effect.typeEffect];
                 effectInList.UpdateEffect(effect);
 
                 underEffects[effect.typeEffect] = effectInList;
-                yield break;
+                return;
             }
 
-            underEffects.Add(effect.typeEffect, effect);
+            effectInterface.StartCoroutineEffect(effect);
+        }
 
-            effectInList = underEffects[effect.typeEffect];
-            while (effectInList.durationInSeconds > 0)
+        public void TriggerEffect(Effect effect)
+        {
+            switch (effect.typeEffect)
             {
-                yield return new WaitForSeconds(0.5f);
+                case TypeEffect.Burn:
+                    if (underEffects.ContainsKey(TypeEffect.Sleep))
+                    {
+                        underEffects.Remove(TypeEffect.Sleep);
+                    }
 
-                switch (effectInList.typeEffect)
-                {
-                    case TypeEffect.Burn:
-                        if (underEffects.ContainsKey(TypeEffect.Sleep))
-                        {
-                            underEffects.Remove(TypeEffect.Sleep);
-                        }
-
-                        hp -= 2;
-                        break;
-                    case TypeEffect.Bleed:
-                        hp -= (1 * effectInList.level);
-                        break;
-                    case TypeEffect.Poison:
-                        hp -= 1;
-                        break;
-                }
-
-                effectInList = underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.5f;
-                underEffects[effect.typeEffect] = effectInList;
+                    ApplyDamage(2);
+                    break;
+                case TypeEffect.Bleed:
+                    ApplyDamage(1 * effect.level);
+                    break;
+                case TypeEffect.Poison:
+                    ApplyDamage(1);
+                    break;
             }
-
-            underEffects.Remove(effect.typeEffect);
         }
 
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
@@ -115,7 +107,7 @@ namespace Games.Global
         public virtual void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
         {
             int damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
-            hp -= damageReceived;
+            ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)
             {
@@ -138,13 +130,9 @@ namespace Games.Global
             }
         }
 
-        public void ApplyEffect(TypeEffect typeEffect, int duration, int level)
+        public virtual void ApplyDamage(int directDamage)
         {
-            Effect effect = new Effect();
-            effect.level = level;
-            effect.durationInSeconds = duration;
-            effect.typeEffect = typeEffect;
-            StartCoroutine(EffectTime(effect));
+            hp -= directDamage;
         }
     }
 }

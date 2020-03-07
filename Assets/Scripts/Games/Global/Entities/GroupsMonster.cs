@@ -23,7 +23,6 @@ namespace Games.Global.Entities
     public class GroupsMonster
     {
         public const int DEFAULT_RADIUS = 1;
-        private static int idMobInit = 0;
 
         public int id;
         public Family family;
@@ -35,7 +34,7 @@ namespace Games.Global.Entities
 
         private List<Monster> monsters;
 
-        private void InitSpecificEquipment(Monster monster, List<int> equipment)
+        public void InitSpecificEquipment(Monster monster, List<int> equipment)
         {
             int nbWeaponFound = 0;
             
@@ -60,38 +59,6 @@ namespace Games.Global.Entities
             if (nbWeaponFound == 0)
             {
                 monster.InitOriginalWeapon();
-            }
-        }
-
-        public void InstantiateMonster(Vector3 position, List<int> equipment)
-        {
-            InstantiateParameters param;
-            Monster monster;
-            int nbMonsterInit = 0;
-
-            Vector3 origPos = position;
-
-            foreach (KeyValuePair<int, int> mobs in monsterInGroups)
-            {
-                for (int i = 0; i < mobs.Value; i++)
-                {
-                    monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
-
-                    param = new InstantiateParameters();
-                    param.item = monster;
-                    param.type = TypeItem.Monster;
-
-                    monster.InstantiateModel(param, position);
-                    monster.idInitialisation = idMobInit;
-                    idMobInit++;
-                    nbMonsterInit++;
-
-                    InitSpecificEquipment(monster, equipment);
-
-                    position = origPos + GroupsPosition.position[nbMonsterInit];
-                    
-                    DataObject.monsterInScene.Add(monster);
-                }
             }
         }
     }

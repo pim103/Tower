@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using Games.Global.Abilities;
 using Games.Global.Entities;
+using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
@@ -12,6 +14,45 @@ namespace Games.Global.Weapons
         private Weapon weapon;
         private Entity wielder;
 
+        [SerializeField] private BoxCollider boxCollider;
+
+        public void BasicAttack(MovementPatternController movementPatternController, GameObject objectToMove)
+        {
+            if (!boxCollider.enabled)
+            {
+                boxCollider.enabled = true;
+            
+                PlayMovement(movementPatternController, weapon.attSpeed, objectToMove, boxCollider);
+
+                if (weapon.type == TypeWeapon.Distance)
+                {
+                    PoolProjectiles();
+                }
+            }
+        }
+        
+        private void PlayMovement(MovementPatternController movementPatternController, float attSpeed, GameObject objectToMove, BoxCollider bc)
+        {
+            movementPatternController.PlayMovement(weapon.pattern, attSpeed, objectToMove, bc);
+        }
+
+        private void PoolProjectiles()
+        {
+            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(0);
+
+            proj.transform.position = transform.position;
+            
+            Vector3 rot = proj.transform.localEulerAngles;
+            rot.y = transform.parent.eulerAngles.y;
+            proj.transform.localEulerAngles = rot;
+            proj.SetActive(true);
+
+            ProjectilesPrefab projectilesPrefab = proj.GetComponent<ProjectilesPrefab>();
+            projectilesPrefab.rigidbody.AddRelativeForce(Vector3.up * 1000, ForceMode.Acceleration);
+
+            projectilesPrefab.weaponOrigin = this;
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
             TouchEntity(other);
@@ -26,11 +67,12 @@ namespace Games.Global.Weapons
 
             if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
             {
-                MobPrefab mobPrefab = other.GetComponent<MobPrefab>();
-                entity = mobPrefab.GetMonster();
+                MonsterPrefab monsterPrefab = other.GetComponent<MonsterPrefab>();
+                entity = monsterPrefab.GetMonster();
             } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
             {
-                entity = other.transform.parent.GetComponent<Player>();
+                PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                entity = playerPrefab.player;
             }
             else
             {
