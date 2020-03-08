@@ -54,7 +54,7 @@ namespace Games.Players
                         playerExposer.playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
                         BasicAttack();
 
-                        ApplyEffect(TypeEffect.MadeADash, 0.5f);
+                        ApplyEffect(TypeEffect.MadeADash, 0.2f);
                     }
                     break;
                 case Classes.Warrior:

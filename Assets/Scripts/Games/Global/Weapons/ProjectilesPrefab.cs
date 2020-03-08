@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Games.Global.Weapons
@@ -7,6 +8,21 @@ namespace Games.Global.Weapons
     {
         public WeaponPrefab weaponOrigin;
         [SerializeField] public Rigidbody rigidbody;
+
+        public IEnumerator TimerBeforeDisapear()
+        {
+            int timer = 5;
+            while (timer > 0)
+            {
+                yield return new WaitForSeconds(1);
+                timer--;
+            }
+        }
+        
+        private void Awake()
+        {
+            StartCoroutine(TimerBeforeDisapear());
+        }
 
         private void OnTriggerEnter(Collider other)
         {

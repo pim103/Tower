@@ -198,8 +198,7 @@ namespace Games.Attacks
             objectsInScene.playerExposer[GameController.PlayerIndex].playerCamera.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = true;
-            
+
             DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab);
         }
 

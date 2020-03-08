@@ -22,8 +22,6 @@ namespace Games.Players
         public int playerIndex;
         public bool canMove;
 
-        private Vector3 offsetCamera;
-
         private void Start()
         {
             Player player = new Player();
@@ -31,7 +29,7 @@ namespace Games.Players
             entity = player;
             
             player.SetPlayerExposer(playerExposer);
-            player.InitPlayerStats(Classes.Mage);
+            player.InitPlayerStats(Classes.Ranger);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -39,8 +37,6 @@ namespace Games.Players
             wantToGoLeft = false;
             wantToGoRight = false;
             pressDefenseButton = false;
-
-            offsetCamera = (cameraPoint.transform.position + camera.transform.position);
 
             StartCoroutine(NaturalRegen());
         }

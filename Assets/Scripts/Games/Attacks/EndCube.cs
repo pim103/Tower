@@ -7,6 +7,7 @@ namespace Games.Attacks
     {
         private void OnTriggerEnter(Collider other)
         {
+            Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene("MenuScene");
         }
     }

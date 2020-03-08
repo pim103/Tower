@@ -25,10 +25,10 @@ namespace Games.Global
             switch (specialMovement)
             {
                 case SpecialMovement.Dash:
-                    rigidbodyEntity.AddRelativeForce(Vector3.forward * 15f, ForceMode.Impulse);
+                    rigidbodyEntity.AddRelativeForce(Vector3.forward * 30f, ForceMode.Impulse);
                     break;
                 case SpecialMovement.BackDash:
-                    rigidbodyEntity.AddRelativeForce(Vector3.back * 15f, ForceMode.Impulse);
+                    rigidbodyEntity.AddRelativeForce(Vector3.back * 30f, ForceMode.Impulse);
                     break;
             }
         }
