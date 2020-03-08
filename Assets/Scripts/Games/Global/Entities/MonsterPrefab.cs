@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
@@ -7,17 +7,11 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace Games.Global.Entities
 {
-    public class MonsterPrefab : MonoBehaviour, EffectInterface
+    public class MonsterPrefab : EntityPrefab, EffectInterface
     {
-        [SerializeField] private GameObject hand;
-
         [SerializeField] private Slider hpBar;
 
-        [SerializeField] private MovementPatternController movementPatternController;
-
         private PlayerExposer playerExposer;
- 
-        private Monster monster;
 
         private void Start()
         {
@@ -28,7 +22,7 @@ namespace Games.Global.Entities
 
         private void Update()
         {
-            float diff = (float) monster.hp / (float) monster.initialHp;
+            float diff = (float) entity.hp / (float) entity.initialHp;
             hpBar.value = diff;
             hpBar.transform.LookAt(playerExposer.playerCamera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
@@ -38,32 +32,18 @@ namespace Games.Global.Entities
 
         public void SetMonster(Monster monster)
         {
-            this.monster = monster;
+            entity = monster;
             monster.effectInterface = this;
         }
 
         public Monster GetMonster()
         {
-            return monster;
-        }
-
-        public void AddItemInHand(Weapon weapon)
-        {
-            GameObject weaponGameObject = Instantiate(weapon.model, hand.transform);
-            WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
-            weapon.weaponPrefab = weaponPrefab;
-            weaponPrefab.SetWielder(monster);
-            weaponPrefab.SetWeapon(weapon);
-        }
-
-        public void PlayBasicAttack(WeaponPrefab weaponPrefab)
-        {
-            weaponPrefab.BasicAttack(movementPatternController, hand);
+            return (Monster)entity;
         }
 
         public void EntityDie()
         {
-            DataObject.monsterInScene.Remove(monster);
+            DataObject.monsterInScene.Remove((Monster)entity);
 
             Destroy(gameObject);
         }
@@ -75,21 +55,21 @@ namespace Games.Global.Entities
         
         public IEnumerator PlayEffectOnTime(Effect effect)
         {
-            monster.underEffects.Add(effect.typeEffect, effect);
+            entity.underEffects.Add(effect.typeEffect, effect);
 
-            Effect effectInList = monster.underEffects[effect.typeEffect];
+            Effect effectInList = entity.underEffects[effect.typeEffect];
             while (effectInList.durationInSeconds > 0)
             {
                 yield return new WaitForSeconds(0.1f);
 
-                monster.TriggerEffect(effectInList);
+                entity.TriggerEffect(effectInList);
 
-                effectInList = monster.underEffects[effect.typeEffect];
+                effectInList = entity.underEffects[effect.typeEffect];
                 effectInList.durationInSeconds -= 0.1f;
-                monster.underEffects[effect.typeEffect] = effectInList;
+                entity.underEffects[effect.typeEffect] = effectInList;
             }
 
-            monster.underEffects.Remove(effect.typeEffect);
+            entity.underEffects.Remove(effect.typeEffect);
         }
     }
 }

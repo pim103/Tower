@@ -22,7 +22,7 @@ namespace Games.Global.Entities
 
         private MonsterPrefab monsterPrefab;
 
-        public void BasicAttack()
+        public override void BasicAttack()
         {
             monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
         }
@@ -30,6 +30,11 @@ namespace Games.Global.Entities
         public override void BasicDefense()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void DesactiveBasicDefense()
+        {
+            throw new NotImplementedException();
         }
 
         public override void ApplyDamage(float directDamage)

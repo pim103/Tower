@@ -12,7 +12,8 @@ namespace Games.Global
         Weak,
         Stun,
         Sleep,
-        Regen
+        Regen,
+        Invisibility
     }
 
     public struct Effect

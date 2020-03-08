@@ -62,8 +62,10 @@ namespace Games.Global
 
         public EffectInterface effectInterface;
 
+        public abstract void BasicAttack();
         public abstract void BasicDefense();
-
+        public abstract void DesactiveBasicDefense();
+        
         public void ApplyEffect(TypeEffect typeEffect, float duration, int level, Entity originEffect = null, float ressourceCost = 0)
         {
             Effect effect = new Effect();

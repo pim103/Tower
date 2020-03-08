@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Games.Global;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
@@ -11,10 +11,7 @@ namespace Games.Players
     {
         private const int PLAYER_SPEED = 10;
 
-        public Player player;
-
         [SerializeField] private PlayerExposer playerExposer;
-        [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Slider hpBar;
         [SerializeField] private Slider ressourcesBar;
 
@@ -23,7 +20,10 @@ namespace Games.Players
 
         private void Start()
         {
-            player = new Player();
+            Player player = new Player();
+
+            entity = player;
+            
             player.SetPlayerExposer(playerExposer);
             player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
@@ -43,9 +43,9 @@ namespace Games.Players
             {
                 yield return new WaitForSeconds(0.1f);
 
-                if (player.ressource1 < player.initialRessource1)
+                if (entity.ressource1 < entity.initialRessource1)
                 {
-                    player.ressource1 += 0.1f;
+                    entity.ressource1 += 0.1f;
                 }
             }
         }
@@ -54,10 +54,10 @@ namespace Games.Players
         {
             GetIntentPlayer();
 
-            float diff = (float) player.hp / (float) player.initialHp;
+            float diff = (float) entity.hp / (float) entity.initialHp;
             hpBar.value = diff;
 
-            diff = (float) player.ressource1 / (float) player.initialRessource1;
+            diff = (float) entity.ressource1 / (float) entity.initialRessource1;
             ressourcesBar.value = diff;
         }
 
@@ -68,7 +68,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (player.underEffects.ContainsKey(TypeEffect.Stun) || player.underEffects.ContainsKey(TypeEffect.Sleep))
+            if (entity.underEffects.ContainsKey(TypeEffect.Stun) || entity.underEffects.ContainsKey(TypeEffect.Sleep))
             {
                 wantToGoBack = false;
                 wantToGoForward = false;
@@ -113,16 +113,16 @@ namespace Games.Players
 
             if(Input.GetMouseButton(0))
             {
-                player.BasicAttack();
+                entity.BasicAttack();
             }
             else if (Input.GetMouseButton(1))
             {
-                player.BasicDefense();
+                entity.BasicDefense();
                 pressDefenseButton = true;
             } 
             else if (pressDefenseButton)
             {
-                player.DesactiveBasicDefense();
+                entity.DesactiveBasicDefense();
                 pressDefenseButton = false;
             }
 
@@ -172,53 +172,6 @@ namespace Games.Players
                 playerTransform.LookAt(point);
                 playerTransform.localEulerAngles = Vector3.up * playerTransform.localEulerAngles.y;
             }
-        }
-        
-        public void AddItemInHand(Weapon weapon)
-        {
-            GameObject weaponGameObject = Instantiate(weapon.model, playerExposer.playerHand.transform);
-            WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
-            weapon.weaponPrefab = weaponPrefab;
-            weaponPrefab.SetWielder(player);
-            weaponPrefab.SetWeapon(weapon);
-        }
-
-        public void PlayBasicAttack(WeaponPrefab weaponPrefab)
-        {
-            weaponPrefab.BasicAttack(movementPatternController, playerExposer.playerHand);
-        }
-
-        public void StartCoroutineEffect(Effect effect)
-        {
-            StartCoroutine(PlayEffectOnTime(effect));
-        }
-
-        public IEnumerator PlayEffectOnTime(Effect effect)
-        {
-            player.underEffects.Add(effect.typeEffect, effect);
-
-            Effect effectInList = player.underEffects[effect.typeEffect];
-            while (effectInList.durationInSeconds > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                if (effect.launcher != null && effect.ressourceCost > 0)
-                {
-                    effect.launcher.ressource1 -= effect.ressourceCost;
-
-                    if (effect.launcher.ressource1 <= 0)
-                    {
-                        break;
-                    }
-                }
-
-                player.TriggerEffect(effectInList);
-
-                effectInList = player.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.1f;
-                player.underEffects[effect.typeEffect] = effectInList;
-            }
-
-            player.underEffects.Remove(effect.typeEffect);
         }
     }
 }

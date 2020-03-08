@@ -72,7 +72,7 @@ namespace Games.Global.Weapons
             } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
             {
                 PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
-                entity = playerPrefab.player;
+                entity = playerPrefab.entity;
             }
             else
             {

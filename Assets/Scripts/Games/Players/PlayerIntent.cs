@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Games.Players
 {
-    public abstract class PlayerIntent : MonoBehaviour
+    public abstract class PlayerIntent : EntityPrefab
     {
         public bool wantToGoForward;
         public bool wantToGoBack;

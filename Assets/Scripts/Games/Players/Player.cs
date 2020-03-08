@@ -1,11 +1,7 @@
-﻿using System.Diagnostics;
-using Games.Global;
+﻿using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
-using UnityEngine;
-using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -38,7 +34,7 @@ namespace Games.Players
             this.playerExposer = playerExposer;
         }
 
-        public void BasicAttack()
+        public override void BasicAttack()
         {
             playerExposer.playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
         }
@@ -53,6 +49,7 @@ namespace Games.Players
                 case Classes.Rogue:
                     break;
                 case Classes.Ranger:
+                    playerExposer.playerPrefab.PlaySpecialMovement();
                     break;
                 case Classes.Warrior:
                     isBlocking = true;
@@ -60,7 +57,7 @@ namespace Games.Players
             }
         }
 
-        public void DesactiveBasicDefense()
+        public override void DesactiveBasicDefense()
         {
             switch (mainClass)
             {
