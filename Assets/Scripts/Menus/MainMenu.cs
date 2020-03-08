@@ -55,7 +55,11 @@ namespace Menus
                 mc.ActivateMenu(MenuController.Menu.Shop);
             });
 
-            quitButton.onClick.AddListener(mc.QuitGame);
+            quitButton.onClick.AddListener(delegate
+            {
+                mc.networking.CloseConnection();
+                mc.QuitGame();
+            });
         }
 
         public void InitMenu()

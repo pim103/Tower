@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Menus
@@ -25,6 +29,7 @@ namespace Menus
         private GameObject roomCase;
 
         private Dictionary<string, GameObject> listRoom;
+        private Rooms roomList;
 
         private string roomSelected;
 
@@ -42,6 +47,7 @@ namespace Menus
             {
                 mc.ActivateMenu(MenuController.Menu.Play);
             });
+            StartCoroutine(LoadJsonRoom());
         }
 
         private void ClearRoom()
@@ -85,6 +91,27 @@ namespace Menus
             }
 
             joinRoomButton.interactable = false;
+        }
+
+        IEnumerator LoadJsonRoom()
+        {
+            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                Debug.Log(www.downloadHandler.text);
+                roomList = JsonUtility.FromJson<Rooms>(www.downloadHandler.text);
+                foreach (Room room in roomList.rooms)
+                {
+                    GameObject newRoom = Instantiate(roomCase, content);
+                    RoomListing roomListing = newRoom.GetComponent<RoomListing>();
+                    roomListing.RoomInfo = room;
+                    roomListing.SetRoomInfo(room);
+                    Debug.Log(roomListing.RoomInfo.mode);
+                }
+            }
         }
     }
 }
