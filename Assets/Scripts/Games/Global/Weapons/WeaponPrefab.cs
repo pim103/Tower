@@ -80,7 +80,7 @@ namespace Games.Global.Weapons
             }
 
             AbilityParameters abilityParameters = new AbilityParameters();
-            abilityParameters.originDamage = wielder;
+            abilityParameters.origin = wielder;
             abilityParameters.directTarget = entity;
 
             weapon.OnDamageDealt(abilityParameters); 

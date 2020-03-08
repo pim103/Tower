@@ -48,6 +48,7 @@ namespace Games.Players
             switch (mainClass)
             {
                 case Classes.Mage:
+                    ApplyEffect(TypeEffect.Regen, 0.5f, 1, this, 1);
                     break;
                 case Classes.Rogue:
                     break;
@@ -88,24 +89,28 @@ namespace Games.Players
                     def = 2;
                     speed = 10;
                     hp = 50;
+                    ressource1 = 50;
                     break;
                 case Classes.Warrior:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
+                    ressource1 = 50;
                     break;
                 case Classes.Rogue:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
+                    ressource1 = 50;
                     break;
                 case Classes.Ranger:
                     att = 10;
                     def = 2;
                     speed = 10;
                     hp = 50;
+                    ressource1 = 50;
                     break;
             }
 
@@ -113,6 +118,8 @@ namespace Games.Players
             initialDef = def;
             initialHp = hp;
             initialSpeed = speed;
+            initialRessource1 = ressource1;
+            initialRessource2 = ressource2;
 
             InitEquipementArray();
             InitWeapon(2);
@@ -128,7 +135,7 @@ namespace Games.Players
             weapons.Add(weapon);
         }
 
-        public override void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
+        public override void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
         {
             if (isBlocking)
             {
@@ -145,7 +152,7 @@ namespace Games.Players
             base.TakeDamage(initialDamage, abilityParameters);
         }
         
-        public override void ApplyDamage(int directDamage)
+        public override void ApplyDamage(float directDamage)
         {
             base.ApplyDamage(directDamage);
 

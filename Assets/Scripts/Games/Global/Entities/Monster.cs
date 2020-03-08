@@ -32,7 +32,7 @@ namespace Games.Global.Entities
             throw new System.NotImplementedException();
         }
 
-        public override void ApplyDamage(int directDamage)
+        public override void ApplyDamage(float directDamage)
         {
             base.ApplyDamage(directDamage);
 

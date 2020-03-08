@@ -16,6 +16,7 @@ namespace Games.Players
         [SerializeField] private PlayerExposer playerExposer;
         [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Slider hpBar;
+        [SerializeField] private Slider ressourcesBar;
 
         public int playerIndex;
         public bool canMove;
@@ -24,13 +25,29 @@ namespace Games.Players
         {
             player = new Player();
             player.SetPlayerExposer(playerExposer);
-            player.InitPlayerStats(Classes.Warrior);
+            player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
 
             wantToGoBack = false;
             wantToGoForward = false;
             wantToGoLeft = false;
             wantToGoRight = false;
+            pressDefenseButton = false;
+
+            StartCoroutine(NaturalRegen());
+        }
+
+        private IEnumerator NaturalRegen()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(0.1f);
+
+                if (player.ressource1 < player.initialRessource1)
+                {
+                    player.ressource1 += 0.1f;
+                }
+            }
         }
 
         private void Update()
@@ -39,6 +56,9 @@ namespace Games.Players
 
             float diff = (float) player.hp / (float) player.initialHp;
             hpBar.value = diff;
+
+            diff = (float) player.ressource1 / (float) player.initialRessource1;
+            ressourcesBar.value = diff;
         }
 
         private void FixedUpdate()
@@ -94,14 +114,16 @@ namespace Games.Players
             if(Input.GetMouseButton(0))
             {
                 player.BasicAttack();
-            } 
-            else if (Input.GetMouseButtonDown(1))
+            }
+            else if (Input.GetMouseButton(1))
             {
                 player.BasicDefense();
+                pressDefenseButton = true;
             } 
-            else if (Input.GetMouseButtonUp(1))
+            else if (pressDefenseButton)
             {
                 player.DesactiveBasicDefense();
+                pressDefenseButton = false;
             }
 
             mousePosition = Input.mousePosition;
@@ -178,12 +200,21 @@ namespace Games.Players
             Effect effectInList = player.underEffects[effect.typeEffect];
             while (effectInList.durationInSeconds > 0)
             {
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
+                if (effect.launcher != null && effect.ressourceCost > 0)
+                {
+                    effect.launcher.ressource1 -= effect.ressourceCost;
+
+                    if (effect.launcher.ressource1 <= 0)
+                    {
+                        break;
+                    }
+                }
 
                 player.TriggerEffect(effectInList);
 
                 effectInList = player.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.5f;
+                effectInList.durationInSeconds -= 0.1f;
                 player.underEffects[effect.typeEffect] = effectInList;
             }
 

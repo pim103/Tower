@@ -14,7 +14,7 @@ namespace Games.Global.Abilities
 
     public struct AbilityParameters
     {
-        public Entity originDamage;
+        public Entity origin;
         public Entity directTarget;
         
         public List<Entity> allies;

@@ -25,21 +25,28 @@ namespace Games.Global
     {
         private ItemModel itemModel;
         
-        private const int DEFAULT_HP = 100;
+        private const float DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
         private const int DEFAULT_ATT = 10;
         private const int DEFAULT_SPEED = 10;
+        private const float DEFAULT_RESSOURCE = 50;
+        
         private const int DEFAULT_NB_WEAPONS = 1;
 
-        public int initialHp;
+        public float initialHp;
         public int initialDef;
         public int initialAtt;
         public int initialSpeed;
+        public float initialRessource1;
+        public float initialRessource2;
 
-        public int hp = DEFAULT_HP;
+        public float hp = DEFAULT_HP;
         public int def = DEFAULT_DEF;
         public int att = DEFAULT_ATT;
         public int speed = DEFAULT_SPEED;
+        
+        public float ressource1 = DEFAULT_RESSOURCE;
+        public float ressource2 = 0;
 
         public Func<AbilityParameters, bool> OnDamageReceive;
 
@@ -57,13 +64,21 @@ namespace Games.Global
 
         public abstract void BasicDefense();
 
-        public void ApplyEffect(TypeEffect typeEffect, int duration, int level)
+        public void ApplyEffect(TypeEffect typeEffect, float duration, int level, Entity originEffect = null, float ressourceCost = 0)
         {
             Effect effect = new Effect();
             effect.level = level;
             effect.durationInSeconds = duration;
             effect.typeEffect = typeEffect;
-            
+
+            effect.launcher = originEffect;
+            effect.ressourceCost = ressourceCost;
+
+            if (ressource1 < ressourceCost)
+            {
+                return;
+            }
+
             if (underEffects.ContainsKey(effect.typeEffect))
             {
                 Effect effectInList = underEffects[effect.typeEffect];
@@ -86,13 +101,16 @@ namespace Games.Global
                         underEffects.Remove(TypeEffect.Sleep);
                     }
 
-                    ApplyDamage(2);
+                    ApplyDamage(0.2f);
                     break;
                 case TypeEffect.Bleed:
-                    ApplyDamage(1 * effect.level);
+                    ApplyDamage(0.1f * effect.level);
                     break;
                 case TypeEffect.Poison:
-                    ApplyDamage(1);
+                    ApplyDamage(0.1f);
+                    break;
+                case TypeEffect.Regen:
+                    hp += 0.2f;
                     break;
             }
         }
@@ -104,9 +122,9 @@ namespace Games.Global
             underEffects = new Dictionary<TypeEffect, Effect>();
         }
 
-        public virtual void TakeDamage(int initialDamage, AbilityParameters abilityParameters)
+        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
         {
-            int damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
+            float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
             ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)
@@ -130,7 +148,7 @@ namespace Games.Global
             }
         }
 
-        public virtual void ApplyDamage(int directDamage)
+        public virtual void ApplyDamage(float directDamage)
         {
             hp -= directDamage;
         }

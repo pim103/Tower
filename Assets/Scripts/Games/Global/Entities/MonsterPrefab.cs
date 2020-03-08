@@ -80,12 +80,12 @@ namespace Games.Global.Entities
             Effect effectInList = monster.underEffects[effect.typeEffect];
             while (effectInList.durationInSeconds > 0)
             {
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
 
                 monster.TriggerEffect(effectInList);
 
                 effectInList = monster.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.5f;
+                effectInList.durationInSeconds -= 0.1f;
                 monster.underEffects[effect.typeEffect] = effectInList;
             }
 

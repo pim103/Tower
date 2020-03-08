@@ -11,7 +11,8 @@ namespace Games.Global
         Bleed,
         Weak,
         Stun,
-        Sleep
+        Sleep,
+        Regen
     }
 
     public struct Effect
@@ -19,6 +20,9 @@ namespace Games.Global
         public TypeEffect typeEffect;
         public int level;
         public float durationInSeconds;
+
+        public Entity launcher;
+        public float ressourceCost;
 
         public void UpdateEffect(Effect effect)
         {
@@ -49,6 +53,12 @@ namespace Games.Global
                     if (durationInSeconds > 20)
                     {
                         durationInSeconds = 20;
+                    }
+                    break;
+                case TypeEffect.Regen:
+                    if (durationInSeconds < effect.durationInSeconds)
+                    {
+                        durationInSeconds = effect.durationInSeconds;
                     }
                     break;
             }

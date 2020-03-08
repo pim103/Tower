@@ -10,5 +10,7 @@ namespace Games.Players
         public bool wantToGoLeft;
         public bool wantToGoRight;
         public Vector3 mousePosition;
+
+        public bool pressDefenseButton;
     }
 }
