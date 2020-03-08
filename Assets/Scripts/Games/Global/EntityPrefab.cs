@@ -1,22 +1,38 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Games.Global
 {
+    public enum SpecialMovement
+    {
+        Dash,
+        BackDash
+    }
+    
     public class EntityPrefab: MonoBehaviour
     {
-        [SerializeField] private GameObject hand;
+        [SerializeField] public GameObject hand;
         [SerializeField] private MovementPatternController movementPatternController;
+        [SerializeField] private Rigidbody rigidbodyEntity;
 
         public Entity entity;
         
-        public void PlaySpecialMovement()
+        public void PlaySpecialMovement(SpecialMovement specialMovement)
         {
-            
+            switch (specialMovement)
+            {
+                case SpecialMovement.Dash:
+                    rigidbodyEntity.AddRelativeForce(Vector3.forward * 15f, ForceMode.Impulse);
+                    break;
+                case SpecialMovement.BackDash:
+                    rigidbodyEntity.AddRelativeForce(Vector3.back * 15f, ForceMode.Impulse);
+                    break;
+            }
         }
-        
+
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
         {
             weaponPrefab.BasicAttack(movementPatternController, hand);

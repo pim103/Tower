@@ -49,7 +49,13 @@ namespace Games.Players
                 case Classes.Rogue:
                     break;
                 case Classes.Ranger:
-                    playerExposer.playerPrefab.PlaySpecialMovement();
+                    if (!underEffects.ContainsKey(TypeEffect.MadeADash))
+                    {
+                        playerExposer.playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
+                        BasicAttack();
+
+                        ApplyEffect(TypeEffect.MadeADash, 0.5f);
+                    }
                     break;
                 case Classes.Warrior:
                     isBlocking = true;

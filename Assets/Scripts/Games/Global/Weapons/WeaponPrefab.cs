@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Patterns;
@@ -41,18 +41,17 @@ namespace Games.Global.Weapons
             GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(0);
 
             proj.transform.position = transform.position;
-            
-            Vector3 rot = proj.transform.localEulerAngles;
-            rot.y = transform.parent.eulerAngles.y;
-            proj.transform.localEulerAngles = rot;
+            float rotX = proj.transform.localEulerAngles.x;
+
+            proj.transform.localEulerAngles = transform.parent.eulerAngles + (Vector3.right * rotX);
             proj.SetActive(true);
 
             ProjectilesPrefab projectilesPrefab = proj.GetComponent<ProjectilesPrefab>();
-            projectilesPrefab.rigidbody.AddRelativeForce(Vector3.up * 1000, ForceMode.Acceleration);
+            projectilesPrefab.rigidbody.AddForce(transform.right * -1000, ForceMode.Acceleration);
 
             projectilesPrefab.weaponOrigin = this;
         }
-        
+
         private void OnTriggerEnter(Collider other)
         {
             TouchEntity(other);

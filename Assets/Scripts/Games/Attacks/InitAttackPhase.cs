@@ -196,6 +196,11 @@ namespace Games.Attacks
             objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab.canMove = true;
 
             objectsInScene.playerExposer[GameController.PlayerIndex].playerCamera.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true;
+            
+            DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab);
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)

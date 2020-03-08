@@ -13,7 +13,9 @@ namespace Games.Global
         Stun,
         Sleep,
         Regen,
-        Invisibility
+        Invisibility,
+
+        MadeADash,
     }
 
     public struct Effect

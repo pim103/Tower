@@ -11,12 +11,18 @@ namespace Games.Players
     {
         private const int PLAYER_SPEED = 10;
 
-        [SerializeField] private PlayerExposer playerExposer;
+        [SerializeField] public PlayerExposer playerExposer;
         [SerializeField] private Slider hpBar;
         [SerializeField] private Slider ressourcesBar;
 
+        [SerializeField] public GameObject cameraPoint;
+        [SerializeField] public Camera camera;
+        [SerializeField] private GameObject originalCameraPosition;
+
         public int playerIndex;
         public bool canMove;
+
+        private Vector3 offsetCamera;
 
         private void Start()
         {
@@ -33,6 +39,8 @@ namespace Games.Players
             wantToGoLeft = false;
             wantToGoRight = false;
             pressDefenseButton = false;
+
+            offsetCamera = (cameraPoint.transform.position + camera.transform.position);
 
             StartCoroutine(NaturalRegen());
         }
@@ -63,7 +71,12 @@ namespace Games.Players
 
         private void FixedUpdate()
         {
-            Movement();
+            if (!entity.underEffects.ContainsKey(TypeEffect.MadeADash))
+            {
+                Movement();
+            }
+    
+            CameraRotation();
         }
 
         public void GetIntentPlayer()
@@ -154,23 +167,39 @@ namespace Games.Players
                 horizontalMove += 1;
             }
 
-            Vector3 movement = rigidbody.velocity;
-            movement.x = horizontalMove * PLAYER_SPEED;
-            movement.z = verticalMove * PLAYER_SPEED;
+            var locVel = transform.InverseTransformDirection(rigidbody.velocity);
+            locVel.x = horizontalMove * PLAYER_SPEED;
+            locVel.z = verticalMove * PLAYER_SPEED;
 
-            rigidbody.velocity = movement;
+            rigidbody.velocity = transform.TransformDirection(locVel);
+        }
 
-            Camera playerCamera = playerExposer.playerCamera.GetComponent<Camera>();
+        private void CameraRotation()
+        {
+            int rotationSpeed = 5;
+            
+            float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
+            float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
+            playerExposer.playerGameObject.transform.Rotate(0, horizontal, 0);
+            
+            cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
+            hand.transform.eulerAngles = camera.transform.eulerAngles;
+
             RaycastHit hit;
-            Ray cameraRay = playerCamera.ScreenPointToRay(mousePosition);
-
-            if (Physics.Raycast(cameraRay, out hit))
+            Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")))
             {
-                Vector3 point = hit.point;
-                point.y = 0;
-                Transform playerTransform = playerExposer.playerTransform;
-                playerTransform.LookAt(point);
-                playerTransform.localEulerAngles = Vector3.up * playerTransform.localEulerAngles.y;
+                hand.transform.LookAt(hit.point);
+            }
+
+            if (Physics.Raycast(playerExposer.playerTransform.position, (camera.transform.forward * -1), out hit, 6))
+            {
+                camera.transform.position = hit.point;
+                camera.transform.position += camera.transform.forward * 0.2f;
+            }
+            else
+            {
+                camera.transform.position = originalCameraPosition.transform.position;
             }
         }
     }

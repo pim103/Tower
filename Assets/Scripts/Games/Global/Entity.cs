@@ -66,7 +66,7 @@ namespace Games.Global
         public abstract void BasicDefense();
         public abstract void DesactiveBasicDefense();
         
-        public void ApplyEffect(TypeEffect typeEffect, float duration, int level, Entity originEffect = null, float ressourceCost = 0)
+        public void ApplyEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
         {
             Effect effect = new Effect();
             effect.level = level;

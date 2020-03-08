@@ -135,7 +135,14 @@
           <e p="Networking" t="Include">
             <e p="Client" t="Include">
               <e p="AcceptCertificate.cs" t="Include" />
-              <e p="Account.cs" t="Include" />
+              <e p="Account" t="Include">
+                <e p="Account.cs" t="Include" />
+              </e>
+              <e p="Room" t="Include">
+                <e p="Room.cs" t="Include" />
+                <e p="RoomCase.cs" t="Include" />
+                <e p="RoomListing.cs" t="Include" />
+              </e>
               <e p="TowersWebSocket.cs" t="Include" />
             </e>
           </e>

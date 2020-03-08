@@ -2,6 +2,7 @@
 using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEngine;
 using Utils;
 
@@ -28,5 +29,6 @@ namespace Games.Global
         public static WeaponList WeaponList;
 
         public static List<Monster> monsterInScene = new List<Monster>();
+        public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
     }
 }
