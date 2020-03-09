@@ -30,7 +30,7 @@ namespace Games.Players
             entity.entityPrefab = this;
             
             player.SetPlayerExposer(playerExposer);
-            player.InitPlayerStats(Classes.Rogue);
+            player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -180,13 +180,13 @@ namespace Games.Players
             playerExposer.playerGameObject.transform.Rotate(0, horizontal, 0);
             
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
-            hand.transform.eulerAngles = camera.transform.eulerAngles;
+            virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
             if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")))
             {
-                hand.transform.LookAt(hit.point);
+                virtualHand.transform.LookAt(hit.point);
             }
 
             if (Physics.Raycast(playerExposer.playerTransform.position, (camera.transform.forward * -1), out hit, 6))

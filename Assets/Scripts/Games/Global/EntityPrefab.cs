@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Games.Global
 {
@@ -14,7 +15,12 @@ namespace Games.Global
     
     public class EntityPrefab: MonoBehaviour
     {
+        // virtual hand look at cursor or target
+        [SerializeField] public GameObject virtualHand;
+        
+        // hand play animation of weapon
         [SerializeField] public GameObject hand;
+
         [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Rigidbody rigidbodyEntity;
         
@@ -74,6 +80,7 @@ namespace Games.Global
                     if (effect.launcher.ressource1 <= 0)
                     {
                         StopCurrentEffect(effect);
+                        yield break;
                     }
                 }
 

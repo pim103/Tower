@@ -15,8 +15,6 @@ namespace Games.Global.Patterns
                 Pattern movement = pattern[i];
                 float initialMovement = movement.movementDuration / (attSpeed / pattern.Length);
                 float movementDuration = initialMovement;
-                
-                Vector3 rot;
 
                 while (movementDuration > 0)
                 {

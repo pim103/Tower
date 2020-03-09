@@ -80,7 +80,7 @@ namespace Games.Global.Weapons
 
             if (entity.IdEntity == wielder.IdEntity &&
                 ((other.gameObject.layer == monsterLayer && wielder.typeEntity == TypeEntity.MOB) ||
-                 (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER))
+                 (other.gameObject.layer == playerLayer && wielder.typeEntity == TypeEntity.PLAYER))
             )
             {
                 return false;

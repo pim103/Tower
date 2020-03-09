@@ -46,7 +46,7 @@ namespace Games.Global.Entities
 
             if (newTarget != null)
             {
-                hand.transform.LookAt(newTarget.transform);
+                virtualHand.transform.LookAt(newTarget.transform);
             }
 
             target = newTarget;
