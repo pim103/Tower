@@ -49,11 +49,13 @@ namespace Games.Players
                 case Classes.Rogue:
                     break;
                 case Classes.Ranger:
-                    if (!underEffects.ContainsKey(TypeEffect.MadeADash))
+                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
                     {
+                        ressource1 -= 10;
+                        
                         playerExposer.playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
                         BasicAttack();
-
+                        
                         ApplyEffect(TypeEffect.MadeADash, 0.2f);
                     }
                     break;
@@ -84,6 +86,8 @@ namespace Games.Players
         {
             mainClass = classe;
             typeEntity = TypeEntity.PLAYER;
+
+            IdEntity = GameController.PlayerIndex;
 
             switch(classe)
             {

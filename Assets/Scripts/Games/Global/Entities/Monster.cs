@@ -8,7 +8,6 @@ namespace Games.Global.Entities
 {
     public class Monster: Entity
     {
-        public int idInitialisation;
         public int id;
         public string mobName;
         public int nbWeapon;

@@ -17,8 +17,10 @@ namespace Games.Global.Weapons
                 yield return new WaitForSeconds(1);
                 timer--;
             }
+
+            DesactivePrefab();
         }
-        
+
         private void Awake()
         {
             StartCoroutine(TimerBeforeDisapear());
@@ -26,11 +28,21 @@ namespace Games.Global.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
+            bool touch = true;
+            
             if (other.gameObject.layer != LayerMask.NameToLayer("Wall"))
             {
-                weaponOrigin.TouchEntity(other);
+                touch = weaponOrigin.TouchEntity(other);
             }
 
+            if (touch)
+            {
+                DesactivePrefab();
+            }
+        }
+
+        private void DesactivePrefab()
+        {
             rigidbody.velocity = Vector3.zero;
             gameObject.SetActive(false);
         }

@@ -219,7 +219,7 @@ namespace Games.Attacks
                     GameObject monsterGameObject = Instantiate(monster.model);
                     monsterGameObject.transform.position = position;
                     
-                    monster.idInitialisation = idMobInit;
+                    monster.IdEntity = idMobInit;
                     idMobInit++;
                     nbMonsterInit++;
 

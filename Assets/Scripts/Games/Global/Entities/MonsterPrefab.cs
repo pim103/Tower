@@ -47,29 +47,5 @@ namespace Games.Global.Entities
 
             Destroy(gameObject);
         }
-
-        public void StartCoroutineEffect(Effect effect)
-        {
-            StartCoroutine(PlayEffectOnTime(effect));
-        }
-        
-        public IEnumerator PlayEffectOnTime(Effect effect)
-        {
-            entity.underEffects.Add(effect.typeEffect, effect);
-
-            Effect effectInList = entity.underEffects[effect.typeEffect];
-            while (effectInList.durationInSeconds > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-
-                entity.TriggerEffect(effectInList);
-
-                effectInList = entity.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.1f;
-                entity.underEffects[effect.typeEffect] = effectInList;
-            }
-
-            entity.underEffects.Remove(effect.typeEffect);
-        }
     }
 }

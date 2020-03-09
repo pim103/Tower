@@ -57,7 +57,7 @@ namespace Games.Global.Weapons
             TouchEntity(other);
         }
 
-        public void TouchEntity(Collider other)
+        public bool TouchEntity(Collider other)
         {
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int playerLayer = LayerMask.NameToLayer("Player");
@@ -75,7 +75,15 @@ namespace Games.Global.Weapons
             }
             else
             {
-                return;
+                return false;
+            }
+
+            if (entity.IdEntity == wielder.IdEntity &&
+                ((other.gameObject.layer == monsterLayer && wielder.typeEntity == TypeEntity.MOB) ||
+                 (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER))
+            )
+            {
+                return false;
             }
 
             AbilityParameters abilityParameters = new AbilityParameters();
@@ -83,7 +91,9 @@ namespace Games.Global.Weapons
             abilityParameters.directTarget = entity;
 
             weapon.OnDamageDealt(abilityParameters); 
-            entity.TakeDamage(weapon.damage, abilityParameters);  
+            entity.TakeDamage(weapon.damage, abilityParameters);
+
+            return true;
         }
 
         public void SetWeapon(Weapon weapon)

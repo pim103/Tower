@@ -23,6 +23,8 @@ namespace Games.Global
     // Class for mobs and players
     public abstract class Entity: ItemModel
     {
+        public int IdEntity;
+        
         private ItemModel itemModel;
         
         private const float DEFAULT_HP = 100;
