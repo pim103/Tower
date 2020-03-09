@@ -32,11 +32,6 @@ namespace Utils
             Debug.Log("Stats => dmg : " + damage + " att speed : " + attSpeed);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
             Debug.Log("Model Name : " + modelName);
-            Debug.Log("Effects : ");
-            foreach (TypeEffect effect in effects)
-            {
-                Debug.Log("Apply : " + effect);
-            }
         }
         
         public override void InsertValue(string key, string value)
@@ -63,13 +58,6 @@ namespace Utils
                     break;
                 case "cost":
                     cost = Int32.Parse(value);
-                    break;
-                case "effects":
-                    if (effects == null)
-                    {
-                        effects = new List<TypeEffect>();
-                    }
-                    effects.Add((TypeEffect)Int32.Parse(value));
                     break;
                 case "damage":
                     damage = Int32.Parse(value);
@@ -155,7 +143,6 @@ namespace Utils
             weapon.damage = damage;
             weapon.category = category;
             weapon.type = type;
-            weapon.effects = effects;
             weapon.rarity = rarity;
             weapon.lootRate = lootRate;
             weapon.equipementName = nameWeapon;

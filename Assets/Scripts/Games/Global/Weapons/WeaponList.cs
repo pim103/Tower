@@ -82,7 +82,6 @@ namespace Games.Global.Weapons
             weapon.damage = orig.damage;
             weapon.category = orig.category;
             weapon.type = orig.type;
-            weapon.effects = orig.effects;
             weapon.rarity = orig.rarity;
             weapon.lootRate = orig.lootRate;
             weapon.equipementName = orig.equipementName;

@@ -42,9 +42,6 @@ namespace Games.Global.Weapons
         public int damage;
         public float attSpeed;
 
-        // TODO : Delete effects
-        public List<TypeEffect> effects;
-
         public Pattern[] pattern;
 
         public Skill skill1;

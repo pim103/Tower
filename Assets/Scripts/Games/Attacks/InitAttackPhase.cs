@@ -60,7 +60,7 @@ namespace Games.Attacks
             }
 
             tempMap2[MAP_SIZE / 4, MAP_SIZE / 4] = (int)TypeData.Group + ":" + "1" + ":" + "[]";
-            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
+//            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
         }
 
         public (TypeData, int, List<int>) ParseString(string lineToParse)
