@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
@@ -13,11 +14,11 @@ namespace Games.Global.Entities
 
         private PlayerExposer playerExposer;
 
+        private PlayerPrefab target;
+
         private void Start()
         {
-            // TODO : Replace find with another method ?
-            ObjectsInScene ois = GameObject.Find("Controller").GetComponent<ObjectsInScene>();
-            playerExposer = ois.playerExposer[GameController.PlayerIndex];
+            playerExposer = DataObject.playerInScene[GameController.PlayerIndex].playerExposer;
         }
 
         private void Update()
@@ -28,6 +29,26 @@ namespace Games.Global.Entities
             hpBar.transform.Rotate(Vector3.up * 180);
    
             gameObject.transform.LookAt(playerExposer.playerTransform);
+            FindTarget();
+        }
+
+        private void FindTarget()
+        {
+            PlayerPrefab newTarget = null;
+            
+            foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+            {
+                if (!value.Value.entity.underEffects.ContainsKey(TypeEffect.Invisibility))
+                {
+                    newTarget = value.Value;
+                }
+            }
+
+            if (newTarget != null)
+            {
+                target = newTarget;
+                hand.transform.LookAt(newTarget.transform);
+            }
         }
 
         public void SetMonster(Monster monster)
