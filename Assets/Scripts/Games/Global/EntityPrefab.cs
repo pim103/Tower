@@ -17,9 +17,11 @@ namespace Games.Global
         [SerializeField] public GameObject hand;
         [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Rigidbody rigidbodyEntity;
+        
+        [SerializeField] protected MeshRenderer meshRenderer;
 
         public Entity entity;
-        
+
         public void PlaySpecialMovement(SpecialMovement specialMovement)
         {
             switch (specialMovement)
@@ -49,14 +51,19 @@ namespace Games.Global
         
         public void StartCoroutineEffect(Effect effect)
         {
-            StartCoroutine(PlayEffectOnTime(effect));
+            entity.underEffects.Add(effect.typeEffect, effect);
+            Coroutine currentCoroutine = StartCoroutine(PlayEffectOnTime(effect));
+
+            effect.currentCoroutine = currentCoroutine;
+            entity.underEffects[effect.typeEffect] = effect;
         }
 
         public IEnumerator PlayEffectOnTime(Effect effect)
         {
-            entity.underEffects.Add(effect.typeEffect, effect);
-
             Effect effectInList = entity.underEffects[effect.typeEffect];
+
+            entity.InitialTrigger(effectInList);
+            
             while (effectInList.durationInSeconds > 0)
             {
                 yield return new WaitForSeconds(0.1f);
@@ -66,7 +73,7 @@ namespace Games.Global
 
                     if (effect.launcher.ressource1 <= 0)
                     {
-                        break;
+                        StopCurrentEffect(effect);
                     }
                 }
 
@@ -77,7 +84,23 @@ namespace Games.Global
                 entity.underEffects[effect.typeEffect] = effectInList;
             }
 
+            StopCurrentEffect(effect);
+        }
+
+        public void StopCurrentEffect(Effect effect)
+        {
+            if (effect.currentCoroutine != null)
+            {
+                StopCoroutine(effect.currentCoroutine);
+            }
+
+            entity.EndEffect(effect);
             entity.underEffects.Remove(effect.typeEffect);
+        }
+
+        public void SetMaterial(Material material)
+        {
+            meshRenderer.material = material;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
+using Utils;
 
 namespace Games.Players
 {
@@ -44,9 +45,10 @@ namespace Games.Players
             switch (mainClass)
             {
                 case Classes.Mage:
-                    ApplyEffect(TypeEffect.Regen, 0.5f, 1, this, 1);
+                    ApplyEffect(TypeEffect.Regen, 5f, 1, this, 1);
                     break;
                 case Classes.Rogue:
+                    ApplyEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
                     break;
                 case Classes.Ranger:
                     if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
@@ -70,8 +72,10 @@ namespace Games.Players
             switch (mainClass)
             {
                 case Classes.Mage:
+                    RemoveEffect(TypeEffect.Regen);
                     break;
                 case Classes.Rogue:
+                    RemoveEffect(TypeEffect.Invisibility);
                     break;
                 case Classes.Ranger:
                     break;

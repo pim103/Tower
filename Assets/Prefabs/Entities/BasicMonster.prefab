@@ -159,7 +159,9 @@ MonoBehaviour:
   hand: {fileID: 1307247680109986637}
   movementPatternController: {fileID: 6307249475328061940}
   rigidbodyEntity: {fileID: 1869628687301897145}
+  meshRenderer: {fileID: 1869628687301897147}
   hpBar: {fileID: 1237704919439136648}
+  target: {fileID: 0}
 --- !u!114 &6307249475328061940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,16 +387,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 5727908350623542550, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -405,17 +397,27 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 5727908350623542550, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0

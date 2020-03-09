@@ -23,7 +23,10 @@ namespace Games.Global.Entities
 
         public override void BasicAttack()
         {
-            monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+            if (monsterPrefab.target)
+            {
+                monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+            }
         }
         
         public override void BasicDefense()

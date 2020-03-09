@@ -27,6 +27,8 @@ namespace Games.Global
         public Entity launcher;
         public float ressourceCost;
 
+        public Coroutine currentCoroutine;
+
         public void UpdateEffect(Effect effect)
         {
             switch (typeEffect)

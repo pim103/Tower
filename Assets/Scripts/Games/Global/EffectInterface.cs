@@ -6,5 +6,6 @@ namespace Games.Global
     {
         void StartCoroutineEffect(Effect effect);
         IEnumerator PlayEffectOnTime(Effect effect);
+        void StopCurrentEffect(Effect effect);
     }
 }

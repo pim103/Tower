@@ -27,9 +27,10 @@ namespace Games.Players
             Player player = new Player();
 
             entity = player;
+            entity.entityPrefab = this;
             
             player.SetPlayerExposer(playerExposer);
-            player.InitPlayerStats(Classes.Ranger);
+            player.InitPlayerStats(Classes.Rogue);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -124,12 +125,12 @@ namespace Games.Players
             {
                 entity.BasicAttack();
             }
-            else if (Input.GetMouseButton(1))
+            else if (Input.GetMouseButtonDown(1))
             {
                 entity.BasicDefense();
                 pressDefenseButton = true;
-            } 
-            else if (pressDefenseButton)
+            }
+            else if (Input.GetMouseButtonUp(1))
             {
                 entity.DesactiveBasicDefense();
                 pressDefenseButton = false;

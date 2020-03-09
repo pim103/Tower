@@ -9,6 +9,7 @@ using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utils;
 using Debug = UnityEngine.Debug;
 
 namespace Games.Global
@@ -64,6 +65,8 @@ namespace Games.Global
 
         public EffectInterface effectInterface;
 
+        public EntityPrefab entityPrefab;
+
         public abstract void BasicAttack();
         public abstract void BasicDefense();
         public abstract void DesactiveBasicDefense();
@@ -95,6 +98,24 @@ namespace Games.Global
             effectInterface.StartCoroutineEffect(effect);
         }
 
+        public void RemoveEffect(TypeEffect typeEffect)
+        {
+            if (underEffects.ContainsKey(typeEffect))
+            {
+                effectInterface.StopCurrentEffect(underEffects[typeEffect]);
+            }
+        }
+
+        public void InitialTrigger(Effect effect)
+        {
+            switch (effect.typeEffect)
+            {
+                case TypeEffect.Invisibility:
+                    entityPrefab.SetMaterial(StaticMaterials.invisibleMaterial);
+                    break;
+            }
+        }
+
         public void TriggerEffect(Effect effect)
         {
             switch (effect.typeEffect)
@@ -115,6 +136,16 @@ namespace Games.Global
                     break;
                 case TypeEffect.Regen:
                     hp += 0.2f;
+                    break;
+            }
+        }
+
+        public void EndEffect(Effect effect)
+        {
+            switch (effect.typeEffect)
+            {
+                case TypeEffect.Invisibility:
+                    entityPrefab.SetMaterial(StaticMaterials.defaultMaterial);
                     break;
             }
         }

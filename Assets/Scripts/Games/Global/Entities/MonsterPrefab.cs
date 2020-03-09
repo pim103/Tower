@@ -14,7 +14,7 @@ namespace Games.Global.Entities
 
         private PlayerExposer playerExposer;
 
-        private PlayerPrefab target;
+        public PlayerPrefab target;
 
         private void Start()
         {
@@ -46,14 +46,16 @@ namespace Games.Global.Entities
 
             if (newTarget != null)
             {
-                target = newTarget;
                 hand.transform.LookAt(newTarget.transform);
             }
+
+            target = newTarget;
         }
 
         public void SetMonster(Monster monster)
         {
             entity = monster;
+            entity.entityPrefab = this;
             monster.effectInterface = this;
         }
 
