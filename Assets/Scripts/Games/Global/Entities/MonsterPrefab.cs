@@ -12,23 +12,23 @@ namespace Games.Global.Entities
     {
         [SerializeField] private Slider hpBar;
 
-        private PlayerExposer playerExposer;
+        private PlayerPrefab playerPrefab;
 
         public PlayerPrefab target;
 
         private void Start()
         {
-            playerExposer = DataObject.playerInScene[GameController.PlayerIndex].playerExposer;
+            playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
         }
 
         private void Update()
         {
             float diff = (float) entity.hp / (float) entity.initialHp;
             hpBar.value = diff;
-            hpBar.transform.LookAt(playerExposer.playerCamera.transform);
+            hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
    
-            gameObject.transform.LookAt(playerExposer.playerTransform);
+            gameObject.transform.LookAt(playerPrefab.playerTransform);
             FindTarget();
         }
 

@@ -707,7 +707,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7401777425161430231}
   - component: {fileID: 7401777425161430235}
-  - component: {fileID: 1616889050918674922}
   - component: {fileID: 5990262949680921091}
   - component: {fileID: 6005216912202565307}
   m_Layer: 8
@@ -756,32 +755,17 @@ MonoBehaviour:
   wantToGoRight: 0
   mousePosition: {x: 0, y: 0, z: 0}
   pressDefenseButton: 0
-  playerExposer: {fileID: 1616889050918674922}
   hpBar: {fileID: 3859966404143106688}
   ressourcesBar: {fileID: 541124499911645534}
+  playerGameObject: {fileID: 7401777425161430227}
+  playerTransform: {fileID: 7401777425161430231}
+  playerRigidbody: {fileID: 6005216912202565307}
   cameraPoint: {fileID: 1381675250500037345}
   camera: {fileID: 7401777426190087310}
+  cameraGameObject: {fileID: 7401777426190087308}
   originalCameraPosition: {fileID: 379627697745879133}
   playerIndex: 0
   canMove: 0
---- !u!114 &1616889050918674922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7401777425161430227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9af635de8c93ab448b36eada85846c54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerGameObject: {fileID: 7401777425161430227}
-  playerPrefab: {fileID: 7401777425161430235}
-  playerRigidbody: {fileID: 6005216912202565307}
-  playerCamera: {fileID: 7401777426190087308}
-  playerHand: {fileID: 7348560538528900300}
-  playerTransform: {fileID: 7401777425161430231}
 --- !u!114 &5990262949680921091
 MonoBehaviour:
   m_ObjectHideFlags: 0

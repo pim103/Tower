@@ -20,7 +20,7 @@ namespace Games.Players
         public ChestplateArmor chestplateArmor;
         public LeggingsArmor leggingsArmor;
 
-        private PlayerExposer playerExposer;
+        private PlayerPrefab playerPrefab;
 
         public Classes mainClass;
         
@@ -30,14 +30,14 @@ namespace Games.Players
         public int nbShieldBlock = 0;
         public bool isBlocking = false;
 
-        public void SetPlayerExposer(PlayerExposer playerExposer)
+        public void SetPlayerPrefab(PlayerPrefab playerPrefab)
         {
-            this.playerExposer = playerExposer;
+            this.playerPrefab = playerPrefab;
         }
 
         public override void BasicAttack()
         {
-            playerExposer.playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+            playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
         }
         
         public override void BasicDefense()
@@ -55,7 +55,7 @@ namespace Games.Players
                     {
                         ressource1 -= 10;
                         
-                        playerExposer.playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
+                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
                         BasicAttack();
                         
                         ApplyEffect(TypeEffect.MadeADash, 0.2f);
@@ -140,7 +140,7 @@ namespace Games.Players
         {
             Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
 
-            playerExposer.playerPrefab.AddItemInHand(weapon);
+            playerPrefab.AddItemInHand(weapon);
             weapon.InitPlayerSkill(mainClass);
 
             weapons.Add(weapon);

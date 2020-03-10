@@ -11,12 +11,16 @@ namespace Games.Players
     {
         private const int PLAYER_SPEED = 10;
 
-        [SerializeField] public PlayerExposer playerExposer;
         [SerializeField] private Slider hpBar;
         [SerializeField] private Slider ressourcesBar;
 
+        [SerializeField] public GameObject playerGameObject;
+        [SerializeField] public Transform playerTransform;
+        [SerializeField] private Rigidbody playerRigidbody;
+        
         [SerializeField] public GameObject cameraPoint;
         [SerializeField] public Camera camera;
+        [SerializeField] public GameObject cameraGameObject;
         [SerializeField] private GameObject originalCameraPosition;
 
         public int playerIndex;
@@ -28,8 +32,8 @@ namespace Games.Players
 
             entity = player;
             entity.entityPrefab = this;
-            
-            player.SetPlayerExposer(playerExposer);
+
+            player.SetPlayerPrefab(this);
             player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
 
@@ -141,7 +145,7 @@ namespace Games.Players
         
         public void Movement()
         {
-            Rigidbody rigidbody = playerExposer.playerRigidbody;
+            Rigidbody rigidbody = playerRigidbody;
 
             int horizontalMove = 0;
             int verticalMove = 0;
@@ -177,7 +181,7 @@ namespace Games.Players
             
             float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
             float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
-            playerExposer.playerGameObject.transform.Rotate(0, horizontal, 0);
+            playerGameObject.transform.Rotate(0, horizontal, 0);
             
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
             virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
@@ -189,7 +193,7 @@ namespace Games.Players
                 virtualHand.transform.LookAt(hit.point);
             }
 
-            if (Physics.Raycast(playerExposer.playerTransform.position, (camera.transform.forward * -1), out hit, 6))
+            if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6))
             {
                 camera.transform.position = hit.point;
                 camera.transform.position += camera.transform.forward * 0.2f;

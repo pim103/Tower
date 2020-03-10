@@ -33,7 +33,7 @@ namespace Games
         // =========================== PLAYER CHARACTER ========================
 
         [SerializeField]
-        public PlayerExposer[] playerExposer;
+        public PlayerPrefab[] playerPrefab;
 
         // ========================== ACCESS TO MAP CONTAINER ==================
 

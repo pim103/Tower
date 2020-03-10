@@ -192,14 +192,14 @@ namespace Games.Attacks
         {
             objectsInScene.mainCamera.SetActive(false);
 
-            objectsInScene.playerExposer[GameController.PlayerIndex].playerGameObject.SetActive(true);
-            objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab.canMove = true;
+            objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
+            objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
-            objectsInScene.playerExposer[GameController.PlayerIndex].playerCamera.SetActive(true);
+            objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
 
-            DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerExposer[GameController.PlayerIndex].playerPrefab);
+            DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
