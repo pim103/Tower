@@ -184,7 +184,7 @@ namespace Games.Players
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")))
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")) && entity.weapons[0].type != TypeWeapon.Cac)
             {
                 virtualHand.transform.LookAt(hit.point);
             }
