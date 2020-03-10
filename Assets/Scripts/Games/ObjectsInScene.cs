@@ -1,5 +1,4 @@
 ﻿using Games.Players;
-using Scripts.Games.Players;
 using UnityEngine;
 using UnityEngine.UI;
 

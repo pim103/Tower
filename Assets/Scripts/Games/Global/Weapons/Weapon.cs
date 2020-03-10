@@ -1,10 +1,12 @@
-﻿using Games.Global.Patterns;
-using Scripts.Games.Global;
+﻿using System.Collections.Generic;
+using Games.Global.Patterns;
+using Games.Players;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Games.Global.Weapons
 {
-    public enum TypeEquipement
+    public enum CategoryWeapon
     {
         SHORT_SWORD,
         LONG_SWORD,
@@ -24,22 +26,31 @@ namespace Games.Global.Weapons
         HANDGUN
     };
 
+    public enum TypeWeapon
+    {
+        Distance,
+        Cac
+    }
+
     public abstract class Weapon : Equipement
     {
+        public WeaponPrefab weaponPrefab;
+        
         public string equipementName;
-        public TypeEquipement type;
+        public CategoryWeapon category;
+        public TypeWeapon type;
         public int damage;
-        public int attSpeed;
+        public float attSpeed;
 
-        public Effect[] effects;
+        // TODO : Delete effects
+        public List<TypeEffect> effects;
 
         public Pattern[] pattern;
 
-        public abstract void BasicAttack();
+        public Skill skill1;
+        public Skill skill2;
+        public Skill skill3;
 
-        public void PlayMovement(MovementPattern movementPattern, GameObject objectToMove)
-        {
-            movementPattern.PlayMovement(pattern, objectToMove);
-        }
+        public abstract void InitPlayerSkill(Classes classe);
     }
 }

@@ -1,14 +1,18 @@
-﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Networking.Client;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Scripts.Menus
-{
+namespace Menus
+{   
     public class MenuController : MonoBehaviour
     {
         [SerializeField]
         private GameObject[] menus;
+
+        [FormerlySerializedAs("_endPoint")] [SerializeField] 
+        private string endPoint;
+        public TowersWebSocket networking;
+        
 
         public enum Menu
         {
@@ -30,6 +34,7 @@ namespace Scripts.Menus
         private void Start()
         {
             ActivateMenu(Menu.Connection);
+            networking = new TowersWebSocket(endPoint);
         }
 
         public void ActivateMenu(Menu menuIndex)
@@ -54,23 +59,6 @@ namespace Scripts.Menus
         public void QuitGame()
         {
             Application.Quit();
-        }
-
-        public void ConnectToPhoton()
-        {
-            if(!PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.ConnectUsingSettings();
-                PhotonNetwork.AutomaticallySyncScene = true;
-            }
-        }
-
-        public void DisconnectToPhoton()
-        {
-            if(PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.Disconnect();
-            }
         }
     }
 }

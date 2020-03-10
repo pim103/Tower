@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class CollectionMenu : MonoBehaviour, MenuInterface
     {

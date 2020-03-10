@@ -1,29 +1,70 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Scripts.Games.Global
+namespace Games.Global
 {
     public enum TypeEffect
     {
-        PIERCE,
-        AOE,
-        BURN,
-        POISON,
-        BLEED,
-        WEAK,
-        STUN
+        Pierce,
+        Aoe,
+        Burn,
+        Poison,
+        Bleed,
+        Weak,
+        Stun,
+        Sleep,
+        Regen,
+        Invisibility,
+
+        MadeADash,
     }
 
-    public enum Target
-    {
-        SELF,
-        TARGET
-    }
-
-    public class Effect : MonoBehaviour
+    public struct Effect
     {
         public TypeEffect typeEffect;
-        public Target target;
+        public int level;
+        public float durationInSeconds;
+
+        public Entity launcher;
+        public float ressourceCost;
+
+        public void UpdateEffect(Effect effect)
+        {
+            switch (typeEffect)
+            {
+                case TypeEffect.Burn:
+                    durationInSeconds += effect.durationInSeconds;
+
+                    if (durationInSeconds > 20)
+                    {
+                        durationInSeconds = 20;
+                    }
+                    break;
+                case TypeEffect.Bleed:
+                    if (durationInSeconds < effect.durationInSeconds)
+                    {
+                        durationInSeconds = effect.durationInSeconds;
+                    }
+
+                    if (level < 5)
+                    {
+                        level += effect.level;
+                    }
+                    break;
+                case TypeEffect.Poison:
+                    durationInSeconds += effect.durationInSeconds;
+
+                    if (durationInSeconds > 20)
+                    {
+                        durationInSeconds = 20;
+                    }
+                    break;
+                case TypeEffect.Regen:
+                    if (durationInSeconds < effect.durationInSeconds)
+                    {
+                        durationInSeconds = effect.durationInSeconds;
+                    }
+                    break;
+            }
+        }
     }
 }

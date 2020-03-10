@@ -2,11 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// What we need for crafting
 [Serializable]
-public struct ItemAmount
+public struct RecipeResource
 {
+    // The Resource
+    public Resource Resource;
+
+    // The amount of the Resource
+    [Range(1, 999)]
+    public int Amount;
+}
+
+// What crafting will result
+[Serializable]
+public struct RecipeResult
+{
+    // The item
     public Item Item;
 
+    // The amount of the item
     [Range(1, 999)]
     public int Amount;
 }
@@ -14,21 +29,49 @@ public struct ItemAmount
 [CreateAssetMenu]
 public class CraftingRecipe : ScriptableObject
 {
-    public List<ItemAmount> Materials;
-    public List<ItemAmount> Results;
+    [Header("Resources")]
+    // Resources required for the recipe
+    public List<RecipeResource> RecipeResources;
 
-    public bool CanCraft(IItemContainer itemContainer)
+    [Header("Result")]
+    // What the recipe will give
+    public List<RecipeResult> RecipeResults;
+
+    // Craft function
+    public void Craft(AccountManager accountManager)
     {
-        return HasMaterials(itemContainer) && HasSpace(itemContainer);
+        // Verify that we can craft this recipe
+        if (CanCraft(accountManager))
+        {
+            // Remove resources we used for craft this recipe
+            RemoveResources(accountManager);
+
+            // Add the recipe result to the user account
+            AddResults(accountManager);
+
+            Debug.Log("Craft success");
+        }
+        else
+        {
+            Debug.Log("Craft faillure");
+        }
     }
 
-    private bool HasMaterials(IItemContainer itemContainer)
+    // Verify that we can craft this recipe
+    public bool CanCraft(AccountManager accountManager)
     {
-        foreach (ItemAmount itemAmount in Materials)
+        // Verify if the account have the required resources for the craft
+        return HasResources(accountManager);
+    }
+
+    // Verify if the account have the required resources for the craft
+    private bool HasResources(AccountManager accountManager)
+    {
+        foreach (RecipeResource recipeResource in RecipeResources)
         {
-            if (itemContainer.ItemCount(itemAmount.Item.ID) < itemAmount.Amount)
+            if (accountManager.ResourceCount(recipeResource.Resource.ID) < recipeResource.Amount)
             {
-                Debug.LogWarning("You don't have the required materials.");
+                Debug.LogWarning("You don't have the required resources.");
                 return false;
             }
         }
@@ -36,49 +79,21 @@ public class CraftingRecipe : ScriptableObject
         return true;
     }
 
-    private bool HasSpace(IItemContainer itemContainer)
+    // Remove resources we used for craft this recipe
+    private void RemoveResources(AccountManager accountManager)
     {
-        foreach (ItemAmount itemAmount in Results)
+        foreach (RecipeResource recipeResource in RecipeResources)
         {
-            if (!itemContainer.CanAddItem(itemAmount.Item, itemAmount.Amount))
+            for (int i = 0; i < recipeResource.Amount; i++)
             {
-                Debug.LogWarning("Your inventory is full.");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public void Craft(IItemContainer itemContainer)
-    {
-        if (CanCraft(itemContainer))
-        {
-            RemoveMaterials(itemContainer);
-            AddResults(itemContainer);
-        }
-    }
-
-    private void RemoveMaterials(IItemContainer itemContainer)
-    {
-        foreach (ItemAmount itemAmount in Materials)
-        {
-            for (int i = 0; i < itemAmount.Amount; i++)
-            {
-                Item oldItem = itemContainer.RemoveItem(itemAmount.Item.ID);
-                oldItem.Destroy();
+                accountManager.RemoveResource(recipeResource.Resource.ID);
             }
         }
     }
 
-    private void AddResults(IItemContainer itemContainer)
+    // Add the recipe result to the account
+    private void AddResults(AccountManager accountManager)
     {
-        foreach (ItemAmount itemAmount in Results)
-        {
-            for (int i = 0; i < itemAmount.Amount; i++)
-            {
-                itemContainer.AddItem(itemAmount.Item.GetCopy());
-            }
-        }
+        // TODO : Add the result to the account
     }
 }

@@ -1,13 +1,14 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
-    public class PrivateMatchMenu : MonoBehaviourPunCallbacks, MenuInterface
+    public class PrivateMatchMenu : MonoBehaviour, MenuInterface
     {
         [SerializeField]
         private MenuController mc;
@@ -28,6 +29,7 @@ namespace Scripts.Menus
         private GameObject roomCase;
 
         private Dictionary<string, GameObject> listRoom;
+        private Rooms roomList;
 
         private string roomSelected;
 
@@ -45,6 +47,7 @@ namespace Scripts.Menus
             {
                 mc.ActivateMenu(MenuController.Menu.Play);
             });
+            StartCoroutine(LoadJsonRoom());
         }
 
         private void ClearRoom()
@@ -71,68 +74,7 @@ namespace Scripts.Menus
 
         private void JoinRoom()
         {
-            if(roomSelected != null)
-            {
-                PhotonNetwork.JoinRoom(roomSelected);
-            }
-        }
-
-        private IEnumerator CheckConnectionToLobby()
-        {
-            while(true)
-            {
-                yield return new WaitForSeconds(1.0f);
-
-                if(!PhotonNetwork.IsConnected)
-                {
-                    mc.ConnectToPhoton();
-                }
-                else if(!PhotonNetwork.InLobby)
-                {
-                    TypedLobby tl = new TypedLobby
-                    {
-                        Name = "private"
-                    };
-
-                    PhotonNetwork.JoinLobby(tl);
-                }
-            }
-        }
-
-        /* ============================== PHOTON ============================== */
-
-        public override void OnRoomListUpdate(List<RoomInfo> roomList)
-        {
-            Debug.Log("Refresh Room List");
-            foreach(var room in roomList)
-            {
-                if(room.RemovedFromList && listRoom.ContainsKey(room.Name))
-                {
-                    Destroy(listRoom[room.Name]);
-                    listRoom.Remove(room.Name);
-                }
-                else if(!listRoom.ContainsKey(room.Name))
-                {
-                    var newRoomCase = Instantiate(roomCase, content);
-                    newRoomCase.transform.GetChild(1).GetComponent<Text>().text = room.Name + " : " + room.PlayerCount + " / " + room.MaxPlayers;
-
-                    newRoomCase.GetComponent<Button>().onClick.AddListener(delegate
-                    {
-                        SelectRoom(room.Name);
-                    });
-
-                    listRoom.Add(room.Name, newRoomCase);
-                }
-                else
-                {
-                    listRoom[room.Name].transform.GetChild(1).GetComponent<Text>().text = room.Name + " : " + room.PlayerCount + " / " + room.MaxPlayers;
-                }
-            }
-        }
-
-        public override void OnJoinedRoom()
-        {
-            mc.ActivateMenu(MenuController.Menu.ListingPlayer);
+            Debug.Log(roomSelected);
         }
 
         /* ============================== INTERFACE ============================== */
@@ -148,16 +90,28 @@ namespace Scripts.Menus
                 ClearRoom();
             }
 
-            TypedLobby tl = new TypedLobby
-            {
-                Name = "private"
-            };
-
-            PhotonNetwork.JoinLobby(tl);
-
             joinRoomButton.interactable = false;
+        }
 
-            StartCoroutine(CheckConnectionToLobby());
+        IEnumerator LoadJsonRoom()
+        {
+            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                Debug.Log(www.downloadHandler.text);
+                roomList = JsonUtility.FromJson<Rooms>(www.downloadHandler.text);
+                foreach (Room room in roomList.rooms)
+                {
+                    GameObject newRoom = Instantiate(roomCase, content);
+                    RoomListing roomListing = newRoom.GetComponent<RoomListing>();
+                    roomListing.RoomInfo = room;
+                    roomListing.SetRoomInfo(room);
+                    Debug.Log(roomListing.RoomInfo.mode);
+                }
+            }
         }
     }
 }

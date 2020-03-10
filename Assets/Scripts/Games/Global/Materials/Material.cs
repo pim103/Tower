@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Games.Global.Materials
+﻿namespace Games.Global.Materials
 {
     public class Material : Item
     {

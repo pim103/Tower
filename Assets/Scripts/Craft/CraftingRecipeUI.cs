@@ -6,10 +6,11 @@ public class CraftingRecipeUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] RectTransform arrowParent;
+    [SerializeField] ResourceSlot[] resourceSlots;
     [SerializeField] BaseItemSlot[] itemSlots;
 
     [Header("Public Variables")]
-    public ItemContainer ItemContainer;
+    public AccountManager AccountManager;
 
     private CraftingRecipe craftingRecipe;
     public CraftingRecipe CraftingRecipe
@@ -18,16 +19,26 @@ public class CraftingRecipeUI : MonoBehaviour
         set { SetCraftingRecipe(value); }
     }
 
+    public event Action<ResourceSlot> ResourceOnPointerEnterEvent;
+    public event Action<ResourceSlot> ResourceOnPointerExitEvent;
+
     public event Action<BaseItemSlot> OnPointerEnterEvent;
     public event Action<BaseItemSlot> OnPointerExitEvent;
 
     private void OnValidate()
     {
+        resourceSlots = GetComponentsInChildren<ResourceSlot>(includeInactive: true);
         itemSlots = GetComponentsInChildren<BaseItemSlot>(includeInactive: true);
     }
 
     private void Start()
     {
+        foreach (ResourceSlot resourceSlot in resourceSlots)
+        {
+            resourceSlot.OnPointerEnterEvent += slot => ResourceOnPointerEnterEvent(slot);
+            resourceSlot.OnPointerExitEvent += slot => ResourceOnPointerExitEvent(slot);
+        }
+
         foreach (BaseItemSlot itemSlot in itemSlots)
         {
             itemSlot.OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
@@ -37,9 +48,10 @@ public class CraftingRecipeUI : MonoBehaviour
 
     public void OnCraftButtonClick()
     {
-        if (craftingRecipe != null && ItemContainer != null)
+        // Verify that we have a recipe and accountmanager data
+        if (craftingRecipe != null && AccountManager != null)
         {
-            craftingRecipe.Craft(ItemContainer);
+            craftingRecipe.Craft(AccountManager);
         }
     }
 
@@ -49,12 +61,19 @@ public class CraftingRecipeUI : MonoBehaviour
 
         if (craftingRecipe != null)
         {
-            int slotIndex = 0;
-            slotIndex = SetSlots(craftingRecipe.Materials, slotIndex);
-            arrowParent.SetSiblingIndex(slotIndex);
-            slotIndex = SetSlots(craftingRecipe.Results, slotIndex);
+            int resourceSlotIndex = 0;
+            int itemSlotIndex = 0;
 
-            for (int i = slotIndex; i < itemSlots.Length; i++)
+            resourceSlotIndex = SetResourceSlots(craftingRecipe.RecipeResources, resourceSlotIndex);
+            arrowParent.SetSiblingIndex(resourceSlotIndex);
+            itemSlotIndex = SetItemSlots(craftingRecipe.RecipeResults, itemSlotIndex);
+
+            for (int i = resourceSlotIndex; i < resourceSlots.Length; i++)
+            {
+                resourceSlots[i].transform.parent.gameObject.SetActive(false);
+            }
+
+            for (int i = itemSlotIndex; i < itemSlots.Length; i++)
             {
                 itemSlots[i].transform.parent.gameObject.SetActive(false);
             }
@@ -67,18 +86,33 @@ public class CraftingRecipeUI : MonoBehaviour
         }
     }
 
-    private int SetSlots(IList<ItemAmount> itemAmountList, int slotIndex)
+    private int SetResourceSlots(IList<RecipeResource> resourceAmountList, int resourceSlotIndex)
     {
-        for (int i = 0; i < itemAmountList.Count; i++, slotIndex++)
+        for (int i = 0; i < resourceAmountList.Count; i++, resourceSlotIndex++)
         {
-            ItemAmount itemAmount = itemAmountList[i];
-            BaseItemSlot itemSlot = itemSlots[slotIndex];
+            RecipeResource resourceAmount = resourceAmountList[i];
+            ResourceSlot resourceSlot = resourceSlots[resourceSlotIndex];
+
+            resourceSlot.Resource = resourceAmount.Resource;
+            resourceSlot.Amount = resourceAmount.Amount;
+            resourceSlot.transform.parent.gameObject.SetActive(true);
+        }
+
+        return resourceSlotIndex;
+    }
+
+    private int SetItemSlots(IList<RecipeResult> itemAmountList, int itemSlotIndex)
+    {
+        for (int i = 0; i < itemAmountList.Count; i++, itemSlotIndex++)
+        {
+            RecipeResult itemAmount = itemAmountList[i];
+            BaseItemSlot itemSlot = itemSlots[itemSlotIndex];
 
             itemSlot.Item = itemAmount.Item;
             itemSlot.Amount = itemAmount.Amount;
             itemSlot.transform.parent.gameObject.SetActive(true);
         }
 
-        return slotIndex;
+        return itemSlotIndex;
     }
 }

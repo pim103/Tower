@@ -10,7 +10,7 @@ public class CraftingWindow : MonoBehaviour
     [SerializeField] List<CraftingRecipeUI> craftingRecipeUIs;
 
     [Header("Public variables")]
-    public ItemContainer ItemContainer;
+    public AccountManager AccountManager;
     public List<CraftingRecipe> CraftingRecipes;
 
     public event Action<BaseItemSlot> OnPointerEnterEvent;
@@ -51,7 +51,7 @@ public class CraftingWindow : MonoBehaviour
                 craftingRecipeUIs[i] = Instantiate(recipeUIPrefab, recipeUIParent, false);
             }
 
-            craftingRecipeUIs[i].ItemContainer = ItemContainer;
+            craftingRecipeUIs[i].AccountManager = AccountManager;
             craftingRecipeUIs[i].CraftingRecipe = CraftingRecipes[i];
         }
 

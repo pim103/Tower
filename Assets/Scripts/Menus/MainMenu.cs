@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class MainMenu : MonoBehaviour, MenuInterface
     {
@@ -57,12 +55,15 @@ namespace Scripts.Menus
                 mc.ActivateMenu(MenuController.Menu.Shop);
             });
 
-            quitButton.onClick.AddListener(mc.QuitGame);
+            quitButton.onClick.AddListener(delegate
+            {
+                mc.networking.CloseConnection();
+                mc.QuitGame();
+            });
         }
 
         public void InitMenu()
         {
-            mc.ConnectToPhoton();
             Debug.Log("Main Menu");
         }
     }

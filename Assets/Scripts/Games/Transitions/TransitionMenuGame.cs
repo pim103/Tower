@@ -1,10 +1,9 @@
-﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using Games;
+﻿using System.Collections;
+using Games.Defenses;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace Scripts.Games.Transitions
+namespace Games.Transitions
 {
     public class TransitionMenuGame : MonoBehaviour
     {
@@ -13,6 +12,9 @@ namespace Scripts.Games.Transitions
         [SerializeField]
         private ObjectsInScene objectsInScene;
 
+        [SerializeField] 
+        private InitDefense initDefense;
+        
         private int waitingForStart;
 
         private string waitingGameStartText;
@@ -25,7 +27,7 @@ namespace Scripts.Games.Transitions
 
         public bool InitGame()
         {
-            PhotonNetwork.LoadLevel("GameScene");
+            SceneManager.LoadScene("GameScene");
             return true;
         }
 
@@ -61,6 +63,7 @@ namespace Scripts.Games.Transitions
 
             objectsInScene.containerAttack.SetActive(false);
             objectsInScene.containerDefense.SetActive(true);
+            initDefense.Init();
         }
     }
 }

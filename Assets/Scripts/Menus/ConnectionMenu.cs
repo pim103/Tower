@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
     public class ConnectionMenu : MonoBehaviour, MenuInterface
     {
@@ -33,6 +31,8 @@ namespace Scripts.Menus
 
             connectButton.onClick.AddListener(delegate {
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
+                mc.networking.InitializeWebsocketEndpoint();
+                mc.networking.StartConnection();
             });
 
             quitButton.onClick.AddListener(mc.QuitGame);
@@ -40,9 +40,7 @@ namespace Scripts.Menus
 
         public void InitMenu()
         {
-            mc.DisconnectToPhoton();
             Debug.Log("Connection Menu");
-            //throw new System.NotImplementedException();
         }
     }
 }

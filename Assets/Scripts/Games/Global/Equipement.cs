@@ -1,4 +1,7 @@
-﻿namespace Games.Global
+﻿using System;
+using Games.Global.Abilities;
+
+namespace Games.Global
 {
     //Class for equipements
     public abstract class Equipement : Item
@@ -7,15 +10,9 @@
 
         // DEFINE METHOD TO USE GENERIC EQUIPEMENTS
         // Method called when damage received
-        public bool OnDamageReceive()
-        {
-            return false;
-        }
+        public Func<AbilityParameters, bool> OnDamageReceive;
 
         // Method called when damage dealt
-        public bool OnDamageDealt()
-        {
-            return false;
-        }
+        public Func<AbilityParameters, bool> OnDamageDealt;
     }
 }

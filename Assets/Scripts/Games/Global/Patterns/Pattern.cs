@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Games.Global.Weapons;
 
 namespace Games.Global.Patterns
 {
@@ -21,7 +21,7 @@ namespace Games.Global.Patterns
         WAIT
     }
 
-    public class Pattern : MonoBehaviour
+    public class Pattern
     {
         public PatternInstructions inst;
         

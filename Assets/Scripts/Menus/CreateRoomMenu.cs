@@ -1,13 +1,9 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Menus
+namespace Menus
 {
-    public class CreateRoomMenu : MonoBehaviourPunCallbacks, MenuInterface
+    public class CreateRoomMenu : MonoBehaviour, MenuInterface
     {
         [SerializeField]
         private MenuController mc;
@@ -57,30 +53,12 @@ namespace Scripts.Menus
                 return;
             }
 
-            RoomOptions ro = new RoomOptions
-            {
-                MaxPlayers = (byte)nbPlayersSlider.value,
-                PublishUserId = true,
-                IsOpen = true,
-                IsVisible = true,
-                EmptyRoomTtl = 1000
-            };
-
-            TypedLobby tl = new TypedLobby
-            {
-                Name = "private"
-            };
-
-            PhotonNetwork.CreateRoom(roomNameField.text, ro, tl);
-        }
-
-        public override void OnJoinedRoom()
-        {
             mc.ActivateMenu(MenuController.Menu.ListingPlayer);
         }
 
         public void InitMenu()
         {
+            
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Games.Global;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-namespace Scripts.Games.Global.Armors
+namespace Games.Global.Armors
 {
     public enum TypeArmor
     {
@@ -17,6 +14,6 @@ namespace Scripts.Games.Global.Armors
         public int def;
         public TypeArmor typeArmor;
 
-        public Effect[] effects;
+        public List<TypeEffect> effects;
     } 
 }

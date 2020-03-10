@@ -7,15 +7,29 @@ using UnityEditor;
 [CreateAssetMenu(menuName ="Items/Item")]
 public class Item : ScriptableObject
 {
-    [SerializeField] string id;
-    public string ID { get { return id; } }
+    [Space]
+    [Header("Information on the item")]
+
+    [SerializeField]
+    string id;
+
+    public string ID
+    {
+        get
+        {
+            return id;
+        }
+    }
+
     public string ItemName;
     public Sprite Icon;
+
     [Range(1,999)]
     public int MaximumStacks = 1;
 
     [Space]
     [Header("Description of the item")]
+
     [SerializeField] string ItemDescription;
 
     protected static readonly StringBuilder sb = new StringBuilder();

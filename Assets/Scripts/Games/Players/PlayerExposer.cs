@@ -1,5 +1,5 @@
-﻿using Scripts.Games.Players;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Games.Players
 {
@@ -9,7 +9,7 @@ namespace Games.Players
         public GameObject playerGameObject;
 
         [SerializeField]
-        public PlayerMovement playerMovement;
+        public PlayerPrefab playerPrefab;
 
         [SerializeField]
         public Rigidbody playerRigidbody;
@@ -19,9 +19,6 @@ namespace Games.Players
 
         [SerializeField]
         public GameObject playerHand;
-
-        [SerializeField]
-        public Player player;
         
         [SerializeField]
         public Transform playerTransform;

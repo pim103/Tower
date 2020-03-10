@@ -1,11 +1,5 @@
-﻿using Scripts;
-using Scripts.Games.Attacks;
-using Scripts.Games.Global;
-using System.Collections;
-using System.Collections.Generic;
-using Games.Attacks;
-using Games.Global.Weapons;
-using Scripts.Games;
+﻿using Games.Attacks;
+using Games.Global;
 using UnityEngine;
 
 namespace Games
@@ -13,13 +7,10 @@ namespace Games
     public class ScriptsExposer : MonoBehaviour
     {
         [SerializeField]
-        public PhotonController photonController;
-        
-        [SerializeField]
         public InitAttackPhase initAttackPhase;
 
         [SerializeField]
-        public WeaponList weaponList;
+        public DictionnaryManager dm;
 
         [SerializeField]
         public GameController gameController;
