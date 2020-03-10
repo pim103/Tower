@@ -55,23 +55,32 @@ namespace Games.Global
 
         public Func<AbilityParameters, bool> OnDamageDealt;
 
+
         // If needed, create WeaponExposer to get all scripts of a weapon
         public List<Weapon> weapons;
         public List<Armor> armors;
 
         public TypeEntity typeEntity;
 
+        // Suffered effect 
         public Dictionary<TypeEffect, Effect> underEffects;
 
-        public EffectInterface effectInterface;
+        // Effect add to damage deal
+        public Dictionary<TypeEffect, Effect> damageDealExtraEffect;
 
+        // Effect add to damage receive
+        public Dictionary<TypeEffect, Effect> damageReceiveExtraEffect;
+
+        public EffectInterface effectInterface;
         public EntityPrefab entityPrefab;
+
+        public bool doingSkill = false;
 
         public abstract void BasicAttack();
         public abstract void BasicDefense();
         public abstract void DesactiveBasicDefense();
-        
-        public void ApplyEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
+
+        public void ApplyNewEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
         {
             Effect effect = new Effect();
             effect.level = level;
@@ -86,6 +95,20 @@ namespace Games.Global
                 return;
             }
 
+            if (underEffects.ContainsKey(effect.typeEffect))
+            {
+                Effect effectInList = underEffects[effect.typeEffect];
+                effectInList.UpdateEffect(effect);
+
+                underEffects[effect.typeEffect] = effectInList;
+                return;
+            }
+
+            effectInterface.StartCoroutineEffect(effect);
+        }
+        
+        public void ApplyEffect(Effect effect)
+        {
             if (underEffects.ContainsKey(effect.typeEffect))
             {
                 Effect effectInList = underEffects[effect.typeEffect];
@@ -155,6 +178,8 @@ namespace Games.Global
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();
+            damageDealExtraEffect = new Dictionary<TypeEffect, Effect>();
+            damageReceiveExtraEffect = new Dictionary<TypeEffect, Effect>();
         }
 
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
@@ -175,6 +200,11 @@ namespace Games.Global
             foreach (Armor armor in armors)
             {
                 armor.OnDamageReceive(abilityParameters);
+            }
+
+            foreach (KeyValuePair<TypeEffect, Effect> effects in damageReceiveExtraEffect)
+            {
+                ApplyEffect(effects.Value);
             }
 
             if (underEffects.ContainsKey(TypeEffect.Sleep))

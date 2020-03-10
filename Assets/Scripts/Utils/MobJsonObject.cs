@@ -116,13 +116,13 @@ namespace Utils
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
             monster.modelName = modelName;
 
-            monster.skills = new List<Skill>();
-            foreach (string skill in skills)
-            {
-                Skill newSkill = new Skill();
-                newSkill.skill = AbilityManager.GetAbility(skill, AbilityDico.MOB);
-                monster.skills.Add(newSkill);
-            }
+            monster.skills = new List<Spell>();
+//            foreach (string skill in skills)
+//            {
+//                Spell newSpell = new Spell();
+//                newSpell.skill = AbilityManager.GetAbility(skill, AbilityDico.MOB);
+//                monster.skills.Add(newSpell);
+//            }
 
             return monster;
         }

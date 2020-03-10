@@ -14,6 +14,7 @@ namespace Games.Global
         Sleep,
         Regen,
         Invisibility,
+        AttackSpeedUp,
 
         MadeADash,
     }

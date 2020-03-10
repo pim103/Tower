@@ -44,10 +44,15 @@ namespace Games.Global.Weapons
 
         public Pattern[] pattern;
 
-        public Skill skill1;
-        public Skill skill2;
-        public Skill skill3;
+        public Spell skill1;
+        public Spell skill2;
+        public Spell skill3;
 
-        public abstract void InitPlayerSkill(Classes classe);
+        public virtual void InitPlayerSkill(Classes classe)
+        {
+            skill1 = new Spell();
+            skill2 = new Spell();
+            skill3 = new Spell();
+        }
     }
 }

@@ -45,10 +45,10 @@ namespace Games.Players
             switch (mainClass)
             {
                 case Classes.Mage:
-                    ApplyEffect(TypeEffect.Regen, 5f, 1, this, 1);
+                    ApplyNewEffect(TypeEffect.Regen, 5f, 1, this, 1);
                     break;
                 case Classes.Rogue:
-                    ApplyEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
+                    ApplyNewEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
                     break;
                 case Classes.Ranger:
                     if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
@@ -58,7 +58,7 @@ namespace Games.Players
                         playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
                         BasicAttack();
                         
-                        ApplyEffect(TypeEffect.MadeADash, 0.2f);
+                        ApplyNewEffect(TypeEffect.MadeADash, 0.2f);
                     }
                     break;
                 case Classes.Warrior:
@@ -153,7 +153,7 @@ namespace Games.Players
                 nbShieldBlock++;
                 if (nbShieldBlock > 4)
                 {
-                    ApplyEffect(TypeEffect.Stun, 3, 1);
+                    ApplyNewEffect(TypeEffect.Stun, 3, 1);
                     DesactiveBasicDefense();
                 }
 

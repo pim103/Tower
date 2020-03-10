@@ -16,7 +16,7 @@ namespace Games.Global.Abilities
     {
         public Entity origin;
         public Entity directTarget;
-        
+
         public List<Entity> allies;
         public List<Entity> enemies;
     }

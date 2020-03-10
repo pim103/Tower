@@ -34,7 +34,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Mage);
+            player.InitPlayerStats(Classes.Rogue);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -140,9 +140,71 @@ namespace Games.Players
                 pressDefenseButton = false;
             }
 
+            if (!entity.doingSkill)
+            {
+                if (Input.GetKeyUp(KeyCode.Alpha1))
+                {
+                    TryCastSpell(entity.weapons[0].skill1);
+                }
+
+                if (Input.GetKeyUp(KeyCode.Alpha2))
+                {
+                    TryCastSpell(entity.weapons[0].skill2);
+                }
+
+                if (Input.GetKeyUp(KeyCode.Alpha3))
+                {
+                    TryCastSpell(entity.weapons[0].skill3);
+                }
+            }
+
             mousePosition = Input.mousePosition;
         }
+
+        private void TryCastSpell(Spell spell)
+        {
+            if (spell.cost < entity.ressource1 && spell.canLaunch)
+            {
+                Debug.Log("Lance le spell");
+                StartCoroutine(Cooldown(spell));
+                StartCoroutine(CastSpell(spell));
+            }
+        }
+
+        private IEnumerator Cooldown(Spell spell)
+        {
+            spell.canLaunch = false;
+            yield return new WaitForSeconds(spell.cooldown);
+            spell.canLaunch = true;
+            
+            Debug.Log("Peux relancer le spell");
+        }
         
+        private IEnumerator CastSpell(Spell spell)
+        {
+            // TODO : make anim
+            yield return new WaitForSeconds(spell.castTime);
+
+            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
+            {
+                switch (spellInstruction.typeSpell)
+                {
+                    case TypeSpell.InstantiateSomething:
+                        // TODO : mahe something appear - Oui mais ou ?
+                        break;
+                    case TypeSpell.SelfEffect:
+                        entity.ApplyEffect(spellInstruction.effect);
+                        break;
+                    case TypeSpell.EffectOnDamageDeal:
+                        StartCoroutine(AddDamageDealExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        break;
+                    case TypeSpell.EffectOnDamageReceive:
+                        StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        break;
+                }
+            }
+        }
+
         public void Movement()
         {
             Rigidbody rigidbody = playerRigidbody;
