@@ -39,6 +39,42 @@ public class AccountManager : MonoBehaviour
     // Resources on the account
     public List<AccountResource> AccountResources;
 
+    [Header("Public Variables")]
+
+    [SerializeField]
+    private int goldBarAmount;
+
+    [SerializeField]
+    private int goldNuggetAmount;
+
+    [SerializeField]
+    private int stoneOreAmount;
+
+    [SerializeField]
+    private Text goldBarAmountText;
+
+    [SerializeField]
+    private Text goldNuggetAmountText;
+
+    [SerializeField]
+    private Text stoneOreAmountText;
+
+    private void Update()
+    {
+        UpdateResources();
+    }
+
+    private void UpdateResources()
+    {
+        goldBarAmount = AccountResources[0].Amount;
+        goldNuggetAmount = AccountResources[1].Amount;
+        stoneOreAmount = AccountResources[2].Amount;
+
+        goldBarAmountText.text = goldBarAmount.ToString();
+        goldNuggetAmountText.text = goldNuggetAmount.ToString();
+        stoneOreAmountText.text = stoneOreAmount.ToString();
+    }
+
     // Count the number of a resource on the account
     public int ResourceCount(string resourceID)
     {

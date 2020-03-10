@@ -15,8 +15,14 @@ public class CraftingRecipeUI : MonoBehaviour
     private CraftingRecipe craftingRecipe;
     public CraftingRecipe CraftingRecipe
     {
-        get { return craftingRecipe; }
-        set { SetCraftingRecipe(value); }
+        get
+        {
+            return craftingRecipe;
+        }
+        set
+        {
+            SetCraftingRecipe(value);
+        }
     }
 
     public event Action<ResourceSlot> ResourceOnPointerEnterEvent;

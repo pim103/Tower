@@ -43,10 +43,10 @@ public class CraftingRecipe : ScriptableObject
         // Verify that we can craft this recipe
         if (CanCraft(accountManager))
         {
-            // Remove resources we used for craft this recipe
+            // Remove resources we used for craft this recipe from the account
             RemoveResources(accountManager);
 
-            // Add the recipe result to the user account
+            // Add the recipe result to the account
             AddResults(accountManager);
 
             Debug.Log("Craft success");
@@ -79,7 +79,7 @@ public class CraftingRecipe : ScriptableObject
         return true;
     }
 
-    // Remove resources we used for craft this recipe
+    // Remove resources we used for craft this recipe from the account
     private void RemoveResources(AccountManager accountManager)
     {
         foreach (RecipeResource recipeResource in RecipeResources)

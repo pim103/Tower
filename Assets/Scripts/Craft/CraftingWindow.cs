@@ -13,6 +13,9 @@ public class CraftingWindow : MonoBehaviour
     public AccountManager AccountManager;
     public List<CraftingRecipe> CraftingRecipes;
 
+    public event Action<ResourceSlot> ResourceOnPointerEnterEvent;
+    public event Action<ResourceSlot> ResourceOnPointerExitEvent;
+
     public event Action<BaseItemSlot> OnPointerEnterEvent;
     public event Action<BaseItemSlot> OnPointerExitEvent;
 
@@ -27,6 +30,9 @@ public class CraftingWindow : MonoBehaviour
 
         foreach (CraftingRecipeUI craftingRecipeUI in craftingRecipeUIs)
         {
+            craftingRecipeUI.ResourceOnPointerEnterEvent += slot => ResourceOnPointerEnterEvent(slot);
+            craftingRecipeUI.ResourceOnPointerExitEvent += slot => ResourceOnPointerExitEvent(slot);
+
             craftingRecipeUI.OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
             craftingRecipeUI.OnPointerExitEvent += slot => OnPointerExitEvent(slot);
         }

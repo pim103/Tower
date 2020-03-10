@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 63351538652795711}
   - component: {fileID: 63351538652795710}
   m_Layer: 5
-  m_Name: DeckManagement
+  m_Name: Button Deck Management
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1807,7 +1807,7 @@ GameObject:
   - component: {fileID: 63351538765668305}
   - component: {fileID: 63351538765668304}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: Button Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2687,7 +2687,7 @@ GameObject:
   - component: {fileID: 63351538868437070}
   - component: {fileID: 63351538868437057}
   m_Layer: 5
-  m_Name: Private
+  m_Name: Button Private Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3598,7 +3598,7 @@ GameObject:
   - component: {fileID: 63351539076000905}
   - component: {fileID: 63351539076000904}
   m_Layer: 5
-  m_Name: Connect
+  m_Name: Button Connect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3852,7 +3852,7 @@ GameObject:
   - component: {fileID: 63351539134721655}
   - component: {fileID: 63351539134721654}
   m_Layer: 5
-  m_Name: CreationAccount
+  m_Name: Button Creation Account
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3985,7 +3985,7 @@ GameObject:
   - component: {fileID: 63351539155837479}
   - component: {fileID: 63351539155837478}
   m_Layer: 5
-  m_Name: Jouer
+  m_Name: Button Jouer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4118,7 +4118,7 @@ GameObject:
   - component: {fileID: 63351539164379563}
   - component: {fileID: 63351539164379562}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: Button Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4342,7 +4342,7 @@ GameObject:
   - component: {fileID: 63351539182808272}
   - component: {fileID: 63351539182808275}
   m_Layer: 5
-  m_Name: Shop
+  m_Name: Button Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4452,7 +4452,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 5c719edaa2c092747b8817dc445e2e35,
+          m_ObjectArgument: {fileID: 8300000, guid: ddd51faaa8d20f84e8f61eea80921846,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
@@ -5659,7 +5659,7 @@ GameObject:
   - component: {fileID: 63351539478203944}
   - component: {fileID: 63351539478203947}
   m_Layer: 5
-  m_Name: Return
+  m_Name: Button Return
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5859,7 +5859,7 @@ GameObject:
   - component: {fileID: 63351539542418890}
   - component: {fileID: 63351539542418893}
   m_Layer: 5
-  m_Name: Multi
+  m_Name: Button Multiplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6318,7 +6318,7 @@ GameObject:
   - component: {fileID: 63351539595006515}
   - component: {fileID: 63351539595006514}
   m_Layer: 5
-  m_Name: Profil
+  m_Name: Button Profil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8183,7 +8183,7 @@ GameObject:
   - component: {fileID: 63351540081445800}
   - component: {fileID: 63351540081445803}
   m_Layer: 5
-  m_Name: Craft
+  m_Name: Button Craft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9540,7 +9540,7 @@ GameObject:
   - component: {fileID: 63351540276231400}
   - component: {fileID: 63351540276231403}
   m_Layer: 5
-  m_Name: Return
+  m_Name: Button Return
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9831,7 +9831,7 @@ GameObject:
   - component: {fileID: 63351540301382578}
   - component: {fileID: 63351540301382581}
   m_Layer: 5
-  m_Name: Campaign
+  m_Name: Button Campaign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10334,7 +10334,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 63351540370769579}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 5c719edaa2c092747b8817dc445e2e35,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &63351540397366881
@@ -10412,7 +10424,7 @@ GameObject:
   - component: {fileID: 63351540399471747}
   - component: {fileID: 63351540399471746}
   m_Layer: 5
-  m_Name: Settings
+  m_Name: Button Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10988,7 +11000,7 @@ GameObject:
   - component: {fileID: 63351540539609759}
   - component: {fileID: 63351540539609758}
   m_Layer: 5
-  m_Name: CreateAccount
+  m_Name: Button Create Account
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13099,6 +13111,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 87f314108b66b254a93b907504dd42f8,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &792577730092855252
@@ -14410,7 +14434,7 @@ GameObject:
   - component: {fileID: 7991121994208017319}
   - component: {fileID: 6345020655738647689}
   m_Layer: 5
-  m_Name: Gold Nugget Text
+  m_Name: Gold Nugget Text Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16077,7 +16101,7 @@ GameObject:
   - component: {fileID: 8767607935994578968}
   - component: {fileID: 8392852203871812063}
   m_Layer: 5
-  m_Name: Stone Ore Text
+  m_Name: Stone Ore Text Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19269,7 +19293,7 @@ GameObject:
   - component: {fileID: 7022386939843818566}
   - component: {fileID: 5206355246662162929}
   m_Layer: 5
-  m_Name: Gold Bar Text
+  m_Name: Gold Bar Text Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20161,6 +20185,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 87f314108b66b254a93b907504dd42f8,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &8770282135206834365
@@ -20900,6 +20936,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404274101581049145, guid: d137ba8ecc5a58b45a8e945877e69e0c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404274101581049145, guid: d137ba8ecc5a58b45a8e945877e69e0c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404274101581049145, guid: d137ba8ecc5a58b45a8e945877e69e0c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 87f314108b66b254a93b907504dd42f8, type: 3}
+    - target: {fileID: 2404274101581049145, guid: d137ba8ecc5a58b45a8e945877e69e0c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d137ba8ecc5a58b45a8e945877e69e0c, type: 3}

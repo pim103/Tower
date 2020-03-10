@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1004276080064963168}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1004276079547774073
 AudioSource:
@@ -157,7 +157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1004276080064963168}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1004276079916935374
 MonoBehaviour:
@@ -200,9 +200,9 @@ Transform:
   m_LocalPosition: {x: 314.87015, y: 293.1535, z: -246.625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1004276080221619353}
   - {fileID: 1004276079547774072}
   - {fileID: 1004276079916935375}
-  - {fileID: 1004276080221619353}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -235,7 +235,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1004276080064963168}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1004276080221619352
 MonoBehaviour:
@@ -250,9 +250,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AccountResources:
-  - Resource: {fileID: 11400000, guid: b1061649d516ab042b6cfe0e83ad056c, type: 2}
-    Amount: 100
   - Resource: {fileID: 11400000, guid: 780abbcb23dce1f469e4733af49986a5, type: 2}
     Amount: 50
+  - Resource: {fileID: 11400000, guid: b1061649d516ab042b6cfe0e83ad056c, type: 2}
+    Amount: 100
   - Resource: {fileID: 11400000, guid: d2815fe63c7d7e34888e393fcc99cdb0, type: 2}
     Amount: 20
+  goldBarAmount: 0
+  goldNuggetAmount: 0
+  stoneOreAmount: 0
+  goldBarAmountText: {fileID: 0}
+  goldNuggetAmountText: {fileID: 0}
+  stoneOreAmountText: {fileID: 0}
