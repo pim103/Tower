@@ -22,7 +22,6 @@ public struct AccountResource
 public class AccountManager : MonoBehaviour
 {
     private static AccountManager instance;
-
     public static AccountManager MyInstance
     {
         get

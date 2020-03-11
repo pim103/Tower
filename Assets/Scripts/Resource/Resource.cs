@@ -41,4 +41,9 @@ public class Resource : ScriptableObject
         id = AssetDatabase.AssetPathToGUID(path);
     }
     #endif
+
+    public string GetDescription()
+    {
+        return ResourceDescription;
+    }
 }
