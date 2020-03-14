@@ -15,6 +15,7 @@ namespace Games.Global
         Regen,
         Invisibility,
         AttackSpeedUp,
+        BrokenDef,
 
         MadeADash,
     }

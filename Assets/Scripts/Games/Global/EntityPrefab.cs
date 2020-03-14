@@ -134,18 +134,15 @@ namespace Games.Global
         {
             if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
             {
-                Debug.Log("Regen when hit update");
                 entity.damageReceiveExtraEffect[effect.typeEffect] = effect;
             }
             else
             {
-                Debug.Log("Regen when hit");
                 entity.damageReceiveExtraEffect.Add(effect.typeEffect, effect);
             }
 
             yield return new WaitForSeconds(duration);
 
-            Debug.Log("End regen");
             if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
             {
                 entity.damageReceiveExtraEffect.Remove(effect.typeEffect);

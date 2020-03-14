@@ -7,29 +7,52 @@ namespace Games.Global
 {
     public enum TypeSpell
     {
+        Active,
+        Passive,
+        Toggle,
+        ActiveWithPassive,
+        ToggleWithPassive
+    }
+    
+    public enum TypeSpellInstruction
+    {
         SelfEffect,
-        EffectOnDamageDeal,
-        EffectOnDamageReceive,
+        EffectOnTargetWhenDamageDeal,
+        EffectOnTargetWhenDamageReceive,
+        SelfEffectOnDamageReceive,
+        SelfEffectOnDamageDeal,
         InstantiateSomething
+    }
+
+    public enum TypeSpellObject
+    {
+        Projectile,
+        GroundArea,
+        Weapon
     }
 
     public struct SpellInstruction
     {
-        public TypeSpell typeSpell;
+        public TypeSpellInstruction TypeSpellInstruction;
+        
+        // If Type == effect
         public Effect effect;
-        public GameObject gameObject;
+        
+        // If type == effectOnSomething
+        public float durationInstruction;
+        
+        // If type == instantiate /* ID poolerSpell */
+        public int idPoolObject;
+        public TypeSpellObject typeSpellObject;
         
         // Time wait before next instructions
         public float timeWait;
-
-        public float durationInstruction;
     }
 
     public class Spell
     {
-        public bool isPassive;
+        public TypeSpell typeSpell;
         public int cost;
-        public int startCooldownTimer;
         public float castTime;
         public int cooldown;
 
@@ -39,9 +62,8 @@ namespace Games.Global
 
         public Spell()
         {
-            isPassive = false;
+            typeSpell = TypeSpell.Active;
             cost = 0;
-            startCooldownTimer = 0;
             castTime = 0;
             cooldown = 0;
             canLaunch = true;

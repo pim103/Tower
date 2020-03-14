@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using Games.Global.Abilities;
+using Games.Global.Armors;
 using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Players;
@@ -21,8 +23,8 @@ namespace Games.Global.Weapons
             if (!boxCollider.enabled)
             {
                 boxCollider.enabled = true;
-            
-                PlayMovement(movementPatternController, weapon.attSpeed, objectToMove, boxCollider);
+
+                PlayMovement(movementPatternController, weapon.attSpeed * wielder.attSpeed, objectToMove, boxCollider);
 
                 if (weapon.type == TypeWeapon.Distance)
                 {
@@ -54,11 +56,6 @@ namespace Games.Global.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
-            TouchEntity(other);
-        }
-
-        public bool TouchEntity(Collider other)
-        {
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int playerLayer = LayerMask.NameToLayer("Player");
 
@@ -75,22 +72,35 @@ namespace Games.Global.Weapons
             }
             else
             {
-                return false;
+                return;
             }
-
+            
             if (entity.IdEntity == wielder.IdEntity &&
                 ((other.gameObject.layer == monsterLayer && wielder.typeEntity == TypeEntity.MOB) ||
                  (other.gameObject.layer == playerLayer && wielder.typeEntity == TypeEntity.PLAYER))
             )
             {
-                return false;
+                return;
+            }
+            
+            TouchEntity(entity);
+        }
+
+        public bool TouchEntity(Entity entity)
+        {
+            AbilityParameters abilityParameters = new AbilityParameters {origin = wielder, directTarget = entity};
+
+            weapon.OnDamageDealt(abilityParameters);
+            foreach (Armor armor in wielder.armors)
+            {
+                armor.OnDamageDealt(abilityParameters);
             }
 
-            AbilityParameters abilityParameters = new AbilityParameters();
-            abilityParameters.origin = wielder;
-            abilityParameters.directTarget = entity;
+            foreach (KeyValuePair<TypeEffect, Effect> effects in wielder.damageDealExtraEffect)
+            {
+                entity.ApplyEffect(effects.Value);
+            }
 
-            weapon.OnDamageDealt(abilityParameters); 
             entity.TakeDamage(weapon.damage, abilityParameters);
 
             return true;

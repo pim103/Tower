@@ -101,6 +101,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Warrior:
                     att = 10;
@@ -108,6 +109,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Rogue:
                     att = 10;
@@ -115,6 +117,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Ranger:
                     att = 10;
@@ -122,6 +125,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
             }
 
@@ -129,6 +133,7 @@ namespace Games.Players
             initialDef = def;
             initialHp = hp;
             initialSpeed = speed;
+            initialAttSpeed = attSpeed;
             initialRessource1 = ressource1;
             initialRessource2 = ressource2;
 

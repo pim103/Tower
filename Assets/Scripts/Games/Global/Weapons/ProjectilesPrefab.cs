@@ -1,21 +1,45 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Games.Global.Abilities.SpecialSpellPrefab;
+using Games.Global.Entities;
+using Games.Players;
+using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
 {
+    public enum TypeProjectile
+    {
+        Arrow,
+        Grenade
+    }
+    
     public class ProjectilesPrefab : MonoBehaviour
     {
+        // Use when we havn't weapon
+        public Entity origin;
+        
         public WeaponPrefab weaponOrigin;
         [SerializeField] public Rigidbody rigidbody;
 
-        public IEnumerator TimerBeforeDisapear()
+        [SerializeField] public TypeProjectile typeProjectile;
+
+        [SerializeField] private GameObject explosionArea;
+
+        [SerializeField] private bool disapearOnHitEntity = true;
+
+        [SerializeField] private SpellScript spellScript;
+        
+        public IEnumerator TimerBeforeDisapear(float duration)
         {
-            int timer = 5;
-            while (timer > 0)
+            yield return new WaitForSeconds(duration);
+
+            if (typeProjectile == TypeProjectile.Grenade)
             {
-                yield return new WaitForSeconds(1);
-                timer--;
+                explosionArea.SetActive(false);
             }
 
             DesactivePrefab();
@@ -23,21 +47,94 @@ namespace Games.Global.Weapons
 
         private void Awake()
         {
-            StartCoroutine(TimerBeforeDisapear());
+            if (typeProjectile == TypeProjectile.Arrow)
+            {
+                StartCoroutine(TimerBeforeDisapear(5));
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            bool touch = true;
-            
-            if (other.gameObject.layer != LayerMask.NameToLayer("Wall"))
+            bool touch = false;
+
+            int monsterLayer = LayerMask.NameToLayer("Monster");
+            int playerLayer = LayerMask.NameToLayer("Player");
+
+            Entity entity;
+            Entity wielder;
+
+            if (weaponOrigin != null)
             {
-                touch = weaponOrigin.TouchEntity(other);
+                wielder = weaponOrigin.GetWielder();
+            }
+            else
+            {
+                wielder = origin;
+            }
+
+            if (other.gameObject.layer != LayerMask.NameToLayer("Wall") && other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            {
+                if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
+                {
+                    MonsterPrefab monsterPrefab = other.GetComponent<MonsterPrefab>();
+                    entity = monsterPrefab.GetMonster();
+                } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
+                {
+                    PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                    entity = playerPrefab.entity;
+                }
+                else
+                {
+                    return;
+                }
+                
+                if (entity.IdEntity == wielder.IdEntity &&
+                    ((other.gameObject.layer == monsterLayer && wielder.typeEntity == TypeEntity.MOB) ||
+                     (other.gameObject.layer == playerLayer && wielder.typeEntity == TypeEntity.PLAYER))
+                )
+                {
+                    return;
+                }
+
+                if (weaponOrigin != null)
+                {
+                    weaponOrigin.TouchEntity(entity);
+                }
+
+                if (spellScript != null)
+                {
+                    spellScript.PlaySpecialEffect(origin, entity);
+                }
+
+                if (disapearOnHitEntity)
+                {
+                    touch = true;
+                }
+            }
+            else
+            {
+                Debug.Log("Touch");
+                touch = true;
             }
 
             if (touch)
             {
                 DesactivePrefab();
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (typeProjectile == TypeProjectile.Grenade && other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
+                scriptArea.origin = origin;
+
+                explosionArea.SetActive(true);
+
+                StartCoroutine(TimerBeforeDisapear(1));
+
+                rigidbody.velocity = Vector3.zero;
             }
         }
 
@@ -47,4 +144,36 @@ namespace Games.Global.Weapons
             gameObject.SetActive(false);
         }
     }
+
+//    [CustomEditor(typeof(ProjectilesPrefab))]
+//    public class ProjectilePrefabEditor : Editor
+//    {
+//        public SerializedProperty
+//            type,
+//            areaGameObject;
+//
+//        private void OnEnable()
+//        {
+//            type = serializedObject.FindProperty("typeProjectile");
+//            areaGameObject = serializedObject.FindProperty("explosionArea");
+//        }
+//
+//        public override void OnInspectorGUI()
+//        {
+//            serializedObject.Update();
+//
+//            EditorGUILayout.PropertyField(type);
+//
+//            switch ((TypeProjectile)type.enumValueIndex)
+//            {
+//                case TypeProjectile.Arrow:
+//                    break;
+//                case TypeProjectile.Grenade:
+//                    EditorGUILayout.PropertyField(areaGameObject, new GUIContent("explosionArea_again"));
+//                    break;
+//            }
+//            
+//            serializedObject.ApplyModifiedProperties();
+//        }
+//    }
 }

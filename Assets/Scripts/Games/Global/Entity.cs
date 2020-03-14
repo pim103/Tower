@@ -32,6 +32,7 @@ namespace Games.Global
         private const int DEFAULT_DEF = 10;
         private const int DEFAULT_ATT = 10;
         private const int DEFAULT_SPEED = 10;
+        private const float DEFAULT_ATT_SPEED = 1;
         private const float DEFAULT_RESSOURCE = 50;
         
         private const int DEFAULT_NB_WEAPONS = 1;
@@ -40,6 +41,7 @@ namespace Games.Global
         public int initialDef;
         public int initialAtt;
         public int initialSpeed;
+        public float initialAttSpeed;
         public float initialRessource1;
         public float initialRessource2;
 
@@ -47,7 +49,8 @@ namespace Games.Global
         public int def = DEFAULT_DEF;
         public int att = DEFAULT_ATT;
         public int speed = DEFAULT_SPEED;
-        
+        public float attSpeed = DEFAULT_ATT_SPEED;
+
         public float ressource1 = DEFAULT_RESSOURCE;
         public float ressource2 = 0;
 
@@ -136,6 +139,9 @@ namespace Games.Global
                 case TypeEffect.Invisibility:
                     entityPrefab.SetMaterial(StaticMaterials.invisibleMaterial);
                     break;
+                case TypeEffect.AttackSpeedUp:
+                    attSpeed = initialAttSpeed + (0.5f * effect.level);
+                    break;
             }
         }
 
@@ -170,6 +176,9 @@ namespace Games.Global
                 case TypeEffect.Invisibility:
                     entityPrefab.SetMaterial(StaticMaterials.defaultMaterial);
                     break;
+                case TypeEffect.AttackSpeedUp:
+                    attSpeed = initialAttSpeed;
+                    break;
             }
         }
 
@@ -185,6 +194,12 @@ namespace Games.Global
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
+
+            if (underEffects.ContainsKey(TypeEffect.BrokenDef))
+            {
+                damageReceived = initialDamage;
+            }
+
             ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)

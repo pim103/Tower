@@ -1,9 +1,11 @@
 using System.Collections;
+using System.Diagnostics;
 using Games.Global;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -26,6 +28,8 @@ namespace Games.Players
         public int playerIndex;
         public bool canMove;
 
+        private Vector3 positionPointed;
+
         private void Start()
         {
             Player player = new Player();
@@ -34,7 +38,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Rogue);
+            player.InitPlayerStats(Classes.Ranger);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -163,11 +167,18 @@ namespace Games.Players
 
         private void TryCastSpell(Spell spell)
         {
-            if (spell.cost < entity.ressource1 && spell.canLaunch)
+            if (spell.typeSpell == TypeSpell.Active ||
+                spell.typeSpell == TypeSpell.Toggle ||
+                spell.typeSpell == TypeSpell.ActiveWithPassive ||
+                spell.typeSpell == TypeSpell.ToggleWithPassive
+            )
             {
-                Debug.Log("Lance le spell");
-                StartCoroutine(Cooldown(spell));
-                StartCoroutine(CastSpell(spell));
+                if (spell.cost < entity.ressource1 && spell.canLaunch)
+                {
+                    Debug.Log("Lance le spell");
+                    StartCoroutine(Cooldown(spell));
+                    StartCoroutine(CastSpell(spell));
+                }
             }
         }
 
@@ -183,25 +194,55 @@ namespace Games.Players
         private IEnumerator CastSpell(Spell spell)
         {
             // TODO : make anim
+            entity.ressource1 -= spell.cost;
+
             yield return new WaitForSeconds(spell.castTime);
 
             foreach (SpellInstruction spellInstruction in spell.spellInstructions)
             {
-                switch (spellInstruction.typeSpell)
+                switch (spellInstruction.TypeSpellInstruction)
                 {
-                    case TypeSpell.InstantiateSomething:
-                        // TODO : mahe something appear - Oui mais ou ?
+                    case TypeSpellInstruction.InstantiateSomething:
+                        ActiveSpellObject(spellInstruction);
+                        
+                        GameObject gameObjectSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+                        gameObjectSpell.SetActive(true);
                         break;
-                    case TypeSpell.SelfEffect:
+                    case TypeSpellInstruction.SelfEffect:
                         entity.ApplyEffect(spellInstruction.effect);
                         break;
-                    case TypeSpell.EffectOnDamageDeal:
+                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
                         StartCoroutine(AddDamageDealExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
                         break;
-                    case TypeSpell.EffectOnDamageReceive:
+                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
                         StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
                         break;
                 }
+            }
+        }
+
+        private void ActiveSpellObject(SpellInstruction spellInstruction)
+        {
+            switch (spellInstruction.typeSpellObject)
+            {
+                case TypeSpellObject.Projectile:
+                    GameObject projectileSpell =
+                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+
+                    Vector3 pos = transform.position;
+                    pos.y += 0.5f;
+                    projectileSpell.transform.position = pos;
+
+                    float rotX = projectileSpell.transform.localEulerAngles.x;
+                    projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
+                    projectileSpell.transform.forward *= 1.5f;
+//                    projectileSpell.transform.LookAt(positionPointed);
+                    projectileSpell.SetActive(true);
+
+                    ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
+                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
+                    projectilesPrefab.origin = entity;
+                    break;
             }
         }
 
@@ -250,9 +291,10 @@ namespace Games.Players
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")) && entity.weapons[0].type != TypeWeapon.Cac)
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Explosion")) && entity.weapons[0].type != TypeWeapon.Cac)
             {
-                virtualHand.transform.LookAt(hit.point);
+                positionPointed = hit.point;
+                virtualHand.transform.LookAt(positionPointed);
             }
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6))
