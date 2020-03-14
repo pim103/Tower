@@ -30,7 +30,7 @@ namespace Games.Players
 
         private Vector3 positionPointed;
 
-        private void Start()
+        private void Awake()
         {
             Player player = new Player();
 
@@ -38,7 +38,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Ranger);
+            player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -48,6 +48,10 @@ namespace Games.Players
             pressDefenseButton = false;
 
             StartCoroutine(NaturalRegen());
+
+            CheckPassiveSpell(entity.weapons[0].skill1);
+            CheckPassiveSpell(entity.weapons[0].skill2);
+            CheckPassiveSpell(entity.weapons[0].skill3);
         }
 
         private IEnumerator NaturalRegen()
@@ -182,12 +186,31 @@ namespace Games.Players
             }
         }
 
+        private void CheckPassiveSpell(Spell spell)
+        {
+            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
+            {
+                switch (spellInstruction.TypeSpellInstruction)
+                {
+                    case TypeSpellInstruction.SelfEffect:
+                        entity.ApplyEffect(spellInstruction.effect);
+                        break;
+                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
+                        entity.damageDealExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
+                        break;
+                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
+                        entity.damageReceiveExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
+                        break;
+                }
+            }
+        }
+
         private IEnumerator Cooldown(Spell spell)
         {
             spell.canLaunch = false;
             yield return new WaitForSeconds(spell.cooldown);
             spell.canLaunch = true;
-            
+
             Debug.Log("Peux relancer le spell");
         }
         
@@ -204,9 +227,6 @@ namespace Games.Players
                 {
                     case TypeSpellInstruction.InstantiateSomething:
                         ActiveSpellObject(spellInstruction);
-                        
-                        GameObject gameObjectSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-                        gameObjectSpell.SetActive(true);
                         break;
                     case TypeSpellInstruction.SelfEffect:
                         entity.ApplyEffect(spellInstruction.effect);
@@ -232,15 +252,20 @@ namespace Games.Players
                     Vector3 pos = transform.position;
                     pos.y += 0.5f;
                     projectileSpell.transform.position = pos;
-
+                    
                     float rotX = projectileSpell.transform.localEulerAngles.x;
                     projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
                     projectileSpell.transform.forward *= 1.5f;
-//                    projectileSpell.transform.LookAt(positionPointed);
+
+                    if (positionPointed != Vector3.zero)
+                    {
+                        projectileSpell.transform.LookAt(positionPointed);
+                    }
+
                     projectileSpell.SetActive(true);
 
                     ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
-                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
+                    projectilesPrefab.rigidbody.AddRelativeForce(transform.forward * 1000, ForceMode.Acceleration);
                     projectilesPrefab.origin = entity;
                     break;
             }
@@ -295,6 +320,10 @@ namespace Games.Players
             {
                 positionPointed = hit.point;
                 virtualHand.transform.LookAt(positionPointed);
+            }
+            else
+            {
+                positionPointed = Vector3.zero;
             }
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6))

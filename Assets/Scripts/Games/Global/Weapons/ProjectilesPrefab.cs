@@ -72,7 +72,18 @@ namespace Games.Global.Weapons
                 wielder = origin;
             }
 
-            if (other.gameObject.layer != LayerMask.NameToLayer("Wall") && other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                if (explosionArea != null)
+                {
+                    ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
+                    scriptArea.origin = origin;
+
+                    explosionArea.SetActive(true);
+                }
+
+                touch = true;
+            } else if (other.gameObject.layer != LayerMask.NameToLayer("Wall"))
             {
                 if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
                 {
@@ -106,6 +117,14 @@ namespace Games.Global.Weapons
                     spellScript.PlaySpecialEffect(origin, entity);
                 }
 
+                if (explosionArea != null)
+                {
+                    ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
+                    scriptArea.origin = origin;
+
+                    explosionArea.SetActive(true);
+                }
+
                 if (disapearOnHitEntity)
                 {
                     touch = true;
@@ -113,13 +132,19 @@ namespace Games.Global.Weapons
             }
             else
             {
-                Debug.Log("Touch");
                 touch = true;
             }
 
             if (touch)
             {
-                DesactivePrefab();
+                if (explosionArea == null)
+                {
+                    DesactivePrefab();
+                }
+                else
+                {
+                    StartCoroutine(TimerBeforeDisapear(1));
+                }
             }
         }
 

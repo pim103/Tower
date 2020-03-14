@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Games.Global.Abilities.SpecialSpellPrefab
+﻿namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
 {
     public class StunArea : ExplosionArea
     {

@@ -16,6 +16,8 @@ namespace Games.Global
         Invisibility,
         AttackSpeedUp,
         BrokenDef,
+        Link,
+        Slow,
 
         MadeADash,
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace Games.Global.Abilities.SpecialSpellPrefab
+﻿namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
 {
     public class ExtraArrow : SpellScript
     {

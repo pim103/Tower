@@ -40,7 +40,7 @@ namespace Games.Global.Weapons
 
         private void PoolProjectiles()
         {
-            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(0);
+            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(weapon.idPoolProjectile);
 
             proj.transform.position = transform.position;
             float rotX = proj.transform.localEulerAngles.x;

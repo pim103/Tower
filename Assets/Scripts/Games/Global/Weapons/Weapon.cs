@@ -48,6 +48,8 @@ namespace Games.Global.Weapons
         public Spell skill2;
         public Spell skill3;
 
+        public int idPoolProjectile;
+
         public virtual void InitPlayerSkill(Classes classe)
         {
             skill1 = new Spell();

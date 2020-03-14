@@ -21,7 +21,8 @@ namespace Games.Global
         EffectOnTargetWhenDamageReceive,
         SelfEffectOnDamageReceive,
         SelfEffectOnDamageDeal,
-        InstantiateSomething
+        InstantiateSomething,
+        ChangeBasicAttack
     }
 
     public enum TypeSpellObject
@@ -41,7 +42,7 @@ namespace Games.Global
         // If type == effectOnSomething
         public float durationInstruction;
         
-        // If type == instantiate /* ID poolerSpell */
+        // If type == instantiate or type == changeBasickAttack /* ID poolerSpell */
         public int idPoolObject;
         public TypeSpellObject typeSpellObject;
         

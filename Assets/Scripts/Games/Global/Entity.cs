@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
+using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -110,8 +111,21 @@ namespace Games.Global
             effectInterface.StartCoroutineEffect(effect);
         }
         
-        public void ApplyEffect(Effect effect)
+        public void ApplyEffect(Effect effect, bool canPropagate = true)
         {
+            if (underEffects.ContainsKey(TypeEffect.Link) && canPropagate)
+            {
+                List<Monster> monsterWithLink =
+                    DataObject.monsterInScene.FindAll(monster =>
+                        monster.underEffects.ContainsKey(TypeEffect.Link));
+
+                foreach (Monster monsterLink in monsterWithLink)
+                {
+                    Debug.Log("Find another monster");
+                    monsterLink.ApplyEffect(effect, false);
+                }
+            }
+            
             if (underEffects.ContainsKey(effect.typeEffect))
             {
                 Effect effectInList = underEffects[effect.typeEffect];
