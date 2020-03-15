@@ -5,14 +5,12 @@ using UnityEngine;
 
 namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
 {
-    public class AreaArrow3 : ExplosionArea
+    public class AreaSpellArrow3 : AreaSpell
     {
         private Effect effect1;
         private Effect effect2;
 
         private Transform originParent;
-
-        private List<Entity> entityInZone;
 
         private Coroutine currentCoroutine;
 
@@ -22,11 +20,6 @@ namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
             effect2 = new Effect {typeEffect = TypeEffect.Weak, durationInSeconds = 1};
 
             originParent = transform.parent;
-        }
-
-        private void Awake()
-        {
-            entityInZone = new List<Entity>();
         }
 
         public IEnumerator TimerBetweenDisapear()
@@ -40,7 +33,6 @@ namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
 
                 foreach (Entity entity in entityInZone)
                 {
-                    Debug.Log("Encore : " + entity.IdEntity);
                     entity.ApplyEffect(effect1);
                     entity.ApplyEffect(effect2);
                 }
@@ -53,22 +45,16 @@ namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
             transform.parent = originParent;
         }
 
-        public override void TriggerExplosion(Entity entity)
+        public override void TriggerAreaEffect(Entity entity)
         {
-            entityInZone.Add(entity);
-
             if (currentCoroutine == null)
             {
                 currentCoroutine = StartCoroutine(TimerBetweenDisapear());
             }
         }
         
-        public override void QuitExplosion(Entity entity)
+        public override void QuitAreaEffect(Entity entity)
         {
-            if (entityInZone.Contains(entity))
-            {
-                entityInZone.Remove(entity);
-            }
         }
     }
 }

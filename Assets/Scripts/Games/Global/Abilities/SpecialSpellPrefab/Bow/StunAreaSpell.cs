@@ -1,6 +1,6 @@
 ﻿namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
 {
-    public class StunArea : ExplosionArea
+    public class StunAreaSpell : AreaSpell
     {
         private Effect effect;
         
@@ -9,7 +9,7 @@
             effect = new Effect {typeEffect = TypeEffect.Stun, durationInSeconds = 3, level = 1};
         }
 
-        public override void TriggerExplosion(Entity entity)
+        public override void TriggerAreaEffect(Entity entity)
         {
             entity.ApplyEffect(effect);
         }

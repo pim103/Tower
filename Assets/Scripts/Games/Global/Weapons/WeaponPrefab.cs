@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
 {
@@ -101,7 +98,13 @@ namespace Games.Global.Weapons
                 entity.ApplyEffect(effects.Value);
             }
 
-            entity.TakeDamage(weapon.damage, abilityParameters);
+            int damage = weapon.damage;
+            if (wielder.underEffects.ContainsKey(TypeEffect.Weak))
+            {
+                damage /= 2;
+            }
+
+            entity.TakeDamage(damage, abilityParameters);
 
             return true;
         }

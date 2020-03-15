@@ -45,7 +45,7 @@ namespace Games.Global.Weapons
             DesactivePrefab();
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             if (typeProjectile == TypeProjectile.Arrow)
             {
@@ -76,14 +76,14 @@ namespace Games.Global.Weapons
             {
                 if (explosionArea != null)
                 {
-                    ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
-                    scriptArea.origin = origin;
+                    AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
+                    scriptAreaSpell.origin = origin;
 
                     explosionArea.SetActive(true);
                 }
 
                 touch = true;
-            } else if (other.gameObject.layer != LayerMask.NameToLayer("Wall"))
+            } else if (other.gameObject.layer != LayerMask.NameToLayer("Wall") && wielder != null)
             {
                 if (other.gameObject.layer == monsterLayer && wielder.typeEntity != TypeEntity.MOB)
                 {
@@ -119,8 +119,8 @@ namespace Games.Global.Weapons
 
                 if (explosionArea != null)
                 {
-                    ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
-                    scriptArea.origin = origin;
+                    AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
+                    scriptAreaSpell.origin = origin;
 
                     explosionArea.SetActive(true);
                 }
@@ -152,8 +152,8 @@ namespace Games.Global.Weapons
         {
             if (typeProjectile == TypeProjectile.Grenade && other.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                ExplosionArea scriptArea = explosionArea.GetComponent<ExplosionArea>();
-                scriptArea.origin = origin;
+                AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
+                scriptAreaSpell.origin = origin;
 
                 explosionArea.SetActive(true);
 

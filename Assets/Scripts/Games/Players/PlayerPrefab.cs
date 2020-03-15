@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using Games.Global;
+using Games.Global.Abilities.SpecialSpellPrefab;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Mage);
+            player.InitPlayerStats(Classes.Warrior);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -200,6 +201,13 @@ namespace Games.Players
                         break;
                     case TypeSpellInstruction.SelfEffectOnDamageReceive:
                         entity.damageReceiveExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
+                        break;;
+                    case TypeSpellInstruction.ChangeBasicAttack:
+                        Debug.Log("Change weapon");
+                        entity.weapons[0].idPoolProjectile = spellInstruction.idPoolObject;
+                        entity.weapons[0].type = spellInstruction.weaponNewStats.typeWeapon;
+                        entity.weapons[0].damage *= spellInstruction.weaponNewStats.damageModifier;
+                        entity.weapons[0].attSpeed *= spellInstruction.weaponNewStats.attSpeedModifier;
                         break;
                 }
             }
@@ -257,16 +265,26 @@ namespace Games.Players
                     projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
                     projectileSpell.transform.forward *= 1.5f;
 
-//                    if (positionPointed != Vector3.zero)
-//                    {
-//                        projectileSpell.transform.LookAt(positionPointed);
-//                    }
-
                     projectileSpell.SetActive(true);
 
                     ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
                     projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
                     projectilesPrefab.origin = entity;
+                    break;
+                case TypeSpellObject.GroundArea:
+                    GameObject areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+
+                    if (positionPointed != Vector3.zero && areaSpell != null)
+                    {
+                        AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
+                        areaSpellScript.origin = entity;
+                            
+                        areaSpell.transform.position = positionPointed;
+                        Debug.Log("Set Active spell");
+                        areaSpell.SetActive(true);
+                        
+                        areaSpellScript.ActiveArea();
+                    }
                     break;
             }
         }
@@ -299,6 +317,11 @@ namespace Games.Players
             var locVel = transform.InverseTransformDirection(rigidbody.velocity);
             locVel.x = horizontalMove * PLAYER_SPEED;
             locVel.z = verticalMove * PLAYER_SPEED;
+
+            if (entity.underEffects.ContainsKey(TypeEffect.Slow))
+            {
+                locVel /= 2;
+            }
 
             rigidbody.velocity = transform.TransformDirection(locVel);
         }

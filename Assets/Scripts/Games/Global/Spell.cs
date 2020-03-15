@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global.Abilities;
+using Games.Global.Weapons;
 using UnityEngine;
 
 namespace Games.Global
@@ -32,6 +33,13 @@ namespace Games.Global
         Weapon
     }
 
+    public struct WeaponNewStats
+    {
+        public float attSpeedModifier;
+        public int damageModifier;
+        public TypeWeapon typeWeapon;
+    }
+
     public struct SpellInstruction
     {
         public TypeSpellInstruction TypeSpellInstruction;
@@ -46,6 +54,9 @@ namespace Games.Global
         public int idPoolObject;
         public TypeSpellObject typeSpellObject;
         
+        // If type == changeBasicAttack
+        public WeaponNewStats weaponNewStats;
+        
         // Time wait before next instructions
         public float timeWait;
     }
@@ -58,6 +69,8 @@ namespace Games.Global
         public int cooldown;
 
         public bool canLaunch;
+
+        public Entity origin;
 
         public List<SpellInstruction> spellInstructions;
 

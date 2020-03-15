@@ -1,13 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Players;
 using UnityEngine;
 
 namespace Games.Global.Abilities.SpecialSpellPrefab
 {
-    public abstract class ExplosionArea : MonoBehaviour
+    public abstract class AreaSpell : MonoBehaviour
     {
         public Entity origin;
+        public Transform parent;
+
+        public List<Entity> entityInZone;
+        
+        private void OnEnable()
+        {
+            entityInZone = new List<Entity>();
+            
+            ActiveArea();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -33,7 +44,8 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
                     return;
                 }
                 
-                TriggerExplosion(entity);
+                entityInZone.Add(entity);
+                TriggerAreaEffect(entity);
             }
         }
 
@@ -59,14 +71,26 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
                 {
                     return;
                 }
-                
-                QuitExplosion(entity);
+
+                if (entityInZone.Contains(entity))
+                {
+                    entityInZone.Remove(entity);
+                    QuitAreaEffect(entity);
+                }
             }
         }
 
-        public abstract void TriggerExplosion(Entity entity);
+        public virtual void ActiveArea()
+        {
+            
+        }
 
-        public virtual void QuitExplosion(Entity entity)
+        public virtual void TriggerAreaEffect(Entity entity)
+        {
+            
+        }
+
+        public virtual void QuitAreaEffect(Entity entity)
         {
             
         }

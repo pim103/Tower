@@ -146,7 +146,7 @@ namespace Games.Global.Weapons
                 typeSpellObject = TypeSpellObject.Projectile
             };
 
-            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 1, cost = 1};
+            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 15, cost = 10};
             spell3.spellInstructions.Add(spellInstruction);
 
             /* Setting Spell */
@@ -158,7 +158,49 @@ namespace Games.Global.Weapons
         
         private void InitWarriorSpell()
         {
+            WeaponNewStats weaponNewStats = new WeaponNewStats {attSpeedModifier = 0.5f, damageModifier = 1, typeWeapon = TypeWeapon.Distance};
             
+            SpellInstruction spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.ChangeBasicAttack,
+                idPoolObject = 5,
+                weaponNewStats = weaponNewStats
+            };
+
+            Spell spell1 = new Spell {typeSpell = TypeSpell.Passive, cooldown = 10, castTime = 0};
+            spell1.spellInstructions.Add(spellInstruction);
+
+            /* Spell 2 */
+
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.InstantiateSomething,
+                idPoolObject = 6,
+                timeWait = 0,
+                typeSpellObject = TypeSpellObject.Projectile
+            };
+
+            Spell spell2 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10};
+            spell2.spellInstructions.Add(spellInstruction);
+
+            /* Spell 3 */
+
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.InstantiateSomething,
+                idPoolObject = 8,
+                timeWait = 0,
+                typeSpellObject = TypeSpellObject.GroundArea
+            };
+
+            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10 };
+            spell3.spellInstructions.Add(spellInstruction);
+
+            /* Setting Spell */
+
+            skill1 = spell1;
+            skill2 = spell2;
+            skill3 = spell3;
         }
 
         private void InitRogueSpell()
