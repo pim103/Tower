@@ -12,7 +12,7 @@ public struct AccountResource
     public Resource Resource;
 
     // The amount of the resource
-    [Range(1, 999)]
+    [Range(0, 999)]
     public int Amount;
 }
 
@@ -35,28 +35,17 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    [Header("Account")]
     // Resources on the account
     public List<AccountResource> AccountResources;
 
     [Header("Public Variables")]
-
-    [SerializeField]
-    private int goldBarAmount;
-
-    [SerializeField]
-    private int goldNuggetAmount;
-
-    [SerializeField]
-    private int stoneOreAmount;
-
-    [SerializeField]
-    private Text goldBarAmountText;
-
-    [SerializeField]
-    private Text goldNuggetAmountText;
-
-    [SerializeField]
-    private Text stoneOreAmountText;
+    [SerializeField] private int goldBarAmount;
+    [SerializeField] private int goldNuggetAmount;
+    [SerializeField] private int stoneOreAmount;
+    [SerializeField] private Text goldBarAmountText;
+    [SerializeField] private Text goldNuggetAmountText;
+    [SerializeField] private Text stoneOreAmountText;
 
     private void Update()
     {

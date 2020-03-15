@@ -7,6 +7,7 @@ public class CraftingRecipeUI : MonoBehaviour
     [Header("References")]
     [SerializeField] RectTransform arrowParent;
     [SerializeField] ResourceSlot[] resourceSlots;
+    [SerializeField] ResourceInfo[] resourceInfos;
     [SerializeField] BaseItemSlot[] itemSlots;
 
     [Header("Public Variables")]
@@ -98,9 +99,11 @@ public class CraftingRecipeUI : MonoBehaviour
         {
             RecipeResource resourceAmount = resourceAmountList[i];
             ResourceSlot resourceSlot = resourceSlots[resourceSlotIndex];
+            ResourceInfo resourceInfo = resourceInfos[resourceSlotIndex];
 
             resourceSlot.Resource = resourceAmount.Resource;
             resourceSlot.Amount = resourceAmount.Amount;
+            resourceInfo.Resource = resourceAmount.Resource;
             resourceSlot.transform.parent.gameObject.SetActive(true);
         }
 

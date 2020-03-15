@@ -30,11 +30,23 @@ public class CraftingWindow : MonoBehaviour
 
         foreach (CraftingRecipeUI craftingRecipeUI in craftingRecipeUIs)
         {
-            craftingRecipeUI.ResourceOnPointerEnterEvent += slot => ResourceOnPointerEnterEvent(slot);
-            craftingRecipeUI.ResourceOnPointerExitEvent += slot => ResourceOnPointerExitEvent(slot);
+            craftingRecipeUI.ResourceOnPointerEnterEvent += slot =>
+            {
+                ResourceOnPointerEnterEvent?.Invoke(slot);
+            };
+            craftingRecipeUI.ResourceOnPointerExitEvent += slot =>
+            {
+                ResourceOnPointerExitEvent?.Invoke(slot);
+            };
 
-            craftingRecipeUI.OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
-            craftingRecipeUI.OnPointerExitEvent += slot => OnPointerExitEvent(slot);
+            craftingRecipeUI.OnPointerEnterEvent += slot =>
+            {
+                OnPointerEnterEvent?.Invoke(slot);
+            };
+            craftingRecipeUI.OnPointerExitEvent += slot =>
+            {
+                OnPointerExitEvent?.Invoke(slot);
+            };
         }
     }
 

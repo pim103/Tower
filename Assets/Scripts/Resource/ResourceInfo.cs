@@ -5,8 +5,20 @@ using UnityEngine.EventSystems;
 
 public class ResourceInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    // Set the resource
     [SerializeField]
     private Resource resource;
+    public Resource Resource
+    {
+        get
+        {
+            return resource;
+        }
+        set
+        {
+            resource = value;
+        }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
