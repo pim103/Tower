@@ -257,15 +257,15 @@ namespace Games.Players
                     projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
                     projectileSpell.transform.forward *= 1.5f;
 
-                    if (positionPointed != Vector3.zero)
-                    {
-                        projectileSpell.transform.LookAt(positionPointed);
-                    }
+//                    if (positionPointed != Vector3.zero)
+//                    {
+//                        projectileSpell.transform.LookAt(positionPointed);
+//                    }
 
                     projectileSpell.SetActive(true);
 
                     ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
-                    projectilesPrefab.rigidbody.AddRelativeForce(transform.forward * 1000, ForceMode.Acceleration);
+                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
                     projectilesPrefab.origin = entity;
                     break;
             }

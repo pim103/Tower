@@ -121,8 +121,11 @@ namespace Games.Global
 
                 foreach (Monster monsterLink in monsterWithLink)
                 {
-                    Debug.Log("Find another monster");
-                    monsterLink.ApplyEffect(effect, false);
+                    if (monsterLink.IdEntity != IdEntity)
+                    {
+                        Debug.Log("Find another monster");
+                        monsterLink.ApplyEffect(effect, false);
+                    }
                 }
             }
             
