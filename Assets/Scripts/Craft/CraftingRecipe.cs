@@ -93,7 +93,13 @@ public class CraftingRecipe : ScriptableObject
 
     // Add the recipe result to the account
     private void AddResults(AccountManager accountManager)
-    {
-        // TODO : Add the result to the account
+    { 
+        foreach (RecipeResult recipeResult in RecipeResults)
+        {
+            for (int i = 0; i < recipeResult.Amount; i++)
+            {
+                // TODO : Add the result to the account
+            }
+        }
     }
 }
