@@ -99,6 +99,7 @@ public class CraftingRecipe : ScriptableObject
             for (int i = 0; i < recipeResult.Amount; i++)
             {
                 // TODO : Add the result to the account
+                accountManager.AddItem();
             }
         }
     }

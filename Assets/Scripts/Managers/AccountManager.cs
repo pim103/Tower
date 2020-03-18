@@ -94,4 +94,10 @@ public class AccountManager : MonoBehaviour
             }
         }
     }
+
+    // Add item to the account
+    public void AddItem()
+    {
+
+    }
 }
