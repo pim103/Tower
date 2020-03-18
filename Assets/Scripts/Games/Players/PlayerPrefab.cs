@@ -39,7 +39,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Warrior);
+            player.InitPlayerStats(Classes.Rogue);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -189,6 +189,11 @@ namespace Games.Players
 
         private void CheckPassiveSpell(Spell spell)
         {
+            if (spell == null)
+            {
+                return;
+            }
+            
             foreach (SpellInstruction spellInstruction in spell.spellInstructions)
             {
                 switch (spellInstruction.TypeSpellInstruction)

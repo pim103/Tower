@@ -38,7 +38,6 @@ namespace Games.Global.Abilities.SpecialSpellPrefab.Bow
             }
 
 //            transform.parent = parent;
-            Debug.Log("Desactive");
             gameObject.SetActive(false);
         }
 

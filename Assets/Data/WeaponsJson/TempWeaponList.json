@@ -8,9 +8,6 @@
 			"rarity": 0,
 			"loot_rate": 100,
 			"cost": 1,
-			"effects": [2,
-				1
-			3],
 			"damage": 5,
 			"att_speed": 5,
 			"on_damage_dealt": "ApplyFire",
@@ -25,9 +22,6 @@
 			"rarity": 0,
 			"loot_rate": 100,
 			"cost": 1,
-			"effects": [2,
-				1
-			3],
 			"damage": 5,
 			"att_speed": 10,
 			"on_damage_dealt": "ApplyFire",
@@ -42,14 +36,25 @@
 			"rarity": 0,
 			"loot_rate": 100,
 			"cost": 1,
-			"effects": [2,
-				1
-			3],
 			"damage": 5,
 			"att_speed": 5,
 			"on_damage_dealt": "ApplyFire",
 			"on_damage_receive": "KillHim",
 			"model": "BasicSpear"
+		},
+		{
+			"id": 4,
+			"name": "Basic_Dagger",
+			"category": 10,
+			"type": 1,
+			"rarity": 0,
+			"loot_rate": 100,
+			"cost": 1,
+			"damage": 5,
+			"att_speed": 8,
+			"on_damage_dealt": "ApplyFire",
+			"on_damage_receive": "KillHim",
+			"model": "BasicDagger"
 		},
 	]
 }
