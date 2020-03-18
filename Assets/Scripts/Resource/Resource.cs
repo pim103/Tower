@@ -11,9 +11,7 @@ public class Resource : ScriptableObject
     [Space]
     [Header("Information on the resource")]
 
-    [SerializeField]
-    string id;
-
+    [SerializeField] string id;
     public string ID
     {
         get
@@ -31,8 +29,7 @@ public class Resource : ScriptableObject
     [Space]
     [Header("Description of the resource")]
 
-    [SerializeField]
-    string ResourceDescription;
+    [SerializeField] string ResourceDescription;
 
     #if UNITY_EDITOR
     protected virtual void OnValidate()

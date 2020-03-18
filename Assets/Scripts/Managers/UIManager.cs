@@ -21,10 +21,8 @@ public class UIManager : MonoBehaviour
     }
 
     [Header("Tooltip Management")]
-    [SerializeField]
-    private GameObject tooltip;
-    [SerializeField]
-    private RectTransform tooltipRect;
+    [SerializeField] private GameObject tooltip;
+    [SerializeField] private RectTransform tooltipRect;
     private Text tooltipText;
 
     private void Awake()
