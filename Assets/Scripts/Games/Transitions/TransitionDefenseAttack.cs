@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using Games.Attacks;
+using Games.Defenses;
+using Games.Global.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,9 @@ namespace Games.Transitions
 
         [SerializeField]
         private InitAttackPhase initAttackPhase;
+        
+        [SerializeField]
+        private InitDefense initDefense;
 
         private int defenseTimer;
 
@@ -43,12 +48,35 @@ namespace Games.Transitions
             defenseTimer = durationDefensePhase;
             objectsInScene.waitingCanvasGameObject.SetActive(false);
 
+            SendGridData();
             initAttackPhase.StartAttackPhase();
         }
 
         public void StartDefenseCounter()
         {
             StartCoroutine(WaitingEndDefense());
+        }
+
+        private void SendGridData()
+        {
+            string stringToSend = "{\n";
+            foreach (var gridCell in initDefense.gridCellList)
+            {
+                GridTileController cellController = gridCell.GetComponent<GridTileController>();
+                if (cellController.content)
+                {
+                    if (cellController.content.layer == LayerMask.NameToLayer("Group"))
+                    {
+                        //stringToSend += "1:" + "manqueId:"+cellController.content.GetComponent<MonsterPrefab>().hand.transform.GetChild(0).;
+                    } else if (cellController.content.layer == LayerMask.NameToLayer("Wall"))
+                    {
+                        
+                    } else if (cellController.content.layer == LayerMask.NameToLayer("Trap"))
+                    {
+                        
+                    }
+                }
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Games.Global.Entities
             groups.cost = orig.cost;
             groups.id = orig.id;
             groups.radius = orig.radius;
+            groups.name = orig.name;
             groups.monsterInGroups = orig.monsterInGroups;
 
             return groups;

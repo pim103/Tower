@@ -135,6 +135,7 @@ namespace Utils
         public Family family;
         private int cost;
         private int radius = GroupsMonster.DEFAULT_RADIUS;
+        private string name;
 
         private MobJsonObject mob;
         private int number = 0;
@@ -160,6 +161,9 @@ namespace Utils
                     break;
                 case "radius":
                     radius = Int32.Parse(value);
+                    break;
+                case "groupName":
+                    name = value;
                     break;
                 default:
                     mob.InsertValue(key, value);
@@ -197,6 +201,7 @@ namespace Utils
             groupsMonster.cost = cost;
             groupsMonster.family = family;
             groupsMonster.radius = radius;
+            groupsMonster.name = name;
             groupsMonster.monsterInGroups = new Dictionary<int, int>();
 
             foreach (KeyValuePair<MobJsonObject, int> mob in mobs)

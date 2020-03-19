@@ -1,10 +1,22 @@
 ﻿using UnityEngine;
 
-namespace Scripts.Games.Defenses
+namespace Games.Defenses
 {
     public class GridTileController : MonoBehaviour
     {
+        public enum TypeData
+        {
+            Empty,
+            Trap,
+            Group,
+            Wall
+        }
+        
         public GameObject content;
+        public TypeData contentType = TypeData.Empty;
+        public bool isTooCloseFromSth;
+        public GameObject[] equipments;
+        
         public void ChangeColorToGreen()
         {
             GetComponent<Renderer>().material.color = Color.green;

@@ -1,4 +1,5 @@
-﻿using Games.Transitions;
+﻿using System.Collections.Generic;
+using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +36,8 @@ namespace Games.Defenses
         [SerializeField] 
         private GameObject defenseCamera;
 
-
+        public List<GameObject> gridCellList;
+        
         public void Init()
         {
             currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
@@ -63,6 +65,7 @@ namespace Games.Defenses
                 {
                     currentCell = Instantiate(gridCell, new Vector3( i+currentMap.transform.localPosition.x+1,  3f, j+currentMap.transform.localPosition.z+1), Quaternion.Euler(90,0,0));
                     currentCell.transform.parent = currentMap.transform;
+                    gridCellList.Add(currentCell);
                 }
             }
         }

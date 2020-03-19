@@ -27,6 +27,7 @@ namespace Games.Global.Entities
         public int id;
         public Family family;
         public int cost;
+        public string name;
         public int radius = DEFAULT_RADIUS;
 
         // first int : idMonster - Second int : numberMonster
