@@ -1,5 +1,9 @@
-﻿using Games.Global.Weapons;
-using Scripts.Games.Defenses;
+﻿using System;
+using System.Collections.Generic;
+using Games.Global;
+using Games.Global.Entities;
+using Games.Global.Weapons;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +13,9 @@ namespace Games.Defenses
     {
         [SerializeField] 
         private Button wallButton;
+        
+        [SerializeField]
+        private Button[] trapButtons;
 
         [SerializeField] 
         public Text wallButtonText;
@@ -17,32 +24,95 @@ namespace Games.Defenses
         private InitDefense initDefense;
 
         [SerializeField] 
-        private ObjectPooler wallPooler;
+        private ObjectPooler defensePooler;
 
         [SerializeField] 
         private HoverDetector hoverDetector;
+
+        [SerializeField] 
+        private GameObject cardPrefab;
         
         public int currentWallNumber;
         private int currentWallType;
+
+        public MobDecklist mobDecklist;
+        public List<GroupsMonster> mobDeckContent;
+        public List<Equipement> equipmentDeckContent;
+
+        [SerializeField] 
+        private GameObject[] mobCardContainers;
+        
+        [SerializeField] 
+        private GameObject[] equipementCardContainers;
+        private void Start()
+        {
+            wallButton.onClick.AddListener(PutWallInHand);
+
+            foreach (var button in trapButtons)
+            {
+                button.onClick.AddListener(delegate
+                {
+                    PutTrapInHand(button.gameObject.GetComponent<TrapBehavior>());
+                });
+            }
+        }
+
         void OnEnable()
         {
             currentWallNumber = initDefense.currentMapStats.wallNumber;
             currentWallType = initDefense.currentMapStats.wallType;
             wallButtonText.text = "Mur x" + currentWallNumber;
             
-            wallButton.onClick.AddListener(PutObjectInHand);
+            DrawCards();
         }
 
-        public void PutObjectInHand()
+        public void PutWallInHand()
         {
             if (currentWallNumber > 0 && !hoverDetector.objectInHand)
             {
                 currentWallNumber -= 1;
                 wallButtonText.text = "Mur x" + currentWallNumber;
-                GameObject wall = wallPooler.GetPooledObject(currentWallType);
+                GameObject wall = defensePooler.GetPooledObject(currentWallType+1);
                 hoverDetector.objectInHand = wall;
                 wall.SetActive(true);
             }
+        }
+
+        public void PutCardInHand(GameObject card)
+        {
+            hoverDetector.objectInHand = card;
+            card.layer = LayerMask.NameToLayer("CardInHand");
+        }
+
+        public void PutTrapInHand(TrapBehavior trapBehavior)
+        {
+            if (!hoverDetector.objectInHand)
+            {
+                GameObject trap = defensePooler.GetPooledObject(0);
+                trap.GetComponent<TrapBehavior>().CopyBehavior(trapBehavior);
+                hoverDetector.objectInHand = trap;
+                trap.SetActive(true);
+            }
+        }
+        
+        public void DrawCards()
+        {
+            foreach (var cardContainer in mobCardContainers)
+            {
+                InitCard(cardContainer,0);
+            }
+            foreach (var cardContainer in equipementCardContainers)
+            {
+                InitCard(cardContainer,1);
+            }
+        }
+
+        private void InitCard(GameObject cardContainer, int type)
+        {
+            GameObject card = Instantiate(cardPrefab, cardContainer.transform, true);
+            card.transform.localPosition = new Vector3(0,0,0);
+            card.transform.localEulerAngles = new Vector3(0,0,0);
+            card.GetComponent<CardBehavior>().SetCard(type);
         }
         
     }
