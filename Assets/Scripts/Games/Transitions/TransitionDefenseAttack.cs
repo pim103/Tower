@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
@@ -57,26 +58,54 @@ namespace Games.Transitions
             StartCoroutine(WaitingEndDefense());
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                SendGridData();
+            }
+        }
+
         private void SendGridData()
         {
             string stringToSend = "{\n";
             foreach (var gridCell in initDefense.gridCellList)
             {
                 GridTileController cellController = gridCell.GetComponent<GridTileController>();
-                if (cellController.content)
+                stringToSend += "[" + cellController.coordinates.x + ":" + cellController.coordinates.y + ":";
+                switch (cellController.contentType)
                 {
-                    if (cellController.content.layer == LayerMask.NameToLayer("Group"))
-                    {
-                        //stringToSend += "1:" + "manqueId:"+cellController.content.GetComponent<MonsterPrefab>().hand.transform.GetChild(0).;
-                    } else if (cellController.content.layer == LayerMask.NameToLayer("Wall"))
-                    {
+                    case GridTileController.TypeData.Empty:
+                        stringToSend += "0";
+                        break;
+                    case GridTileController.TypeData.Group:
+                        CardBehavior currentCardBehavior = cellController.content.GetComponent<CardBehavior>();
+                        stringToSend += "1:" + currentCardBehavior.groupId+":";
+                        foreach (var equipement in currentCardBehavior.equipementsList)
+                        {
+                            stringToSend+=equipement.GetComponent<CardBehavior>().equipement.id+":";
+                        }
                         
-                    } else if (cellController.content.layer == LayerMask.NameToLayer("Trap"))
-                    {
-                        
-                    }
+                        stringToSend = stringToSend.Remove(stringToSend.Length - 1);
+                        break;
+                    case GridTileController.TypeData.Wall:
+                        stringToSend += "2";
+                        break;
+                    case GridTileController.TypeData.Trap:
+                        TrapBehavior currentTrapBehavior = cellController.content.GetComponent<TrapBehavior>();
+                        stringToSend += "3:" + (int) currentTrapBehavior.mainType + ":";
+                        foreach (var effect in currentTrapBehavior.trapEffects)
+                        {
+                            stringToSend += (int) effect + ":";
+                        }
+                        stringToSend = stringToSend.Remove(stringToSend.Length - 1);
+                        break;
                 }
+                stringToSend += "]\n";
             }
+
+            stringToSend += "}";
+            Debug.Log(stringToSend);
         }
     }
 }

@@ -119,7 +119,6 @@ namespace Games.Defenses
                                 (objectInHand.layer == LayerMask.NameToLayer("CardInHand") &&
                                  currentCardBehavior.cardType != 1) || objectInHand.layer == LayerMask.NameToLayer("Trap"))
                             {
-                                Debug.Log("yes");
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
                                 currentTileController.content = objectInHand;
@@ -188,6 +187,10 @@ namespace Games.Defenses
                             objectInHand = null;
                             defenseUiController.currentWallNumber += 1;
                             defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
+                        } else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                        {
+                            objectInHand.SetActive(false);
+                            objectInHand = null;
                         }
                     }
                 }

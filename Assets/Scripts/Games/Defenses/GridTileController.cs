@@ -11,11 +11,11 @@ namespace Games.Defenses
             Group,
             Wall
         }
-        
+
+        public Vector2 coordinates;
         public GameObject content;
         public TypeData contentType = TypeData.Empty;
         public bool isTooCloseFromSth;
-        public GameObject[] equipments;
         
         public void ChangeColorToGreen()
         {

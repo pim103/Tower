@@ -27,11 +27,12 @@ public class CardBehavior : MonoBehaviour
     public MeshRenderer ownMeshRenderer;
     
     private GroupsMonster group;
-    private Equipement equipement;
+    public Equipement equipement;
     public GameObject equipementModel;
     public Transform container;
     public int cardType;
     private int idMobInit = 0;
+    public int groupId;
 
     public List<GameObject> equipementsList;
     private void OnEnable()
@@ -68,6 +69,7 @@ public class CardBehavior : MonoBehaviour
 
         Vector3 origPos = position;
 
+        groupId = groups.id;
         foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
         {
             for (int i = 0; i < mobs.Value; i++)
