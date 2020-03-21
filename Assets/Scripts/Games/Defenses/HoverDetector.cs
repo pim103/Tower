@@ -58,7 +58,8 @@ namespace Games.Defenses
             {
                 aboveMap = true;
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                //Debug.Log(hit.collider.name);
+                Debug.Log(objectInHand);
+                //Debug.Log(currentCardBehavior.cardType);
                 if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 1)
                 {
                     if (currentTileController.contentType == GridTileController.TypeData.Group)
