@@ -70,7 +70,7 @@ namespace Games.Transitions
         private void SendGridData()
         {
             // \"_TARGET\":\"ALL\", \"_ARGS\":\"null\",
-            string stringToSend = "{\n";
+            string stringToSend = "{\"_TARGET\":\"OTHERS\", \"GRID\":\"";
             foreach (var gridCell in initDefense.gridCellList)
             {
                 GridTileController cellController = gridCell.GetComponent<GridTileController>();
@@ -153,11 +153,11 @@ namespace Games.Transitions
                             break;
                     }
 
-                    stringToSend += "\n";
+                    stringToSend += ";";
                 }
             }
 
-            stringToSend += "}";
+            stringToSend += "\"}";
             //Debug.Log(stringToSend);
             gameController.networking.ws.Send(stringToSend);
         }
