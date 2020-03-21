@@ -15,7 +15,7 @@ namespace Games.Global.Entities
 
         public Family family;
         
-        public List<Skill> skills;
+        public List<Spell> skills;
 
         public TypeWeapon constraint;
 

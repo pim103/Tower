@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
+using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace Games.Global
         private const int DEFAULT_DEF = 10;
         private const int DEFAULT_ATT = 10;
         private const int DEFAULT_SPEED = 10;
+        private const float DEFAULT_ATT_SPEED = 1;
         private const float DEFAULT_RESSOURCE = 50;
         
         private const int DEFAULT_NB_WEAPONS = 1;
@@ -40,6 +42,7 @@ namespace Games.Global
         public int initialDef;
         public int initialAtt;
         public int initialSpeed;
+        public float initialAttSpeed;
         public float initialRessource1;
         public float initialRessource2;
 
@@ -47,7 +50,8 @@ namespace Games.Global
         public int def = DEFAULT_DEF;
         public int att = DEFAULT_ATT;
         public int speed = DEFAULT_SPEED;
-        
+        public float attSpeed = DEFAULT_ATT_SPEED;
+
         public float ressource1 = DEFAULT_RESSOURCE;
         public float ressource2 = 0;
 
@@ -55,23 +59,32 @@ namespace Games.Global
 
         public Func<AbilityParameters, bool> OnDamageDealt;
 
+
         // If needed, create WeaponExposer to get all scripts of a weapon
         public List<Weapon> weapons;
         public List<Armor> armors;
 
         public TypeEntity typeEntity;
 
+        // Suffered effect 
         public Dictionary<TypeEffect, Effect> underEffects;
 
-        public EffectInterface effectInterface;
+        // Effect add to damage deal
+        public Dictionary<TypeEffect, Effect> damageDealExtraEffect;
 
+        // Effect add to damage receive
+        public Dictionary<TypeEffect, Effect> damageReceiveExtraEffect;
+
+        public EffectInterface effectInterface;
         public EntityPrefab entityPrefab;
+
+        public bool doingSkill = false;
 
         public abstract void BasicAttack();
         public abstract void BasicDefense();
         public abstract void DesactiveBasicDefense();
-        
-        public void ApplyEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
+
+        public void ApplyNewEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
         {
             Effect effect = new Effect();
             effect.level = level;
@@ -86,6 +99,36 @@ namespace Games.Global
                 return;
             }
 
+            if (underEffects.ContainsKey(effect.typeEffect))
+            {
+                Effect effectInList = underEffects[effect.typeEffect];
+                effectInList.UpdateEffect(effect);
+
+                underEffects[effect.typeEffect] = effectInList;
+                return;
+            }
+
+            effectInterface.StartCoroutineEffect(effect);
+        }
+        
+        public void ApplyEffect(Effect effect, bool canPropagate = true)
+        {
+            if (underEffects.ContainsKey(TypeEffect.Link) && canPropagate)
+            {
+                List<Monster> monsterWithLink =
+                    DataObject.monsterInScene.FindAll(monster =>
+                        monster.underEffects.ContainsKey(TypeEffect.Link));
+
+                foreach (Monster monsterLink in monsterWithLink)
+                {
+                    if (monsterLink.IdEntity != IdEntity)
+                    {
+                        Debug.Log("Find another monster");
+                        monsterLink.ApplyEffect(effect, false);
+                    }
+                }
+            }
+            
             if (underEffects.ContainsKey(effect.typeEffect))
             {
                 Effect effectInList = underEffects[effect.typeEffect];
@@ -112,6 +155,9 @@ namespace Games.Global
             {
                 case TypeEffect.Invisibility:
                     entityPrefab.SetMaterial(StaticMaterials.invisibleMaterial);
+                    break;
+                case TypeEffect.AttackSpeedUp:
+                    attSpeed = initialAttSpeed + (0.5f * effect.level);
                     break;
             }
         }
@@ -147,6 +193,9 @@ namespace Games.Global
                 case TypeEffect.Invisibility:
                     entityPrefab.SetMaterial(StaticMaterials.defaultMaterial);
                     break;
+                case TypeEffect.AttackSpeedUp:
+                    attSpeed = initialAttSpeed;
+                    break;
             }
         }
 
@@ -155,11 +204,19 @@ namespace Games.Global
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();
+            damageDealExtraEffect = new Dictionary<TypeEffect, Effect>();
+            damageReceiveExtraEffect = new Dictionary<TypeEffect, Effect>();
         }
 
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
+
+            if (underEffects.ContainsKey(TypeEffect.BrokenDef))
+            {
+                damageReceived = initialDamage;
+            }
+
             ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)
@@ -175,6 +232,11 @@ namespace Games.Global
             foreach (Armor armor in armors)
             {
                 armor.OnDamageReceive(abilityParameters);
+            }
+
+            foreach (KeyValuePair<TypeEffect, Effect> effects in damageReceiveExtraEffect)
+            {
+                ApplyEffect(effects.Value);
             }
 
             if (underEffects.ContainsKey(TypeEffect.Sleep))

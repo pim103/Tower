@@ -4,6 +4,7 @@ using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global
 {
@@ -108,6 +109,44 @@ namespace Games.Global
         public void SetMaterial(Material material)
         {
             meshRenderer.material = material;
+        }
+        
+        public IEnumerator AddDamageDealExtraEffect(Effect effect, float duration)
+        {
+            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
+            {
+                entity.damageDealExtraEffect[effect.typeEffect] = effect;
+            }
+            else
+            {
+                entity.damageDealExtraEffect.Add(effect.typeEffect, effect);
+            }
+            
+            yield return new WaitForSeconds(duration);
+
+            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
+            {
+                entity.damageDealExtraEffect.Remove(effect.typeEffect);
+            }
+        }
+        
+        public IEnumerator AddDamageReceiveExtraEffect(Effect effect, float duration)
+        {
+            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
+            {
+                entity.damageReceiveExtraEffect[effect.typeEffect] = effect;
+            }
+            else
+            {
+                entity.damageReceiveExtraEffect.Add(effect.typeEffect, effect);
+            }
+
+            yield return new WaitForSeconds(duration);
+
+            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
+            {
+                entity.damageReceiveExtraEffect.Remove(effect.typeEffect);
+            }
         }
     }
 }

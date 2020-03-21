@@ -45,10 +45,10 @@ namespace Games.Players
             switch (mainClass)
             {
                 case Classes.Mage:
-                    ApplyEffect(TypeEffect.Regen, 5f, 1, this, 1);
+                    ApplyNewEffect(TypeEffect.Regen, 5f, 1, this, 1);
                     break;
                 case Classes.Rogue:
-                    ApplyEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
+                    ApplyNewEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
                     break;
                 case Classes.Ranger:
                     if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
@@ -58,7 +58,7 @@ namespace Games.Players
                         playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
                         BasicAttack();
                         
-                        ApplyEffect(TypeEffect.MadeADash, 0.2f);
+                        ApplyNewEffect(TypeEffect.MadeADash, 0.2f);
                     }
                     break;
                 case Classes.Warrior:
@@ -101,6 +101,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Warrior:
                     att = 10;
@@ -108,6 +109,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Rogue:
                     att = 10;
@@ -115,6 +117,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
                 case Classes.Ranger:
                     att = 10;
@@ -122,6 +125,7 @@ namespace Games.Players
                     speed = 10;
                     hp = 50;
                     ressource1 = 50;
+                    attSpeed = 1;
                     break;
             }
 
@@ -129,11 +133,12 @@ namespace Games.Players
             initialDef = def;
             initialHp = hp;
             initialSpeed = speed;
+            initialAttSpeed = attSpeed;
             initialRessource1 = ressource1;
             initialRessource2 = ressource2;
 
             InitEquipementArray();
-            InitWeapon(2);
+            InitWeapon(4);
         }
 
         public void InitWeapon(int idWeapon)
@@ -153,7 +158,7 @@ namespace Games.Players
                 nbShieldBlock++;
                 if (nbShieldBlock > 4)
                 {
-                    ApplyEffect(TypeEffect.Stun, 3, 1);
+                    ApplyNewEffect(TypeEffect.Stun, 3, 1);
                     DesactiveBasicDefense();
                 }
 

@@ -21,12 +21,11 @@ namespace Games.Global.Weapons
 
         public override void InitPlayerSkill(Classes classe)
         {
+            base.InitPlayerSkill(classe);
+
             switch (classe)
             {
                 case Classes.Mage:
-                    skill1 = new Skill();
-                    skill2 = new Skill();
-                    skill3 = new Skill();
                     break;
                 case Classes.Rogue:
                     break;

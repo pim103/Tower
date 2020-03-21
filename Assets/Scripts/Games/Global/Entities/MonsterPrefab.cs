@@ -27,9 +27,15 @@ namespace Games.Global.Entities
             hpBar.value = diff;
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
-   
-            gameObject.transform.LookAt(playerPrefab.playerTransform);
-            FindTarget();
+
+            if (!entity.underEffects.ContainsKey(TypeEffect.Stun) && !entity.underEffects.ContainsKey(TypeEffect.Sleep))
+            {
+                FindTarget();
+            }
+            else
+            {
+                target = null;
+            }
         }
 
         private void FindTarget()
@@ -46,7 +52,8 @@ namespace Games.Global.Entities
 
             if (newTarget != null)
             {
-                virtualHand.transform.LookAt(newTarget.transform);
+                gameObject.transform.LookAt(newTarget.playerTransform);
+                virtualHand.transform.LookAt(newTarget.playerTransform);
             }
 
             target = newTarget;

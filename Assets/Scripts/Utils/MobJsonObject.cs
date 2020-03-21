@@ -16,6 +16,7 @@ namespace Utils
         private int att;
         private int def;
         private int hp;
+        private float attSpeed;
         private int speed;
         private int nbWeapon;
         private string weapon;
@@ -45,6 +46,9 @@ namespace Utils
                     break;
                 case "hp":
                     hp = Int32.Parse(value);
+                    break;
+                case "att_speed":
+                    attSpeed = Int32.Parse(value);
                     break;
                 case "speed":
                     speed = Int32.Parse(value);
@@ -91,7 +95,7 @@ namespace Utils
             }
         }
         
-        // Don't forget to clone fucking dumbass
+        // Don't forget to clone
         public Monster ConvertToMonster(Family family)
         {
             Monster monster = new Monster();
@@ -101,6 +105,7 @@ namespace Utils
             monster.initialDef = def;
             monster.initialHp = hp;
             monster.initialSpeed = speed;
+            monster.initialAttSpeed = attSpeed;
             
             monster.mobName = mobName;
             monster.att = att;
@@ -116,13 +121,13 @@ namespace Utils
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
             monster.modelName = modelName;
 
-            monster.skills = new List<Skill>();
-            foreach (string skill in skills)
-            {
-                Skill newSkill = new Skill();
-                newSkill.skill = AbilityManager.GetAbility(skill, AbilityDico.MOB);
-                monster.skills.Add(newSkill);
-            }
+            monster.skills = new List<Spell>();
+//            foreach (string skill in skills)
+//            {
+//                Spell newSpell = new Spell();
+//                newSpell.skill = AbilityManager.GetAbility(skill, AbilityDico.MOB);
+//                monster.skills.Add(newSpell);
+//            }
 
             return monster;
         }

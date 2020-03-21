@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Diagnostics;
 using Games.Global;
+using Games.Global.Abilities.SpecialSpellPrefab;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -26,7 +29,9 @@ namespace Games.Players
         public int playerIndex;
         public bool canMove;
 
-        private void Start()
+        private Vector3 positionPointed;
+
+        private void Awake()
         {
             Player player = new Player();
 
@@ -34,7 +39,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Mage);
+            player.InitPlayerStats(Classes.Rogue);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -44,6 +49,10 @@ namespace Games.Players
             pressDefenseButton = false;
 
             StartCoroutine(NaturalRegen());
+
+            CheckPassiveSpell(entity.weapons[0].skill1);
+            CheckPassiveSpell(entity.weapons[0].skill2);
+            CheckPassiveSpell(entity.weapons[0].skill3);
         }
 
         private IEnumerator NaturalRegen()
@@ -140,9 +149,151 @@ namespace Games.Players
                 pressDefenseButton = false;
             }
 
+            if (!entity.doingSkill)
+            {
+                if (Input.GetKeyUp(KeyCode.Alpha1))
+                {
+                    TryCastSpell(entity.weapons[0].skill1);
+                }
+
+                if (Input.GetKeyUp(KeyCode.Alpha2))
+                {
+                    TryCastSpell(entity.weapons[0].skill2);
+                }
+
+                if (Input.GetKeyUp(KeyCode.Alpha3))
+                {
+                    TryCastSpell(entity.weapons[0].skill3);
+                }
+            }
+
             mousePosition = Input.mousePosition;
         }
+
+        private void TryCastSpell(Spell spell)
+        {
+            if (spell.typeSpell == TypeSpell.Active ||
+                spell.typeSpell == TypeSpell.Toggle ||
+                spell.typeSpell == TypeSpell.ActiveWithPassive ||
+                spell.typeSpell == TypeSpell.ToggleWithPassive
+            )
+            {
+                if (spell.cost < entity.ressource1 && spell.canLaunch)
+                {
+                    Debug.Log("Lance le spell");
+                    StartCoroutine(Cooldown(spell));
+                    StartCoroutine(CastSpell(spell));
+                }
+            }
+        }
+
+        private void CheckPassiveSpell(Spell spell)
+        {
+            if (spell == null)
+            {
+                return;
+            }
+            
+            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
+            {
+                switch (spellInstruction.TypeSpellInstruction)
+                {
+                    case TypeSpellInstruction.SelfEffect:
+                        entity.ApplyEffect(spellInstruction.effect);
+                        break;
+                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
+                        entity.damageDealExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
+                        break;
+                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
+                        entity.damageReceiveExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
+                        break;;
+                    case TypeSpellInstruction.ChangeBasicAttack:
+                        Debug.Log("Change weapon");
+                        entity.weapons[0].idPoolProjectile = spellInstruction.idPoolObject;
+                        entity.weapons[0].type = spellInstruction.weaponNewStats.typeWeapon;
+                        entity.weapons[0].damage *= spellInstruction.weaponNewStats.damageModifier;
+                        entity.weapons[0].attSpeed *= spellInstruction.weaponNewStats.attSpeedModifier;
+                        break;
+                }
+            }
+        }
+
+        private IEnumerator Cooldown(Spell spell)
+        {
+            spell.canLaunch = false;
+            yield return new WaitForSeconds(spell.cooldown);
+            spell.canLaunch = true;
+
+            Debug.Log("Peux relancer le spell");
+        }
         
+        private IEnumerator CastSpell(Spell spell)
+        {
+            // TODO : make anim
+            entity.ressource1 -= spell.cost;
+
+            yield return new WaitForSeconds(spell.castTime);
+
+            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
+            {
+                switch (spellInstruction.TypeSpellInstruction)
+                {
+                    case TypeSpellInstruction.InstantiateSomething:
+                        ActiveSpellObject(spellInstruction);
+                        break;
+                    case TypeSpellInstruction.SelfEffect:
+                        entity.ApplyEffect(spellInstruction.effect);
+                        break;
+                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
+                        StartCoroutine(AddDamageDealExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        break;
+                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
+                        StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        break;
+                }
+            }
+        }
+
+        private void ActiveSpellObject(SpellInstruction spellInstruction)
+        {
+            switch (spellInstruction.typeSpellObject)
+            {
+                case TypeSpellObject.Projectile:
+                    GameObject projectileSpell =
+                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+
+                    Vector3 pos = transform.position;
+                    pos.y += 0.5f;
+                    projectileSpell.transform.position = pos;
+                    
+                    float rotX = projectileSpell.transform.localEulerAngles.x;
+                    projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
+                    projectileSpell.transform.forward *= 1.5f;
+
+                    projectileSpell.SetActive(true);
+
+                    ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
+                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
+                    projectilesPrefab.origin = entity;
+                    break;
+                case TypeSpellObject.GroundArea:
+                    GameObject areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+
+                    if (positionPointed != Vector3.zero && areaSpell != null)
+                    {
+                        AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
+                        areaSpellScript.origin = entity;
+                            
+                        areaSpell.transform.position = positionPointed;
+                        Debug.Log("Set Active spell");
+                        areaSpell.SetActive(true);
+                        
+                        areaSpellScript.ActiveArea();
+                    }
+                    break;
+            }
+        }
+
         public void Movement()
         {
             Rigidbody rigidbody = playerRigidbody;
@@ -172,6 +323,11 @@ namespace Games.Players
             locVel.x = horizontalMove * PLAYER_SPEED;
             locVel.z = verticalMove * PLAYER_SPEED;
 
+            if (entity.underEffects.ContainsKey(TypeEffect.Slow))
+            {
+                locVel /= 2;
+            }
+
             rigidbody.velocity = transform.TransformDirection(locVel);
         }
 
@@ -188,9 +344,14 @@ namespace Games.Players
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player")) && entity.weapons[0].type != TypeWeapon.Cac)
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Explosion")) && entity.weapons[0].type != TypeWeapon.Cac)
             {
-                virtualHand.transform.LookAt(hit.point);
+                positionPointed = hit.point;
+                virtualHand.transform.LookAt(positionPointed);
+            }
+            else
+            {
+                positionPointed = Vector3.zero;
             }
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6))
