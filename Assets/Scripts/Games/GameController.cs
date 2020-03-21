@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Games.Transitions;
+using Networking.Client;
 using UnityEngine;
 
 namespace Games {
@@ -13,6 +14,12 @@ namespace Games {
 
         [SerializeField]
         private ScriptsExposer se;
+        [SerializeField] 
+        private string endPoint;
+        [SerializeField] 
+        private string staticRoomId;
+
+        public TowersWebSocket networking;
 
         public static int PlayerIndex;
 
@@ -36,7 +43,11 @@ namespace Games {
         {
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
-
+            networking = new TowersWebSocket(endPoint, "1");
+            networking.InitializeWebsocketEndpoint();
+            networking.StartConnection();
+            Debug.Log(networking);
+            
             transitionMenuGame.WantToStartGame();
         }
 

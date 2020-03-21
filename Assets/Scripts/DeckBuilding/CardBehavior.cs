@@ -5,10 +5,12 @@ using System.Linq;
 using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
+using Random = UnityEngine.Random;
 
 public class CardBehavior : MonoBehaviour
 {
@@ -34,14 +36,18 @@ public class CardBehavior : MonoBehaviour
     public GameObject rangeSphere;
     
     private GroupsMonster group;
-    public Equipement equipement;
+    public Weapon equipement;
     public GameObject equipementModel;
     public Transform container;
     public int cardType;
     private int idMobInit = 0;
     public int groupId;
 
-    public List<GameObject> equipementsList;
+    public GameObject meleeWeaponSlot;
+    public GameObject rangedWeaponSlot;
+    public GameObject helmetSlot;
+    public GameObject chestSlot;
+    public GameObject grievesSlot;
 
     [SerializeField] 
     public CapsuleCollider groupRangeCollider; 
@@ -70,7 +76,7 @@ public class CardBehavior : MonoBehaviour
         }
         else if(type == 1)
         {
-            equipement = DataObject.WeaponList.GetWeaponWithId(1);
+            equipement = DataObject.WeaponList.GetWeaponWithId(Random.Range(1,3));
             nameText.text = equipement.modelName;
             costText.text = equipement.cost+" RP";
             effectText.text = "effet";

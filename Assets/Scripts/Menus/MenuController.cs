@@ -11,6 +11,9 @@ namespace Menus
 
         [FormerlySerializedAs("_endPoint")] [SerializeField] 
         private string endPoint;
+        [SerializeField] 
+        private string staticRoomId;
+        
         public TowersWebSocket networking;
         
 

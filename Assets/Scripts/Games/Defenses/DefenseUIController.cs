@@ -83,6 +83,21 @@ namespace Games.Defenses
             hoverDetector.objectInHand = card;
             card.layer = LayerMask.NameToLayer("CardInHand");
         }
+        
+        public void PutCardBackToHand(GameObject equipementCard)
+        {
+            if (equipementCard)
+            {
+                CardBehavior equipementCardBehavior = equipementCard.GetComponent<CardBehavior>();
+                equipementCardBehavior.groupParent.SetActive(false);
+                equipementCardBehavior.groupParent.transform.localPosition = Vector3.zero;
+                equipementCardBehavior.ownMeshRenderer.enabled = true;
+                equipementCardBehavior.transform.SetParent(equipementCardBehavior.container);
+                equipementCardBehavior.transform.localPosition = Vector3.zero;
+                equipementCardBehavior.gameObject.layer = LayerMask.NameToLayer("Card");
+                equipementCard.SetActive(true);
+            }
+        }
 
         public void PutTrapInHand(TrapBehavior trapBehavior)
         {
