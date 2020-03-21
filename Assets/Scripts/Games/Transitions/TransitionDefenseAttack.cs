@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
@@ -72,36 +73,44 @@ namespace Games.Transitions
             foreach (var gridCell in initDefense.gridCellList)
             {
                 GridTileController cellController = gridCell.GetComponent<GridTileController>();
-                stringToSend += "[" + cellController.coordinates.x + ":" + cellController.coordinates.y + ":";
-                switch (cellController.contentType)
+                if (cellController.contentType != GridTileController.TypeData.Empty)
                 {
-                    case GridTileController.TypeData.Empty:
-                        stringToSend += "0";
-                        break;
-                    case GridTileController.TypeData.Group:
-                        CardBehavior currentCardBehavior = cellController.content.GetComponent<CardBehavior>();
-                        stringToSend += "1:" + currentCardBehavior.groupId+":";
-                        foreach (var equipement in currentCardBehavior.equipementsList)
-                        {
-                            stringToSend+=equipement.GetComponent<CardBehavior>().equipement.id+":";
-                        }
-                        
-                        stringToSend = stringToSend.Remove(stringToSend.Length - 1);
-                        break;
-                    case GridTileController.TypeData.Wall:
-                        stringToSend += "2";
-                        break;
-                    case GridTileController.TypeData.Trap:
-                        TrapBehavior currentTrapBehavior = cellController.content.GetComponent<TrapBehavior>();
-                        stringToSend += "3:" + (int) currentTrapBehavior.mainType + ":";
-                        foreach (var effect in currentTrapBehavior.trapEffects)
-                        {
-                            stringToSend += (int) effect + ":";
-                        }
-                        stringToSend = stringToSend.Remove(stringToSend.Length - 1);
-                        break;
+                    stringToSend += cellController.coordinates.x + ":" + cellController.coordinates.y + ":";
+                    switch (cellController.contentType)
+                    {
+                        case GridTileController.TypeData.Group:
+                            CardBehavior currentCardBehavior = cellController.content.GetComponent<CardBehavior>();
+                            stringToSend += "1:" + currentCardBehavior.groupId + ":[";
+                            if (currentCardBehavior.equipementsList.Any())
+                            {
+                                foreach (var equipement in currentCardBehavior.equipementsList)
+                                {
+                                    stringToSend += equipement.GetComponent<CardBehavior>().equipement.id + ",";
+                                }
+                                stringToSend = stringToSend.Remove(stringToSend.Length - 1);
+                            }
+                            stringToSend += "]";
+                            break;
+                        case GridTileController.TypeData.Wall:
+                            stringToSend += "2";
+                            break;
+                        case GridTileController.TypeData.Trap:
+                            TrapBehavior currentTrapBehavior = cellController.content.GetComponent<TrapBehavior>();
+                            stringToSend += "3:" + (int) currentTrapBehavior.mainType + ":[";
+                            if (currentTrapBehavior.trapEffects.Any())
+                            {
+                                foreach (var effect in currentTrapBehavior.trapEffects)
+                                {
+                                    stringToSend += (int) effect + ",";
+                                }
+                                stringToSend = stringToSend.Remove(stringToSend.Length - 1);
+                            }
+                            stringToSend += "]";
+                            break;
+                    }
+
+                    stringToSend += "\n";
                 }
-                stringToSend += "]\n";
             }
 
             stringToSend += "}";
