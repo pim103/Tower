@@ -42,31 +42,30 @@ public class GameSettings : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+        // Get default graphic quality level
+        graphicDropdown.value = QualitySettings.GetQualityLevel();
     }
 
     public void SetFullScreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
-        Debug.Log(isFullscreen);
     }
 
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen, resolution.refreshRate);
-        Debug.Log(resolution);
     }
 
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
-        Debug.Log(qualityIndex);
     }
 
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("volume", volume);
         //audioMixer.SetFloat("Volume", Mathf.Log10(volume) * 20);
-        Debug.Log(volume);
     }
 }
