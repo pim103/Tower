@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8893820693325197507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8893820693325197516}
+  - component: {fileID: 8893820693325197517}
+  m_Layer: 0
+  m_Name: '[ACCOUNT_MANAGER]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8893820693325197516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893820693325197507}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8893820693325197517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893820693325197507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5243ad9e9e512547acb2cf1bc282bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AccountResources:
+  - Resource: {fileID: 11400000, guid: 780abbcb23dce1f469e4733af49986a5, type: 2}
+    Amount: 50
+  - Resource: {fileID: 11400000, guid: b1061649d516ab042b6cfe0e83ad056c, type: 2}
+    Amount: 100
+  - Resource: {fileID: 11400000, guid: d2815fe63c7d7e34888e393fcc99cdb0, type: 2}
+    Amount: 20
+  goldBarAmount: 0
+  goldNuggetAmount: 0
+  stoneOreAmount: 0
+  goldBarAmountText: {fileID: 0}
+  goldNuggetAmountText: {fileID: 0}
+  stoneOreAmountText: {fileID: 0}
