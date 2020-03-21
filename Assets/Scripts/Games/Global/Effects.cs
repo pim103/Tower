@@ -19,6 +19,9 @@ namespace Games.Global
         BrokenDef,
         Link,
         Slow,
+        AttackUp,
+        SpeedUp,
+        Untargetable,
 
         MadeADash,
     }
@@ -65,6 +68,8 @@ namespace Games.Global
                         durationInSeconds = 20;
                     }
                     break;
+                case TypeEffect.AttackUp:
+                case TypeEffect.SpeedUp:
                 case TypeEffect.Regen:
                     if (durationInSeconds < effect.durationInSeconds)
                     {

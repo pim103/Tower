@@ -14,9 +14,9 @@ namespace Games.Attacks
 {
     public enum TypeData {
         Nothing,
-        Trap,
         Group,
-        Wall
+        Wall,
+        Trap
     }
 
     public class InitAttackPhase : MonoBehaviour

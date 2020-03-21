@@ -96,7 +96,7 @@ namespace Games.Players
             switch(classe)
             {
                 case Classes.Mage:
-                    att = 10;
+                    att = 0;
                     def = 2;
                     speed = 10;
                     hp = 50;
@@ -104,7 +104,7 @@ namespace Games.Players
                     attSpeed = 1;
                     break;
                 case Classes.Warrior:
-                    att = 10;
+                    att = 0;
                     def = 2;
                     speed = 10;
                     hp = 50;
@@ -112,7 +112,7 @@ namespace Games.Players
                     attSpeed = 1;
                     break;
                 case Classes.Rogue:
-                    att = 10;
+                    att = 0;
                     def = 2;
                     speed = 10;
                     hp = 50;
@@ -120,7 +120,7 @@ namespace Games.Players
                     attSpeed = 1;
                     break;
                 case Classes.Ranger:
-                    att = 10;
+                    att = 0;
                     def = 2;
                     speed = 10;
                     hp = 50;

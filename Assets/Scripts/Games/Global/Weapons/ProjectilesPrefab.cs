@@ -123,6 +123,7 @@ namespace Games.Global.Weapons
                     scriptAreaSpell.origin = origin;
 
                     explosionArea.SetActive(true);
+                    scriptAreaSpell.EnableAreaEffect();
                 }
 
                 if (disapearOnHitEntity)
@@ -156,6 +157,7 @@ namespace Games.Global.Weapons
                 scriptAreaSpell.origin = origin;
 
                 explosionArea.SetActive(true);
+                scriptAreaSpell.EnableAreaEffect();
 
                 StartCoroutine(TimerBeforeDisapear(1));
 

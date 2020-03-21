@@ -12,16 +12,30 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
         public Transform parent;
 
         public List<Entity> entityInZone;
+
+        private bool isActive = false;
         
         private void OnEnable()
         {
+            isActive = false;
+        }
+
+        public void EnableAreaEffect()
+        {
             entityInZone = new List<Entity>();
+
+            isActive = true;
             
             ActiveArea();
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            if (!isActive)
+            {
+                return;
+            }
+            
             Debug.Log("In explosion : " + other.name);
             if (other.gameObject.layer != LayerMask.NameToLayer("Wall") || other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
@@ -51,6 +65,11 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
 
         private void OnTriggerExit(Collider other)
         {
+            if (!isActive)
+            {
+                return;
+            }
+
             if (other.gameObject.layer != LayerMask.NameToLayer("Wall") || other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
                 int monsterLayer = LayerMask.NameToLayer("Monster");

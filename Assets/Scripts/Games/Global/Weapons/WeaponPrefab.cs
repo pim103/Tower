@@ -98,7 +98,7 @@ namespace Games.Global.Weapons
                 entity.ApplyEffect(effects.Value);
             }
 
-            int damage = weapon.damage;
+            int damage = weapon.damage + wielder.att;
             if (wielder.underEffects.ContainsKey(TypeEffect.Weak))
             {
                 damage /= 2;

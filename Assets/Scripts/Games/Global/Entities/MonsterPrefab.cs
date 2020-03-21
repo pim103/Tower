@@ -15,37 +15,14 @@ namespace Games.Global.Entities
 
         private PlayerPrefab playerPrefab;
 
+        public bool aggroForced;
         public PlayerPrefab target;
-
-        public List<PlayerPrefab> playerInBack;
 
         private void Start()
         {
             playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
-            playerInBack = new List<PlayerPrefab>();
-        }
-
-
-        public void OnTriggerEnter(Collider other)
-        {
-            int layerPlayer = LayerMask.NameToLayer("Player");
-
-            if (other.gameObject.layer == layerPlayer)
-            {
-                Debug.Log("PLAYER ENTER");
-                playerInBack.Add(other.GetComponent<PlayerPrefab>());
-            }
-        }
-
-        public void OnTriggerExit(Collider other)
-        {
-            int layerPlayer = LayerMask.NameToLayer("Player");
-
-            if (other.gameObject.layer == layerPlayer)
-            {
-                Debug.Log("PLAYER LEAVE");
-                playerInBack.Remove(other.GetComponent<PlayerPrefab>());
-            }
+            entity.playerInBack = new List<int>();
+            aggroForced = false;
         }
 
         private void Update()
@@ -59,7 +36,7 @@ namespace Games.Global.Entities
             {
                 FindTarget();
             }
-            else
+            else if(!aggroForced)
             {
                 target = null;
             }
@@ -68,13 +45,20 @@ namespace Games.Global.Entities
         private void FindTarget()
         {
             PlayerPrefab newTarget = null;
-            
-            foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+
+            if (!aggroForced)
             {
-                if (!value.Value.entity.underEffects.ContainsKey(TypeEffect.Invisibility))
+                foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
                 {
-                    newTarget = value.Value;
+                    if (!value.Value.entity.underEffects.ContainsKey(TypeEffect.Invisibility) && !value.Value.entity.underEffects.ContainsKey(TypeEffect.Untargetable))
+                    {
+                        newTarget = value.Value;
+                    }
                 }
+            }
+            else
+            {
+                newTarget = target;
             }
 
             if (newTarget != null)
@@ -102,7 +86,7 @@ namespace Games.Global.Entities
         {
             DataObject.monsterInScene.Remove((Monster)entity);
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1869628687301897145}
   - component: {fileID: 8765592628195400090}
   - component: {fileID: 6307249475328061940}
-  - component: {fileID: 2242237492004919041}
   m_Layer: 11
   m_Name: BasicMonster
   m_TagString: Untagged
@@ -36,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 7530946856781573377}
   - {fileID: 6032227100637547945}
+  - {fileID: 1896343025879470424}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -132,6 +132,7 @@ MonoBehaviour:
   rigidbodyEntity: {fileID: 1869628687301897145}
   meshRenderer: {fileID: 1869628687301897147}
   hpBar: {fileID: 1237704919439136648}
+  aggroForced: 0
   target: {fileID: 0}
   playerInBack: []
 --- !u!114 &6307249475328061940
@@ -146,19 +147,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fadaf31bc22a83489d87ca31c2f4b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &2242237492004919041
+--- !u!1 &8514356219809148618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1896343025879470424}
+  - component: {fileID: 6716991485702108759}
+  - component: {fileID: 1976769686675351478}
+  m_Layer: 10
+  m_Name: MonsterBackCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1896343025879470424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8514356219809148618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1869628687301897125}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6716991485702108759
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869628687301897144}
+  m_GameObject: {fileID: 8514356219809148618}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.2078724, y: 2, z: 2.2542973}
   m_Center: {x: -0.054743767, y: 0, z: -1.6504354}
+--- !u!114 &1976769686675351478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8514356219809148618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4116ab2e405a3364dbbc909d100c751c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterPrefab: {fileID: 8765592628195400090}
 --- !u!1001 &682040312229272817
 PrefabInstance:
   m_ObjectHideFlags: 0

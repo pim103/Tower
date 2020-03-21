@@ -30,7 +30,8 @@ namespace Games.Global
     {
         Projectile,
         GroundArea,
-        Weapon
+        Weapon,
+        OnHimself
     }
 
     public struct WeaponNewStats

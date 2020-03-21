@@ -8,6 +8,8 @@ using Games.Global.Armors;
 using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
+using Games.Players;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
@@ -31,7 +33,7 @@ namespace Games.Global
         
         private const float DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
-        private const int DEFAULT_ATT = 10;
+        private const int DEFAULT_ATT = 0;
         private const int DEFAULT_SPEED = 10;
         private const float DEFAULT_ATT_SPEED = 1;
         private const float DEFAULT_RESSOURCE = 50;
@@ -59,7 +61,8 @@ namespace Games.Global
 
         public Func<AbilityParameters, bool> OnDamageDealt;
 
-
+        public List<int> playerInBack;
+        
         // If needed, create WeaponExposer to get all scripts of a weapon
         public List<Weapon> weapons;
         public List<Armor> armors;
@@ -138,6 +141,12 @@ namespace Games.Global
                 return;
             }
 
+            if (effect.durationInSeconds == -1)
+            {
+                underEffects.Add(effect.typeEffect, effect);
+                return;
+            }
+
             effectInterface.StartCoroutineEffect(effect);
         }
 
@@ -158,6 +167,12 @@ namespace Games.Global
                     break;
                 case TypeEffect.AttackSpeedUp:
                     attSpeed = initialAttSpeed + (0.5f * effect.level);
+                    break;
+                case TypeEffect.AttackUp:
+                    att = initialAtt + (1 * effect.level);
+                    break;
+                case TypeEffect.SpeedUp:
+                    speed = initialSpeed + (1 * effect.level);
                     break;
             }
         }
@@ -196,6 +211,12 @@ namespace Games.Global
                 case TypeEffect.AttackSpeedUp:
                     attSpeed = initialAttSpeed;
                     break;
+                case TypeEffect.AttackUp:
+                    speed = initialSpeed;
+                    break;
+                case TypeEffect.SpeedUp:
+                    att = initialAtt;
+                    break;
             }
         }
 
@@ -212,11 +233,16 @@ namespace Games.Global
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
-            if (underEffects.ContainsKey(TypeEffect.BrokenDef))
+            if (underEffects.ContainsKey(TypeEffect.BrokenDef) || 
+                abilityParameters.origin.underEffects.ContainsKey(TypeEffect.Pierce) ||
+                (abilityParameters.origin.underEffects.ContainsKey(TypeEffect.PierceOnBack) && 
+                 playerInBack.Contains(abilityParameters.origin.IdEntity)
+                ))
             {
                 damageReceived = initialDamage;
             }
 
+            Debug.Log("Dégat reçu : " + damageReceived);
             ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)
