@@ -47,11 +47,7 @@ namespace Games {
             networking.InitializeWebsocketEndpoint();
             networking.StartConnection();
             Debug.Log(networking);
-            networking.ws.OnMessage += (sender, args) =>
-            {
-                Debug.Log(args.Data);
-            };
-
+            
             transitionMenuGame.WantToStartGame();
         }
 

@@ -182,6 +182,10 @@ namespace Games.Attacks
             
             // TODO : Temp Method
             GenerateArray();
+            se.gameController.networking.ws.OnMessage += (sender, args) =>
+            {
+                Debug.Log(args.Data);
+            };
 
             // TODO : Temp condition
             if (GameController.PlayerIndex % 2 == 0)
