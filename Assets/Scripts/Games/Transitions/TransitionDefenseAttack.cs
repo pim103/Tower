@@ -81,14 +81,57 @@ namespace Games.Transitions
                         case GridTileController.TypeData.Group:
                             CardBehavior currentCardBehavior = cellController.content.GetComponent<CardBehavior>();
                             stringToSend += "1:" + currentCardBehavior.groupId + ":[";
-                            if (currentCardBehavior.equipementsList.Any())
+                            if (currentCardBehavior.meleeWeaponSlot)
                             {
-                                foreach (var equipement in currentCardBehavior.equipementsList)
-                                {
-                                    stringToSend += equipement.GetComponent<CardBehavior>().equipement.id + ",";
-                                }
-                                stringToSend = stringToSend.Remove(stringToSend.Length - 1);
+                                stringToSend += currentCardBehavior.meleeWeaponSlot.GetComponent<CardBehavior>()
+                                                    .equipement.id + ",";
                             }
+                            else
+                            {
+                                stringToSend += "0,";
+                            }
+                            if (currentCardBehavior.rangedWeaponSlot)
+                            {
+                                stringToSend += currentCardBehavior.rangedWeaponSlot.GetComponent<CardBehavior>()
+                                                    .equipement.id + ",";
+                            }
+                            else
+                            {
+                                stringToSend += "0,";
+                            }
+                            if (currentCardBehavior.helmetSlot)
+                            {
+                                stringToSend += currentCardBehavior.helmetSlot.GetComponent<CardBehavior>()
+                                                    .equipement.id + ",";
+                            }
+                            else
+                            {
+                                stringToSend += "0,";
+                            }
+                            if (currentCardBehavior.chestSlot)
+                            {
+                                stringToSend += currentCardBehavior.chestSlot.GetComponent<CardBehavior>()
+                                                    .equipement.id + ",";
+                            }
+                            else
+                            {
+                                stringToSend += "0,";
+                            }
+                            if (currentCardBehavior.grievesSlot)
+                            {
+                                stringToSend += currentCardBehavior.grievesSlot.GetComponent<CardBehavior>()
+                                                    .equipement.id;
+                            }
+                            else
+                            {
+                                stringToSend += "0";
+                            }
+                            
+                            /*stringToSend += currentCardBehavior.rangedWeaponSlot.GetComponent<CardBehavior>().equipement.id + ",";
+                            stringToSend += currentCardBehavior.helmetSlot.GetComponent<CardBehavior>().equipement.id + ",";
+                            stringToSend += currentCardBehavior.chestSlot.GetComponent<CardBehavior>().equipement.id + ",";
+                            stringToSend += currentCardBehavior.grievesSlot.GetComponent<CardBehavior>().equipement.id ;*/
+
                             stringToSend += "]";
                             break;
                         case GridTileController.TypeData.Wall:

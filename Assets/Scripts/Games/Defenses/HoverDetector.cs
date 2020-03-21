@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Games.Global.Weapons;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
@@ -152,7 +153,26 @@ namespace Games.Defenses
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
-                                currentTileController.content.GetComponent<CardBehavior>().equipementsList.Add(objectInHand);
+                                CardBehavior contentCardBehavior =
+                                    currentTileController.content.GetComponent<CardBehavior>();
+                                switch (objectInHand.GetComponent<CardBehavior>().equipement.type)
+                                {
+                                    case TypeWeapon.Distance:
+                                        if (contentCardBehavior.rangedWeaponSlot)
+                                        {
+                                            defenseUiController.PutCardBackToHand(contentCardBehavior.rangedWeaponSlot);
+                                        }
+                                        contentCardBehavior.rangedWeaponSlot = objectInHand;
+                                        break;
+                                    case TypeWeapon.Cac:
+                                        if (contentCardBehavior.meleeWeaponSlot)
+                                        {
+                                            defenseUiController.PutCardBackToHand(contentCardBehavior.meleeWeaponSlot);
+                                        }
+                                        contentCardBehavior.meleeWeaponSlot = objectInHand;
+                                        break;
+                                }
+                                
                                 objectInHand.SetActive(false);
                                 objectInHand = null;
                             }
@@ -224,17 +244,9 @@ namespace Games.Defenses
             
             if(Input.GetKeyDown(KeyCode.Mouse1) && objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
             {
-                foreach (var equipementCard in currentCardBehavior.equipementsList)
-                {
-                    equipementCard.SetActive(true);
-                    CardBehavior equipementCardBehavior = equipementCard.GetComponent<CardBehavior>();
-                    equipementCardBehavior.groupParent.SetActive(false);
-                    equipementCardBehavior.groupParent.transform.localPosition = Vector3.zero;
-                    equipementCardBehavior.ownMeshRenderer.enabled = true;
-                    equipementCardBehavior.transform.SetParent(equipementCardBehavior.container);
-                    equipementCardBehavior.transform.localPosition = Vector3.zero;
-                    equipementCardBehavior.gameObject.layer = LayerMask.NameToLayer("Card");
-                }
+                defenseUiController.PutCardBackToHand(currentCardBehavior.meleeWeaponSlot);
+                defenseUiController.PutCardBackToHand(currentCardBehavior.rangedWeaponSlot);
+                
                 currentCardBehavior.groupParent.SetActive(false);
                 currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
                 currentCardBehavior.ownMeshRenderer.enabled = true;
