@@ -11,7 +11,7 @@ namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 300;
+        private const int durationDefensePhase = 20;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -69,6 +69,7 @@ namespace Games.Transitions
 
         private void SendGridData()
         {
+            // \"_TARGET\":\"ALL\", \"_ARGS\":\"null\",
             string stringToSend = "{\n";
             foreach (var gridCell in initDefense.gridCellList)
             {
@@ -157,7 +158,8 @@ namespace Games.Transitions
             }
 
             stringToSend += "}";
-            Debug.Log(stringToSend);
+            //Debug.Log(stringToSend);
+            gameController.networking.ws.Send(stringToSend);
         }
     }
 }

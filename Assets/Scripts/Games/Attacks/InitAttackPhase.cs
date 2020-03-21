@@ -12,6 +12,16 @@ using Random = UnityEngine.Random;
 
 namespace Games.Attacks
 {
+    [Serializable]
+    public class TransistionTest
+    {
+        public string transition;
+
+        public TransistionTest(string transition)
+        {
+            this.transition = transition;
+        }
+    }
     public enum TypeData {
         Nothing,
         Group,
@@ -39,7 +49,7 @@ namespace Games.Attacks
         private Monster monster2;
 
         private bool endOfGeneration = false;
-
+        
         public void GenerateArray()
         {
             tempMap1 = new string[MAP_SIZE, MAP_SIZE];

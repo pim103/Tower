@@ -21,13 +21,15 @@ namespace Networking.Client
     {
         // Start is called before the first frame update
         public string END_POINT;
-        private WebSocket ws;
+        public string roomId;
+        public WebSocket ws;
         private string authNetwork;
         private MessageTest testMessage = null;
 
-        public TowersWebSocket(string url)
+        public TowersWebSocket(string url, string roomStatic = null)
         {
             END_POINT = url;
+            roomId = roomStatic;
         }
 
         public void InitializeWebsocketEndpoint()
@@ -38,11 +40,6 @@ namespace Networking.Client
         public void StartConnection()
         {
             ws.Connect();
-            ws.OnMessage += (sender, args) =>
-            {
-                testMessage = JsonUtility.FromJson<MessageTest>(args.Data);
-                Debug.Log(testMessage);
-            };
         }
 
         public void CloseConnection()
