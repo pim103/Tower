@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Games.Global.Patterns;
@@ -16,9 +17,35 @@ namespace Games.Global.Entities
 
         public PlayerPrefab target;
 
+        public List<PlayerPrefab> playerInBack;
+
         private void Start()
         {
             playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
+            playerInBack = new List<PlayerPrefab>();
+        }
+
+
+        public void OnTriggerEnter(Collider other)
+        {
+            int layerPlayer = LayerMask.NameToLayer("Player");
+
+            if (other.gameObject.layer == layerPlayer)
+            {
+                Debug.Log("PLAYER ENTER");
+                playerInBack.Add(other.GetComponent<PlayerPrefab>());
+            }
+        }
+
+        public void OnTriggerExit(Collider other)
+        {
+            int layerPlayer = LayerMask.NameToLayer("Player");
+
+            if (other.gameObject.layer == layerPlayer)
+            {
+                Debug.Log("PLAYER LEAVE");
+                playerInBack.Remove(other.GetComponent<PlayerPrefab>());
+            }
         }
 
         private void Update()

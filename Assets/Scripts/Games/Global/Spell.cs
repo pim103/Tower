@@ -59,6 +59,9 @@ namespace Games.Global
         
         // Time wait before next instructions
         public float timeWait;
+        
+        // Passive or Active only when Spell.typeSpell == ActiveWithPassive || ToggleWithPassive
+        public TypeSpell specificTypeSpell;
     }
 
     public class Spell

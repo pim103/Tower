@@ -5,6 +5,7 @@ namespace Games.Global
     public enum TypeEffect
     {
         Pierce,
+        PierceOnBack,
         Aoe,
         Burn,
         Poison,

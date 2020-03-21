@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1869628687301897145}
   - component: {fileID: 8765592628195400090}
   - component: {fileID: 6307249475328061940}
+  - component: {fileID: 2242237492004919041}
   m_Layer: 11
   m_Name: BasicMonster
   m_TagString: Untagged
@@ -132,6 +133,7 @@ MonoBehaviour:
   meshRenderer: {fileID: 1869628687301897147}
   hpBar: {fileID: 1237704919439136648}
   target: {fileID: 0}
+  playerInBack: []
 --- !u!114 &6307249475328061940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +146,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fadaf31bc22a83489d87ca31c2f4b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &2242237492004919041
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869628687301897144}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2078724, y: 2, z: 2.2542973}
+  m_Center: {x: -0.054743767, y: 0, z: -1.6504354}
 --- !u!1001 &682040312229272817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -368,7 +383,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
@@ -378,12 +393,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0

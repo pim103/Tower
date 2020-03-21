@@ -22,12 +22,60 @@ namespace Games.Global.Weapons
                 case Classes.Mage:
                     break;
                 case Classes.Rogue:
+                    InitRogueSkill();
                     break;
                 case Classes.Ranger:
                     break;
                 case Classes.Warrior:
                     break;
             }
+        }
+
+        private void InitRogueSkill()
+        {
+            Effect effect = new Effect { typeEffect = TypeEffect.PierceOnBack, level = 1 };
+            
+            SpellInstruction spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.SelfEffect,
+                effect = effect,
+                specificTypeSpell = TypeSpell.Passive
+            };
+
+            Spell spell1 = new Spell {typeSpell = TypeSpell.ActiveWithPassive, cooldown = 10, castTime = 0};
+            spell1.spellInstructions.Add(spellInstruction);
+
+            /* Spell 2 */
+
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.InstantiateSomething,
+                idPoolObject = 6,
+                timeWait = 0,
+                typeSpellObject = TypeSpellObject.Projectile
+            };
+
+            Spell spell2 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10};
+            spell2.spellInstructions.Add(spellInstruction);
+
+            /* Spell 3 */
+
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.InstantiateSomething,
+                idPoolObject = 8,
+                timeWait = 0,
+                typeSpellObject = TypeSpellObject.GroundArea
+            };
+
+            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10 };
+            spell3.spellInstructions.Add(spellInstruction);
+
+            /* Setting Spell */
+
+            skill1 = spell1;
+            skill2 = spell2;
+            skill3 = spell3;
         }
     }
 }
