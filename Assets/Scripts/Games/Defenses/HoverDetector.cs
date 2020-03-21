@@ -58,7 +58,7 @@ namespace Games.Defenses
             {
                 aboveMap = true;
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                Debug.Log(objectInHand);
+                //Debug.Log(objectInHand);
                 //Debug.Log(currentCardBehavior.cardType);
                 if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 1)
                 {
@@ -73,7 +73,7 @@ namespace Games.Defenses
                         canPutItHere = false;
                     }
                 }
-                else if (currentTileController.contentType != GridTileController.TypeData.Empty || path.status != NavMeshPathStatus.PathComplete)
+                else if (currentTileController.contentType != GridTileController.TypeData.Empty || path.status != NavMeshPathStatus.PathComplete || currentTileController.isTooCloseFromAMob || (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 0 && !currentCardBehavior.groupRangeBehavior.CheckContentEmpty()))
                 {
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
@@ -103,6 +103,10 @@ namespace Games.Defenses
                     {
                         objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 1.5f;
                         currentCardBehavior.ownMeshRenderer.enabled = false;
+                        if (currentCardBehavior.cardType == 0)
+                        {
+                            currentCardBehavior.rangeMeshRenderer.enabled = true;
+                        }
                         currentCardBehavior.groupParent.SetActive(true);
                     }
                 }
@@ -130,6 +134,8 @@ namespace Games.Defenses
                                 else if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                                 {
                                     currentTileController.contentType = GridTileController.TypeData.Group;
+                                    currentCardBehavior.groupRangeBehavior.SetAllTilesTo(true);
+                                    //currentCardBehavior.groupRange.SetActive(true);
                                 } 
                                 else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
                                 {
@@ -157,7 +163,7 @@ namespace Games.Defenses
                             }*/
                         }
                     }
-                    else if (!canPutItHere && !objectInHand)
+                    else if (!canPutItHere && !objectInHand && currentTileController.contentType != GridTileController.TypeData.Empty)
                     {
                         objectInHand = currentTileController.content;
                         lastObjectPutInPlay = null;
@@ -166,6 +172,8 @@ namespace Games.Defenses
                         if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                         {
                             currentCardBehavior = objectInHand.GetComponent<CardBehavior>();
+                            currentCardBehavior.groupRangeBehavior.SetAllTilesTo(false); 
+                            //currentCardBehavior.groupRange.SetActive(false);
                         }
                     }
                 }
@@ -230,13 +238,17 @@ namespace Games.Defenses
                 currentCardBehavior.groupParent.SetActive(false);
                 currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
                 currentCardBehavior.ownMeshRenderer.enabled = true;
+                if (currentCardBehavior.cardType == 0)
+                {
+                    currentCardBehavior.rangeMeshRenderer.enabled = false;
+                }
                 objectInHand.transform.SetParent(currentCardBehavior.container);
                 objectInHand.transform.localPosition = Vector3.zero;
                 objectInHand.layer = LayerMask.NameToLayer("Card");
                 objectInHand = null;
             }
-            
-            if(objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && !aboveMap)
+
+            if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && !aboveMap)
             {
                 currentCardBehavior.groupParent.SetActive(false);
                 currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
@@ -245,6 +257,10 @@ namespace Games.Defenses
                 worldPos = defenseCam.ScreenToWorldPoint(worldPos);
                 objectInHand.transform.position = worldPos;
                 currentCardBehavior.ownMeshRenderer.enabled = true;
+                if (currentCardBehavior.cardType == 0)
+                {
+                    currentCardBehavior.rangeMeshRenderer.enabled = false;
+                }
             }
         }
         

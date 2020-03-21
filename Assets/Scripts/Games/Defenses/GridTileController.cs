@@ -15,7 +15,7 @@ namespace Games.Defenses
         public Vector2 coordinates;
         public GameObject content;
         public TypeData contentType = TypeData.Empty;
-        public bool isTooCloseFromSth;
+        public bool isTooCloseFromAMob;
         
         public void ChangeColorToGreen()
         {

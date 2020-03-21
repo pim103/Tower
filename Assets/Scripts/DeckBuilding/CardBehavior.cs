@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
 using UnityEngine;
@@ -26,6 +27,12 @@ public class CardBehavior : MonoBehaviour
     [SerializeField] 
     public MeshRenderer ownMeshRenderer;
     
+    [SerializeField] 
+    public MeshRenderer rangeMeshRenderer;
+
+    [SerializeField]
+    public GameObject rangeSphere;
+    
     private GroupsMonster group;
     public Equipement equipement;
     public GameObject equipementModel;
@@ -35,6 +42,13 @@ public class CardBehavior : MonoBehaviour
     public int groupId;
 
     public List<GameObject> equipementsList;
+
+    [SerializeField] 
+    public CapsuleCollider groupRangeCollider; 
+    
+    public GroupRangeBehavior groupRangeBehavior;
+    
+    
     private void OnEnable()
     {
         //SetCard();
@@ -50,6 +64,8 @@ public class CardBehavior : MonoBehaviour
             nameText.text = group.name;
             costText.text = group.cost + " RP";
             effectText.text = "effet";
+            groupRangeCollider.radius = group.radius*2;
+            rangeSphere.transform.localScale = new Vector3(group.radius*4,group.radius*4,group.radius*4);
             InstantiateGroupsMonster(group, Vector3.zero, groupParent.transform);
         }
         else if(type == 1)
