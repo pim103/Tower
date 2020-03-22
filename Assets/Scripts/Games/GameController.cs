@@ -46,8 +46,7 @@ namespace Games {
             networking = new TowersWebSocket(endPoint, "1");
             networking.InitializeWebsocketEndpoint();
             networking.StartConnection();
-            Debug.Log(networking);
-            
+
             transitionMenuGame.WantToStartGame();
         }
 

@@ -105,7 +105,7 @@ namespace Menus
                 roomList = JsonUtility.FromJson<Rooms>(www.downloadHandler.text);
                 foreach (Room room in roomList.rooms)
                 {
-                    GameObject newRoom = Instantiate(roomCase, content);
+                    GameObject newRoom = Instantiate(roomCase, content, false);
                     RoomListing roomListing = newRoom.GetComponent<RoomListing>();
                     roomListing.RoomInfo = room;
                     roomListing.SetRoomInfo(room);
