@@ -4,6 +4,7 @@ using System.Linq;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
+using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,7 +71,7 @@ namespace Games.Transitions
         private void SendGridData()
         {
             // \"_TARGET\":\"ALL\", \"_ARGS\":\"null\",
-            string stringToSend = "{\"_TARGET\":\"OTHERS\", \"GRID\":\"";
+            string stringToSend = "{";
             foreach (var gridCell in initDefense.gridCellList)
             {
                 GridTileController cellController = gridCell.GetComponent<GridTileController>();
@@ -157,9 +158,9 @@ namespace Games.Transitions
                 }
             }
 
-            stringToSend += "\"}";
+            stringToSend += "}";
             //Debug.Log(stringToSend);
-            gameController.networking.ws.Send(stringToSend);
+            TowersWebSocket.TowerSender("SELF", "GRID",stringToSend);
         }
     }
 }

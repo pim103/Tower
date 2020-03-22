@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,36 +18,76 @@ namespace Networking.Client
             this.message = message;
         }
     }
+
     public class TowersWebSocket
+
     {
-        // Start is called before the first frame update
-        public string END_POINT;
-        public string roomId;
-        public WebSocket ws;
-        private string authNetwork;
-        private MessageTest testMessage = null;
+    // Start is called before the first frame update
+    public string END_POINT;
+    public string roomId;
+    public static WebSocket ws;
+    private string authNetwork;
+    private MessageTest testMessage = null;
 
-        public TowersWebSocket(string url, string roomStatic = null)
-        {
-            END_POINT = url;
-            roomId = roomStatic;
-        }
+    public TowersWebSocket(string url, string roomStatic = null)
+    {
+        END_POINT = url;
+        roomId = roomStatic;
+    }
 
-        public void InitializeWebsocketEndpoint()
-        {
-            ws = new WebSocket(END_POINT);
-        }
+    public void InitializeWebsocketEndpoint()
+    {
+        ws = new WebSocket(END_POINT);
+    }
 
-        public void StartConnection()
-        {
-            ws.Connect();
-        }
+    public static void TowerSender(string target, string rawKey = null, string rawData = null)
+    {
+        string json = "{";
+        json += "\"_TARGET\":" + "\"" + target + "\",";
+        json += "\""+ rawKey + "\":" + "\"" + rawData + "\"";
+        json += "}";
 
-        public void CloseConnection()
-        {
-            Debug.Log("Websocket Close!");
-            ws.Close();
+        Debug.Log(json);
+        ws.Send(json);
+    }
+    
+    public static void TowerSender(string target, string @class = null, string method = null, string args = null)
+    {
+        string json = "{";
+        json += "\"_TARGET\":" + "\"" + target + "\",";
+        json += "\"_CLASS\":" + "\"" + @class + "\",";
+        json += "\"_METHOD\":" + "\"" + method + "\",";
+        json += "\"_ARGS\":" + args;
+        json += "}";
+        Debug.Log(json);
+        ws.Send(json);
+    }
+
+    public string FromDictToString(Dictionary<string, string> dict)
+    {
+        string fromDict = "[{";
+        foreach(KeyValuePair <string, string> keyValues in dict) {  
+            fromDict += "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";  
         }
         
+        return fromDict.TrimEnd(',', ' ') + "}]";
+    }
+
+    public void StartConnection()
+    {
+        ws.Connect();
+        var testArray = new Dictionary<string, string>();
+        testArray.Add("Allo", "1");
+        testArray.Add("Allo2", "2");
+        
+        TowerSender("SELF", "Player", "Hello", FromDictToString(testArray));
+    }
+
+    public void CloseConnection()
+    {
+        Debug.Log("Websocket Close!");
+        ws.Close();
+    }
+
     }
 }
