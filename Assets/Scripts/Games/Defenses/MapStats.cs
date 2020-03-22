@@ -16,4 +16,8 @@ public class MapStats : MonoBehaviour
     public int wallNumber;
     [SerializeField] 
     public int wallType;
+    [SerializeField] 
+    public GameObject endCube;
+    [SerializeField] 
+    public GameObject startPos;
 }

@@ -36,6 +36,9 @@ namespace Games.Defenses
 
         [SerializeField] 
         private GameObject defenseCamera;
+        
+        [SerializeField]
+        private HoverDetector hoverDetector;
 
         public List<GameObject> gridCellList;
         
@@ -51,6 +54,8 @@ namespace Games.Defenses
                 currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
                 currentMap.SetActive(true);
                 currentMapStats = currentMap.GetComponent<MapStats>();
+                hoverDetector.dest = currentMapStats.endCube;
+                hoverDetector.startPos = currentMapStats.startPos;
                 if (!se.gameController.byPassDefense)
                 {
                     Generate();

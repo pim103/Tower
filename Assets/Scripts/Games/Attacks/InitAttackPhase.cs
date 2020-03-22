@@ -249,6 +249,7 @@ namespace Games.Attacks
 
                 if (gridTileController.content != null)
                 {
+                    gridTileController.content.transform.position = new Vector3(0,-10,0);
                     gridTileController.content.SetActive(false);
                 }
 

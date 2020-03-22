@@ -460,6 +460,7 @@ MonoBehaviour:
   objectInHand: {fileID: 0}
   lastObjectPutInPlay: {fileID: 0}
   lastTileWithContent: {fileID: 0}
+  currentlyBlocked: 0
   gridMask:
     serializedVersion: 2
     m_Bits: 4096
@@ -468,8 +469,8 @@ MonoBehaviour:
     m_Bits: 32768
   oldHover: {fileID: 0}
   canPutItHere: 0
-  startPos: {fileID: 1594702657}
-  dest: {fileID: 2020850822}
+  startPos: {fileID: 0}
+  dest: {fileID: 0}
   WarningPanel: {fileID: 200499149}
   WarningPanelText: {fileID: 1215891486}
 --- !u!1 &94270911
@@ -627,6 +628,8 @@ MonoBehaviour:
   spawnPosition: {fileID: 1594702657}
   wallNumber: 100
   wallType: 0
+  endCube: {fileID: 2020850822}
+  startPos: {fileID: 1594702657}
 --- !u!114 &108878158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,7 +1162,7 @@ MonoBehaviour:
   transitionMenuGame: {fileID: 194075441}
   se: {fileID: 194075448}
   endPoint: wss://towers.heolia.eu/websocket
-  staticRoomId: okBoomer
+  staticRoomId: bite
   byPassDefense: 0
 --- !u!114 &194075444
 MonoBehaviour:
@@ -1206,6 +1209,7 @@ MonoBehaviour:
   counter: {fileID: 1074293666}
   initAttackPhase: {fileID: 1495904576}
   initDefense: {fileID: 934534610}
+  hoverDetector: {fileID: 83993302}
 --- !u!114 &194075448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2260,6 +2264,7 @@ MonoBehaviour:
   gridCell: {fileID: 6078987784092374643, guid: edf50361f6ea3074d909cb16ced37c40,
     type: 3}
   defenseCamera: {fileID: 83993298}
+  hoverDetector: {fileID: 83993302}
   gridCellList: []
 --- !u!114 &934534611
 MonoBehaviour:
@@ -4860,6 +4865,8 @@ MonoBehaviour:
   spawnPosition: {fileID: 1099141839}
   wallNumber: 200
   wallType: 0
+  endCube: {fileID: 1804212888}
+  startPos: {fileID: 1099141839}
 --- !u!1 &2020850822
 GameObject:
   m_ObjectHideFlags: 0

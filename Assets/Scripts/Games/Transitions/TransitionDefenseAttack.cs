@@ -12,7 +12,7 @@ namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 30;
+        private const int durationDefensePhase = 10;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -29,6 +29,9 @@ namespace Games.Transitions
         [SerializeField]
         private InitDefense initDefense;
 
+        [SerializeField] 
+        private HoverDetector hoverDetector;
+        
         private int defenseTimer;
 
         private void Start()
@@ -51,6 +54,24 @@ namespace Games.Transitions
             defenseTimer = durationDefensePhase;
             objectsInScene.waitingCanvasGameObject.SetActive(false);
 
+            if (hoverDetector.currentlyBlocked)
+            {
+                if (hoverDetector.lastTileWithContent)
+                {
+                    hoverDetector.lastTileWithContent.content = null;
+                    hoverDetector.lastTileWithContent.contentType = GridTileController.TypeData.Empty;
+                }
+
+                if (hoverDetector.lastObjectPutInPlay)
+                {
+                    hoverDetector.lastObjectPutInPlay.SetActive(false);
+                }
+
+                if (hoverDetector.objectInHand)
+                {
+                    hoverDetector.objectInHand.SetActive(false);
+                }
+            }
             SendGridData();
             initAttackPhase.StartAttackPhase();
         }
