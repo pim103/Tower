@@ -1,6 +1,7 @@
 ﻿using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
+using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,6 +43,7 @@ namespace Games.Attacks
             }
             else
             {
+                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "HasWon", null);
                 SceneManager.LoadScene("MenuScene");
             }
         }

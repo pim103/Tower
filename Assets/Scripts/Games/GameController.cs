@@ -97,6 +97,12 @@ namespace Games {
                     Debug.Log("Vous avez gagné");
                     otherPlayerDie = true;
                 }
+
+                if (args.Data.Contains("WON"))
+                {
+                    Debug.Log("Un autre joueur a gagné");
+                    otherPlayerDie = true;
+                }
             };
 
             StartCoroutine(WaitingDeathOtherPlayer());
