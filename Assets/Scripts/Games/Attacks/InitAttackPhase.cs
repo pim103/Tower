@@ -219,11 +219,7 @@ namespace Games.Attacks
                         DataObject.objectInScene.Add(wall);
                         break;
                 }
-                
-                Debug.Log("Continue : " + maps.Length);
             }
-            
-            Debug.Log("Leave ?");
         }
 
         private void Update()
@@ -264,6 +260,11 @@ namespace Games.Attacks
         {
             while (currentMap == null)
             {
+                if (se.gameController.byPassDefense)
+                {
+                    break;
+                }
+
                 yield return new WaitForSeconds(1f);
             }
             
@@ -273,7 +274,10 @@ namespace Games.Attacks
             DataObject.monsterInScene = new List<Monster>();
             DataObject.objectInScene = new List<GameObject>();
 
-            GeneratingMap(currentMap, GameController.PlayerIndex);
+            if (!se.gameController.byPassDefense)
+            {
+                GeneratingMap(currentMap, GameController.PlayerIndex);
+            }
 
             ActivePlayer();
 

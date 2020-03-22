@@ -39,18 +39,18 @@ namespace Games.Global
         public IEnumerator PlayCharge(float duration)
         {
             movementBlocked = true;
-            cameraBlocked = true;
             isCharging = true;
-            
+
+            Vector3 initialForward = transform.forward;
+
             while (duration > 0)
             {
-                rigidbodyEntity.velocity = (transform.forward * 20);
+                rigidbodyEntity.velocity = (initialForward * 20);
                 
                 yield return new WaitForSeconds(0.1f);
                 duration -= 0.1f;
             }
             movementBlocked = false;
-            cameraBlocked = false;
             isCharging = false;
         }
 
