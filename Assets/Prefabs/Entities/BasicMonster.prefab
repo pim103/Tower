@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1869628687301897145}
   - component: {fileID: 8765592628195400090}
   - component: {fileID: 6307249475328061940}
+  - component: {fileID: 115459911557053537}
   m_Layer: 11
   m_Name: BasicMonster
   m_TagString: Untagged
@@ -132,9 +133,9 @@ MonoBehaviour:
   rigidbodyEntity: {fileID: 1869628687301897145}
   meshRenderer: {fileID: 1869628687301897147}
   hpBar: {fileID: 1237704919439136648}
+  navMeshAgent: {fileID: 115459911557053537}
   aggroForced: 0
   target: {fileID: 0}
-  playerInBack: []
 --- !u!114 &6307249475328061940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +148,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fadaf31bc22a83489d87ca31c2f4b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &115459911557053537
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869628687301897144}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8514356219809148618
 GameObject:
   m_ObjectHideFlags: 0

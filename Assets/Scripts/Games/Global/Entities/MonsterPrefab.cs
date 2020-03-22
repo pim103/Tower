@@ -5,6 +5,7 @@ using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
+using UnityEngine.AI;
 using Slider = UnityEngine.UI.Slider;
 
 namespace Games.Global.Entities
@@ -12,11 +13,14 @@ namespace Games.Global.Entities
     public class MonsterPrefab : EntityPrefab, EffectInterface
     {
         [SerializeField] private Slider hpBar;
+        [SerializeField] private NavMeshAgent navMeshAgent;
 
         private PlayerPrefab playerPrefab;
 
         public bool aggroForced;
         public PlayerPrefab target;
+
+        private Monster monster;
 
         private void Start()
         {
@@ -40,6 +44,8 @@ namespace Games.Global.Entities
             {
                 target = null;
             }
+
+            MoveToTarget();
         }
 
         private void FindTarget()
@@ -74,6 +80,7 @@ namespace Games.Global.Entities
         {
             entity = monster;
             entity.entityPrefab = this;
+            this.monster = monster;
             monster.effectInterface = this;
         }
 
@@ -87,6 +94,14 @@ namespace Games.Global.Entities
             DataObject.monsterInScene.Remove((Monster)entity);
 
             gameObject.SetActive(false);
+        }
+
+        private void MoveToTarget()
+        {
+            if (target != null && monster.constraint == TypeWeapon.Cac)
+            {
+                navMeshAgent.SetDestination(target.transform.position);
+            }
         }
     }
 }

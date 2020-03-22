@@ -25,6 +25,20 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="Craft" t="Include">
+            <e p="CraftingRecipe.cs" t="Include" />
+            <e p="CraftingRecipeUI.cs" t="Include" />
+            <e p="CraftingWindow.cs" t="Include" />
+          </e>
+          <e p="DeckBuilding" t="Include">
+            <e p="CardBehavior.cs" t="Include" />
+            <e p="CardInListBehavior.cs" t="Include" />
+            <e p="CardsDescription.cs" t="Include" />
+            <e p="DeckListExposer.cs" t="Include" />
+            <e p="DecksController.cs" t="Include" />
+            <e p="InitDecklist.cs" t="Include" />
+            <e p="MobDecklist.cs" t="Include" />
+          </e>
           <e p="Games" t="Include">
             <e p="Attacks" t="Include">
               <e p="EndCube.cs" t="Include" />
@@ -33,10 +47,12 @@
             <e p="Defenses" t="Include">
               <e p="DefenseUIController.cs" t="Include" />
               <e p="GridTileController.cs" t="Include" />
+              <e p="GroupRangeBehavior.cs" t="Include" />
               <e p="HoverDetector.cs" t="Include" />
               <e p="InitDefense.cs" t="Include" />
               <e p="MapStats.cs" t="Include" />
               <e p="PlanningTest.cs" t="Include" />
+              <e p="TrapBehavior.cs" t="Include" />
             </e>
             <e p="GameController.cs" t="Include" />
             <e p="Global" t="Include">
@@ -54,6 +70,10 @@
                     <e p="StunAreaSpell.cs" t="Include" />
                     <e p="WarriorAreaSpell.cs" t="Include" />
                     <e p="WarriorBigSpear.cs" t="Include" />
+                  </e>
+                  <e p="Dagger" t="Include">
+                    <e p="RogueArea.cs" t="Include" />
+                    <e p="RogueClone.cs" t="Include" />
                   </e>
                   <e p="ObjectPooler.cs" t="Include" />
                   <e p="SpellScript.cs" t="Include" />
@@ -75,6 +95,7 @@
               <e p="Entities" t="Include">
                 <e p="GroupsMonster.cs" t="Include" />
                 <e p="Monster.cs" t="Include" />
+                <e p="MonsterBack.cs" t="Include" />
                 <e p="MonsterList.cs" t="Include" />
                 <e p="MonsterPrefab.cs" t="Include" />
               </e>
@@ -126,6 +147,16 @@
               <e p="TransitionMenuGame.cs" t="Include" />
             </e>
           </e>
+          <e p="Item" t="Include">
+            <e p="BaseItemSlot.cs" t="Include" />
+            <e p="IItemContainer.cs" t="Include" />
+            <e p="Item.cs" t="Include" />
+            <e p="ItemContainer.cs" t="Include" />
+          </e>
+          <e p="Managers" t="Include">
+            <e p="AccountManager.cs" t="Include" />
+            <e p="UIManager.cs" t="Include" />
+          </e>
           <e p="Menus" t="Include">
             <e p="CollectionMenu.cs" t="Include" />
             <e p="ConnectionMenu.cs" t="Include" />
@@ -157,8 +188,19 @@
               <e p="TowersWebSocket.cs" t="Include" />
             </e>
           </e>
+          <e p="Resource" t="Include">
+            <e p="Resource.cs" t="Include" />
+            <e p="ResourceInfo.cs" t="Include" />
+            <e p="ResourceSlot.cs" t="Include" />
+          </e>
+          <e p="Settings" t="Include">
+            <e p="GameSettings.cs" t="Include" />
+            <e p="TabButton.cs" t="Include" />
+            <e p="TabGroup.cs" t="Include" />
+          </e>
           <e p="Utils" t="Include">
             <e p="GroupsPosition.cs" t="Include" />
+            <e p="JsonHelper.cs" t="Include" />
             <e p="MaterialExposer.cs" t="Include" />
             <e p="MobJsonObject.cs" t="Include" />
             <e p="ObjectParsed.cs" t="Include" />
