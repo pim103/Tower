@@ -82,6 +82,7 @@ namespace Games.Defenses
 
         public void PutCardInHand(GameObject card)
         {
+            card.transform.parent = null;
             hoverDetector.objectInHand = card;
             card.layer = LayerMask.NameToLayer("CardInHand");
         }
@@ -94,7 +95,7 @@ namespace Games.Defenses
                 equipementCardBehavior.groupParent.SetActive(false);
                 equipementCardBehavior.groupParent.transform.localPosition = Vector3.zero;
                 equipementCardBehavior.ownMeshRenderer.enabled = true;
-                equipementCardBehavior.transform.SetParent(equipementCardBehavior.container);
+                equipementCardBehavior.transform.SetParent(equipementCardBehavior.ownCardContainer);
                 equipementCardBehavior.transform.localPosition = Vector3.zero;
                 equipementCardBehavior.gameObject.layer = LayerMask.NameToLayer("Card");
                 equipementCard.SetActive(true);
@@ -116,11 +117,17 @@ namespace Games.Defenses
         {
             foreach (var cardContainer in mobCardContainers)
             {
-                InitCard(cardContainer,0);
+                if (cardContainer.transform.childCount == 0)
+                {
+                    InitCard(cardContainer, 0);
+                }
             }
             foreach (var cardContainer in equipementCardContainers)
             {
-                InitCard(cardContainer,1);
+                if (cardContainer.transform.childCount == 0)
+                {
+                    InitCard(cardContainer, 1);
+                }
             }
         }
 
