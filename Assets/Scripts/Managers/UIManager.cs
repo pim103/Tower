@@ -25,15 +25,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform tooltipRect;
     private Text tooltipText;
 
-    /// <summary>
-    /// A reference to all the keybind buttons on the menu
-    /// </summary>
-    private GameObject[] keybindButtons;
-
     private void Awake()
     {
         tooltipText = tooltip.GetComponentInChildren<Text>();
-        keybindButtons = GameObject.FindGameObjectsWithTag("Keybind");
     }
 
     /// <summary>
@@ -66,16 +60,5 @@ public class UIManager : MonoBehaviour
     public void HideTooltip()
     {
         tooltip.SetActive(false);
-    }
-
-    /// <summary>
-    /// Updates the text on a keybind button after the key has been changed
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="code"></param>
-    public void UpdateKeyText(string key, KeyCode code)
-    {
-        Text tmp = Array.Find(keybindButtons, x => x.name == key).GetComponentInChildren<Text>();
-        tmp.text = code.ToString();
     }
 }

@@ -8,7 +8,7 @@ public class GameSettings : MonoBehaviour
     [Header("References")]
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
-    public Dropdown graphicDropdown;
+    public Dropdown graphicQualityLevelDropdown;
     public Toggle fullScreenToggle;
     public Slider volumeSlider;
 
@@ -69,7 +69,7 @@ public class GameSettings : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
 
         // Get graphic quality level
-        graphicDropdown.value = PlayerPrefs.GetInt("GameQualityLevel", QualitySettings.GetQualityLevel());
+        graphicQualityLevelDropdown.value = PlayerPrefs.GetInt("GameQualityLevel", QualitySettings.GetQualityLevel());
     }
 
     public void SetFullScreen(bool isFullscreen)
