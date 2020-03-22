@@ -58,7 +58,7 @@ namespace Games.Transitions
         public void WantToStartGame()
         {
             Debug.Log("Startplz");
-            waitingGameStartText = "Waiting for game strat";
+            waitingGameStartText = "Waiting for game start";
             waitingForStart = durationWaitingPhase;
             StartCoroutine(WaitingForStart());
         }
