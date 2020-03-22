@@ -4,6 +4,7 @@ using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking.Client;
 using UnityEngine;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -182,7 +183,7 @@ namespace Games.Attacks
             
             // TODO : Temp Method
             GenerateArray();
-            se.gameController.networking.ws.OnMessage += (sender, args) =>
+            TowersWebSocket.ws.OnMessage += (sender, args) =>
             {
                 Debug.Log(args.Data);
             };
