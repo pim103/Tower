@@ -30,5 +30,7 @@ namespace Games.Global
 
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
+
+        public static List<GameObject> objectInScene = new List<GameObject>();
     }
 }

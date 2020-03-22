@@ -203,15 +203,20 @@ namespace Games.Attacks
                         InstantiateGroupsMonster(groups, newPos, idEquipements);
                         break;
                     case TypeData.Trap:
-                        // TODO : ADD TRAP
-//                        Debug.Log("NEED TRAP");
+                        GameObject trap = objectPoolerDefense.GetPooledObject(0);
+                        TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
+                        trapBehavior.trapModels[idElement].SetActive(true);
+                        trap.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f, y * 2 + initDefense.currentMap.transform.localPosition.z);
+                        trap.SetActive(true);
+                        
+                        DataObject.objectInScene.Add(trap);
                         break;
                     case TypeData.Wall:
-                        Debug.Log("Want to pose wall");
                         GameObject wall = objectPoolerDefense.GetPooledObject(1);
                         wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         wall.SetActive(true);
-                        Debug.Log("Ok continue");
+                        
+                        DataObject.objectInScene.Add(wall);
                         break;
                 }
                 
@@ -265,6 +270,9 @@ namespace Games.Attacks
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
             
+            DataObject.monsterInScene = new List<Monster>();
+            DataObject.objectInScene = new List<GameObject>();
+
             GeneratingMap(currentMap, GameController.PlayerIndex);
 
             ActivePlayer();

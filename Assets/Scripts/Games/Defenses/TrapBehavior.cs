@@ -30,7 +30,7 @@ namespace Games.Defenses
         public List<AdditionalEffects> trapEffects;
     
         [SerializeField]
-        private GameObject[] trapModels;
+        public GameObject[] trapModels;
     
         public void CopyBehavior(TrapBehavior newTrapBehavior)
         {
