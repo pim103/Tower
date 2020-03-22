@@ -271,8 +271,9 @@ namespace Games.Attacks
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
             
-            DataObject.monsterInScene = new List<Monster>();
-            DataObject.objectInScene = new List<GameObject>();
+            DataObject.playerInScene.Clear();
+            DataObject.monsterInScene.Clear();
+            DataObject.objectInScene.Clear();
 
             if (!se.gameController.byPassDefense)
             {
