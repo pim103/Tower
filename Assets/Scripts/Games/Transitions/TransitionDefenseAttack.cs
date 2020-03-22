@@ -43,16 +43,6 @@ namespace Games.Transitions
 
         private IEnumerator WaitingEndDefense()
         {
-            newMap = null;
-
-            TowersWebSocket.ws.OnMessage += (sender, args) =>
-            {
-                if (args.Data.Contains("GRID"))
-                {
-                    newMap = args.Data;
-                }
-            };
-            
             objectsInScene.waitingCanvasGameObject.SetActive(true);
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
@@ -86,12 +76,12 @@ namespace Games.Transitions
             }
             SendGridData();
 
-            while (newMap == null)
+            while (GameController.mapReceived == null)
             {
                 yield return new WaitForSeconds(1);   
             }
             
-            initAttackPhase.StartAttackPhase(newMap);
+            initAttackPhase.StartAttackPhase();
         }
 
         public void StartDefenseCounter()

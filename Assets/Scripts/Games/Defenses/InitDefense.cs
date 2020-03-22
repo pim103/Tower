@@ -65,7 +65,7 @@ namespace Games.Defenses
                 }
                 else
                 {
-                    se.initAttackPhase.StartAttackPhase(null);
+                    se.initAttackPhase.StartAttackPhase();
                 }
 
                 currentLevel++;

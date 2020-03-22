@@ -33,6 +33,8 @@ namespace Games {
          */
         public bool byPassDefense = true;
 
+        public static string mapReceived;
+
         private IEnumerator CheckEndInit()
         {
             yield return new WaitForSeconds(0.1f);
@@ -65,6 +67,11 @@ namespace Games {
                 {
                     Debug.Log("Done!");
                     canStart = args.Data;
+                }
+
+                if (args.Data.Contains("GRID"))
+                {
+                    mapReceived = args.Data;
                 }
             };
             StartCoroutine(WaitingForCanStart());

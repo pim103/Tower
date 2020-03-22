@@ -286,7 +286,7 @@ namespace Games.Attacks
             endOfGeneration = true;
         }
         
-        public void StartAttackPhase(string map)
+        public void StartAttackPhase()
         {
             DesactiveDefenseMap();
 
@@ -299,9 +299,10 @@ namespace Games.Attacks
 
             if (!se.gameController.byPassDefense)
             {
-                GeneratingMap(map, GameController.PlayerIndex);
+                GeneratingMap(GameController.mapReceived, GameController.PlayerIndex);
             }
 
+            GameController.mapReceived = null;
             ActivePlayer();
 
             endOfGeneration = true;
