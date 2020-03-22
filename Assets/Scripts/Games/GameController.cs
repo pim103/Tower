@@ -57,7 +57,7 @@ namespace Games {
 
         private IEnumerator WaitingDeathOtherPlayer()
         {
-            while (otherPlayerDie)
+            while (!otherPlayerDie)
             {
                 yield return new WaitForSeconds(1f);
             }
