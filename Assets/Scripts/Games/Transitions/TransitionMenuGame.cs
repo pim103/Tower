@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Games.Defenses;
+using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,16 +16,16 @@ namespace Games.Transitions
 
         [SerializeField] 
         private InitDefense initDefense;
-        
+
         private int waitingForStart;
 
         private string waitingGameStartText;
 
         private void Start()
         {
-            waitingForStart = durationWaitingPhase;
-            waitingGameStartText = "Waiting for game start";
+            waitingGameStartText = "Waiting for another player";
         }
+        
 
         public bool InitGame()
         {
@@ -31,8 +33,9 @@ namespace Games.Transitions
             return true;
         }
 
-        private IEnumerator WaitingForStart()
+        public IEnumerator WaitingForStart()
         {
+            Debug.Log("Startplz2");
             objectsInScene.waitingCanvasGameObject.SetActive(true);
             // TODO : Need rpc to synchro chrono
             objectsInScene.waitingText.text = waitingGameStartText;
@@ -54,6 +57,9 @@ namespace Games.Transitions
 
         public void WantToStartGame()
         {
+            Debug.Log("Startplz");
+            waitingGameStartText = "Waiting for game strat";
+            waitingForStart = durationWaitingPhase;
             StartCoroutine(WaitingForStart());
         }
 

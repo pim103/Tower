@@ -12,7 +12,7 @@ namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 10;
+        private const int durationDefensePhase = 30;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -70,7 +70,6 @@ namespace Games.Transitions
 
         private void SendGridData()
         {
-            // \"_TARGET\":\"ALL\", \"_ARGS\":\"null\",
             string stringToSend = "{";
             foreach (var gridCell in initDefense.gridCellList)
             {
@@ -159,8 +158,7 @@ namespace Games.Transitions
             }
 
             stringToSend += "}";
-            //Debug.Log(stringToSend);
-            TowersWebSocket.TowerSender("SELF", gameController.networking.roomId,"GRID",stringToSend);
+            TowersWebSocket.TowerSender("OTHERS", gameController.networking.roomId,"GRID",stringToSend);
         }
     }
 }

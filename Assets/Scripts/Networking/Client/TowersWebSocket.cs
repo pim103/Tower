@@ -8,12 +8,12 @@ using WebSocketSharp;
 namespace Networking.Client
 {
     [Serializable]
-    public class MessageTest
+    public class CanStartHandler
     {
         [FormerlySerializedAs("Message")] 
         public string message;
 
-        public MessageTest(string message)
+        public CanStartHandler(string message)
         {
             this.message = message;
         }
@@ -27,7 +27,7 @@ namespace Networking.Client
     public string roomId;
     public static WebSocket ws;
     private string authNetwork;
-    private MessageTest testMessage = null;
+    //private CanStartHandler testMessage = null;
 
     public TowersWebSocket(string url, string roomStatic = null)
     {
@@ -83,16 +83,12 @@ namespace Networking.Client
     public void StartConnection()
     {
         ws.Connect();
-        var testArray = new Dictionary<string, string>();
-        testArray.Add("Allo", "1");
-        testArray.Add("Allo2", "2");
         
         var setSocket = new Dictionary<string, string>();
-        setSocket.Add("tokenPlayer", "skdjnflqkdnjkflq");
+        setSocket.Add("tokenPlayer", "AA");
         setSocket.Add("room", roomId);
         
-        //TowerSender("SELF", "1","Player", "Hello", FromDictToString(testArray));
-        TowerSender("SELF", "1","null", "setIdentity", FromDictToString(setSocket));
+        TowerSender("SELF", "GENERAL","null", "setIdentity", FromDictToString(setSocket));
     }
 
     public void CloseConnection()
