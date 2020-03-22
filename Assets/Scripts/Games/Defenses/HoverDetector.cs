@@ -73,7 +73,6 @@ namespace Games.Defenses
                     {
                         currentTileController.ChangeColorToRed();
                         canPutItHere = false;
-                        Debug.Log("ici");
                     }
                 }
                 else if (currentTileController.contentType != GridTileController.TypeData.Empty || 
@@ -83,8 +82,6 @@ namespace Games.Defenses
                 {
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
-                    Debug.Log("là");
-                    Debug.Log(path.status);
                 }
                 else
                 {
@@ -329,7 +326,6 @@ namespace Games.Defenses
             NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
             if (path.status != NavMeshPathStatus.PathComplete)
             {
-                Debug.Log("ui");
                 currentlyBlocked = true;
                 if (!objectInHand)
                 {
