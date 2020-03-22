@@ -7,6 +7,7 @@ using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
@@ -99,16 +100,21 @@ public class CardBehavior : MonoBehaviour
                 monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
 
                 GameObject monsterGameObject = Instantiate(monster.model, pGroupParent, true);
-                monsterGameObject.GetComponent<Rigidbody>().useGravity = false;
+                Rigidbody monsterRigidBody = monsterGameObject.GetComponent<Rigidbody>();
+                monsterRigidBody.useGravity = false;
+                monsterRigidBody.isKinematic = true;
                 monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
-                monsterGameObject.GetComponent<MonsterPrefab>().enabled = false;
+                monsterGameObject.GetComponent<NavMeshAgent>().enabled = false;
+                MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
+                monsterPrefab.virtualHand.SetActive(false);
+                monsterPrefab.enabled = false;
                 monsterGameObject.transform.localPosition = position;
                     
                 monster.IdEntity = idMobInit;
                 idMobInit++;
                 nbMonsterInit++;
 
-                MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
+                //MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
                 monster.SetMonsterPrefab(monsterPrefab);
                 monsterPrefab.SetMonster(monster);
                 
