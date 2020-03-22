@@ -208,7 +208,7 @@ namespace Games.Defenses
                         currentTileController.contentType = GridTileController.TypeData.Empty;
                         defenseUiController.currentWallNumber += 1;
                         defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
-                    } else if (objectInHand)
+                    } /*else if (objectInHand)
                     {
                         if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
                         {
@@ -221,7 +221,7 @@ namespace Games.Defenses
                             objectInHand.SetActive(false);
                             objectInHand = null;
                         }
-                    }
+                    }*/
                 }
             }
             else
@@ -235,29 +235,62 @@ namespace Games.Defenses
             
             if (Physics.Raycast(ray, out hit, 100f, cardMask))
             {
-                if (!objectInHand && Input.GetKeyDown(KeyCode.Mouse0))
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
+                    if (objectInHand)
+                    {
+                        if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
+                        {
+                            defenseUiController.PutCardBackToHand(objectInHand);
+                        }
+                        else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
+                        {
+                            objectInHand.SetActive(false);
+                            objectInHand = null;
+                            defenseUiController.currentWallNumber += 1;
+                            defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
+                        }
+                        else if(objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                        {
+                            objectInHand.SetActive(false);
+                            objectInHand = null;
+                        }
+                    }
                     defenseUiController.PutCardInHand(hit.collider.gameObject);
                     currentCardBehavior = objectInHand.GetComponent<CardBehavior>();
                 }
             }
             
-            if(Input.GetKeyDown(KeyCode.Mouse1) && objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
-            {
-                defenseUiController.PutCardBackToHand(currentCardBehavior.meleeWeaponSlot);
-                defenseUiController.PutCardBackToHand(currentCardBehavior.rangedWeaponSlot);
-                
-                currentCardBehavior.groupParent.SetActive(false);
-                currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
-                currentCardBehavior.ownMeshRenderer.enabled = true;
-                if (currentCardBehavior.cardType == 0)
+            if(Input.GetKeyDown(KeyCode.Mouse1) && objectInHand){
+
+                if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                 {
-                    currentCardBehavior.rangeMeshRenderer.enabled = false;
+                    defenseUiController.PutCardBackToHand(currentCardBehavior.meleeWeaponSlot);
+                    defenseUiController.PutCardBackToHand(currentCardBehavior.rangedWeaponSlot);
+
+                    currentCardBehavior.groupParent.SetActive(false);
+                    currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
+                    currentCardBehavior.ownMeshRenderer.enabled = true;
+                    if (currentCardBehavior.cardType == 0)
+                    {
+                        currentCardBehavior.rangeMeshRenderer.enabled = false;
+                    }
+
+                    objectInHand.transform.SetParent(currentCardBehavior.ownCardContainer);
+                    objectInHand.transform.localPosition = Vector3.zero;
+                    objectInHand.layer = LayerMask.NameToLayer("Card");
+                    objectInHand = null;
+                } else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
+                {
+                    objectInHand.SetActive(false);
+                    objectInHand = null;
+                    defenseUiController.currentWallNumber += 1;
+                    defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
+                } else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                {
+                    objectInHand.SetActive(false);
+                    objectInHand = null;
                 }
-                objectInHand.transform.SetParent(currentCardBehavior.ownCardContainer);
-                objectInHand.transform.localPosition = Vector3.zero;
-                objectInHand.layer = LayerMask.NameToLayer("Card");
-                objectInHand = null;
             }
 
             if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && !aboveMap)
