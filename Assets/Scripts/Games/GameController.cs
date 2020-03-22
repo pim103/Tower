@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Games.Transitions;
 using Networking.Client;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Games {
         [SerializeField] 
         private string staticRoomId;
 
+        private string canStart = null;
+
         public TowersWebSocket networking;
 
         public static int PlayerIndex;
@@ -35,6 +38,15 @@ namespace Games {
             yield return new WaitForSeconds(0.1f);
             transitionMenuGame.WantToStartGame();
         }
+        
+        private IEnumerator WaitingForCanStart()
+        {
+            while (canStart == null)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+            transitionMenuGame.WantToStartGame();
+        }
 
         // ================================== BASIC METHODS ======================================
 
@@ -46,10 +58,17 @@ namespace Games {
             networking = new TowersWebSocket(endPoint, staticRoomId);
             networking.InitializeWebsocketEndpoint();
             networking.StartConnection();
-
-            transitionMenuGame.WantToStartGame();
+            
+            TowersWebSocket.ws.OnMessage += (sender, args) =>
+            {
+                if (args.Data == "{\"CanStartHandler\":[{\"message\":\"true\"}]}")
+                {
+                    Debug.Log("Done!");
+                    canStart = args.Data;
+                }
+            };
+            StartCoroutine(WaitingForCanStart());
         }
-
         // TODO : Control player's movement here and not in PlayerMovement
     }
 }
