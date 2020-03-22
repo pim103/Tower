@@ -2,6 +2,9 @@
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
+using Networking.Client;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Games.Players
@@ -174,7 +177,9 @@ namespace Games.Players
 
             if (hp <= 0)
             {
-                // TODO : destroy player
+                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", "null");
+                Debug.Log("Vous êtes mort");
+                SceneManager.LoadScene("MenuScene");
             }
         }
     }

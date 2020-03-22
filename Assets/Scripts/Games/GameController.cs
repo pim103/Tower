@@ -3,6 +3,7 @@ using System.Collections;
 using Games.Transitions;
 using Networking.Client;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Games {
     public class GameController : MonoBehaviour
@@ -18,8 +19,10 @@ namespace Games {
         [SerializeField] 
         private string endPoint;
         [SerializeField] 
-        private string staticRoomId;
+        private string roomId;
 
+        public static string staticRoomId;
+        
         private string canStart = null;
 
         public TowersWebSocket networking;
@@ -55,6 +58,8 @@ namespace Games {
         // Start is called before the first frame update
         void Start()
         {
+            staticRoomId = roomId;
+            
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
             networking = new TowersWebSocket(endPoint, staticRoomId);
@@ -72,6 +77,12 @@ namespace Games {
                 if (args.Data.Contains("GRID"))
                 {
                     mapReceived = args.Data;
+                }
+
+                if (args.Data.Contains("DEATH"))
+                {
+                    Debug.Log("Vous avez gagné");
+                    SceneManager.LoadScene("MenuScene");
                 }
             };
             StartCoroutine(WaitingForCanStart());
