@@ -17,6 +17,7 @@ namespace Games.Attacks
         {
             foreach (GameObject go in DataObject.objectInScene)
             {
+                go.transform.position = Vector3.zero;
                 go.SetActive(false);
             }
 

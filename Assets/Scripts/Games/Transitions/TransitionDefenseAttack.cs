@@ -12,7 +12,7 @@ namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 30;
+        private const int durationDefensePhase = 10;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
