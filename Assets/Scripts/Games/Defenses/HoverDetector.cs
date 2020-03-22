@@ -55,7 +55,7 @@ namespace Games.Defenses
         {
             ray = defenseCam.ScreenPointToRay(Input.mousePosition);
             aboveMap = false;
-            if (Physics.Raycast(ray, out hit, 100f, gridMask))
+            if (Physics.Raycast(ray, out hit, 500f, gridMask))
             {
                 aboveMap = true;
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
@@ -98,7 +98,7 @@ namespace Games.Defenses
                 {
                     if (objectInHand.layer == LayerMask.NameToLayer("Wall") || objectInHand.layer == LayerMask.NameToLayer("Trap"))
                     {
-                        objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 1.5f;
+                        objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 2.25f;
                     }
                     else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                     {
@@ -285,8 +285,11 @@ namespace Games.Defenses
                 if (!objectInHand)
                 {
                     objectInHand = lastObjectPutInPlay;
-                    lastTileWithContent.content = null;
-                    lastTileWithContent.contentType = GridTileController.TypeData.Empty;
+                    if (lastTileWithContent)
+                    {
+                        lastTileWithContent.content = null;
+                        lastTileWithContent.contentType = GridTileController.TypeData.Empty;
+                    }
                     lastObjectPutInPlay = null;
                 }
                 

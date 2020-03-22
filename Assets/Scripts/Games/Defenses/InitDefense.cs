@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Games.Transitions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Games.Defenses
 {
@@ -22,9 +24,9 @@ namespace Games.Defenses
         }
         
         [SerializeField] 
-        private MapsArrayClass[] maps;
+        public MapsArrayClass[] maps;
 
-        private int currentLevel = 0;
+        public int currentLevel = 0;
         public GameObject currentMap;
         public MapStats currentMapStats;
         
@@ -39,20 +41,33 @@ namespace Games.Defenses
         
         public void Init()
         {
-            currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
-            currentMap.SetActive(true);
-            currentMapStats = currentMap.GetComponent<MapStats>();
-
-            if (!se.gameController.byPassDefense)
+            if (currentMap)
             {
-                Generate();
-                defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
-                defenseUIController.enabled = true;
-                transitionDefenseAttack.StartDefenseCounter();
+                currentMap.SetActive(false);
+            }
+
+            if (currentLevel < maps.Length)
+            {
+                currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
+                currentMap.SetActive(true);
+                currentMapStats = currentMap.GetComponent<MapStats>();
+                if (!se.gameController.byPassDefense)
+                {
+                    Generate();
+                    defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
+                    defenseUIController.enabled = true;
+                    transitionDefenseAttack.StartDefenseCounter();
+                }
+                else
+                {
+                    se.initAttackPhase.StartAttackPhase();
+                }
+
+                currentLevel++;
             }
             else
             {
-                se.initAttackPhase.StartAttackPhase();
+                SceneManager.LoadScene("MenuScene");
             }
         }
 
@@ -65,8 +80,8 @@ namespace Games.Defenses
                     currentCell = Instantiate(gridCell, new Vector3( i+currentMap.transform.localPosition.x+1,  3f, j+currentMap.transform.localPosition.z+1), Quaternion.Euler(90,0,0));
                     currentCell.transform.parent = currentMap.transform;
                     GridTileController currentTileController = currentCell.GetComponent<GridTileController>();
-                    currentTileController.coordinates.x = i/2;
-                    currentTileController.coordinates.y = j/2;
+                    currentTileController.coordinates.x = (i+1)/2;
+                    currentTileController.coordinates.y = (j+1)/2;
                     gridCellList.Add(currentCell);
                 }
             }

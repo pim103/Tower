@@ -50,6 +50,8 @@ namespace Games.Defenses
 
             foreach (var button in trapButtons)
             {
+                button.transform.GetChild(0).GetComponent<Text>().text =
+                    button.gameObject.GetComponent<TrapBehavior>().mainType.ToString();
                 button.onClick.AddListener(delegate
                 {
                     PutTrapInHand(button.gameObject.GetComponent<TrapBehavior>());
