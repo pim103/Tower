@@ -84,12 +84,13 @@ namespace Games.Attacks
 
         public string ClearMapString(string maps)
         {
-            string header = "GRID\":";
-            int indexInit = maps.IndexOf("GRID\":");
+            Debug.Log(maps);
+            string header = "GRID\":\"{";
+            int indexInit = maps.IndexOf(header);
 
-            maps = maps.Substring(indexInit + header.Length + 1);
+            maps = maps.Substring(indexInit + header.Length);
 
-            int footerPosition = maps.IndexOf("\"}");
+            int footerPosition = maps.IndexOf("}\"}");
 
             maps = maps.Substring(0, footerPosition);
 
@@ -112,6 +113,9 @@ namespace Games.Attacks
 
             int firstColon = lineToParse.IndexOf(':');
             int secondColon = lineToParse.IndexOf(':', firstColon + 1);
+            
+            Debug.Log(lineToParse);
+            Debug.Log(lineToParse.Substring(0, firstColon).Trim());
 
             x = Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
             y = Int32.Parse(lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim());
@@ -194,7 +198,7 @@ namespace Games.Attacks
                     case TypeData.Nothing:
                         break;
                     case TypeData.Group:
-                        Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.position.x + 1, 1.5f, y * 2 + x * 2 + initDefense.currentMap.transform.position.z + 1);
+                        Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
                         InstantiateGroupsMonster(groups, newPos, idEquipements);
                         break;
@@ -205,7 +209,7 @@ namespace Games.Attacks
                     case TypeData.Wall:
                         Debug.Log("Want to pose wall");
                         GameObject wall = objectPoolerDefense.GetPooledObject(1);
-                        wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.position.x + 1, 1.5f, y * 2 + x * 2 + initDefense.currentMap.transform.position.z + 1);
+                        wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         wall.SetActive(true);
                         Debug.Log("Ok continue");
                         break;
@@ -272,7 +276,7 @@ namespace Games.Attacks
         {
             DesactiveDefenseMap();
 
-            se.gameController.networking.ws.OnMessage += (sender, args) =>
+            TowersWebSocket.ws.OnMessage += (sender, args) =>
             {
                 currentMap = args.Data;
             };
