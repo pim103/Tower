@@ -30,14 +30,14 @@ public class GameSettings : MonoBehaviour
         {
             fullScreenToggle.isOn = false;
         }
-
-        // Get volume state
-        volumeSlider.value = PlayerPrefs.GetFloat("GameVolume", 0f);
-        audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("GameVolume", 0f));
     }
 
     private void Start()
     {
+        // Get volume state
+        volumeSlider.value = PlayerPrefs.GetFloat("GameVolume", 0f);
+        audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("GameVolume", 0f));
+
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
