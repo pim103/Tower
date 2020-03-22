@@ -80,8 +80,8 @@ namespace Games.Defenses
                     currentCell = Instantiate(gridCell, new Vector3( i+currentMap.transform.localPosition.x+1,  3f, j+currentMap.transform.localPosition.z+1), Quaternion.Euler(90,0,0));
                     currentCell.transform.parent = currentMap.transform;
                     GridTileController currentTileController = currentCell.GetComponent<GridTileController>();
-                    currentTileController.coordinates.x = i/2;
-                    currentTileController.coordinates.y = j/2;
+                    currentTileController.coordinates.x = (i+1)/2;
+                    currentTileController.coordinates.y = (j+1)/2;
                     gridCellList.Add(currentCell);
                 }
             }
