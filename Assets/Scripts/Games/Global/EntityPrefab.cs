@@ -1,17 +1,18 @@
 ﻿using System.Collections;
-using System.Diagnostics;
+using System.Linq.Expressions;
+using Games.Global.Entities;
 using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Global
 {
     public enum SpecialMovement
     {
         Dash,
-        BackDash
+        BackDash,
+        Charge,
+        HeavyBasicAttack
     }
     
     public class EntityPrefab: MonoBehaviour
@@ -29,7 +30,54 @@ namespace Games.Global
 
         public Entity entity;
 
-        public void PlaySpecialMovement(SpecialMovement specialMovement)
+        public bool movementBlocked = false;
+        public bool cameraBlocked = false;
+        public bool intentBlocked = false;
+
+        public bool isCharging = false;
+        
+        public IEnumerator PlayCharge(float duration)
+        {
+            movementBlocked = true;
+            cameraBlocked = true;
+            isCharging = true;
+            
+            while (duration > 0)
+            {
+                rigidbodyEntity.velocity = (transform.forward * 20);
+                
+                yield return new WaitForSeconds(0.1f);
+                duration -= 0.1f;
+            }
+            movementBlocked = false;
+            cameraBlocked = false;
+            isCharging = false;
+        }
+
+        private IEnumerator ApplyForce()
+        {
+            rigidbodyEntity.isKinematic = false;
+            
+            rigidbodyEntity.AddRelativeForce(Vector3.back * 10, ForceMode.Impulse);
+            yield return new WaitForSeconds(2);
+            rigidbodyEntity.isKinematic = true;
+        }
+
+        public void OnCollisionEnter(Collision other)
+        {
+            int monsterLayer = LayerMask.NameToLayer("Monster");
+            
+            if (isCharging)
+            {
+                if (monsterLayer == other.gameObject.layer)
+                {
+                    MonsterPrefab monsterPrefab = other.gameObject.GetComponent<MonsterPrefab>();
+                    StartCoroutine(monsterPrefab.ApplyForce());
+                }
+            }
+        }
+
+        public void PlaySpecialMovement(SpecialMovement specialMovement, float durationSpecialMovement = 0)
         {
             switch (specialMovement)
             {
@@ -38,6 +86,13 @@ namespace Games.Global
                     break;
                 case SpecialMovement.BackDash:
                     rigidbodyEntity.AddRelativeForce(Vector3.back * 30f, ForceMode.Impulse);
+                    break;
+                case SpecialMovement.Charge:
+                    StartCoroutine(PlayCharge(durationSpecialMovement));
+                    break;
+                case SpecialMovement.HeavyBasicAttack:
+                    entity.weapons[0].oneHitDamageUp = 20;
+                    entity.BasicAttack();
                     break;
             }
         }

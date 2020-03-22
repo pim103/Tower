@@ -174,6 +174,9 @@ namespace Games.Global
                 case TypeEffect.SpeedUp:
                     speed = initialSpeed + (1 * effect.level);
                     break;
+                case TypeEffect.DefeneseUp:
+                    def = initialDef + (1 * effect.level);
+                    break;
             }
         }
 
@@ -216,6 +219,9 @@ namespace Games.Global
                     break;
                 case TypeEffect.SpeedUp:
                     att = initialAtt;
+                    break;
+                case TypeEffect.DefeneseUp:
+                    def = initialDef;
                     break;
             }
         }

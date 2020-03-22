@@ -32,7 +32,7 @@ namespace Games.Global.Weapons
         
         private void PlayMovement(MovementPatternController movementPatternController, float attSpeed, GameObject objectToMove, BoxCollider bc)
         {
-            movementPatternController.PlayMovement(weapon.pattern, attSpeed, objectToMove, bc);
+            movementPatternController.PlayMovement(weapon, attSpeed, objectToMove, bc);
         }
 
         private void PoolProjectiles()
@@ -98,7 +98,7 @@ namespace Games.Global.Weapons
                 entity.ApplyEffect(effects.Value);
             }
 
-            int damage = weapon.damage + wielder.att;
+            int damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
             if (wielder.underEffects.ContainsKey(TypeEffect.Weak))
             {
                 damage /= 2;

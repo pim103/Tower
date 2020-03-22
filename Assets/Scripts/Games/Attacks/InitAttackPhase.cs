@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
@@ -44,12 +46,18 @@ namespace Games.Attacks
         [SerializeField]
         private ScriptsExposer se;
 
+        [SerializeField] private InitDefense initDefense;
+
+        [SerializeField] private HoverDetector hoverDetector;
+
         private string[,] tempMap1;
         private string[,] tempMap2;
 
         private Monster monster2;
 
         private bool endOfGeneration = false;
+
+        private string currentMap;
         
         public void GenerateArray()
         {
@@ -74,20 +82,61 @@ namespace Games.Attacks
 //            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
         }
 
-        public (TypeData, int, List<int>) ParseString(string lineToParse)
+        public string ClearMapString(string maps)
+        {
+            string header = "GRID\":";
+            int indexInit = maps.IndexOf("GRID\":");
+
+            maps = maps.Substring(indexInit + header.Length + 1);
+
+            int footerPosition = maps.IndexOf("\"}");
+
+            maps = maps.Substring(0, footerPosition);
+
+            return maps;
+        }
+        
+        public (string, int, int, TypeData, int, List<int>) ParseString(string maps)
         {
             TypeData type;
             int idElement;
             List<int> idEquipements = new List<int>();
 
+            int x;
+            int y;
+
+            int lastIndexString = maps.IndexOf(";");
+
+            string lineToParse = maps.Substring(0, lastIndexString);
+            string returningMap = maps.Substring(lastIndexString + 1);
+
             int firstColon = lineToParse.IndexOf(':');
             int secondColon = lineToParse.IndexOf(':', firstColon + 1);
 
+            x = Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
+            y = Int32.Parse(lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim());
+
+            Debug.Log("IN x : " + x + " y : " + y);
+
+            lineToParse = lineToParse.Substring(secondColon + 1);
+            firstColon = lineToParse.IndexOf(':');
+
+            if (firstColon == -1)
+            {
+                firstColon = lineToParse.Length;
+            }
+            else
+            {
+                secondColon = lineToParse.IndexOf(':', firstColon + 1);
+            }
+
             type = (TypeData)Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
 
-            if (firstColon == secondColon - 1)
+            Debug.Log("Want to spawn : " + type + " idType : " + lineToParse.Substring(0, firstColon).Trim());
+
+            if (firstColon == lineToParse.Length)
             {
-                return (type, 0, idEquipements);
+                return (returningMap, x, y, type, 0, idEquipements);
             }
 
             string idElementString = lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim();
@@ -96,19 +145,18 @@ namespace Games.Attacks
             int firstBracket = lineToParse.IndexOf('[');
             int secondBracket = lineToParse.IndexOf(']');
 
-            if (firstBracket == secondBracket - 1)
+            if (firstBracket == secondBracket - 1 || firstBracket == -1)
             {
-                return (type, idElement, idEquipements);
+                return (returningMap, x, y, type, idElement, idEquipements);
             }
 
             string lineArray = lineToParse.Substring(firstBracket + 1);
             string valueToParse = lineArray.Trim();
-            int indexComma;
 
             bool wantToLeave = false;
             do
             {
-                indexComma = valueToParse.IndexOf(',');
+                int indexComma = valueToParse.IndexOf(',');
                 if (indexComma == -1)
                 {
                     indexComma = valueToParse.Length - 1;
@@ -123,43 +171,50 @@ namespace Games.Attacks
                 }
             } while (!wantToLeave);
 
-            return (type, idElement, idEquipements);
+            return (returningMap, x, y, type, idElement, idEquipements);
         }
 
-        private void GeneratingMap(string[,] map, int playerIndex)
+        private void GeneratingMap(string maps, int playerIndex)
         {
-            int indexMap = playerIndex % 2 == 0 ? 0 : 1;
-            GameObject currentMap = objectsInScene.maps[indexMap];
-
             TypeData type;
             int idElement;
             List<int> idEquipements;
+            int x;
+            int y;
 
-            for (int i = 0; i < MAP_SIZE; i++)
+            maps = ClearMapString(maps);
+
+            while (maps.Length > 0)
             {
-                for (int j = 0; j < MAP_SIZE; j++)
-                {
-                    (type, idElement, idEquipements) = ParseString(map[i,j]);
+                (maps, x, y, type, idElement, idEquipements) = ParseString(maps);
 
-                    switch (type)
-                    {
-                        case TypeData.Nothing:
-                            break;
-                        case TypeData.Group:
-                            Vector3 newPos = new Vector3(i * 2 + (indexMap * 125), 1.5f, -j * 2);
-                            GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
-                            InstantiateGroupsMonster(groups, newPos, idEquipements);
-                            break;
-                        case TypeData.Trap:
-                            break;
-                        case TypeData.Wall:
-                            GameObject wall = objectPoolerDefense.GetPooledObject(0);
-                            wall.transform.position = new Vector3(i * 2 + (indexMap * 125), 1.5f, -j * 2);
-                            wall.SetActive(true);
-                            break;
-                    }
+                Debug.Log("New map : " + maps);
+                switch (type)
+                {
+                    case TypeData.Nothing:
+                        break;
+                    case TypeData.Group:
+                        Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.position.x + 1, 1.5f, y * 2 + x * 2 + initDefense.currentMap.transform.position.z + 1);
+                        GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
+                        InstantiateGroupsMonster(groups, newPos, idEquipements);
+                        break;
+                    case TypeData.Trap:
+                        // TODO : ADD TRAP
+//                        Debug.Log("NEED TRAP");
+                        break;
+                    case TypeData.Wall:
+                        Debug.Log("Want to pose wall");
+                        GameObject wall = objectPoolerDefense.GetPooledObject(1);
+                        wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.position.x + 1, 1.5f, y * 2 + x * 2 + initDefense.currentMap.transform.position.z + 1);
+                        wall.SetActive(true);
+                        Debug.Log("Ok continue");
+                        break;
                 }
+                
+                Debug.Log("Continue : " + maps.Length);
             }
+            
+            Debug.Log("Leave ?");
         }
 
         private void Update()
@@ -176,31 +231,53 @@ namespace Games.Attacks
             }
         }
 
-        public void StartAttackPhase()
+        private void DesactiveDefenseMap()
         {
+            if (hoverDetector.objectInHand != null)
+            {
+                hoverDetector.objectInHand.SetActive(false);
+            }
+
+            foreach (GameObject go in initDefense.gridCellList)
+            {
+                GridTileController gridTileController = go.GetComponent<GridTileController>();
+
+                if (gridTileController.content != null)
+                {
+                    gridTileController.content.SetActive(false);
+                }
+
+                go.SetActive(false);
+            }
+        }
+
+        private IEnumerator WaitingForGenerateMap()
+        {
+            while (currentMap == null)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+            
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
             
-            // TODO : Temp Method
-            GenerateArray();
-            TowersWebSocket.ws.OnMessage += (sender, args) =>
-            {
-                Debug.Log(args.Data);
-            };
-
-            // TODO : Temp condition
-            if (GameController.PlayerIndex % 2 == 0)
-            {
-                GeneratingMap(tempMap2, GameController.PlayerIndex);
-            }
-            else
-            {
-                GeneratingMap(tempMap1, GameController.PlayerIndex);
-            }
+            GeneratingMap(currentMap, GameController.PlayerIndex);
 
             ActivePlayer();
 
             endOfGeneration = true;
+        }
+        
+        public void StartAttackPhase()
+        {
+            DesactiveDefenseMap();
+
+            se.gameController.networking.ws.OnMessage += (sender, args) =>
+            {
+                currentMap = args.Data;
+            };
+
+            StartCoroutine(WaitingForGenerateMap());
         }
 
         private void ActivePlayer()

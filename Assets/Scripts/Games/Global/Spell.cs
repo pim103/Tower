@@ -23,7 +23,8 @@ namespace Games.Global
         SelfEffectOnDamageReceive,
         SelfEffectOnDamageDeal,
         InstantiateSomething,
-        ChangeBasicAttack
+        ChangeBasicAttack,
+        SpecialMovement
     }
 
     public enum TypeSpellObject
@@ -63,6 +64,9 @@ namespace Games.Global
         
         // Passive or Active only when Spell.typeSpell == ActiveWithPassive || ToggleWithPassive
         public TypeSpell specificTypeSpell;
+        
+        // If Type == specialMovement
+        public SpecialMovement specialMovement;
     }
 
     public class Spell

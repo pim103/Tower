@@ -6,8 +6,9 @@ namespace Games.Global.Patterns
 {
     public class MovementPatternController : MonoBehaviour
     {
-        private IEnumerator TriggerMovement(Pattern[] pattern, float attSpeed, GameObject objectToMove, BoxCollider bc)
+        private IEnumerator TriggerMovement(Weapon weapon, float attSpeed, GameObject objectToMove, BoxCollider bc)
         {
+            Pattern[] pattern = weapon.pattern;
             // TODO need to interpret more than 1 action at the same time for diagonal or other
             int i = 0;
             while (i < pattern.Length)
@@ -60,11 +61,12 @@ namespace Games.Global.Patterns
             
             // At the end of movement, desactive boxCollider of weapon
             bc.enabled = false;
+            weapon.oneHitDamageUp = 0;
         }
 
-        public void PlayMovement(Pattern[] pattern, float attSpeed, GameObject objectToMove, BoxCollider bc)
+        public void PlayMovement(Weapon weapon, float attSpeed, GameObject objectToMove, BoxCollider bc)
         {
-            StartCoroutine(TriggerMovement(pattern, attSpeed, objectToMove, bc));
+            StartCoroutine(TriggerMovement(weapon, attSpeed, objectToMove, bc));
         }
     }
 }

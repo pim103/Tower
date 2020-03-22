@@ -50,6 +50,8 @@ namespace Games.Global.Weapons
 
         public int idPoolProjectile;
 
+        public int oneHitDamageUp = 0;
+
         public virtual void InitPlayerSkill(Classes classe)
         {
             skill1 = new Spell();

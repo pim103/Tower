@@ -92,7 +92,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869628687301897144}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 7aa6a61cf6088144c886ba03753a2296, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -111,7 +111,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -132,6 +132,8 @@ MonoBehaviour:
   movementPatternController: {fileID: 6307249475328061940}
   rigidbodyEntity: {fileID: 1869628687301897145}
   meshRenderer: {fileID: 1869628687301897147}
+  movementBlocked: 0
+  cameraBlocked: 0
   hpBar: {fileID: 1237704919439136648}
   navMeshAgent: {fileID: 115459911557053537}
   aggroForced: 0
@@ -452,7 +454,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
@@ -462,12 +464,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 1894846757290113951, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0

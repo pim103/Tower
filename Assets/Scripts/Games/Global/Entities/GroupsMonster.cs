@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
 
@@ -38,23 +39,28 @@ namespace Games.Global.Entities
         public void InitSpecificEquipment(Monster monster, List<int> equipment)
         {
             int nbWeaponFound = 0;
-            
-            foreach (int id in equipment)
+
+            if (monster.constraint == TypeWeapon.Cac)
             {
-                // Is a weapon
-                if (id < 1000)
+                if (equipment[0] != 0)
                 {
-                    if (monster.InitWeapon(id))
+                    if (monster.InitWeapon(equipment[0]))
                     {
-                        nbWeaponFound++;   
+                        nbWeaponFound++;
                     }
                 }
-                // Is an armor
-                else
+            }
+            else if (monster.constraint == TypeWeapon.Distance)
+            {
+                if (equipment[1] != 0)
                 {
-                    // TODO : init armor
+                    if (monster.InitWeapon(equipment[1]))
+                    {
+                        nbWeaponFound++;
+                    }
                 }
                 
+                // TODO init armor with : equipment[2] / equipment[3] / equipment[4]
             }
 
             if (nbWeaponFound == 0)

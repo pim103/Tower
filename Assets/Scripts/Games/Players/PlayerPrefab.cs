@@ -49,7 +49,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Rogue);
+            player.InitPlayerStats(Classes.Warrior);
             player.effectInterface = this;
 
             wantToGoBack = false;
@@ -100,13 +100,16 @@ namespace Games.Players
                 Movement();
                 return;
             }
-            
-            if (!entity.underEffects.ContainsKey(TypeEffect.MadeADash))
+
+            if (!entity.underEffects.ContainsKey(TypeEffect.MadeADash) && !movementBlocked)
             {
                 Movement();
             }
-    
-            CameraRotation();
+
+            if (!cameraBlocked)
+            {
+                CameraRotation();
+            }
         }
 
         public void GetIntentPlayer()
@@ -154,36 +157,39 @@ namespace Games.Players
                 wantToGoRight = false;
             }
 
-            if(Input.GetMouseButton(0))
+            if (!intentBlocked)
             {
-                entity.BasicAttack();
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                entity.BasicDefense();
-                pressDefenseButton = true;
-            }
-            else if (Input.GetMouseButtonUp(1))
-            {
-                entity.DesactiveBasicDefense();
-                pressDefenseButton = false;
-            }
-
-            if (!entity.doingSkill)
-            {
-                if (Input.GetKeyUp(KeyCode.Alpha1))
+                if(Input.GetMouseButton(0))
                 {
-                    TryCastSpell(entity.weapons[0].skill1);
+                    entity.BasicAttack();
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    entity.BasicDefense();
+                    pressDefenseButton = true;
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    entity.DesactiveBasicDefense();
+                    pressDefenseButton = false;
                 }
 
-                if (Input.GetKeyUp(KeyCode.Alpha2))
+                if (!entity.doingSkill)
                 {
-                    TryCastSpell(entity.weapons[0].skill2);
-                }
+                    if (Input.GetKeyUp(KeyCode.Alpha1))
+                    {
+                        TryCastSpell(entity.weapons[0].skill1);
+                    }
 
-                if (Input.GetKeyUp(KeyCode.Alpha3))
-                {
-                    TryCastSpell(entity.weapons[0].skill3);
+                    if (Input.GetKeyUp(KeyCode.Alpha2))
+                    {
+                        TryCastSpell(entity.weapons[0].skill2);
+                    }
+
+                    if (Input.GetKeyUp(KeyCode.Alpha3))
+                    {
+                        TryCastSpell(entity.weapons[0].skill3);
+                    }
                 }
             }
 
@@ -259,8 +265,17 @@ namespace Games.Players
             // TODO : make anim
             entity.ressource1 -= spell.cost;
 
+            if (spell.castTime > 0)
+            {
+                movementBlocked = true;
+                intentBlocked = true;
+            }
+            
             yield return new WaitForSeconds(spell.castTime);
 
+            movementBlocked = false;
+            intentBlocked = false;
+            
             foreach (SpellInstruction spellInstruction in spell.spellInstructions)
             {
                 switch (spellInstruction.TypeSpellInstruction)
@@ -276,6 +291,9 @@ namespace Games.Players
                         break;
                     case TypeSpellInstruction.SelfEffectOnDamageReceive:
                         StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        break;
+                    case TypeSpellInstruction.SpecialMovement:
+                        PlaySpecialMovement(spellInstruction.specialMovement, spellInstruction.durationInstruction);
                         break;
                 }
             }
@@ -306,7 +324,6 @@ namespace Games.Players
                 case TypeSpellObject.GroundArea:
                     GameObject areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
 
-                    Debug.Log(areaSpell);
                     if (positionPointed != Vector3.zero && areaSpell != null)
                     {
                         AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();

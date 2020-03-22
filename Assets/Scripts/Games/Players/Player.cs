@@ -138,7 +138,7 @@ namespace Games.Players
             initialRessource2 = ressource2;
 
             InitEquipementArray();
-            InitWeapon(4);
+            InitWeapon(1);
         }
 
         public void InitWeapon(int idWeapon)

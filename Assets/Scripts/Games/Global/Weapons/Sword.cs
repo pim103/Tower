@@ -32,8 +32,56 @@ namespace Games.Global.Weapons
                 case Classes.Ranger:
                     break;
                 case Classes.Warrior:
+                    InitWarriorSpell();
                     break;
             }
+        }
+
+        private void InitWarriorSpell()
+        {   
+            SpellInstruction spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
+                specialMovement = SpecialMovement.Charge,
+                timeWait = 0,
+                durationInstruction = 3
+            };
+
+            Spell spell1 = new Spell {typeSpell = TypeSpell.Active, cooldown = 1, castTime = 0, cost = 1};
+            spell1.spellInstructions.Add(spellInstruction);
+
+            /* Spell 2 */
+
+            Effect effect = new Effect { typeEffect = TypeEffect.DefeneseUp, level = 2 };
+            
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.SelfEffect,
+                effect = effect,
+                timeWait = 0,
+                durationInstruction = 5
+            };
+
+            Spell spell2 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10 };
+            spell2.spellInstructions.Add(spellInstruction);
+
+            /* Spell 3 */
+
+            spellInstruction = new SpellInstruction
+            {
+                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
+                timeWait = 0,
+                specialMovement = SpecialMovement.HeavyBasicAttack
+            };
+
+            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 1, cost = 1, castTime = 2};
+            spell3.spellInstructions.Add(spellInstruction);
+
+            /* Setting Spell */
+
+            skill1 = spell1;
+            skill2 = spell2;
+            skill3 = spell3;
         }
     }
 }

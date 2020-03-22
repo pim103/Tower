@@ -76,7 +76,7 @@ public class CardBehavior : MonoBehaviour
         }
         else if(type == 1)
         {
-            equipement = DataObject.WeaponList.GetWeaponWithId(Random.Range(1,3));
+            equipement = DataObject.WeaponList.GetWeaponWithId(3);
             nameText.text = equipement.modelName;
             costText.text = equipement.cost+" RP";
             effectText.text = "effet";

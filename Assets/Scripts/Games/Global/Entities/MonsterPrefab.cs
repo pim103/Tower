@@ -101,6 +101,11 @@ namespace Games.Global.Entities
             if (target != null && monster.constraint == TypeWeapon.Cac)
             {
                 navMeshAgent.SetDestination(target.transform.position);
+                
+                if (navMeshAgent.remainingDistance <= 1 && navMeshAgent.hasPath)
+                {
+                    navMeshAgent.SetDestination(transform.position);
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Games.Transitions;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Games.Defenses
 {

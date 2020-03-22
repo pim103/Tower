@@ -22,6 +22,7 @@ namespace Games.Global
         AttackUp,
         SpeedUp,
         Untargetable,
+        DefeneseUp,
 
         MadeADash,
     }
