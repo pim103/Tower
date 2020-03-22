@@ -78,6 +78,8 @@ namespace Games.Defenses
 
         private void Generate()
         {
+            gridCellList = new List<GameObject>();
+
             for (int i = currentMapStats.mapWidth*-1; i < currentMapStats.mapWidth; i+=2)
             {
                 for (int j = currentMapStats.mapHeight*-1; j < currentMapStats.mapHeight; j+=2)

@@ -43,9 +43,14 @@ namespace Games.Transitions
 
         private IEnumerator WaitingEndDefense()
         {
+            newMap = null;
+
             TowersWebSocket.ws.OnMessage += (sender, args) =>
             {
-                newMap = args.Data;
+                if (args.Data.Contains("GRID"))
+                {
+                    newMap = args.Data;
+                }
             };
             
             objectsInScene.waitingCanvasGameObject.SetActive(true);
