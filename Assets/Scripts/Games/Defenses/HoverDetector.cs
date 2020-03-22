@@ -20,6 +20,7 @@ namespace Games.Defenses
         public GameObject objectInHand;
         public GameObject lastObjectPutInPlay;
         public GridTileController lastTileWithContent;
+        public bool currentlyBlocked;
         
         [SerializeField]
         private LayerMask gridMask;
@@ -29,11 +30,10 @@ namespace Games.Defenses
 
         public bool canPutItHere;
         private GridTileController currentTileController;
-
-        [SerializeField] 
-        private GameObject startPos;
-        [SerializeField] 
-        private GameObject dest;
+        
+        public GameObject startPos;
+        
+        public GameObject dest;
 
         private NavMeshPath path;
 
@@ -45,7 +45,8 @@ namespace Games.Defenses
         private bool aboveMap;
         
         private CardBehavior currentCardBehavior;
-        
+
+        private bool puttingWalls;
         private void Start()
         {
             //mouseMask = LayerMask.GetMask("Grid");
@@ -72,12 +73,18 @@ namespace Games.Defenses
                     {
                         currentTileController.ChangeColorToRed();
                         canPutItHere = false;
+                        Debug.Log("ici");
                     }
                 }
-                else if (currentTileController.contentType != GridTileController.TypeData.Empty || path.status != NavMeshPathStatus.PathComplete || currentTileController.isTooCloseFromAMob || (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 0 && !currentCardBehavior.groupRangeBehavior.CheckContentEmpty()))
+                else if (currentTileController.contentType != GridTileController.TypeData.Empty || 
+                         path.status != NavMeshPathStatus.PathComplete || 
+                         currentTileController.isTooCloseFromAMob || 
+                         (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 0 && !currentCardBehavior.groupRangeBehavior.CheckContentEmpty()))
                 {
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
+                    Debug.Log("là");
+                    Debug.Log(path.status);
                 }
                 else
                 {
@@ -112,7 +119,7 @@ namespace Games.Defenses
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (Input.GetKeyDown(KeyCode.Mouse0) || puttingWalls)
                 {
                     if (canPutItHere && objectInHand)
                     {
@@ -121,6 +128,7 @@ namespace Games.Defenses
                         NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
                         if (path.status == NavMeshPathStatus.PathComplete)
                         {
+                            currentlyBlocked = false;
                             if (objectInHand.layer == LayerMask.NameToLayer("Wall") ||
                                 (objectInHand.layer == LayerMask.NameToLayer("CardInHand") &&
                                  currentCardBehavior.cardType != 1) || objectInHand.layer == LayerMask.NameToLayer("Trap"))
@@ -131,6 +139,7 @@ namespace Games.Defenses
                                 if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
                                 {
                                     currentTileController.contentType = GridTileController.TypeData.Wall;
+                                    puttingWalls = true;
                                 }
                                 else if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                                 {
@@ -307,6 +316,11 @@ namespace Games.Defenses
                     currentCardBehavior.rangeMeshRenderer.enabled = false;
                 }
             }
+
+            if (Input.GetKeyUp(KeyCode.Mouse0) && puttingWalls)
+            {
+                puttingWalls = false;
+            }
         }
         
         private void LateUpdate()
@@ -315,6 +329,8 @@ namespace Games.Defenses
             NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
             if (path.status != NavMeshPathStatus.PathComplete)
             {
+                Debug.Log("ui");
+                currentlyBlocked = true;
                 if (!objectInHand)
                 {
                     objectInHand = lastObjectPutInPlay;
