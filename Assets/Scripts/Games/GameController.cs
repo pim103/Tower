@@ -43,7 +43,7 @@ namespace Games {
         {
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
-            networking = new TowersWebSocket(endPoint, "1");
+            networking = new TowersWebSocket(endPoint, staticRoomId);
             networking.InitializeWebsocketEndpoint();
             networking.StartConnection();
 
