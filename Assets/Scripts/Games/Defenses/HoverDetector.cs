@@ -254,7 +254,7 @@ namespace Games.Defenses
                 {
                     currentCardBehavior.rangeMeshRenderer.enabled = false;
                 }
-                objectInHand.transform.SetParent(currentCardBehavior.container);
+                objectInHand.transform.SetParent(currentCardBehavior.ownCardContainer);
                 objectInHand.transform.localPosition = Vector3.zero;
                 objectInHand.layer = LayerMask.NameToLayer("Card");
                 objectInHand = null;
@@ -292,9 +292,12 @@ namespace Games.Defenses
                     }
                     lastObjectPutInPlay = null;
                 }
-                
-                WarningPanel.SetActive(true);
-                WarningPanelText.text = "Chemin bloqué : Bougez le bloc ou cliquez droit pour annuler";
+
+                if (lastTileWithContent)
+                {
+                    WarningPanel.SetActive(true);
+                    WarningPanelText.text = "Chemin bloqué : Bougez le bloc ou cliquez droit pour annuler";
+                }
             }
         }
     }

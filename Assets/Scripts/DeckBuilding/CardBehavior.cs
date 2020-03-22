@@ -39,7 +39,7 @@ public class CardBehavior : MonoBehaviour
     private GroupsMonster group;
     public Weapon equipement;
     public GameObject equipementModel;
-    public Transform container;
+    public Transform ownCardContainer;
     public int cardType;
     private int idMobInit = 0;
     public int groupId;
@@ -63,7 +63,7 @@ public class CardBehavior : MonoBehaviour
 
     public void SetCard(int type)
     {
-        container = transform.parent;
+        ownCardContainer = transform.parent;
         cardType = type;
         if (type == 0)
         {

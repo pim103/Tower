@@ -16,6 +16,7 @@ namespace Games.Attacks
 
             if (initDefense.currentLevel < initDefense.maps.Length)
             {
+                initDefense.defenseUIController.enabled = false;
                 objectsInScene.containerAttack.SetActive(false);
                 objectsInScene.containerDefense.SetActive(true);
                 initDefense.Init();

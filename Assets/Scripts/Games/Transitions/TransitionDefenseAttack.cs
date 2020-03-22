@@ -160,7 +160,7 @@ namespace Games.Transitions
 
             stringToSend += "}";
             //Debug.Log(stringToSend);
-            TowersWebSocket.TowerSender("ALL", gameController.networking.roomId,"GRID",stringToSend);
+            TowersWebSocket.TowerSender("SELF", gameController.networking.roomId,"GRID",stringToSend);
         }
     }
 }
