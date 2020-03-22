@@ -49,7 +49,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Warrior);
+            player.InitPlayerStats(Classes.Mage);
             player.effectInterface = this;
 
             wantToGoBack = false;

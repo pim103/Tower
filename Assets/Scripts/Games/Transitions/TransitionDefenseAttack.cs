@@ -33,6 +33,8 @@ namespace Games.Transitions
         private HoverDetector hoverDetector;
         
         private int defenseTimer;
+        
+        string newMap;
 
         private void Start()
         {
@@ -41,6 +43,11 @@ namespace Games.Transitions
 
         private IEnumerator WaitingEndDefense()
         {
+            TowersWebSocket.ws.OnMessage += (sender, args) =>
+            {
+                newMap = args.Data;
+            };
+            
             objectsInScene.waitingCanvasGameObject.SetActive(true);
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
@@ -73,7 +80,13 @@ namespace Games.Transitions
                 }
             }
             SendGridData();
-            initAttackPhase.StartAttackPhase();
+
+            while (newMap == null)
+            {
+                yield return new WaitForSeconds(1);   
+            }
+            
+            initAttackPhase.StartAttackPhase(newMap);
         }
 
         public void StartDefenseCounter()

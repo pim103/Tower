@@ -21,12 +21,12 @@ namespace Games.Global.Weapons
             {
                 boxCollider.enabled = true;
 
-                PlayMovement(movementPatternController, weapon.attSpeed * wielder.attSpeed, objectToMove, boxCollider);
-
                 if (weapon.type == TypeWeapon.Distance)
                 {
                     PoolProjectiles();
                 }
+
+                PlayMovement(movementPatternController, weapon.attSpeed * wielder.attSpeed, objectToMove, boxCollider);
             }
         }
         

@@ -286,16 +286,25 @@ namespace Games.Attacks
             endOfGeneration = true;
         }
         
-        public void StartAttackPhase()
+        public void StartAttackPhase(string map)
         {
             DesactiveDefenseMap();
 
-            TowersWebSocket.ws.OnMessage += (sender, args) =>
-            {
-                currentMap = args.Data;
-            };
+            objectsInScene.containerDefense.SetActive(false);
+            objectsInScene.containerAttack.SetActive(true);
+            
+            DataObject.playerInScene.Clear();
+            DataObject.monsterInScene.Clear();
+            DataObject.objectInScene.Clear();
 
-            StartCoroutine(WaitingForGenerateMap());
+            if (!se.gameController.byPassDefense)
+            {
+                GeneratingMap(map, GameController.PlayerIndex);
+            }
+
+            ActivePlayer();
+
+            endOfGeneration = true;
         }
 
         private void ActivePlayer()

@@ -11,6 +11,10 @@ namespace Games.Global.Weapons
         public Staff()
         {
             pattern = new Pattern[2];
+            pattern[0] = new Pattern(PA_INST.ROTATE_DOWN, 70, 0.2f, 0.02f);
+            pattern[1] = new Pattern(PA_INST.ROTATE_UP, 70, 0.2f, 0.02f);
+
+            idPoolProjectile = 11;
         }
 
         public override void InitPlayerSkill(Classes classe)
