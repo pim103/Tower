@@ -203,22 +203,23 @@ namespace Games.Attacks
                         InstantiateGroupsMonster(groups, newPos, idEquipements);
                         break;
                     case TypeData.Trap:
-                        // TODO : ADD TRAP
-//                        Debug.Log("NEED TRAP");
+                        GameObject trap = objectPoolerDefense.GetPooledObject(0);
+                        TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
+                        trapBehavior.trapModels[idElement].SetActive(true);
+                        trap.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f, y * 2 + initDefense.currentMap.transform.localPosition.z);
+                        trap.SetActive(true);
+                        
+                        DataObject.objectInScene.Add(trap);
                         break;
                     case TypeData.Wall:
-                        Debug.Log("Want to pose wall");
                         GameObject wall = objectPoolerDefense.GetPooledObject(1);
                         wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         wall.SetActive(true);
-                        Debug.Log("Ok continue");
+                        
+                        DataObject.objectInScene.Add(wall);
                         break;
                 }
-                
-                Debug.Log("Continue : " + maps.Length);
             }
-            
-            Debug.Log("Leave ?");
         }
 
         private void Update()
@@ -259,13 +260,25 @@ namespace Games.Attacks
         {
             while (currentMap == null)
             {
+                if (se.gameController.byPassDefense)
+                {
+                    break;
+                }
+
                 yield return new WaitForSeconds(1f);
             }
             
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
             
-            GeneratingMap(currentMap, GameController.PlayerIndex);
+            DataObject.playerInScene.Clear();
+            DataObject.monsterInScene.Clear();
+            DataObject.objectInScene.Clear();
+
+            if (!se.gameController.byPassDefense)
+            {
+                GeneratingMap(currentMap, GameController.PlayerIndex);
+            }
 
             ActivePlayer();
 

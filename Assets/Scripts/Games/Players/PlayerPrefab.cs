@@ -394,8 +394,10 @@ namespace Games.Players
             
             float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
             float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
+
             playerGameObject.transform.Rotate(0, horizontal, 0);
-            
+
+            vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
             virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
 

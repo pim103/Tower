@@ -15,7 +15,7 @@ namespace Games.Defenses
         private TransitionDefenseAttack transitionDefenseAttack;
 
         [SerializeField] 
-        private DefenseUIController defenseUIController;
+        public DefenseUIController defenseUIController;
         
         [System.Serializable]
         public class MapsArrayClass
