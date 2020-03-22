@@ -40,27 +40,34 @@ namespace Networking.Client
         ws = new WebSocket(END_POINT);
     }
 
-    public static void TowerSender(string target, string rawKey = null, string rawData = null)
+    public static void TowerSender(string target, string roomId, string rawKey = null, string rawData = null)
     {
         string json = "{";
         json += "\"_TARGET\":" + "\"" + target + "\",";
+        json += "\"_ROOMID\":" + "\"" + roomId + "\",";
         json += "\""+ rawKey + "\":" + "\"" + rawData + "\"";
         json += "}";
 
-        Debug.Log(json);
+        //Debug.Log(json);
         ws.Send(json);
     }
     
-    public static void TowerSender(string target, string @class = null, string method = null, string args = null)
+    public static void TowerSender(string target, string roomId, string @class = null, string method = null, string args = null)
     {
         string json = "{";
         json += "\"_TARGET\":" + "\"" + target + "\",";
-        json += "\"_CLASS\":" + "\"" + @class + "\",";
+        json += "\"_ROOMID\":" + "\"" + roomId + "\",";
+        if (@class != null)
+        {
+            json += "\"_CLASS\":" + "\"" + @class + "\",";
+        }
         json += "\"_METHOD\":" + "\"" + method + "\",";
-        json += "\"_ARGS\":" + args;
-        json += "}";
-        Debug.Log(json);
-        ws.Send(json);
+        if (args != null)
+        {
+            json += "\"_ARGS\":" + args;
+        }
+        //Debug.Log(json);
+        ws.Send(json.TrimEnd(',', ' ') + "}");
     }
 
     public string FromDictToString(Dictionary<string, string> dict)
@@ -80,7 +87,12 @@ namespace Networking.Client
         testArray.Add("Allo", "1");
         testArray.Add("Allo2", "2");
         
-        TowerSender("SELF", "Player", "Hello", FromDictToString(testArray));
+        var setSocket = new Dictionary<string, string>();
+        setSocket.Add("tokenPlayer", "skdjnflqkdnjkflq");
+        setSocket.Add("room", roomId);
+        
+        //TowerSender("SELF", "1","Player", "Hello", FromDictToString(testArray));
+        TowerSender("SELF", "1","null", "setIdentity", FromDictToString(setSocket));
     }
 
     public void CloseConnection()
