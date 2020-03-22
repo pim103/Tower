@@ -31,6 +31,8 @@ namespace Games {
 
         private bool idAssigned = false;
 
+        private bool otherPlayerDie = false;
+
         /*
          * Flag to skip defensePhase
          */
@@ -51,6 +53,17 @@ namespace Games {
                 yield return new WaitForSeconds(1f);
             }
             transitionMenuGame.WantToStartGame();
+        }
+
+        private IEnumerator WaitingDeathOtherPlayer()
+        {
+            while (otherPlayerDie)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("MenuScene");
         }
 
         // ================================== BASIC METHODS ======================================
@@ -82,9 +95,11 @@ namespace Games {
                 if (args.Data.Contains("DEATH"))
                 {
                     Debug.Log("Vous avez gagné");
-                    SceneManager.LoadScene("MenuScene");
+                    otherPlayerDie = true;
                 }
             };
+
+            StartCoroutine(WaitingDeathOtherPlayer());
             StartCoroutine(WaitingForCanStart());
         }
         // TODO : Control player's movement here and not in PlayerMovement

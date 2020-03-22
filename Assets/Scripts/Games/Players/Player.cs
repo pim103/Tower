@@ -177,8 +177,9 @@ namespace Games.Players
 
             if (hp <= 0)
             {
-                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", "null");
+                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
                 Debug.Log("Vous êtes mort");
+                Cursor.lockState = CursorLockMode.None;
                 SceneManager.LoadScene("MenuScene");
             }
         }
