@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class TabGroup : MonoBehaviour
 {
-    [Header("Tab Area")]
-    public List<TabButton> tabButtons;
-
     [Header("References")]
     public Sprite tabIdle;
     public Sprite tabHover;
     public Sprite tabActive;
     public TabButton selectedTab;
+
+    [Header("Tab Area")]
+    public List<TabButton> tabButtons;
 
     [Header("Page Area")]
     public List<GameObject> objectsToSwap;
