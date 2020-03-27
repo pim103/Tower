@@ -92,9 +92,9 @@ public class ChatBoxManager : MonoBehaviour
 
         switch (messageType)
         {
-            case Message.MessageType.playerMessage:
-                color = playerMessage;
-                break;
+        case Message.MessageType.playerMessage:
+            color = playerMessage;
+            break;
         }
 
         return color;
