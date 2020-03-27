@@ -5,21 +5,30 @@ using UnityEngine.UI;
 
 public class ChatBoxManager : MonoBehaviour
 {
+    // Player username
     public string username;
 
-    // Limit number of messages on the chat
+    // Limit number of messages to show on the chat
     public int maxMessages = 25;
 
-    public GameObject chatPanel, textObject;
+    // References
+    [Header("References")]
+    public GameObject chatPanel;
+    public GameObject textObject;
     public InputField chatBox;
 
-    public Color playerMessage, info;
+    // Message type color
+    [Header("Message type color")]
+    public Color playerMessage;
+    public Color info;
 
+    // Message list
     [SerializeField] List<Message> messageList = new List<Message>();
 
     // Start is called before the first frame update
     void Start()
     {
+        // Welcome message
         SendMessageToChat("Bienvenue dans Tower", Message.MessageType.info);
     }
 
@@ -30,7 +39,9 @@ public class ChatBoxManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
+                // Send the user message
                 SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+                // Clean input field
                 chatBox.text = "";
             }
         }
