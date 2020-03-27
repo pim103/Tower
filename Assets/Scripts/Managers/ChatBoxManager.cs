@@ -35,7 +35,7 @@ public class ChatBoxManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (chatBox.text != "")
+        if (!string.IsNullOrWhiteSpace(chatBox.text))
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -49,6 +49,8 @@ public class ChatBoxManager : MonoBehaviour
         {
             if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
             {
+                // Clean input field
+                chatBox.text = "";
                 chatBox.ActivateInputField();
             }
         }
