@@ -91,7 +91,6 @@ namespace Games.Global.Entities
             foreach (GroupsJsonObject groupsJson in wJsonObjects)
             {
                 groupsList.Add(groupsJson.ConvertToMonsterGroups());
-
                 foreach (KeyValuePair<MobJsonObject, int> mob in groupsJson.mobs)
                 {
                     Monster monster = mob.Key.ConvertToMonster(groupsJson.family);

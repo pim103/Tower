@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using DeckBuilding;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
@@ -110,47 +111,47 @@ namespace Games.Transitions
                     switch (cellController.contentType)
                     {
                         case GridTileController.TypeData.Group:
-                            CardBehavior currentCardBehavior = cellController.content.GetComponent<CardBehavior>();
-                            stringToSend += "1:" + currentCardBehavior.groupId + ":[";
-                            if (currentCardBehavior.meleeWeaponSlot)
+                            CardBehaviorInGame currentCardBehaviorInGame = cellController.content.GetComponent<CardBehaviorInGame>();
+                            stringToSend += "1:" + currentCardBehaviorInGame.groupId + ":[";
+                            if (currentCardBehaviorInGame.meleeWeaponSlot)
                             {
-                                stringToSend += currentCardBehavior.meleeWeaponSlot.GetComponent<CardBehavior>()
+                                stringToSend += currentCardBehaviorInGame.meleeWeaponSlot.GetComponent<CardBehaviorInGame>()
                                                     .equipement.id + ",";
                             }
                             else
                             {
                                 stringToSend += "0,";
                             }
-                            if (currentCardBehavior.rangedWeaponSlot)
+                            if (currentCardBehaviorInGame.rangedWeaponSlot)
                             {
-                                stringToSend += currentCardBehavior.rangedWeaponSlot.GetComponent<CardBehavior>()
+                                stringToSend += currentCardBehaviorInGame.rangedWeaponSlot.GetComponent<CardBehaviorInGame>()
                                                     .equipement.id + ",";
                             }
                             else
                             {
                                 stringToSend += "0,";
                             }
-                            if (currentCardBehavior.helmetSlot)
+                            if (currentCardBehaviorInGame.helmetSlot)
                             {
-                                stringToSend += currentCardBehavior.helmetSlot.GetComponent<CardBehavior>()
+                                stringToSend += currentCardBehaviorInGame.helmetSlot.GetComponent<CardBehaviorInGame>()
                                                     .equipement.id + ",";
                             }
                             else
                             {
                                 stringToSend += "0,";
                             }
-                            if (currentCardBehavior.chestSlot)
+                            if (currentCardBehaviorInGame.chestSlot)
                             {
-                                stringToSend += currentCardBehavior.chestSlot.GetComponent<CardBehavior>()
+                                stringToSend += currentCardBehaviorInGame.chestSlot.GetComponent<CardBehaviorInGame>()
                                                     .equipement.id + ",";
                             }
                             else
                             {
                                 stringToSend += "0,";
                             }
-                            if (currentCardBehavior.grievesSlot)
+                            if (currentCardBehaviorInGame.grievesSlot)
                             {
-                                stringToSend += currentCardBehavior.grievesSlot.GetComponent<CardBehavior>()
+                                stringToSend += currentCardBehaviorInGame.grievesSlot.GetComponent<CardBehaviorInGame>()
                                                     .equipement.id;
                             }
                             else

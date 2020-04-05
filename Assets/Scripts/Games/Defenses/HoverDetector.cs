@@ -1,4 +1,5 @@
-﻿using Games.Global.Weapons;
+﻿using DeckBuilding;
+using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ namespace Games.Defenses
 
         private bool aboveMap;
         
-        private CardBehavior currentCardBehavior;
+        private CardBehaviorInGame currentCardBehaviorInGame;
 
         private bool puttingWalls;
         private void Start()
@@ -62,7 +63,7 @@ namespace Games.Defenses
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                 //Debug.Log(objectInHand);
                 //Debug.Log(currentCardBehavior.cardType);
-                if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 1)
+                if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1)
                 {
                     if (currentTileController.contentType == GridTileController.TypeData.Group)
                     {
@@ -78,7 +79,7 @@ namespace Games.Defenses
                 else if (currentTileController.contentType != GridTileController.TypeData.Empty || 
                          path.status != NavMeshPathStatus.PathComplete || 
                          currentTileController.isTooCloseFromAMob || 
-                         (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehavior.cardType == 0 && !currentCardBehavior.groupRangeBehavior.CheckContentEmpty()))
+                         (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 0 && !currentCardBehaviorInGame.groupRangeBehavior.CheckContentEmpty()))
                 {
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
@@ -107,12 +108,12 @@ namespace Games.Defenses
                     else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                     {
                         objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 1.5f;
-                        currentCardBehavior.ownMeshRenderer.enabled = false;
-                        if (currentCardBehavior.cardType == 0)
+                        currentCardBehaviorInGame.ownMeshRenderer.enabled = false;
+                        if (currentCardBehaviorInGame.cardType == 0)
                         {
-                            currentCardBehavior.rangeMeshRenderer.enabled = true;
+                            currentCardBehaviorInGame.rangeMeshRenderer.enabled = true;
                         }
-                        currentCardBehavior.groupParent.SetActive(true);
+                        currentCardBehaviorInGame.groupParent.SetActive(true);
                     }
                 }
 
@@ -128,7 +129,7 @@ namespace Games.Defenses
                             currentlyBlocked = false;
                             if (objectInHand.layer == LayerMask.NameToLayer("Wall") ||
                                 (objectInHand.layer == LayerMask.NameToLayer("CardInHand") &&
-                                 currentCardBehavior.cardType != 1) || objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                                 currentCardBehaviorInGame.cardType != 1) || objectInHand.layer == LayerMask.NameToLayer("Trap"))
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
@@ -141,7 +142,7 @@ namespace Games.Defenses
                                 else if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                                 {
                                     currentTileController.contentType = GridTileController.TypeData.Group;
-                                    currentCardBehavior.groupRangeBehavior.SetAllTilesTo(true);
+                                    currentCardBehaviorInGame.groupRangeBehavior.SetAllTilesTo(true);
                                     //currentCardBehavior.groupRange.SetActive(true);
                                 } 
                                 else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
@@ -159,23 +160,23 @@ namespace Games.Defenses
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
-                                CardBehavior contentCardBehavior =
-                                    currentTileController.content.GetComponent<CardBehavior>();
-                                switch (objectInHand.GetComponent<CardBehavior>().equipement.type)
+                                CardBehaviorInGame contentCardBehaviorInGame =
+                                    currentTileController.content.GetComponent<CardBehaviorInGame>();
+                                switch (objectInHand.GetComponent<CardBehaviorInGame>().equipement.type)
                                 {
                                     case TypeWeapon.Distance:
-                                        if (contentCardBehavior.rangedWeaponSlot)
+                                        if (contentCardBehaviorInGame.rangedWeaponSlot)
                                         {
-                                            defenseUiController.PutCardBackToHand(contentCardBehavior.rangedWeaponSlot);
+                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame.rangedWeaponSlot);
                                         }
-                                        contentCardBehavior.rangedWeaponSlot = objectInHand;
+                                        contentCardBehaviorInGame.rangedWeaponSlot = objectInHand;
                                         break;
                                     case TypeWeapon.Cac:
-                                        if (contentCardBehavior.meleeWeaponSlot)
+                                        if (contentCardBehaviorInGame.meleeWeaponSlot)
                                         {
-                                            defenseUiController.PutCardBackToHand(contentCardBehavior.meleeWeaponSlot);
+                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame.meleeWeaponSlot);
                                         }
-                                        contentCardBehavior.meleeWeaponSlot = objectInHand;
+                                        contentCardBehaviorInGame.meleeWeaponSlot = objectInHand;
                                         break;
                                 }
                                 
@@ -197,8 +198,8 @@ namespace Games.Defenses
                         currentTileController.contentType = GridTileController.TypeData.Empty;
                         if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                         {
-                            currentCardBehavior = objectInHand.GetComponent<CardBehavior>();
-                            currentCardBehavior.groupRangeBehavior.SetAllTilesTo(false); 
+                            currentCardBehaviorInGame = objectInHand.GetComponent<CardBehaviorInGame>();
+                            currentCardBehaviorInGame.groupRangeBehavior.SetAllTilesTo(false); 
                             //currentCardBehavior.groupRange.SetActive(false);
                         }
                     }
@@ -263,7 +264,7 @@ namespace Games.Defenses
                         }
                     }
                     defenseUiController.PutCardInHand(hit.collider.gameObject);
-                    currentCardBehavior = objectInHand.GetComponent<CardBehavior>();
+                    currentCardBehaviorInGame = objectInHand.GetComponent<CardBehaviorInGame>();
                 }
             }
             
@@ -271,18 +272,18 @@ namespace Games.Defenses
 
                 if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
                 {
-                    defenseUiController.PutCardBackToHand(currentCardBehavior.meleeWeaponSlot);
-                    defenseUiController.PutCardBackToHand(currentCardBehavior.rangedWeaponSlot);
+                    defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.meleeWeaponSlot);
+                    defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.rangedWeaponSlot);
 
-                    currentCardBehavior.groupParent.SetActive(false);
-                    currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
-                    currentCardBehavior.ownMeshRenderer.enabled = true;
-                    if (currentCardBehavior.cardType == 0)
+                    currentCardBehaviorInGame.groupParent.SetActive(false);
+                    currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
+                    currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
+                    if (currentCardBehaviorInGame.cardType == 0)
                     {
-                        currentCardBehavior.rangeMeshRenderer.enabled = false;
+                        currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
                     }
 
-                    objectInHand.transform.SetParent(currentCardBehavior.ownCardContainer);
+                    objectInHand.transform.SetParent(currentCardBehaviorInGame.ownCardContainer);
                     objectInHand.transform.localPosition = Vector3.zero;
                     objectInHand.layer = LayerMask.NameToLayer("Card");
                     objectInHand = null;
@@ -301,16 +302,16 @@ namespace Games.Defenses
 
             if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && !aboveMap)
             {
-                currentCardBehavior.groupParent.SetActive(false);
-                currentCardBehavior.groupParent.transform.localPosition = Vector3.zero;
+                currentCardBehaviorInGame.groupParent.SetActive(false);
+                currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
                 var worldPos = Input.mousePosition;
                 worldPos.z = 10.0f;
                 worldPos = defenseCam.ScreenToWorldPoint(worldPos);
                 objectInHand.transform.position = worldPos;
-                currentCardBehavior.ownMeshRenderer.enabled = true;
-                if (currentCardBehavior.cardType == 0)
+                currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
+                if (currentCardBehaviorInGame.cardType == 0)
                 {
-                    currentCardBehavior.rangeMeshRenderer.enabled = false;
+                    currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
                 }
             }
 
