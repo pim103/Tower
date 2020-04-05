@@ -4,6 +4,7 @@ using System.Linq;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
+using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
@@ -187,7 +188,7 @@ namespace Games.Transitions
             }
 
             stringToSend += "}";
-            TowersWebSocket.TowerSender("OTHERS", gameController.networking.roomId,"GRID",stringToSend);
+            TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken,"GRID",stringToSend);
         }
     }
 }
