@@ -3,65 +3,53 @@ using Networking.Client;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Menus
-{
-public class MenuController : MonoBehaviour
-{
-    [SerializeField]
-    private GameObject[] menus;
+namespace Menus {
+public class MenuController : MonoBehaviour {
+  [SerializeField]
+  private GameObject[] menus;
 
-    [SerializeField]
-    private string environnement;
-    [SerializeField]
-    private string staticRoomId;
+  [SerializeField]
+  private string environnement;
+  [SerializeField]
+  private string staticRoomId;
 
+  public enum Menu {
+    Connection,
+    Registration,
+    MainMenu,
+    Play,
+    PrivateMatch,
+    CreateRoom,
+    ListingPlayer,
+    Craft,
+    DeckManagement,
+    Collection,
+    CreateDeck,
+    Settings,
+    Shop
+  }
+  ;
 
-    public enum Menu
-    {
-        Connection,
-        Registration,
-        MainMenu,
-        Play,
-        PrivateMatch,
-        CreateRoom,
-        ListingPlayer,
-        Craft,
-        DeckManagement,
-        Collection,
-        CreateDeck,
-        Settings,
-        Shop
-    };
+  private void Start() {
+    ActivateMenu(Menu.Connection);
+    NetworkingController.CurrentRoomToken = staticRoomId;
+    NetworkingController.Environnement = environnement;
+  }
 
-    private void Start()
-    {
-        ActivateMenu(Menu.Connection);
-        NetworkingController.CurrentRoomToken = staticRoomId;
-        NetworkingController.Environnement = environnement;
-    }
+  public void ActivateMenu(Menu menuIndex) {
+    int index = (int) menuIndex;
 
-    public void ActivateMenu(Menu menuIndex)
-    {
-        int index = (int)menuIndex;
+    DesactiveMenus();
+    MenuInterface mi = menus[index].GetComponent<MenuInterface>();
 
-        DesactiveMenus();
-        MenuInterface mi = menus[index].GetComponent<MenuInterface>();
+    menus[index].SetActive(true);
+    mi.InitMenu();
+  }
 
-        menus[index].SetActive(true);
-        mi.InitMenu();
-    }
+  private void DesactiveMenus() {
+    foreach(GameObject menu in menus) { menu.SetActive(false); }
+  }
 
-    private void DesactiveMenus()
-    {
-        foreach (GameObject menu in menus)
-        {
-            menu.SetActive(false);
-        }
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+  public void QuitGame() { Application.Quit(); }
 }
 }
