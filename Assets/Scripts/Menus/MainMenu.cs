@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Networking.Client;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menus
@@ -57,7 +58,7 @@ namespace Menus
 
             quitButton.onClick.AddListener(delegate
             {
-                mc.networking.CloseConnection();
+                TowersWebSocket.CloseConnection();
                 mc.QuitGame();
             });
         }

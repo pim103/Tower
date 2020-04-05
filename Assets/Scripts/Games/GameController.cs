@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Games.Transitions;
+using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,8 +26,6 @@ namespace Games {
         
         private string canStart = null;
 
-        public TowersWebSocket networking;
-
         public static int PlayerIndex;
 
         private bool idAssigned = false;
@@ -46,14 +45,7 @@ namespace Games {
             transitionMenuGame.WantToStartGame();
         }
         
-        private IEnumerator WaitingForCanStart()
-        {
-            while (canStart == null)
-            {
-                yield return new WaitForSeconds(1f);
-            }
-            transitionMenuGame.WantToStartGame();
-        }
+        
 
         private IEnumerator WaitingDeathOtherPlayer()
         {
@@ -75,18 +67,10 @@ namespace Games {
             
             objectsInScene.mainCamera.SetActive(true);
             PlayerIndex = 0;
-            networking = new TowersWebSocket(endPoint, staticRoomId);
-            networking.InitializeWebsocketEndpoint();
-            networking.StartConnection();
-            
-            TowersWebSocket.ws.OnMessage += (sender, args) =>
-            {
-                if (args.Data == "{\"CanStartHandler\":[{\"message\":\"true\"}]}")
-                {
-                    Debug.Log("Done!");
-                    canStart = args.Data;
-                }
 
+            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
+            {
+                
                 if (args.Data.Contains("GRID"))
                 {
                     mapReceived = args.Data;
@@ -106,7 +90,6 @@ namespace Games {
             };
 
             StartCoroutine(WaitingDeathOtherPlayer());
-            StartCoroutine(WaitingForCanStart());
         }
         // TODO : Control player's movement here and not in PlayerMovement
     }
