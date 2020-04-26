@@ -44,8 +44,6 @@ namespace Games {
             yield return new WaitForSeconds(0.1f);
             transitionMenuGame.WantToStartGame();
         }
-        
-        
 
         private IEnumerator WaitingDeathOtherPlayer()
         {
@@ -64,30 +62,34 @@ namespace Games {
         void Start()
         {
             staticRoomId = roomId;
-            
+
             objectsInScene.mainCamera.SetActive(true);
+            
+            // TODO : change index
             PlayerIndex = 0;
 
-            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
+            if (TowersWebSocket.wsGame != null)
             {
-                
-                if (args.Data.Contains("GRID"))
+                TowersWebSocket.wsGame.OnMessage += (sender, args) =>
                 {
-                    mapReceived = args.Data;
-                }
+                    if (args.Data.Contains("GRID"))
+                    {
+                        mapReceived = args.Data;
+                    }
 
-                if (args.Data.Contains("DEATH"))
-                {
-                    Debug.Log("Vous avez gagné");
-                    otherPlayerDie = true;
-                }
+                    if (args.Data.Contains("DEATH"))
+                    {
+                        Debug.Log("Vous avez gagné");
+                        otherPlayerDie = true;
+                    }
 
-                if (args.Data.Contains("WON"))
-                {
-                    Debug.Log("Un autre joueur a gagné");
-                    otherPlayerDie = true;
-                }
-            };
+                    if (args.Data.Contains("WON"))
+                    {
+                        Debug.Log("Un autre joueur a gagné");
+                        otherPlayerDie = true;
+                    }
+                };
+            }
 
             if (byPassDefense)
             {
@@ -95,6 +97,7 @@ namespace Games {
             }
 
             StartCoroutine(WaitingDeathOtherPlayer());
+            StartCoroutine(CheckEndInit());
         }
         // TODO : Control player's movement here and not in PlayerMovement
     }

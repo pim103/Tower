@@ -50,7 +50,7 @@ namespace Menus
             var setSocket = new Dictionary<string, string>();
             setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
             setSocket.Add("room", NetworkingController.CurrentRoomToken);
-            
+
             TowersWebSocket.TowerSender("ALL", "GENERAL","null", "joinRoom", TowersWebSocket.FromDictToString(setSocket));
             TowersWebSocket.wsGame.OnMessage += (sender, args) =>
             {
