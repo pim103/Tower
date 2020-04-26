@@ -2,7 +2,7 @@ using System.Collections;
 using System.Diagnostics;
 using Games.Global;
 using Games.Global.Abilities.SpecialSpellPrefab;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
@@ -122,7 +122,7 @@ namespace Games.Players
                 wantToGoRight = false;
                 return;
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 wantToGoForward = true;
@@ -157,6 +157,8 @@ namespace Games.Players
                 wantToGoRight = false;
             }
 
+            animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
+
             if (!intentBlocked)
             {
                 if(Input.GetMouseButton(0))
@@ -176,6 +178,21 @@ namespace Games.Players
 
                 if (!entity.doingSkill)
                 {
+                    if (Input.GetKey(KeyCode.Alpha1))
+                    {
+                        TryCastSpell(entity.weapons[0].skill1, true);
+                    }
+
+                    if (Input.GetKey(KeyCode.Alpha2))
+                    {
+                        TryCastSpell(entity.weapons[0].skill2, true);
+                    }
+
+                    if (Input.GetKey(KeyCode.Alpha3))
+                    {
+                        TryCastSpell(entity.weapons[0].skill3, true);
+                    }
+
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
                         TryCastSpell(entity.weapons[0].skill1);
@@ -196,7 +213,7 @@ namespace Games.Players
             mousePosition = Input.mousePosition;
         }
 
-        private void TryCastSpell(Spell spell)
+        private void TryCastSpell(Spell spell, bool isPreview = false)
         {
             if (spell.typeSpell == TypeSpell.Active ||
                 spell.typeSpell == TypeSpell.Toggle ||
@@ -206,9 +223,15 @@ namespace Games.Players
             {
                 if (spell.cost < entity.ressource1 && spell.canLaunch)
                 {
-                    Debug.Log("Lance le spell");
-                    StartCoroutine(Cooldown(spell));
-                    StartCoroutine(CastSpell(spell));
+                    if (isPreview)
+                    {
+                        ActivePreviewSpell(spell);
+                    }
+                    else
+                    {
+                        StartCoroutine(Cooldown(spell));
+                        StartCoroutine(CastSpell(spell));   
+                    }
                 }
             }
         }
@@ -251,6 +274,34 @@ namespace Games.Players
             }
         }
 
+        private void ActivePreviewSpell(Spell spell)
+        {
+            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
+            {
+                if (spellInstruction.TypeSpellInstruction == TypeSpellInstruction.InstantiateSomething)
+                {
+                    if (spellInstruction.typeSpellObject == TypeSpellObject.GroundArea)
+                    {
+                        GameObject areaSpell = spell.spellInstantiate;
+                        if (areaSpell == null)
+                        {
+                            areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+                            spell.spellInstantiate = areaSpell;
+                        }
+
+                        if (positionPointed != Vector3.zero && areaSpell != null)
+                        {
+                            AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
+                            areaSpellScript.origin = entity;
+
+                            areaSpellScript.SetPreviewLocation(positionPointed);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
         private IEnumerator Cooldown(Spell spell)
         {
             spell.canLaunch = false;
@@ -281,7 +332,7 @@ namespace Games.Players
                 switch (spellInstruction.TypeSpellInstruction)
                 {
                     case TypeSpellInstruction.InstantiateSomething:
-                        ActiveSpellObject(spellInstruction);
+                        ActiveSpellObject(spell, spellInstruction);
                         break;
                     case TypeSpellInstruction.SelfEffect:
                         entity.ApplyEffect(spellInstruction.effect);
@@ -299,7 +350,7 @@ namespace Games.Players
             }
         }
 
-        private void ActiveSpellObject(SpellInstruction spellInstruction)
+        private void ActiveSpellObject(Spell spell, SpellInstruction spellInstruction)
         {
             switch (spellInstruction.typeSpellObject)
             {
@@ -322,7 +373,7 @@ namespace Games.Players
                     projectilesPrefab.origin = entity;
                     break;
                 case TypeSpellObject.GroundArea:
-                    GameObject areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
+                    GameObject areaSpell = spell.spellInstantiate;
 
                     if (positionPointed != Vector3.zero && areaSpell != null)
                     {
@@ -376,7 +427,7 @@ namespace Games.Players
                 currentSpeed = entity.speed;
             }
             
-            var locVel = transform.InverseTransformDirection(rigidbody.velocity);
+            Vector3 locVel = transform.InverseTransformDirection(rigidbody.velocity);
             locVel.x = horizontalMove * currentSpeed;
             locVel.z = verticalMove * currentSpeed;
 
@@ -399,7 +450,7 @@ namespace Games.Players
 
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
-            virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
+//            virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
@@ -407,10 +458,10 @@ namespace Games.Players
             {
                 positionPointed = hit.point;
 
-                if (entity.weapons[0].type != TypeWeapon.Cac)
-                {
-                    virtualHand.transform.LookAt(positionPointed);
-                }
+//                if (entity.weapons[0].type != TypeWeapon.Cac)
+//                {
+//                    virtualHand.transform.LookAt(positionPointed);
+//                }
             }
             else
             {

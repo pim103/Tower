@@ -1,4 +1,4 @@
-﻿using Games.Global.Patterns;
+﻿//using Games.Global.Patterns;
 using Games.Players;
 
 namespace Games.Global.Weapons
@@ -7,7 +7,7 @@ namespace Games.Global.Weapons
     {
         public Rifle()
         {
-            pattern = new Pattern[2];
+           //pattern = //pattern[2];
         }
 
         public override void InitPlayerSkill(Classes classe)

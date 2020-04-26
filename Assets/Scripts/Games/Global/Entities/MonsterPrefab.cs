@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
@@ -70,7 +67,7 @@ namespace Games.Global.Entities
             if (newTarget != null)
             {
                 gameObject.transform.LookAt(newTarget.playerTransform);
-                virtualHand.transform.LookAt(newTarget.playerTransform);
+//                virtualHand.transform.LookAt(newTarget.playerTransform);
             }
 
             target = newTarget;

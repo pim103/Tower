@@ -39,7 +39,7 @@ namespace Games.Global.Abilities.SpecialSpellPrefab.Dagger
 
             origin.entityPrefab.transform.position = target.transform.position - (target.transform.forward);
             origin.entityPrefab.transform.localEulerAngles = target.transform.localEulerAngles;
-            origin.entityPrefab.hand.transform.LookAt(target.transform);
+//            origin.entityPrefab.rightHand.transform.LookAt(target.transform);
             
             origin.BasicAttack();
 

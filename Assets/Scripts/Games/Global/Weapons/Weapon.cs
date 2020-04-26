@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using Games.Global.Patterns;
-using Games.Players;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using Games.Players;
 
 namespace Games.Global.Weapons
 {
@@ -42,7 +38,7 @@ namespace Games.Global.Weapons
         public int damage;
         public float attSpeed;
 
-        public Pattern[] pattern;
+        public string animationToPlay;
 
         public Spell skill1;
         public Spell skill2;

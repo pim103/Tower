@@ -1,7 +1,7 @@
 ﻿using System;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Players;
-using PA_INST = Games.Global.Patterns.PatternInstructions;
+//using PA_INST = Games.Global.Patterns.PatternInstructions;
 
 namespace Games.Global.Weapons
 {
@@ -10,7 +10,7 @@ namespace Games.Global.Weapons
     {
         public Trident()
         {
-            pattern = new Pattern[4];
+           //pattern = //pattern[4];
         }
 
         public override void InitPlayerSkill(Classes classe)

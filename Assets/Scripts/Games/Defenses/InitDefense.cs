@@ -56,6 +56,7 @@ namespace Games.Defenses
                 currentMapStats = currentMap.GetComponent<MapStats>();
                 hoverDetector.dest = currentMapStats.endCube;
                 hoverDetector.startPos = currentMapStats.startPos;
+
                 if (!se.gameController.byPassDefense)
                 {
                     Generate();

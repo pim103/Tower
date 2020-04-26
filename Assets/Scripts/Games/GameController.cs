@@ -89,6 +89,11 @@ namespace Games {
                 }
             };
 
+            if (byPassDefense)
+            {
+                canStart = "{\"CanStartHandler\":[{\"message\":\"true\"}]}";
+            }
+
             StartCoroutine(WaitingDeathOtherPlayer());
         }
         // TODO : Control player's movement here and not in PlayerMovement

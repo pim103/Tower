@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
 
@@ -13,26 +14,42 @@ namespace Games.Global.Weapons
         private Weapon weapon;
         private Entity wielder;
 
+        private bool isAttacking = false;
+        
         [SerializeField] private BoxCollider boxCollider;
 
-        public void BasicAttack(MovementPatternController movementPatternController, GameObject objectToMove)
+        public IEnumerator PlayAnimationAttack()
         {
-            if (!boxCollider.enabled)
+            isAttacking = true;
+            boxCollider.enabled = true;
+
+            Animator animator = wielder.entityPrefab.animator;
+            float initialSpeed = animator.speed;
+
+            animator.speed = weapon.attSpeed + wielder.attSpeed;
+            animator.Play(weapon.animationToPlay);
+
+            if (weapon.type == TypeWeapon.Distance)
             {
-                boxCollider.enabled = true;
-
-                if (weapon.type == TypeWeapon.Distance)
-                {
-                    PoolProjectiles();
-                }
-
-                PlayMovement(movementPatternController, weapon.attSpeed * wielder.attSpeed, objectToMove, boxCollider);
+                PoolProjectiles();
             }
+
+            while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay))
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            animator.speed = initialSpeed;
+            isAttacking = false;
+            boxCollider.enabled = false;
         }
         
-        private void PlayMovement(MovementPatternController movementPatternController, float attSpeed, GameObject objectToMove, BoxCollider bc)
+        public void BasicAttack()
         {
-            movementPatternController.PlayMovement(weapon, attSpeed, objectToMove, bc);
+            if (!isAttacking)
+            {
+                StartCoroutine(PlayAnimationAttack());
+            }
         }
 
         private void PoolProjectiles()
@@ -42,11 +59,11 @@ namespace Games.Global.Weapons
             proj.transform.position = transform.position;
             float rotX = proj.transform.localEulerAngles.x;
 
-            proj.transform.localEulerAngles = transform.parent.eulerAngles + (Vector3.right * rotX);
+            proj.transform.localEulerAngles = wielder.entityPrefab.transform.eulerAngles + (Vector3.right * rotX);
             proj.SetActive(true);
 
             ProjectilesPrefab projectilesPrefab = proj.GetComponent<ProjectilesPrefab>();
-            projectilesPrefab.rigidbody.AddForce(transform.right * -1000, ForceMode.Acceleration);
+            projectilesPrefab.rigidbody.AddForce(wielder.entityPrefab.transform.forward * 1000, ForceMode.Acceleration);
 
             projectilesPrefab.weaponOrigin = this;
         }
@@ -64,7 +81,7 @@ namespace Games.Global.Weapons
                 entity = monsterPrefab.GetMonster();
             } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
             {
-                PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                 entity = playerPrefab.entity;
             }
             else

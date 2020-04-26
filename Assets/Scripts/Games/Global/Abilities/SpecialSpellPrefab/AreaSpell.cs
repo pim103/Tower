@@ -14,7 +14,28 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
         public List<Entity> entityInZone;
 
         private bool isActive = false;
-        
+
+        private int radius;
+
+        [SerializeField] public GameObject previewSpell;
+        [SerializeField] public SphereCollider sphereCollider;
+
+        private void Start()
+        {
+            previewSpell.transform.localScale = Vector3.right * (sphereCollider.radius * 2) + Vector3.forward * (sphereCollider.radius * 2) + Vector3.up * 0.01f;
+        }
+
+        public void SetPreviewLocation(Vector3 position)
+        {
+            if (!previewSpell.activeSelf)
+            {
+                previewSpell.transform.parent = null;
+                previewSpell.SetActive(true);
+            }
+
+            previewSpell.transform.position = position;
+        }
+
         private void OnEnable()
         {
             isActive = false;
@@ -27,6 +48,10 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
             isActive = true;
             
             ActiveArea();
+
+            Debug.Log("Allo ici ahah");
+            previewSpell.transform.parent = transform;
+            previewSpell.SetActive(false);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -50,7 +75,7 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
                     entity = monsterPrefab.GetMonster();
                 } else if (other.gameObject.layer == playerLayer && origin.typeEntity != TypeEntity.PLAYER)
                 {
-                    PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                    PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                     entity = playerPrefab.entity;
                 }
                 else
@@ -83,7 +108,7 @@ namespace Games.Global.Abilities.SpecialSpellPrefab
                     entity = monsterPrefab.GetMonster();
                 } else if (other.gameObject.layer == playerLayer && origin.typeEntity != TypeEntity.PLAYER)
                 {
-                    PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                    PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                     entity = playerPrefab.entity;
                 }
                 else

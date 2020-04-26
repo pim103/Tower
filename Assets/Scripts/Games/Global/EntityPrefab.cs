@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using Games.Global.Entities;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Games.Global
 {
@@ -18,15 +19,20 @@ namespace Games.Global
     public class EntityPrefab: MonoBehaviour
     {
         // virtual hand look at cursor or target
-        [SerializeField] public GameObject virtualHand;
+//        [SerializeField] public GameObject virtualHand;
         
         // hand play animation of weapon
-        [SerializeField] public GameObject hand;
+//        [SerializeField] public GameObject hand;
 
-        [SerializeField] private MovementPatternController movementPatternController;
+        [SerializeField] public GameObject rightHand;
+        [SerializeField] public GameObject leftHand;
+        
+//        [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Rigidbody rigidbodyEntity;
         
         [SerializeField] protected MeshRenderer meshRenderer;
+
+        [SerializeField] public Animator animator;
 
         public Entity entity;
 
@@ -99,11 +105,18 @@ namespace Games.Global
 
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
         {
-            weaponPrefab.BasicAttack(movementPatternController, hand);
+            weaponPrefab.BasicAttack();
         }
 
         public void AddItemInHand(Weapon weapon)
         {
+            GameObject hand = rightHand;
+
+            if (weapon.category == CategoryWeapon.BOW)
+            {
+                hand = leftHand;
+            }
+
             GameObject weaponGameObject = Instantiate(weapon.model, hand.transform);
             WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
             weapon.weaponPrefab = weaponPrefab;

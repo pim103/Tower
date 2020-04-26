@@ -91,7 +91,7 @@ namespace Games.Global.Weapons
                     entity = monsterPrefab.GetMonster();
                 } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
                 {
-                    PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                    PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                     entity = playerPrefab.entity;
                 }
                 else

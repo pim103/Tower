@@ -6,7 +6,7 @@ using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
 using TMPro;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Games.Global.Abilities;
-using Games.Global.Patterns;
+//using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
-using PA_INST = Games.Global.Patterns.PatternInstructions;
+//using PA_INST = Games.Global.Patterns.PatternInstructions;
 
 namespace Games.Global.Weapons
 {
@@ -11,10 +11,11 @@ namespace Games.Global.Weapons
     {
         public Bow()
         {
-            pattern = new Pattern[2];
-            pattern[0] = new Pattern(PA_INST.BACK, 0.2f);
-            pattern[1] = new Pattern(PA_INST.FRONT, 0.2f);
+           //pattern = //pattern[2];
+           //pattern[0] = //pattern(PA_INST.BACK, 0.2f);
+           //pattern[1] = //pattern(PA_INST.FRONT, 0.2f);
 
+           animationToPlay = "BowAttack";
             idPoolProjectile = 0;
         }
 

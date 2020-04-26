@@ -13,7 +13,7 @@ namespace Games.Global.Entities
 
             if (other.gameObject.layer == layerPlayer)
             {
-                PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                 monsterPrefab.entity.playerInBack.Add(playerPrefab.entity.IdEntity);
             }
         }
@@ -24,7 +24,7 @@ namespace Games.Global.Entities
 
             if (other.gameObject.layer == layerPlayer)
             {
-                PlayerPrefab playerPrefab = other.transform.parent.GetComponent<PlayerPrefab>();
+                PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                 monsterPrefab.entity.playerInBack.Remove(playerPrefab.entity.IdEntity);
             }
         }

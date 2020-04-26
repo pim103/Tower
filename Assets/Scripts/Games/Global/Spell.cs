@@ -61,10 +61,10 @@ namespace Games.Global
         
         // Time wait before next instructions
         public float timeWait;
-        
+
         // Passive or Active only when Spell.typeSpell == ActiveWithPassive || ToggleWithPassive
         public TypeSpell specificTypeSpell;
-        
+
         // If Type == specialMovement
         public SpecialMovement specialMovement;
     }
@@ -78,9 +78,13 @@ namespace Games.Global
 
         public bool canLaunch;
 
+        // TODO : delete unused origin
         public Entity origin;
 
         public List<SpellInstruction> spellInstructions;
+
+        // Specific for GroundArea with preview
+        public GameObject spellInstantiate;
 
         public Spell()
         {
