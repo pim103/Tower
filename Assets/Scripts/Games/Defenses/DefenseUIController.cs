@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DeckBuilding;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
@@ -91,13 +92,13 @@ namespace Games.Defenses
         {
             if (equipementCard)
             {
-                CardBehavior equipementCardBehavior = equipementCard.GetComponent<CardBehavior>();
-                equipementCardBehavior.groupParent.SetActive(false);
-                equipementCardBehavior.groupParent.transform.localPosition = Vector3.zero;
-                equipementCardBehavior.ownMeshRenderer.enabled = true;
-                equipementCardBehavior.transform.SetParent(equipementCardBehavior.ownCardContainer);
-                equipementCardBehavior.transform.localPosition = Vector3.zero;
-                equipementCardBehavior.gameObject.layer = LayerMask.NameToLayer("Card");
+                CardBehaviorInGame equipementCardBehaviorInGame = equipementCard.GetComponent<CardBehaviorInGame>();
+                equipementCardBehaviorInGame.groupParent.SetActive(false);
+                equipementCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
+                equipementCardBehaviorInGame.ownMeshRenderer.enabled = true;
+                equipementCardBehaviorInGame.transform.SetParent(equipementCardBehaviorInGame.ownCardContainer);
+                equipementCardBehaviorInGame.transform.localPosition = Vector3.zero;
+                equipementCardBehaviorInGame.gameObject.layer = LayerMask.NameToLayer("Card");
                 equipementCard.SetActive(true);
             }
         }
@@ -136,7 +137,7 @@ namespace Games.Defenses
             GameObject card = Instantiate(cardPrefab, cardContainer.transform, true);
             card.transform.localPosition = new Vector3(0,0,0);
             card.transform.localEulerAngles = new Vector3(0,0,0);
-            card.GetComponent<CardBehavior>().SetCard(type);
+            card.GetComponent<CardBehaviorInGame>().SetCard(type);
         }
         
     }

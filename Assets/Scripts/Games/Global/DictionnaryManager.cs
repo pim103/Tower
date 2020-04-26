@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using DeckBuilding;
 using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
@@ -17,9 +19,28 @@ namespace Games.Global
         {
             AbilityManager.InitAbilities();
             GroupsPosition.InitPosition();
+            FetchCollection();
             
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
+        }
+        
+        private void FetchCollection()
+        {
+            List<CollectionJsonObject> dJsonObjects = new List<CollectionJsonObject>();
+
+            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/CollectionJson"))
+            {
+                StreamReader reader = new StreamReader(filePath, true);
+        
+                dJsonObjects.AddRange(ParserJson<CollectionJsonObject>.Parse(reader, "cards"));
+            }
+
+            foreach (CollectionJsonObject deckJson in dJsonObjects)
+            {
+                Card loadedCard = deckJson.ConvertToCard();
+                DataObject.playerCollection.Add(loadedCard);
+            }
         }
     }
 
@@ -32,5 +53,7 @@ namespace Games.Global
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
 
         public static List<GameObject> objectInScene = new List<GameObject>();
+        
+        public static List<Card> playerCollection = new List<Card>();
     }
 }

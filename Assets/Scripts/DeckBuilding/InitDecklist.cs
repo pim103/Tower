@@ -72,7 +72,7 @@ public class InitDecklist : MonoBehaviour
 
     public void ShowCardInList(int card)
     {
-        CardsDescription.Card cardDesc = CardsDescription.GetCardStats(card);
+        /*CardsDescription.Card cardDesc = CardsDescription.GetCardStats(card);
         if (!cardTypesInDeck.Contains(card))
         {
             cardFields.Add(objectPooler.GetPooledObject(0));
@@ -97,7 +97,7 @@ public class InitDecklist : MonoBehaviour
                     cardInListBehavior.cardNumber.text = int.Parse(cardInListBehavior.cardNumber.text) + 1 + "";
                 }
             }
-        }
+        }*/
     }
 
     private void Validate()
