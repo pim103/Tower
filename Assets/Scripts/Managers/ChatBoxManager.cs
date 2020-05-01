@@ -19,8 +19,9 @@ public class ChatBoxManager : MonoBehaviour
 
     // Message type color
     [Header("Message type color")]
-    public Color playerMessage;
     public Color info;
+    public Color playerMessage;
+    public Color privateMessage;
 
     // Message list
     [SerializeField] List<Message> messageList = new List<Message>();
@@ -41,6 +42,7 @@ public class ChatBoxManager : MonoBehaviour
             {
                 // Send the user message
                 SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+
                 // Clean input field
                 chatBox.text = "";
             }
@@ -83,6 +85,8 @@ public class ChatBoxManager : MonoBehaviour
         newMessage.textObject.text = newMessage.text;
         newMessage.textObject.color = MessageTypeColor(messageType);
 
+        newMessage.messageType = messageType;
+
         messageList.Add(newMessage);
     }
 
@@ -94,6 +98,9 @@ public class ChatBoxManager : MonoBehaviour
         {
             case Message.MessageType.playerMessage:
                 color = playerMessage;
+                break;
+            case Message.MessageType.privateMessage:
+                color = privateMessage;
                 break;
         }
 
@@ -110,7 +117,8 @@ public class Message
 
     public enum MessageType
     {
+        info,
         playerMessage,
-        info
+        privateMessage
     }
 }
