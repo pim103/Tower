@@ -1,7 +1,6 @@
 ﻿using System;
-//using Games.Global.Patterns;
 using Games.Players;
-//using PA_INST = Games.Global.Patterns.PatternInstructions;
+using UnityEngine;
 
 namespace Games.Global.Weapons
 {
@@ -10,9 +9,19 @@ namespace Games.Global.Weapons
     {
         public Dagger()
         {
-           //pattern = //pattern[2];
-           //pattern[0] = //pattern(PA_INST.FRONT, 1, 0.2f, 0.01f);
-           //pattern[1] = //pattern(PA_INST.BACK, 1, 0.2f, 0.01f);
+            animationToPlay = "DaggerAttack";
+        }
+        
+        public override void FixAngleAttack(bool isFirstIteration, Entity wielder)
+        {
+            if (isFirstIteration)
+            {
+                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.up * 70);
+            }
+            else
+            {
+                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.down * 70);
+            }
         }
 
         public override void InitPlayerSkill(Classes classe)
