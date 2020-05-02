@@ -55,8 +55,53 @@ public class ChatBoxManager : MonoBehaviour
         // If the chatbox content isn't empty and the user press the return key
         if (!string.IsNullOrWhiteSpace(chatBox.text) && Input.GetKeyDown(KeyCode.Return))
         {
-            // Send the user message
-            SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+            // Check if it is a private message
+            if (chatBox.text.Length > 3 && chatBox.text[0] == '/' && chatBox.text[1] == 'w' && chatBox.text[2] == ' ')
+            {
+                string user = "";
+                string message = "";
+                bool space = false;
+                bool privateMess = false;
+
+                for (int i = 3; i < chatBox.text.Length; i++)
+                {
+                    // Check if we have a username
+                    if (chatBox.text[i] != ' ' && space == false)
+                    {
+                        user += chatBox.text[i];
+                    }
+
+                    // Check if we have a space
+                    else if (chatBox.text[i] == ' ' && i != 3 && space == false)
+                    {
+                        space = true;
+                    }
+
+                    // Check if we have a message
+                    else if (space == true)
+                    {
+                        message += chatBox.text[i];
+                        privateMess = true;
+                    }
+                }
+
+
+                if (privateMess == true)
+                {
+                    // Send the user message
+                    SendMessageToChat("À " + user + ": " + message, Message.MessageType.privateMessage);
+                }
+                else
+                {
+                    // Send the user message
+                    SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+                }
+            }
+            else
+            {
+                // Send the user message
+                SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+            }
 
             // Clean the chatbox input field
             chatBox.text = "";
