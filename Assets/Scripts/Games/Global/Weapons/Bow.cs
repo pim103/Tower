@@ -14,9 +14,8 @@ namespace Games.Global.Weapons
            //pattern = //pattern[2];
            //pattern[0] = //pattern(PA_INST.BACK, 0.2f);
            //pattern[1] = //pattern(PA_INST.FRONT, 0.2f);
-
            animationToPlay = "BowAttack";
-            idPoolProjectile = 0;
+           idPoolProjectile = 0;
         }
 
         public override void InitPlayerSkill(Classes classe)

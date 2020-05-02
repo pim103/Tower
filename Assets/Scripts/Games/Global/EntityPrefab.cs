@@ -34,6 +34,8 @@ namespace Games.Global
 
         [SerializeField] public Animator animator;
 
+        [SerializeField] public GameObject characterMesh;
+
         public Entity entity;
 
         public bool movementBlocked = false;
