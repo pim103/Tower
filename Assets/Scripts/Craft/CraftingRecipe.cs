@@ -106,7 +106,7 @@ public class CraftingRecipe : ScriptableObject
     /// Add the recipe result to the account
     /// </summary>
     private void AddResults(AccountManager accountManager)
-    { 
+    {
         foreach (RecipeResult recipeResult in RecipeResults)
         {
             for (int i = 0; i < recipeResult.Amount; i++)

@@ -57,7 +57,9 @@ public class ResourceSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     private int _amount;
     public int Amount
     {
-        get { return _amount; }
+        get {
+            return _amount;
+        }
         set
         {
             _amount = value;

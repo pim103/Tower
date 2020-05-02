@@ -50,11 +50,11 @@ public class UIManager : MonoBehaviour
         Vector2 sizeDelta = tooltipRect.sizeDelta;
         tooltipRect.transform.position = new Vector2(
             mousePosition.x > Screen.width / 2.0f
-                ? mousePosition.x - sizeDelta.x / 4
-                : mousePosition.x + sizeDelta.x / 4,
+            ? mousePosition.x - sizeDelta.x / 4
+            : mousePosition.x + sizeDelta.x / 4,
             mousePosition.y > Screen.height / 2.0f
-                ? mousePosition.y - sizeDelta.y / 4
-                : mousePosition.y + sizeDelta.x / 4);
+            ? mousePosition.y - sizeDelta.y / 4
+            : mousePosition.y + sizeDelta.x / 4);
     }
 
     /// <summary>

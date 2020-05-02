@@ -32,13 +32,13 @@ public class Item : ScriptableObject
 
     protected static readonly StringBuilder sb = new StringBuilder();
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     protected virtual void OnValidate()
     {
         string path = AssetDatabase.GetAssetPath(this);
         id = AssetDatabase.AssetPathToGUID(path);
     }
-    #endif
+#endif
 
     public virtual Item GetCopy()
     {

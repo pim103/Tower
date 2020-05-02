@@ -30,13 +30,13 @@ public class Resource : ScriptableObject
     [Header("Description of the resource")]
     [SerializeField] string ResourceDescription;
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     protected virtual void OnValidate()
     {
         string path = AssetDatabase.GetAssetPath(this);
         id = AssetDatabase.AssetPathToGUID(path);
     }
-    #endif
+#endif
 
     /// <summary>
     /// Get the description of the resource

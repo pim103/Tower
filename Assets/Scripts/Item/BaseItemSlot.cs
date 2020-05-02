@@ -24,7 +24,9 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public Item Item
     {
         get
-        { return _item; }
+        {
+            return _item;
+        }
         set
         {
             _item = value;
@@ -55,7 +57,9 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     private int _amount;
     public int Amount
     {
-        get { return _amount; }
+        get {
+            return _amount;
+        }
         set
         {
             _amount = value;
@@ -77,7 +81,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
                 {
                     amountText.text = _amount.ToString();
                 }
-            } 
+            }
         }
     }
 
