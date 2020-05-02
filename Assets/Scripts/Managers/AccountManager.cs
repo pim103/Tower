@@ -17,7 +17,7 @@ public struct AccountResource
 }
 
 /// <summary>
-/// This is the account script, it contains functionality that is specific to the account
+/// This is the AccountManager script, it contains functionality that is specific to the account
 /// </summary>
 public class AccountManager : MonoBehaviour
 {
@@ -36,20 +36,24 @@ public class AccountManager : MonoBehaviour
     }
 
     [Header("Account")]
-    // Resources on the account
+    // List of resources on the account
     public List<AccountResource> AccountResources;
 
     [Header("Public Variables")]
+    // Display text of the quantity of resources in the main menu
     [SerializeField] private Text goldBarAmountText;
     [SerializeField] private Text goldNuggetAmountText;
     [SerializeField] private Text stoneOreAmountText;
 
     private void Update()
     {
+        // Update account resources
         UpdateResources();
     }
 
-    // Update account resources
+    /// <summary>
+    /// Update account resources
+    /// </summary>
     private void UpdateResources()
     {
         goldBarAmountText.text = AccountResources[0].Amount.ToString();
@@ -57,7 +61,9 @@ public class AccountManager : MonoBehaviour
         stoneOreAmountText.text = AccountResources[2].Amount.ToString();
     }
 
-    // Count the number of a resource on the account
+    /// <summary>
+    /// Count the number of a resource on the account
+    /// </summary>
     public int ResourceCount(string resourceID)
     {
         int number = 0;
@@ -74,7 +80,9 @@ public class AccountManager : MonoBehaviour
         return number;
     }
 
-    // Remove a resource on the account
+    /// <summary>
+    /// Remove a resource on the account
+    /// </summary>
     public void RemoveResource(string resourceID)
     {
         for (int i = 0; i < AccountResources.Count; i++)
@@ -89,7 +97,9 @@ public class AccountManager : MonoBehaviour
         }
     }
 
-    // Add item to the account
+    /// <summary>
+    /// Add an item to the account
+    /// </summary>
     public void AddItem()
     {
 

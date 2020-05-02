@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the CraftingRecipeUI script, it contains functionality that is specific to the craft UI
+/// </summary>
 public class CraftingRecipeUI : MonoBehaviour
 {
     [Header("References")]
@@ -53,6 +56,9 @@ public class CraftingRecipeUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When the user click on the craft button
+    /// </summary>
     public void OnCraftButtonClick()
     {
         // Verify that we have a recipe and accountmanager data

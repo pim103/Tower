@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// This is the ResourceSlot script, it contains functionality that is specific to the resource slot on the UI
+/// </summary>
 public class ResourceSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] protected Image image;

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This is the KeyBindManager script, it contains functionality that is specific to the KeyBinds
+/// </summary>
 public class KeyBindManager : MonoBehaviour
 {
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
@@ -63,11 +66,16 @@ public class KeyBindManager : MonoBehaviour
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
                 currentKey.GetComponent<Image>().color = normal;
                 currentKey = null;
+
+                // Save user keys
                 SaveKeys();
             }
         }
     }
 
+    /// <summary>
+    /// When user want to change a key
+    /// </summary>
     public void ChangeKey(GameObject clicked)
     {
         if (currentKey != null)
@@ -79,6 +87,9 @@ public class KeyBindManager : MonoBehaviour
         currentKey.GetComponent<Image>().color = selected;
     }
 
+    /// <summary>
+    /// Save user keys
+    /// </summary>
     public void SaveKeys()
     {
         foreach (var key in keys)

@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+/// <summary>
+/// This is the GameSettings script, it contains functionality that is specific to the settings of the game
+/// </summary>
 public class GameSettings : MonoBehaviour
 {
     [Header("References")]
@@ -72,6 +75,9 @@ public class GameSettings : MonoBehaviour
         graphicQualityLevelDropdown.value = PlayerPrefs.GetInt("GameQualityLevel", QualitySettings.GetQualityLevel());
     }
 
+    /// <summary>
+    /// Set fullscreen state
+    /// </summary>
     public void SetFullScreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
@@ -85,6 +91,9 @@ public class GameSettings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set resolution state
+    /// </summary>
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
@@ -92,12 +101,18 @@ public class GameSettings : MonoBehaviour
         PlayerPrefs.SetInt("GameResolution", resolutionIndex);
     }
 
+    /// <summary>
+    /// Set quality state
+    /// </summary>
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
         PlayerPrefs.SetInt("GameQualityLevel", qualityIndex);
     }
 
+    /// <summary>
+    /// Set volume state
+    /// </summary>
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("volume", volume);

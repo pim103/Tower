@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This is the ChatBoxManager script, it contains functionality that is specific to the chatbox
+/// </summary>
 public class ChatBoxManager : MonoBehaviour
 {
     // Player username
@@ -19,7 +22,7 @@ public class ChatBoxManager : MonoBehaviour
 
     // Message type color
     [Header("Message type color")]
-    public Color info;
+    public Color server;
     public Color playerMessage;
     public Color privateMessage;
 
@@ -30,42 +33,84 @@ public class ChatBoxManager : MonoBehaviour
     void Start()
     {
         // Welcome message
-        SendMessageToChat("Bienvenue dans Tower", Message.MessageType.info);
+        SendMessageToChat("Bienvenue dans Tower", Message.MessageType.server);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!string.IsNullOrWhiteSpace(chatBox.text))
+        // If the chatbox isn't focused and the user press the return key
+        if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
         {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                // Send the user message
-                SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
-
-                // Clean input field
-                chatBox.text = "";
-            }
-        }
-        else
-        {
-            if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
-            {
-                // Clean input field
-                chatBox.text = "";
-                chatBox.ActivateInputField();
-            }
-        }
-
-        if (!chatBox.isFocused)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SendMessageToChat("You pressed the space bar", Message.MessageType.info);
-            }
+            // Activate the chatbox input field
+            chatBox.ActivateInputField();
         }
     }
 
+    /// <summary>
+    /// User want to send a message to the chatbox
+    /// </summary>
+    public void SendTheMessage()
+    {
+        // If the chatbox content isn't empty and the user press the return key
+        if (!string.IsNullOrWhiteSpace(chatBox.text) && Input.GetKeyDown(KeyCode.Return))
+        {
+            // Check if it is a private message
+            if (chatBox.text.Length > 3 && chatBox.text[0] == '/' && chatBox.text[1] == 'w' && chatBox.text[2] == ' ')
+            {
+                string user = "";
+                string message = "";
+                bool space = false;
+                bool privateMess = false;
+
+                for (int i = 3; i < chatBox.text.Length; i++)
+                {
+                    // Check if we have a username
+                    if (chatBox.text[i] != ' ' && space == false)
+                    {
+                        user += chatBox.text[i];
+                    }
+
+                    // Check if we have a space
+                    else if (chatBox.text[i] == ' ' && i != 3 && space == false)
+                    {
+                        space = true;
+                    }
+
+                    // Check if we have a message
+                    else if (space == true)
+                    {
+                        message += chatBox.text[i];
+                        privateMess = true;
+                    }
+                }
+
+
+                if (privateMess == true)
+                {
+                    // Send the user message
+                    SendMessageToChat("À " + user + ": " + message, Message.MessageType.privateMessage);
+                }
+                else
+                {
+                    // Send the user message
+                    SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+                }
+            }
+            else
+            {
+                // Send the user message
+                SendMessageToChat(username + ": " + chatBox.text, Message.MessageType.playerMessage);
+            }
+
+            // Clean the chatbox input field
+            chatBox.text = "";
+        }
+    }
+
+    /// <summary>
+    /// Send the message to the chatbox
+    /// </summary>
     public void SendMessageToChat(string text, Message.MessageType messageType)
     {
         if (messageList.Count >= maxMessages)
@@ -90,9 +135,12 @@ public class ChatBoxManager : MonoBehaviour
         messageList.Add(newMessage);
     }
 
+    /// <summary>
+    /// Set the color to the message
+    /// </summary>
     Color MessageTypeColor(Message.MessageType messageType)
     {
-        Color color = info;
+        Color color = server;
 
         switch (messageType)
         {
@@ -108,6 +156,7 @@ public class ChatBoxManager : MonoBehaviour
     }
 }
 
+// Content of a message
 [System.Serializable]
 public class Message
 {
@@ -117,7 +166,7 @@ public class Message
 
     public enum MessageType
     {
-        info,
+        server,
         playerMessage,
         privateMessage
     }
