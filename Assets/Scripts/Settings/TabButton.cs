@@ -6,53 +6,48 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 /// <summary>
-/// This is the TabButton script, it contains functionality that is specific to the tab button UI
+/// This is the TabButton script, it contains functionality that is specific to
+/// the tab button UI
 /// </summary>
 [RequireComponent(typeof(Image))]
-public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
-{
-    [Header("References")]
-    public TabGroup tabGroup;
-    public Image background;
+public class TabButton : MonoBehaviour,
+                         IPointerEnterHandler,
+                         IPointerClickHandler,
+                         IPointerExitHandler {
+  [Header("References")]
+  public TabGroup tabGroup;
+  public Image background;
 
-    [Header("Unity Event")]
-    public UnityEvent onTabSelected;
-    public UnityEvent onTabDeSelected;
+  [Header("Unity Event")]
+  public UnityEvent onTabSelected;
+  public UnityEvent onTabDeSelected;
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        tabGroup.OnTabSelected(this);
+  public void OnPointerClick(PointerEventData eventData) {
+    tabGroup.OnTabSelected(this);
+  }
+
+  public void OnPointerEnter(PointerEventData eventData) {
+    tabGroup.OnTabEnter(this);
+  }
+
+  public void OnPointerExit(PointerEventData eventData) {
+    tabGroup.OnTabExit(this);
+  }
+
+  void Start() {
+    background = GetComponent<Image>();
+    tabGroup.Subscribe(this);
+  }
+
+  public void Select() {
+    if (onTabSelected != null) {
+      onTabSelected.Invoke();
     }
+  }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        tabGroup.OnTabEnter(this);
+  public void DeSelect() {
+    if (onTabDeSelected != null) {
+      onTabDeSelected.Invoke();
     }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        tabGroup.OnTabExit(this);
-    }
-
-    void Start()
-    {
-        background = GetComponent<Image>();
-        tabGroup.Subscribe(this);
-    }
-
-    public void Select()
-    {
-        if (onTabSelected != null)
-        {
-            onTabSelected.Invoke();
-        }
-    }
-
-    public void DeSelect()
-    {
-        if (onTabDeSelected != null)
-        {
-            onTabDeSelected.Invoke();
-        }
-    }
+  }
 }
