@@ -9,7 +9,7 @@ namespace Games.Transitions
 {
     public class TransitionMenuGame : MonoBehaviour
     {
-        private const int durationWaitingPhase = 3;
+        private const int durationChooseDeckPhase = 100;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -20,6 +20,8 @@ namespace Games.Transitions
         private int waitingForStart;
 
         private string waitingGameStartText;
+
+        [SerializeField] private GameObject chooseRoleAndDeckGameObject;
 
         private void Start()
         {
@@ -35,12 +37,13 @@ namespace Games.Transitions
 
         public IEnumerator WaitingForStart()
         {
-            Debug.Log("Startplz2");
             objectsInScene.waitingCanvasGameObject.SetActive(true);
             // TODO : Need rpc to synchro chrono
             objectsInScene.waitingText.text = waitingGameStartText;
 
-            while (waitingForStart > 0)
+            chooseRoleAndDeckGameObject.SetActive(true);
+
+            while (waitingForStart > 0 && !ChooseDeckAndClasse.isValidate)
             {
                 objectsInScene.counterText.text = waitingForStart.ToString();
 
@@ -48,18 +51,19 @@ namespace Games.Transitions
                 waitingForStart -= 1;
             }
 
-            waitingForStart = durationWaitingPhase;
+            waitingForStart = durationChooseDeckPhase;
 
             objectsInScene.waitingCanvasGameObject.SetActive(false);
+
+            chooseRoleAndDeckGameObject.SetActive(false);
             // TODO : Need RPC to launch game
             StartGameWithDefense();
         }
 
         public void WantToStartGame()
         {
-            Debug.Log("Startplz");
             waitingGameStartText = "Waiting for game start";
-            waitingForStart = durationWaitingPhase;
+            waitingForStart = durationChooseDeckPhase;
             StartCoroutine(WaitingForStart());
         }
 

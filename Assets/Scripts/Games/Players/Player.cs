@@ -1,11 +1,14 @@
-﻿using Games.Global;
+﻿using System.Diagnostics;
+using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
+using Games.Transitions;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -141,7 +144,27 @@ namespace Games.Players
             initialRessource2 = ressource2;
 
             InitEquipementArray();
-            InitWeapon(2);
+            int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
+            InitWeapon(idWeapon);
+        }
+
+        private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
+        {
+            switch(categoryWeapon)
+            {
+                case CategoryWeapon.SHORT_SWORD:
+                    return 1;
+                case CategoryWeapon.BOW:
+                    return 2;
+                case CategoryWeapon.SPEAR:
+                    return 3;
+                case CategoryWeapon.DAGGER:
+                    return 4;
+                case CategoryWeapon.STAFF:
+                    return 5;
+            }
+
+            return 0;
         }
 
         public void InitWeapon(int idWeapon)

@@ -4,6 +4,7 @@ using Games.Global;
 using Games.Global.Abilities.SpecialSpellPrefab;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
+using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -49,7 +50,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(Classes.Warrior);
+            player.InitPlayerStats(ChooseDeckAndClasse.currentRoleIdentity.classe);
             player.effectInterface = this;
 
             wantToGoBack = false;
