@@ -26,6 +26,9 @@ public struct RecipeResult
     public int Amount;
 }
 
+/// <summary>
+/// This is the CraftingRecipe script, it contains functionality that is specific to the craft
+/// </summary>
 [CreateAssetMenu]
 public class CraftingRecipe : ScriptableObject
 {
@@ -37,7 +40,9 @@ public class CraftingRecipe : ScriptableObject
     // What the recipe will give
     public List<RecipeResult> RecipeResults;
 
-    // Craft function
+    /// <summary>
+    /// Craft function
+    /// </summary>
     public void Craft(AccountManager accountManager)
     {
         // Verify that we can craft this recipe
@@ -57,14 +62,18 @@ public class CraftingRecipe : ScriptableObject
         }
     }
 
-    // Verify that we can craft this recipe
+    /// <summary>
+    /// Verify that we can craft this recipe
+    /// </summary>
     public bool CanCraft(AccountManager accountManager)
     {
         // Verify if the account have the required resources for the craft
         return HasResources(accountManager);
     }
 
-    // Verify if the account have the required resources for the craft
+    /// <summary>
+    /// Verify if the account have the required resources for the craft
+    /// </summary>
     private bool HasResources(AccountManager accountManager)
     {
         foreach (RecipeResource recipeResource in RecipeResources)
@@ -79,7 +88,9 @@ public class CraftingRecipe : ScriptableObject
         return true;
     }
 
-    // Remove resources we used for craft this recipe from the account
+    /// <summary>
+    /// Remove resources we used for craft this recipe from the account
+    /// </summary>
     private void RemoveResources(AccountManager accountManager)
     {
         foreach (RecipeResource recipeResource in RecipeResources)
@@ -91,7 +102,9 @@ public class CraftingRecipe : ScriptableObject
         }
     }
 
-    // Add the recipe result to the account
+    /// <summary>
+    /// Add the recipe result to the account
+    /// </summary>
     private void AddResults(AccountManager accountManager)
     { 
         foreach (RecipeResult recipeResult in RecipeResults)

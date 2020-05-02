@@ -4,15 +4,16 @@ using System.Text;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// This is the Item script, it contains functionality that is specific to the item
+/// </summary>
 [CreateAssetMenu(menuName ="Items/Item")]
 public class Item : ScriptableObject
 {
     [Space]
     [Header("Information on the item")]
-
     [SerializeField]
     string id;
-
     public string ID
     {
         get
@@ -20,16 +21,13 @@ public class Item : ScriptableObject
             return id;
         }
     }
-
     public string ItemName;
     public Sprite Icon;
-
     [Range(1,999)]
     public int MaximumStacks = 1;
 
     [Space]
     [Header("Description of the item")]
-
     [SerializeField] string ItemDescription;
 
     protected static readonly StringBuilder sb = new StringBuilder();
@@ -59,14 +57,6 @@ public class Item : ScriptableObject
 
     public virtual string GetDescription()
     {
-        /*if (ItemDescription == "COIN_DESCRIPTION")
-        {
-            return LocalizationManager.Instance.GetText("COIN_DESCRIPTION");
-        }
-        else if (ItemDescription == "REPAIR_KIT_DESCRIPTION")
-        {
-            return LocalizationManager.Instance.GetText("REPAIR_KIT_DESCRIPTION");
-        }*/
         return "";
     }
 }

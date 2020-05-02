@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// This is the ResourceInfo script, it contains functionality that is specific to the resource
+/// </summary>
 public class ResourceInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // Set the resource

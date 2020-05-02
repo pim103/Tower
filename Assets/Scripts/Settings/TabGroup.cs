@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the TabGroup script, it contains functionality that is specific to the tab group UI
+/// </summary>
 public class TabGroup : MonoBehaviour
 {
     [Header("References")]

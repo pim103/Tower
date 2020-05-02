@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This is the UIManager script, it contains functionality that is specific to the UI
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     private static UIManager instance;

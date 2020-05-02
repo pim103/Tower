@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the CraftingWindow script, it contains functionality that is specific to the craft window
+/// </summary>
 public class CraftingWindow : MonoBehaviour
 {
     [Header("References")]
