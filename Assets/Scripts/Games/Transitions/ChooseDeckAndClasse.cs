@@ -80,6 +80,8 @@ namespace Games.Transitions
                 
                 currentRoleIdentity = identity;
                 currentRoleImage = buttonImage;
+                currentWeaponIdentity = null;
+                currentWeaponImage = null;
 
                 ActiveButtonForSpecificRole(identity.classe);
             } else if (identity.identityType == IdentityType.CategoryWeapon)
@@ -110,7 +112,7 @@ namespace Games.Transitions
                     else
                     {
                         pair.Key.interactable = false;
-                        pair.Key.gameObject.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f);
+                        pair.Key.gameObject.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
                     }
                 }
             }
@@ -120,41 +122,42 @@ namespace Games.Transitions
         {
             avalaibleWeaponForClass = new Dictionary<Classes, List<CategoryWeapon>>();
 
-            List<CategoryWeapon> categoryWeapons = new List<CategoryWeapon>();
-            categoryWeapons.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeapons.Add(CategoryWeapon.BOW);
-            categoryWeapons.Add(CategoryWeapon.SPEAR);
-            categoryWeapons.Add(CategoryWeapon.STAFF);
-            categoryWeapons.Add(CategoryWeapon.DAGGER);
+            List<CategoryWeapon> categoryWeaponsWarrior = new List<CategoryWeapon>();
+            categoryWeaponsWarrior.Add(CategoryWeapon.SHORT_SWORD);
+            categoryWeaponsWarrior.Add(CategoryWeapon.BOW);
+            categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
+            categoryWeaponsWarrior.Add(CategoryWeapon.STAFF);
+            categoryWeaponsWarrior.Add(CategoryWeapon.DAGGER);
             
-            avalaibleWeaponForClass.Add(Classes.Warrior, categoryWeapons);
+            avalaibleWeaponForClass.Add(Classes.Warrior, categoryWeaponsWarrior);
             
-            categoryWeapons.Clear();
-            categoryWeapons.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeapons.Add(CategoryWeapon.BOW);
-            categoryWeapons.Add(CategoryWeapon.SPEAR);
-            categoryWeapons.Add(CategoryWeapon.STAFF);
-            categoryWeapons.Add(CategoryWeapon.DAGGER);
+            List<CategoryWeapon> categoryWeaponsRanger = new List<CategoryWeapon>();
+            categoryWeaponsRanger.Add(CategoryWeapon.SHORT_SWORD);
+            categoryWeaponsRanger.Add(CategoryWeapon.BOW);
+            categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
+            categoryWeaponsRanger.Add(CategoryWeapon.STAFF);
+            categoryWeaponsRanger.Add(CategoryWeapon.DAGGER);
             
-            avalaibleWeaponForClass.Add(Classes.Ranger, categoryWeapons);
+            avalaibleWeaponForClass.Add(Classes.Ranger, categoryWeaponsRanger);
             
-            categoryWeapons.Clear();
-            categoryWeapons.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeapons.Add(CategoryWeapon.BOW);
-            categoryWeapons.Add(CategoryWeapon.SPEAR);
-            categoryWeapons.Add(CategoryWeapon.STAFF);
-            categoryWeapons.Add(CategoryWeapon.DAGGER);
+            List<CategoryWeapon> categoryWeaponsMage = new List<CategoryWeapon>();
             
-            avalaibleWeaponForClass.Add(Classes.Mage, categoryWeapons);
+            categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
+            categoryWeaponsMage.Add(CategoryWeapon.BOW);
+            categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
+            categoryWeaponsMage.Add(CategoryWeapon.STAFF);
+            categoryWeaponsMage.Add(CategoryWeapon.DAGGER);
             
-            categoryWeapons.Clear();
-            categoryWeapons.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeapons.Add(CategoryWeapon.BOW);
-            categoryWeapons.Add(CategoryWeapon.SPEAR);
-            categoryWeapons.Add(CategoryWeapon.STAFF);
-            categoryWeapons.Add(CategoryWeapon.DAGGER);
+            avalaibleWeaponForClass.Add(Classes.Mage, categoryWeaponsMage);
             
-            avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeapons);
+            List<CategoryWeapon> categoryWeaponsRogue = new List<CategoryWeapon>();
+            
+            categoryWeaponsRogue.Add(CategoryWeapon.SHORT_SWORD);
+            categoryWeaponsRogue.Add(CategoryWeapon.BOW);
+            categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
+            categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
+            
+            avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
 
         }
     }
