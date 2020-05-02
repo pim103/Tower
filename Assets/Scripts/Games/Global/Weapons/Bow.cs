@@ -18,24 +18,15 @@ namespace Games.Global.Weapons
            idPoolProjectile = 0;
         }
 
-        public override void InitPlayerSkill(Classes classe)
+        public override void FixAngleAttack(bool isFirstIteration, Entity wielder)
         {
-            base.InitPlayerSkill(classe);
-
-            switch (classe)
+            if (isFirstIteration)
             {
-                case Classes.Mage:
-                    InitMageSpell();
-                    break;
-                case Classes.Rogue:
-                    InitRogueSpell();
-                    break;
-                case Classes.Ranger:
-                    InitRangerSpell();
-                    break;
-                case Classes.Warrior:
-                    InitWarriorSpell();
-                    break;
+                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.up * 90);
+            }
+            else
+            {
+                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.down * 90);
             }
         }
 

@@ -28,26 +28,20 @@ namespace Games.Global.Weapons
 
             animator.speed = weapon.attSpeed + wielder.attSpeed;
             animator.Play(weapon.animationToPlay);
-
-            if (weapon.category == CategoryWeapon.BOW)
-            {
-                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.up * 90);
-            }
             
             if (weapon.type == TypeWeapon.Distance)
             {   
                 PoolProjectiles();
             }
+            
+            weapon.FixAngleAttack(true, wielder);
 
             while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay))
             {
                 yield return new WaitForSeconds(0.1f);
             }
-
-            if (weapon.category == CategoryWeapon.BOW)
-            {
-                wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.down * 90);
-            }
+            
+            weapon.FixAngleAttack(false, wielder);
 
             animator.speed = initialSpeed;
             isAttacking = false;

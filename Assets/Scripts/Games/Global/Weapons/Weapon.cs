@@ -1,4 +1,5 @@
 ﻿using Games.Players;
+using UnityEngine;
 
 namespace Games.Global.Weapons
 {
@@ -53,6 +54,11 @@ namespace Games.Global.Weapons
             skill1 = new Spell();
             skill2 = new Spell();
             skill3 = new Spell();
+        }
+
+        public virtual void FixAngleAttack(bool isFirstIteration, Entity wielder)
+        {
+            
         }
     }
 }
