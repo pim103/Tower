@@ -30,6 +30,24 @@ namespace Games.Global.Weapons
             }
         }
 
+        public override void InitPlayerSkill(Classes classe)
+        {
+            switch (classe)
+            {
+                case Classes.Mage:
+                    InitMageSpell();
+                    break;
+                case Classes.Rogue:
+                    break;
+                case Classes.Ranger:
+                    InitRangerSpell();
+                    break;
+                case Classes.Warrior:
+                    InitWarriorSpell();
+                    break;
+            }
+        }
+
         private void InitRangerSpell()
         {
             /* Spell 1 */
