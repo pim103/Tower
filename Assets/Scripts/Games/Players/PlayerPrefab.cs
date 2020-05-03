@@ -248,8 +248,8 @@ namespace Games.Players
             {
                 foreach (SpellInstruction spellInstruction in spell.spellInstructions)
                 {
-                    if (spell.typeSpell == TypeSpell.ActiveWithPassive &&
-                        spellInstruction.specificTypeSpell == TypeSpell.Passive)
+                    if ((spell.typeSpell == TypeSpell.ActiveWithPassive &&
+                        spellInstruction.specificTypeSpell == TypeSpell.Passive) || spell.typeSpell == TypeSpell.Passive)
                     {
                         switch (spellInstruction.TypeSpellInstruction)
                         {
