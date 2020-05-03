@@ -14,13 +14,12 @@ namespace Games.Global.Weapons
         private Weapon weapon;
         private Entity wielder;
 
-        private bool isAttacking = false;
-        
+        private bool isAttacking;
+
         [SerializeField] private BoxCollider boxCollider;
 
         public IEnumerator PlayAnimationAttack()
         {
-            isAttacking = true;
             boxCollider.enabled = true;
 
             Animator animator = wielder.entityPrefab.animator;
@@ -28,30 +27,32 @@ namespace Games.Global.Weapons
 
             animator.speed = weapon.attSpeed + wielder.attSpeed;
             animator.Play(weapon.animationToPlay);
-            
+
             if (weapon.type == TypeWeapon.Distance)
-            {   
+            {
                 PoolProjectiles();
             }
-            
+
             weapon.FixAngleAttack(true, wielder);
 
-            while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay))
-            {
+            do {
                 yield return new WaitForSeconds(0.1f);
-            }
-            
+            } while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay)) ;
+
+            wielder.entityPrefab.characterMesh.transform.localPosition = Vector3.zero;
+
             weapon.FixAngleAttack(false, wielder);
 
             animator.speed = initialSpeed;
             isAttacking = false;
             boxCollider.enabled = false;
         }
-        
+
         public void BasicAttack()
         {
             if (!isAttacking)
             {
+                isAttacking = true;
                 StartCoroutine(PlayAnimationAttack());
             }
         }
@@ -83,7 +84,8 @@ namespace Games.Global.Weapons
             {
                 MonsterPrefab monsterPrefab = other.GetComponent<MonsterPrefab>();
                 entity = monsterPrefab.GetMonster();
-            } else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
+            }
+            else if (other.gameObject.layer == playerLayer && wielder.typeEntity != TypeEntity.PLAYER)
             {
                 PlayerPrefab playerPrefab = other.GetComponent<PlayerPrefab>();
                 entity = playerPrefab.entity;
@@ -92,7 +94,7 @@ namespace Games.Global.Weapons
             {
                 return;
             }
-            
+
             if (entity.IdEntity == wielder.IdEntity &&
                 ((other.gameObject.layer == monsterLayer && wielder.typeEntity == TypeEntity.MOB) ||
                  (other.gameObject.layer == playerLayer && wielder.typeEntity == TypeEntity.PLAYER))
@@ -100,7 +102,7 @@ namespace Games.Global.Weapons
             {
                 return;
             }
-            
+
             TouchEntity(entity);
         }
 
@@ -139,7 +141,7 @@ namespace Games.Global.Weapons
         {
             return weapon;
         }
-        
+
         public void SetWielder(Entity entity)
         {
             this.wielder = entity;
