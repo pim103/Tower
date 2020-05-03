@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1869628687301897146}
   - component: {fileID: 1869628687301897145}
   - component: {fileID: 8765592628195400090}
-  - component: {fileID: 6307249475328061940}
   - component: {fileID: 115459911557053537}
   m_Layer: 11
   m_Name: BasicMonster
@@ -127,29 +126,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f609fa33a47a044ab756f8a9f2b5976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualHand: {fileID: 1307247680109986637}
-  hand: {fileID: 1819347188561746763}
-  movementPatternController: {fileID: 6307249475328061940}
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
   rigidbodyEntity: {fileID: 1869628687301897145}
   meshRenderer: {fileID: 1869628687301897147}
+  animator: {fileID: 0}
+  characterMesh: {fileID: 0}
   movementBlocked: 0
   cameraBlocked: 0
+  intentBlocked: 0
+  isCharging: 0
   hpBar: {fileID: 1237704919439136648}
   navMeshAgent: {fileID: 115459911557053537}
   aggroForced: 0
   target: {fileID: 0}
---- !u!114 &6307249475328061940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869628687301897144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fadaf31bc22a83489d87ca31c2f4b32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &115459911557053537
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -299,21 +289,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 428368e6dfc9ef747a342b2a389da91c, type: 3}
---- !u!1 &1307247680109986637 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1969021753066053564, guid: 428368e6dfc9ef747a342b2a389da91c,
-    type: 3}
-  m_PrefabInstance: {fileID: 682040312229272817}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7530946856781573377 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7058359214680535536, guid: 428368e6dfc9ef747a342b2a389da91c,
-    type: 3}
-  m_PrefabInstance: {fileID: 682040312229272817}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1819347188561746763 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1173335776586893242, guid: 428368e6dfc9ef747a342b2a389da91c,
     type: 3}
   m_PrefabInstance: {fileID: 682040312229272817}
   m_PrefabAsset: {fileID: 0}

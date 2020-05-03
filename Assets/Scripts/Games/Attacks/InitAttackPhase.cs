@@ -113,14 +113,9 @@ namespace Games.Attacks
 
             int firstColon = lineToParse.IndexOf(':');
             int secondColon = lineToParse.IndexOf(':', firstColon + 1);
-            
-            Debug.Log(lineToParse);
-            Debug.Log(lineToParse.Substring(0, firstColon).Trim());
 
             x = Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
             y = Int32.Parse(lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim());
-
-            Debug.Log("IN x : " + x + " y : " + y);
 
             lineToParse = lineToParse.Substring(secondColon + 1);
             firstColon = lineToParse.IndexOf(':');
@@ -300,6 +295,11 @@ namespace Games.Attacks
             if (!se.gameController.byPassDefense)
             {
                 GeneratingMap(GameController.mapReceived, GameController.PlayerIndex);
+            }
+            else
+            {
+                string map = "GRID\":\"{-2:-3:1:1:[0,0,0,0,0];}\"}";
+                GeneratingMap(map, GameController.PlayerIndex);
             }
 
             GameController.mapReceived = null;

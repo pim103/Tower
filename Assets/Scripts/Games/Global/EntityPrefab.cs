@@ -36,6 +36,12 @@ namespace Games.Global
 
         [SerializeField] public GameObject characterMesh;
 
+        [SerializeField] public Transform positionInRightHand;
+        [SerializeField] public Transform angleWithOneRight;
+        
+        [SerializeField] public Transform positionInLeftHand;
+        [SerializeField] public Transform angleWithOneLeft;
+
         public Entity entity;
 
         public bool movementBlocked = false;
@@ -113,17 +119,23 @@ namespace Games.Global
         public void AddItemInHand(Weapon weapon)
         {
             GameObject hand = rightHand;
+            Transform position = positionInRightHand;
+            Transform angle = angleWithOneRight;
 
             if (weapon.category == CategoryWeapon.BOW)
             {
                 hand = leftHand;
+                position = positionInLeftHand;
+                angle = angleWithOneLeft;
             }
 
-            GameObject weaponGameObject = Instantiate(weapon.model, hand.transform);
+            GameObject weaponGameObject = Instantiate(weapon.model, hand.transform, true);
+
             WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
             weapon.weaponPrefab = weaponPrefab;
             weaponPrefab.SetWielder(entity);
             weaponPrefab.SetWeapon(weapon);
+            weaponPrefab.SetPositionToParent(position, angle);
         }
         
         public void StartCoroutineEffect(Effect effect)

@@ -17,6 +17,7 @@ namespace Games.Global.Weapons
         private bool isAttacking;
 
         [SerializeField] private BoxCollider boxCollider;
+        [SerializeField] private Transform positionInHand;
 
         public IEnumerator PlayAnimationAttack()
         {
@@ -37,11 +38,12 @@ namespace Games.Global.Weapons
 
             do {
                 yield return new WaitForSeconds(0.1f);
-            } while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay)) ;
-
-            wielder.entityPrefab.characterMesh.transform.localPosition = Vector3.zero;
+            } while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay));
 
             weapon.FixAngleAttack(false, wielder);
+
+            wielder.entityPrefab.characterMesh.transform.localPosition = Vector3.zero;
+            wielder.entityPrefab.characterMesh.transform.localEulerAngles = Vector3.zero;
 
             animator.speed = initialSpeed;
             isAttacking = false;
@@ -150,6 +152,13 @@ namespace Games.Global.Weapons
         public Entity GetWielder()
         {
             return wielder;
+        }
+
+        public void SetPositionToParent(Transform initialPosition, Transform angle)
+        {
+            positionInHand.position = initialPosition.position;
+            positionInHand.LookAt(angle);
+            positionInHand.Rotate(Vector3.up * 180);
         }
     }
 }
