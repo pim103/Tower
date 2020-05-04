@@ -171,36 +171,4 @@ namespace Games.Global.Weapons
             gameObject.SetActive(false);
         }
     }
-
-//    [CustomEditor(typeof(ProjectilesPrefab))]
-//    public class ProjectilePrefabEditor : Editor
-//    {
-//        public SerializedProperty
-//            type,
-//            areaGameObject;
-//
-//        private void OnEnable()
-//        {
-//            type = serializedObject.FindProperty("typeProjectile");
-//            areaGameObject = serializedObject.FindProperty("explosionArea");
-//        }
-//
-//        public override void OnInspectorGUI()
-//        {
-//            serializedObject.Update();
-//
-//            EditorGUILayout.PropertyField(type);
-//
-//            switch ((TypeProjectile)type.enumValueIndex)
-//            {
-//                case TypeProjectile.Arrow:
-//                    break;
-//                case TypeProjectile.Grenade:
-//                    EditorGUILayout.PropertyField(areaGameObject, new GUIContent("explosionArea_again"));
-//                    break;
-//            }
-//            
-//            serializedObject.ApplyModifiedProperties();
-//        }
-//    }
 }
