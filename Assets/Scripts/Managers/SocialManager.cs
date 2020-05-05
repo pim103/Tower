@@ -8,16 +8,15 @@ using UnityEngine.UI;
 /// </summary>
 public class SocialManager : MonoBehaviour
 {
+    [Header("Variables")]
     // Player username
     public string username;
 
-    // References
     [Header("References")]
     public GameObject SocialPanel;
     public GameObject SocialBoxContent;
     public GameObject usernameObject;
 
-    // Social list
     [Header("Social list")]
     [SerializeField] List<Social> socialList = new List<Social>();
 
@@ -66,7 +65,7 @@ public class SocialManager : MonoBehaviour
     }
 }
 
-// Content of social
+// Content of social panel
 [System.Serializable]
 public class Social
 {
