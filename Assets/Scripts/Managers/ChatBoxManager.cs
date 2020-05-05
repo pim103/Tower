@@ -8,25 +8,23 @@ using UnityEngine.UI;
 /// </summary>
 public class ChatBoxManager : MonoBehaviour
 {
+    [Header("Variables")]
     // Player username
     public string username;
-
     // Limit number of messages to show on the chat
     public int maxMessages = 25;
 
-    // References
     [Header("References")]
     public GameObject chatPanel;
     public GameObject textObject;
     public InputField chatBox;
 
-    // Message type color
     [Header("Message type color")]
     public Color server;
     public Color playerMessage;
     public Color privateMessage;
 
-    // Message list
+    [Header("Message list")]
     [SerializeField] List<Message> messageList = new List<Message>();
 
     // Start is called before the first frame update
