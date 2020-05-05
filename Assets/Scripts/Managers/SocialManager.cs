@@ -4,72 +4,65 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This is the SocialManager script, it contains functionality that is specific to the social
+/// This is the SocialManager script, it contains functionality that is specific
+/// to the social
 /// </summary>
-public class SocialManager : MonoBehaviour
-{
-    // Player username
-    public string username;
+public class SocialManager : MonoBehaviour {
+  // Player username
+  public string username;
 
-    // References
-    [Header("References")]
-    public GameObject SocialPanel;
-    public GameObject SocialBoxContent;
-    public GameObject usernameObject;
+  // References
+  [Header("References")]
+  public GameObject SocialPanel;
+  public GameObject SocialBoxContent;
+  public GameObject usernameObject;
 
-    // Social list
-    [Header("Social list")]
-    [SerializeField] List<Social> socialList = new List<Social>();
+  // Social list
+  [Header("Social list")]
+  [SerializeField] List<Social>socialList = new List<Social>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        UpdateSocialPanel("Benoît");
-        UpdateSocialPanel("Medhi");
+  // Start is called before the first frame update
+  void Start() {
+    UpdateSocialPanel("Benoît");
+    UpdateSocialPanel("Medhi");
+  }
+
+  // Update is called once per frame
+  void Update() {}
+
+  /// <summary>
+  /// Toggle Social Panel
+  /// </summary>
+  public void ToggleSocialPanel() {
+    if (SocialPanel != null) {
+      bool isActive = SocialPanel.activeSelf;
+
+      SocialPanel.SetActive(!isActive);
     }
+  }
 
-    // Update is called once per frame
-    void Update()
-    {
+  /// <summary>
+  /// Update Social Panel
+  /// </summary>
+  public void UpdateSocialPanel(string text) {
+    Social newSocial = new Social();
 
-    }
+    newSocial.username = text;
 
-    /// <summary>
-    /// Toggle Social Panel
-    /// </summary>
-    public void ToggleSocialPanel()
-    {
-        if (SocialPanel != null)
-        {
-            bool isActive = SocialPanel.activeSelf;
+    GameObject newText =
+        Instantiate(usernameObject, SocialBoxContent.transform);
 
-            SocialPanel.SetActive(!isActive);
-        }
-    }
+    newSocial.usernameObject = newText.GetComponent<Text>();
 
-    /// <summary>
-    /// Update Social Panel
-    /// </summary>
-    public void UpdateSocialPanel(string text)
-    {
-        Social newSocial = new Social();
+    newSocial.usernameObject.text = newSocial.username;
 
-        newSocial.username = text;
-
-        GameObject newText = Instantiate(usernameObject, SocialBoxContent.transform);
-
-        newSocial.usernameObject = newText.GetComponent<Text>();
-
-        newSocial.usernameObject.text = newSocial.username;
-
-        socialList.Add(newSocial);
-    }
+    socialList.Add(newSocial);
+  }
 }
 
 // Content of social
 [System.Serializable]
-public class Social
-{
-    public string username;
-    public Text usernameObject;
+public class Social {
+  public string username;
+  public Text usernameObject;
 }
