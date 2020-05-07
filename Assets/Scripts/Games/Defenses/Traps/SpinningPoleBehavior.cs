@@ -2,11 +2,11 @@
 
 namespace Games.Defenses.Traps
 {
-    public class SpinningPoleBehavior : MonoBehaviour
+public class SpinningPoleBehavior : MonoBehaviour
+{
+    private void Update()
     {
-        private void Update()
-        {
-            transform.Rotate (0,0,60*Time.deltaTime);
-        }
+        transform.Rotate (0,0,60*Time.deltaTime);
     }
+}
 }

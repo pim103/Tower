@@ -2,14 +2,14 @@
 
 namespace Games.Defenses.Traps
 {
-    public class BladeColliderBehavior : MonoBehaviour
+public class BladeColliderBehavior : MonoBehaviour
+{
+    private void OnTriggerEnter(Collider other)
     {
-        private void OnTriggerEnter(Collider other)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                Debug.Log("hit");
-            }
+            Debug.Log("hit");
         }
     }
+}
 }
