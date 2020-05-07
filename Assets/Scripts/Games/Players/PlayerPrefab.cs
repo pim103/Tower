@@ -533,6 +533,13 @@ namespace Games.Players
                 transform.LookAt(launcher.entityPrefab.transform);
                 return;
             }
+            else
+            {
+                Vector3 eulerAngles = transform.localEulerAngles;
+                eulerAngles.x = 0;
+                eulerAngles.z = 0;
+                transform.localEulerAngles = eulerAngles;
+            }
             
             int rotationSpeed = 5;
             
