@@ -105,10 +105,10 @@ namespace Games.Global.Weapons
                 return;
             }
 
-            TouchEntity(entity);
+            TouchEntity(entity, transform.position);
         }
 
-        public bool TouchEntity(Entity entity)
+        public bool TouchEntity(Entity entity, Vector3 originDamage)
         {
             AbilityParameters abilityParameters = new AbilityParameters {origin = wielder, directTarget = entity};
 
@@ -120,16 +120,18 @@ namespace Games.Global.Weapons
 
             foreach (KeyValuePair<TypeEffect, Effect> effects in wielder.damageDealExtraEffect)
             {
-                entity.ApplyEffect(effects.Value);
+                Effect effect = effects.Value;
+                effect.positionSrcDamage = originDamage;
+                EffectController.ApplyEffect(entity, effect);
             }
 
             int damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
-            if (wielder.underEffects.ContainsKey(TypeEffect.Weak))
+            if (wielder.isWeak)
             {
                 damage /= 2;
             }
 
-            entity.TakeDamage(damage, abilityParameters);
+            entity.TakeDamage(damage, abilityParameters, wielder.canPierce);
 
             return true;
         }

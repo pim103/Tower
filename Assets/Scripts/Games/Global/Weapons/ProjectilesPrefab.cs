@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Games.Global.Abilities.SpecialSpellPrefab;
+﻿using System.Collections;
 using Games.Global.Entities;
 using Games.Players;
-using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
 {
@@ -31,8 +25,6 @@ namespace Games.Global.Weapons
 
         [SerializeField] private bool disapearOnHitEntity = true;
 
-        [SerializeField] private SpellScript spellScript;
-        
         public IEnumerator TimerBeforeDisapear(float duration)
         {
             yield return new WaitForSeconds(duration);
@@ -74,13 +66,6 @@ namespace Games.Global.Weapons
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                if (explosionArea != null)
-                {
-                    AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
-                    scriptAreaSpell.origin = origin;
-
-                    explosionArea.SetActive(true);
-                }
 
                 touch = true;
             } else if (other.gameObject.layer != LayerMask.NameToLayer("Wall") && wielder != null)
@@ -109,21 +94,7 @@ namespace Games.Global.Weapons
 
                 if (weaponOrigin != null)
                 {
-                    weaponOrigin.TouchEntity(entity);
-                }
-
-                if (spellScript != null)
-                {
-                    spellScript.PlaySpecialEffect(origin, entity);
-                }
-
-                if (explosionArea != null)
-                {
-                    AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
-                    scriptAreaSpell.origin = origin;
-
-                    explosionArea.SetActive(true);
-                    scriptAreaSpell.EnableAreaEffect();
+                    weaponOrigin.TouchEntity(entity, transform.forward);
                 }
 
                 if (disapearOnHitEntity)
@@ -146,22 +117,6 @@ namespace Games.Global.Weapons
                 {
                     StartCoroutine(TimerBeforeDisapear(1));
                 }
-            }
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            if (typeProjectile == TypeProjectile.Grenade && other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            {
-                AreaSpell scriptAreaSpell = explosionArea.GetComponent<AreaSpell>();
-                scriptAreaSpell.origin = origin;
-
-                explosionArea.SetActive(true);
-                scriptAreaSpell.EnableAreaEffect();
-
-                StartCoroutine(TimerBeforeDisapear(1));
-
-                rigidbody.velocity = Vector3.zero;
             }
         }
 

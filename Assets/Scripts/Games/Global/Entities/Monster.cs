@@ -45,6 +45,14 @@ namespace Games.Global.Entities
 
             if (hp <= 0)
             {
+                if (shooldResurrect)
+                {
+                    hp = initialHp / 2;
+                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
+                    
+                    return;
+                }
+
                 monsterPrefab.EntityDie();
             }
         }
@@ -56,6 +64,9 @@ namespace Games.Global.Entities
 
         public bool InitWeapon(int idWeapon)
         {
+            Effect effect = new Effect { typeEffect = TypeEffect.Charm, level = 1, launcher = this, durationInSeconds = 5};
+            damageDealExtraEffect.Add(TypeEffect.Expulsion, effect);
+            
             if (weapons.Count < nbWeapon)
             {
                 Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);

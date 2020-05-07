@@ -298,7 +298,7 @@ namespace Games.Attacks
             }
             else
             {
-                string map = "GRID\":\"{-2:-3:1:1:[0,0,0,0,0];}\"}";
+                string map = "GRID\":\"{-2:-3:1:1:[0,2,0,0,0];}\"}";
                 GeneratingMap(map, GameController.PlayerIndex);
             }
 

@@ -14,7 +14,7 @@ namespace Games.Global.Weapons
            //pattern[0] = //pattern(PA_INST.ROTATE_DOWN, 70, 0.2f, 0.02f);
            //pattern[1] = //pattern(PA_INST.ROTATE_UP, 70, 0.2f, 0.02f);
            animationToPlay = "ShortSwordAttack";
-           idPoolProjectile = 11;
+           idPoolProjectile = 2;
         }
 
         public override void InitPlayerSkill(Classes classe)

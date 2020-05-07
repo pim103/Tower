@@ -7,7 +7,7 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace Games.Global.Entities
 {
-    public class MonsterPrefab : EntityPrefab, EffectInterface
+    public class MonsterPrefab : EntityPrefab
     {
         [SerializeField] private Slider hpBar;
         [SerializeField] private NavMeshAgent navMeshAgent;
@@ -18,7 +18,7 @@ namespace Games.Global.Entities
         public PlayerPrefab target;
 
         private Monster monster;
-
+        
         private void Start()
         {
             playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
@@ -33,16 +33,25 @@ namespace Games.Global.Entities
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
 
-            if (!entity.underEffects.ContainsKey(TypeEffect.Stun) && !entity.underEffects.ContainsKey(TypeEffect.Sleep))
+            if (!canDoSomething)
+            {
+                navMeshAgent.SetDestination(transform.position);
+                return;
+            }
+
+            if (!aggroForced)
             {
                 FindTarget();
             }
-            else if(!aggroForced)
-            {
-                target = null;
-            }
 
-            MoveToTarget();
+            if (canMove)
+            {
+                MoveToTarget();
+            }
+            else
+            {
+                navMeshAgent.SetDestination(transform.position);
+            }
         }
 
         private void FindTarget()
@@ -53,7 +62,7 @@ namespace Games.Global.Entities
             {
                 foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
                 {
-                    if (!value.Value.entity.underEffects.ContainsKey(TypeEffect.Invisibility) && !value.Value.entity.underEffects.ContainsKey(TypeEffect.Untargetable))
+                    if (!value.Value.entity.isInvisible && !value.Value.entity.isUntargeatable)
                     {
                         newTarget = value.Value;
                     }
@@ -67,7 +76,6 @@ namespace Games.Global.Entities
             if (newTarget != null)
             {
                 gameObject.transform.LookAt(newTarget.playerTransform);
-//                virtualHand.transform.LookAt(newTarget.playerTransform);
             }
 
             target = newTarget;
@@ -78,7 +86,6 @@ namespace Games.Global.Entities
             entity = monster;
             entity.entityPrefab = this;
             this.monster = monster;
-            monster.effectInterface = this;
         }
 
         public Monster GetMonster()
@@ -95,15 +102,21 @@ namespace Games.Global.Entities
 
         private void MoveToTarget()
         {
-            if (target != null && monster.constraint == TypeWeapon.Cac)
+            if (entity.isFeared || entity.isCharmed)
             {
-                navMeshAgent.SetDestination(target.transform.position);
-                
-                if (navMeshAgent.remainingDistance <= 1 && navMeshAgent.hasPath)
-                {
-                    navMeshAgent.SetDestination(transform.position);
-                }
+                navMeshAgent.SetDestination(transform.position + forcedDirection);
+                return;
             }
+            
+//            if (target != null && monster.constraint == TypeWeapon.Cac)
+//            {
+//                navMeshAgent.SetDestination(target.transform.position);
+//                
+//                if (navMeshAgent.remainingDistance <= 1 && navMeshAgent.hasPath)
+//                {
+//                    navMeshAgent.SetDestination(transform.position);
+//                }
+//            }
         }
     }
 }

@@ -48,48 +48,51 @@ namespace Games.Players
         
         public override void BasicDefense()
         {
+            Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
+            Effect invisible = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
+            
             switch (mainClass)
             {
-                case Classes.Mage:
-                    ApplyNewEffect(TypeEffect.Regen, 5f, 1, this, 1);
-                    break;
-                case Classes.Rogue:
-                    ApplyNewEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
-                    break;
-                case Classes.Ranger:
-                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
-                    {
-                        ressource1 -= 10;
-                        
-                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
-                        BasicAttack();
-                        
-                        ApplyNewEffect(TypeEffect.MadeADash, 0.2f);
-                    }
-                    break;
-                case Classes.Warrior:
-                    isBlocking = true;
-                    break;
+//                case Classes.Mage:
+//                    EffectController.ApplyEffect(this, regen);
+//                    break;
+//                case Classes.Rogue:
+//                    EffectController.ApplyEffect(this, invisible);
+//                    break;
+//                case Classes.Ranger:
+//                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
+//                    {
+//                        ressource1 -= 10;
+//
+//                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
+//                        BasicAttack();
+//
+//                        EffectController.ApplyNewEffectToEntity(this, TypeEffect.MadeADash, 0.2f);
+//                    }
+//                    break;
+//                case Classes.Warrior:
+//                    isBlocking = true;
+//                    break;
             }
         }
 
         public override void DesactiveBasicDefense()
         {
-            switch (mainClass)
-            {
-                case Classes.Mage:
-                    RemoveEffect(TypeEffect.Regen);
-                    break;
-                case Classes.Rogue:
-                    RemoveEffect(TypeEffect.Invisibility);
-                    break;
-                case Classes.Ranger:
-                    break;
-                case Classes.Warrior:
-                    nbShieldBlock = 0;
-                    isBlocking = false;
-                    break;
-            }
+//            switch (mainClass)
+//            {
+//                case Classes.Mage:
+//                    EffectController.RemoveEffect(this, TypeEffect.Regen);
+//                    break;
+//                case Classes.Rogue:
+//                    EffectController.RemoveEffect(this, TypeEffect.Invisibility);
+//                    break;
+//                case Classes.Ranger:
+//                    break;
+//                case Classes.Warrior:
+//                    nbShieldBlock = 0;
+//                    isBlocking = false;
+//                    break;
+//            }
         }
 
         public void InitPlayerStats(Classes classe)
@@ -146,6 +149,12 @@ namespace Games.Players
             InitEquipementArray();
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
+
+//            Effect effect = new Effect { typeEffect = TypeEffect.Charm, level = 1, launcher = this, durationInSeconds = 5};
+//            damageDealExtraEffect.Add(TypeEffect.Expulsion, effect);
+
+//            Effect effect = new Effect { typeEffect = TypeEffect.Confusion, launcher = this, durationInSeconds = 5};
+//            EffectController.ApplyEffect(this, effect);
         }
 
         private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
@@ -177,29 +186,37 @@ namespace Games.Players
             weapons.Add(weapon);
         }
 
-        public override void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
+        public override void TakeDamage(float initialDamage, AbilityParameters abilityParameters, bool takeTrueDamage = false)
         {
-            if (isBlocking)
-            {
-                nbShieldBlock++;
-                if (nbShieldBlock > 4)
-                {
-                    ApplyNewEffect(TypeEffect.Stun, 3, 1);
-                    DesactiveBasicDefense();
-                }
+//            if (isBlocking)
+//            {
+//                nbShieldBlock++;
+//                if (nbShieldBlock > 4)
+//                {
+//                    EffectController.ApplyNewEffectToEntity(this, TypeEffect.Stun, 3, 1);
+//                    DesactiveBasicDefense();
+//                }
+//
+//                return;
+//            }
 
-                return;
-            }
-
-            base.TakeDamage(initialDamage, abilityParameters);
+            base.TakeDamage(initialDamage, abilityParameters, takeTrueDamage);
         }
         
         public override void ApplyDamage(float directDamage)
         {
             base.ApplyDamage(directDamage);
-
+            
             if (hp <= 0)
             {
+                if (shooldResurrect)
+                {
+                    hp = initialHp / 2;
+                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
+
+                    return;
+                }
+                
                 TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
                 Debug.Log("Vous êtes mort");
                 Cursor.lockState = CursorLockMode.None;

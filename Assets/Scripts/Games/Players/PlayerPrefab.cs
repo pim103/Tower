@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
 using Games.Global;
-using Games.Global.Abilities.SpecialSpellPrefab;
-//using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
@@ -11,7 +9,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
-    public class PlayerPrefab : PlayerIntent, EffectInterface
+    public class PlayerPrefab : PlayerIntent
     {
         private const int PLAYER_SPEED = 10;
 
@@ -33,12 +31,13 @@ namespace Games.Players
         [SerializeField] private bool isFakePlayer = false;
 
         public int playerIndex;
-        public bool canMove;
 
         private Vector3 positionPointed;
 
         public bool grounded;
         public bool ejected;
+
+        public bool wasConfusing = false;
 
         private void Awake()
         {
@@ -54,7 +53,6 @@ namespace Games.Players
 
             player.SetPlayerPrefab(this);
             player.InitPlayerStats(ChooseDeckAndClasse.currentRoleIdentity.classe);
-            player.effectInterface = this;
 
             wantToGoBack = false;
             wantToGoForward = false;
@@ -110,10 +108,7 @@ namespace Games.Players
                 Movement();
             }
 
-            if (!cameraBlocked)
-            {
-                CameraRotation();
-            }
+            CameraRotation();
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.up * -1), 0.1f,
                 LayerMask.GetMask("Ground")))
@@ -133,7 +128,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (entity.underEffects.ContainsKey(TypeEffect.Stun) || entity.underEffects.ContainsKey(TypeEffect.Sleep))
+            if (!canDoSomething || entity.isFeared || entity.isCharmed)
             {
                 wantToGoBack = false;
                 wantToGoForward = false;
@@ -142,40 +137,117 @@ namespace Games.Players
                 return;
             }
 
+            if (wasConfusing != entity.isConfuse)
+            {
+                bool tempIntent = wantToGoBack;
+                wantToGoBack = wantToGoForward;
+                wantToGoForward = tempIntent;
+
+                tempIntent = wantToGoLeft;
+                wantToGoLeft = wantToGoRight;
+                wantToGoRight = tempIntent;
+
+                wasConfusing = entity.isConfuse;
+            }
+
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                wantToGoForward = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoBack = true;
+                }
+                else
+                {
+                    wantToGoForward = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                wantToGoBack = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoForward = true;
+                }
+                else
+                {
+                    wantToGoBack = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                wantToGoLeft = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoRight = true;
+                }
+                else
+                {
+                    wantToGoLeft = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                wantToGoRight = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoLeft = true;
+                }
+                else
+                {
+                    wantToGoRight = true;   
+                }
             }
 
             if (Input.GetKeyUp(KeyCode.Z))
             {
-                wantToGoForward = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoBack = false;
+                }
+                else
+                {
+                    wantToGoForward = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.S))
             {
-                wantToGoBack = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoForward = false;
+                }
+                else
+                {
+                    wantToGoBack = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                wantToGoLeft = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoRight = false;
+                }
+                else
+                {
+                    wantToGoLeft = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.D))
             {
-                wantToGoRight = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoLeft = false;
+                }
+                else
+                {
+                    wantToGoRight = false;   
+                }
             }
 
+            if (!canMove)
+            {
+                wantToGoBack = false;
+                wantToGoForward = false;
+                wantToGoLeft = false;
+                wantToGoRight = false;
+            }
+            
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
 
             if (!intentBlocked)
@@ -195,7 +267,7 @@ namespace Games.Players
                     pressDefenseButton = false;
                 }
 
-                if (!entity.doingSkill)
+                if (!entity.doingSkill && !entity.isSilence)
                 {
                     if (Input.GetKey(KeyCode.Alpha1))
                     {
@@ -272,7 +344,7 @@ namespace Games.Players
                         switch (spellInstruction.TypeSpellInstruction)
                         {
                             case TypeSpellInstruction.SelfEffect:
-                                entity.ApplyEffect(spellInstruction.effect);
+                                EffectController.ApplyEffect(entity, spellInstruction.effect);
                                 break;
                             case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
                                 entity.damageDealExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
@@ -306,14 +378,6 @@ namespace Games.Players
                         {
                             areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
                             spell.spellInstantiate = areaSpell;
-                        }
-
-                        if (positionPointed != Vector3.zero && areaSpell != null)
-                        {
-                            AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
-                            areaSpellScript.origin = entity;
-
-                            areaSpellScript.SetPreviewLocation(positionPointed);
                         }
                     }
                     break;
@@ -354,13 +418,13 @@ namespace Games.Players
                         ActiveSpellObject(spell, spellInstruction);
                         break;
                     case TypeSpellInstruction.SelfEffect:
-                        entity.ApplyEffect(spellInstruction.effect);
+                        EffectController.ApplyEffect(entity, spellInstruction.effect);
                         break;
                     case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
-                        StartCoroutine(AddDamageDealExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        StartCoroutine(EffectController.EffectControllerInstance.AddDamageDealExtraEffect(entity, spellInstruction.effect, spellInstruction.durationInstruction));
                         break;
                     case TypeSpellInstruction.SelfEffectOnDamageReceive:
-                        StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
+                        StartCoroutine(EffectController.EffectControllerInstance.AddDamageReceiveExtraEffect(entity, spellInstruction.effect, spellInstruction.durationInstruction));
                         break;
                     case TypeSpellInstruction.SpecialMovement:
                         PlaySpecialMovement(spellInstruction.specialMovement, spellInstruction.durationInstruction);
@@ -394,15 +458,6 @@ namespace Games.Players
                 case TypeSpellObject.GroundArea:
                     GameObject areaSpell = spell.spellInstantiate;
 
-                    if (positionPointed != Vector3.zero && areaSpell != null)
-                    {
-                        AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
-                        areaSpellScript.origin = entity;
-                            
-                        areaSpell.transform.position = positionPointed;
-                        areaSpell.SetActive(true);
-                        areaSpellScript.EnableAreaEffect();
-                    }
                     break;
                 case TypeSpellObject.OnHimself:
                     GameObject objectPooled =
@@ -446,13 +501,17 @@ namespace Games.Players
                 currentSpeed = entity.speed;
             }
 
-            Vector3 locVel = transform.InverseTransformDirection(rigidbody.velocity);
-            locVel.x = horizontalMove * currentSpeed;
-            locVel.z = verticalMove * currentSpeed;
-
-            if (entity != null && entity.underEffects.ContainsKey(TypeEffect.Slow))
+            Vector3 locVel;
+            if ( (entity.isFeared || entity.isCharmed) && canDoSomething)
             {
-                locVel /= 2;
+                locVel = transform.InverseTransformDirection(forcedDirection);
+                locVel *= currentSpeed;
+            }
+            else
+            {
+                locVel = transform.InverseTransformDirection(rigidbody.velocity);
+                locVel.x = horizontalMove * currentSpeed;
+                locVel.z = verticalMove * currentSpeed;
             }
 
             if (grounded && !ejected)
@@ -463,6 +522,20 @@ namespace Games.Players
 
         private void CameraRotation()
         {
+            if (entity.isFeared)
+            {
+                Entity launcher = entity.underEffects[TypeEffect.Fear].launcher;
+                transform.LookAt(launcher.entityPrefab.transform);
+                transform.Rotate(Vector3.up * 180);
+                return;
+            }
+            else if(entity.isCharmed)
+            {
+                Entity launcher = entity.underEffects[TypeEffect.Charm].launcher;
+                transform.LookAt(launcher.entityPrefab.transform);
+                return;
+            }
+            
             int rotationSpeed = 5;
             
             float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
@@ -472,18 +545,12 @@ namespace Games.Players
 
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
-//            virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
             if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Explosion")))
             {
                 positionPointed = hit.point;
-
-//                if (entity.weapons[0].type != TypeWeapon.Cac)
-//                {
-//                    virtualHand.transform.LookAt(positionPointed);
-//                }
             }
             else
             {

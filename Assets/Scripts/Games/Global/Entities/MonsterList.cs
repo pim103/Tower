@@ -49,10 +49,14 @@ namespace Games.Global.Entities
             clone.OnDamageReceive = orig.OnDamageReceive;
             clone.att = orig.att;
             clone.def = orig.def;
+            clone.magicalDef = orig.magicalDef;
+            clone.physicalDef = orig.physicalDef;
             clone.hp = orig.hp;
             clone.speed = orig.speed;
             clone.initialAtt = orig.att;
             clone.initialDef = orig.def;
+            clone.initialMagicalDef = orig.magicalDef;
+            clone.initialPhysicalDef = orig.physicalDef;
             clone.initialHp = orig.hp;
             clone.initialSpeed = orig.speed;
             clone.modelName = orig.modelName;
