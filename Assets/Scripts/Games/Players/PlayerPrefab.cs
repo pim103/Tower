@@ -37,6 +37,9 @@ namespace Games.Players
 
         private Vector3 positionPointed;
 
+        public bool grounded;
+        public bool ejected;
+
         private void Awake()
         {
             if (isFakePlayer)
@@ -111,6 +114,21 @@ namespace Games.Players
             {
                 CameraRotation();
             }
+
+            if (Physics.Raycast(playerTransform.position, (camera.transform.up * -1), 0.1f,
+                LayerMask.GetMask("Ground")))
+            {
+                if (grounded)
+                {
+                    ejected = false;
+                }
+                grounded = true;
+            }
+            else
+            {
+                grounded = false;
+            }
+
         }
 
         public void GetIntentPlayer()
@@ -404,20 +422,20 @@ namespace Games.Players
             int horizontalMove = 0;
             int verticalMove = 0;
 
-            if(wantToGoForward)
+            if (wantToGoForward)
             {
                 verticalMove += 1;
             }
-            else if(wantToGoBack)
+            else if (wantToGoBack)
             {
                 verticalMove -= 1;
             }
 
-            if(wantToGoLeft)
+            if (wantToGoLeft)
             {
                 horizontalMove -= 1;
             }
-            else if(wantToGoRight)
+            else if (wantToGoRight)
             {
                 horizontalMove += 1;
             }
@@ -427,7 +445,7 @@ namespace Games.Players
             {
                 currentSpeed = entity.speed;
             }
-            
+
             Vector3 locVel = transform.InverseTransformDirection(rigidbody.velocity);
             locVel.x = horizontalMove * currentSpeed;
             locVel.z = verticalMove * currentSpeed;
@@ -437,7 +455,10 @@ namespace Games.Players
                 locVel /= 2;
             }
 
-            rigidbody.velocity = transform.TransformDirection(locVel);
+            if (grounded && !ejected)
+            {
+                rigidbody.velocity = transform.TransformDirection(locVel);
+            }
         }
 
         private void CameraRotation()

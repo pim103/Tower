@@ -300,6 +300,17 @@ namespace Games.Defenses
                 }
             }
 
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && objectInHand && objectInHand.layer == LayerMask.NameToLayer("Trap"))
+            {
+                objectInHand.GetComponent<TrapBehavior>().rotation += 1; 
+                objectInHand.transform.Rotate(Vector3.up,90);
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f && objectInHand && objectInHand.layer == LayerMask.NameToLayer("Trap"))
+            {
+                objectInHand.GetComponent<TrapBehavior>().rotation -= 1; 
+                objectInHand.transform.Rotate(Vector3.up,-90);
+            }
+
             if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && !aboveMap)
             {
                 currentCardBehaviorInGame.groupParent.SetActive(false);
