@@ -543,6 +543,20 @@ namespace Games.Players
 
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
+            
+            Quaternion q = cameraPoint.transform.localRotation;
+            
+            q.x /= q.w;
+            q.y /= q.w;
+            q.z /= q.w;
+            q.w = 1.0f;
+
+            float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.x);
+
+            angleX = Mathf.Clamp (angleX, -25, 30);
+            q.x = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleX);
+
+            cameraPoint.transform.localRotation = q;
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
