@@ -111,7 +111,12 @@ namespace Games.Global.Weapons
         public bool TouchEntity(Entity entity, Vector3 originDamage)
         {
             AbilityParameters abilityParameters = new AbilityParameters {origin = wielder, directTarget = entity};
-
+            bool isPhysic = false;
+            bool isMagic = false;
+            if (entity.hasDivineShield || (entity.isIntangible && isPhysic) || (entity.hasAntiSpell && isMagic) || wielder.isBlind)
+            {
+                return true;
+            }
             weapon.OnDamageDealt(abilityParameters);
             foreach (Armor armor in wielder.armors)
             {
