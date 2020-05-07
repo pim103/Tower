@@ -5,6 +5,7 @@ using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using Debug = UnityEngine.Debug;
 
 namespace Games.Players
@@ -26,6 +27,9 @@ namespace Games.Players
         [SerializeField] public Camera camera;
         [SerializeField] public GameObject cameraGameObject;
         [SerializeField] private GameObject originalCameraPosition;
+        [SerializeField] private SkinnedMeshRenderer[] skins;
+        
+        private Material[] materialBackUpForSkin;
 
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
@@ -103,11 +107,7 @@ namespace Games.Players
                 return;
             }
 
-            if (!entity.underEffects.ContainsKey(TypeEffect.MadeADash) && !movementBlocked)
-            {
-                Movement();
-            }
-
+            Movement();
             CameraRotation();
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.up * -1), 0.1f,
@@ -252,7 +252,7 @@ namespace Games.Players
 
             if (!intentBlocked)
             {
-                if(Input.GetMouseButton(0))
+                if(Input.GetMouseButton(0) && entity.canBasicAttack)
                 {
                     entity.BasicAttack();
                 }
@@ -401,13 +401,11 @@ namespace Games.Players
 
             if (spell.castTime > 0)
             {
-                movementBlocked = true;
                 intentBlocked = true;
             }
             
             yield return new WaitForSeconds(spell.castTime);
 
-            movementBlocked = false;
             intentBlocked = false;
             
             foreach (SpellInstruction spellInstruction in spell.spellInstructions)
@@ -565,6 +563,32 @@ namespace Games.Players
             else
             {
                 camera.transform.position = originalCameraPosition.transform.position;
+            }
+        }
+
+        public override void SetInvisibility()
+        {
+            Debug.Log("Aloa");
+            int count = 0;
+
+            if (materialBackUpForSkin == null)
+            {
+                materialBackUpForSkin = new Material[skins.Length];
+            }
+            
+            foreach (SkinnedMeshRenderer skin in skins)
+            {
+                if (entity.isInvisible)
+                {
+                    materialBackUpForSkin[count] = skin.material;
+                    skin.material = StaticMaterials.invisibleMaterial;
+                }
+                else
+                {
+                    skin.material = materialBackUpForSkin[count];
+                }
+
+                count++;
             }
         }
     }

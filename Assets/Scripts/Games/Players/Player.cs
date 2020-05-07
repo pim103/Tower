@@ -153,8 +153,8 @@ namespace Games.Players
 //            Effect effect = new Effect { typeEffect = TypeEffect.Charm, level = 1, launcher = this, durationInSeconds = 5};
 //            damageDealExtraEffect.Add(TypeEffect.Expulsion, effect);
 
-//            Effect effect = new Effect { typeEffect = TypeEffect.Confusion, launcher = this, durationInSeconds = 5};
-//            EffectController.ApplyEffect(this, effect);
+            Effect effect = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, durationInSeconds = 5};
+            EffectController.ApplyEffect(this, effect);
         }
 
         private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)

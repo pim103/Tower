@@ -109,6 +109,11 @@ namespace Games.Global
         public bool isFeared = false;
         public bool isCharmed = false;
         public bool isBlind = false;
+        public bool canBasicAttack = true;
+        public bool hasLifeSteal = false;
+        public bool hasTaunt = false;
+        public bool hasNoAggro = false;
+        public bool isUnkillableByBleeding = false;
         
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
@@ -134,7 +139,7 @@ namespace Games.Global
             {
                 return;
             }
-            
+
             if (takeTrueDamage ||
                 (originDamage.canPierceOnBack && 
                  playerInBack.Contains(abilityParameters.origin.IdEntity)
@@ -152,6 +157,14 @@ namespace Games.Global
                 }
             }
 
+            if (originDamage.hasLifeSteal)
+            {
+                originDamage.hp += damageReceived * originDamage.underEffects[TypeEffect.LifeSteal].level;
+                if (originDamage.hp > originDamage.initialHp)
+                {
+                    originDamage.hp = originDamage.initialHp;
+                }
+            }
             ApplyDamage(damageReceived);
 
             if (OnDamageReceive != null)

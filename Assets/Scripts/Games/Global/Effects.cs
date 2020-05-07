@@ -40,16 +40,30 @@ namespace Games.Global
         Charm,
         Regen,
         Blind,
-
-        Invisibility,
-        AttackSpeedUp,
-        Link,
         AttackUp,
         SpeedUp,
+        AttackSpeedUp,
+        DotDamageIncrease,
         Untargetable,
+        Heal,
+        ResourceFill,
 
-        MadeADash,
-        DotDamageIncrease
+        DisableBasicAttack,
+        LifeSteal,
+        Taunt,
+        NoAggro,
+        UnkillableByBleeding,
+        Invisibility,
+        Link,
+        
+        LifeLink,
+        RefreshCd1,
+        RefreshCd2,
+        RefreshCd3,
+        ReduceCd1,
+        ReduceCd2,
+        ReduceCd3,
+        DesactivePassive
     }
 
     public enum OriginExpulsion
@@ -99,16 +113,8 @@ namespace Games.Global
                     entity.entityPrefab.canDoSomething = false;
                     break;
                 case TypeEffect.Invisibility:
-                    entity.entityPrefab.SetMaterial(StaticMaterials.invisibleMaterial);
-                    break;
-                case TypeEffect.AttackSpeedUp:
-                    entity.attSpeed = entity.initialAttSpeed + (0.5f * level);
-                    break;
-                case TypeEffect.AttackUp:
-                    entity.att = entity.initialAtt + (1 * level);
-                    break;
-                case TypeEffect.SpeedUp:
-                    entity.speed = entity.initialSpeed + (1 * level);
+                    entity.isInvisible = true;
+                    entity.entityPrefab.SetInvisibility();
                     break;
                 case TypeEffect.Immobilization:
                     entity.entityPrefab.canMove = false;
@@ -134,6 +140,12 @@ namespace Games.Global
                     break;
                 case TypeEffect.Resurrection:
                     entity.shooldResurrect = true;
+                    break;
+                case TypeEffect.Weak:
+                    entity.isWeak = true;
+                    break;
+                case TypeEffect.Heal:
+                    entity.hp += level;
                     break;
                 case TypeEffect.Purification:
                     List<Effect> effects = entity.underEffects.Values.ToList();
@@ -180,6 +192,27 @@ namespace Games.Global
                 case TypeEffect.Blind:
                     entity.isBlind = true;
                     break;
+                case TypeEffect.Untargetable:
+                    entity.isUntargeatable = true;
+                    break;
+                case TypeEffect.DisableBasicAttack:
+                    entity.canBasicAttack = false;
+                    break;
+                case TypeEffect.LifeSteal:
+                    entity.hasLifeSteal = true;
+                    break;
+                case TypeEffect.Taunt:
+                    entity.hasTaunt = true;
+                    break;
+                case TypeEffect.NoAggro:
+                    entity.hasNoAggro = true;
+                    break;
+                case TypeEffect.ResourceFill:
+                    entity.ressource1 += level;
+                    break;
+                case TypeEffect.UnkillableByBleeding:
+                    entity.isUnkillableByBleeding = true;
+                    break;
             }
         }
 
@@ -190,8 +223,11 @@ namespace Games.Global
             
             switch (typeEffect)
             {
+                case TypeEffect.SpeedUp:
+                    entity.speed = entity.initialSpeed + (1 * level);
+                    break;
                 case TypeEffect.Slow:
-                    entity.speed = entity.initialSpeed / 2;
+                    entity.speed = entity.underEffects.ContainsKey(TypeEffect.SpeedUp) ? entity.speed / 2 : entity.initialSpeed / 2;
                     break;
                 case TypeEffect.Burn:
                     if (entity.underEffects.ContainsKey(TypeEffect.Sleep))
@@ -218,7 +254,15 @@ namespace Games.Global
                         Effect sleep = entity.underEffects[TypeEffect.Sleep];
                         EffectController.StopCurrentEffect(entity, sleep);
                     }
-                    entity.ApplyDamage(0.1f * level);
+
+                    if ((entity.hp - 0.1f * level) < 0 && entity.isUnkillableByBleeding)
+                    {
+                        entity.hp = 1;
+                    }
+                    else
+                    {
+                        entity.ApplyDamage(0.1f * level);
+                    }
                     break;
                 case TypeEffect.Poison:
                     entity.ApplyDamage(0.1f + extraDamage);
@@ -232,8 +276,14 @@ namespace Games.Global
                 case TypeEffect.MagicalDefUp:
                     entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef) ? (1 * level) : entity.initialMagicalDef + (1 * level);
                     break;
+                case TypeEffect.AttackUp:
+                    entity.att = entity.initialAtt + (1 * level);
+                    break;
+                case TypeEffect.AttackSpeedUp:
+                    entity.attSpeed = entity.initialAttSpeed + (0.5f * level);
+                    break;
                 case TypeEffect.Regen:
-                    entity.hp += 0.2f;
+                    entity.hp += 0.2f * level;
                     break;
                 case TypeEffect.Fear:
                     originExpulsion = OriginExpulsion.Entity;
@@ -275,6 +325,9 @@ namespace Games.Global
                         entity.entityPrefab.canDoSomething = true;
                     }
                     break;
+                case TypeEffect.SpeedUp:
+                    entity.speed = entity.initialSpeed;
+                    break;
                 case TypeEffect.Slow:
                 case TypeEffect.Freezing:
                     entity.speed = entity.initialSpeed;
@@ -283,15 +336,13 @@ namespace Games.Global
                     entity.def = entity.initialDef;
                     break;
                 case TypeEffect.Invisibility:
-                    entity.entityPrefab.SetMaterial(StaticMaterials.defaultMaterial);
+                    entity.isInvisible = false;
+                    entity.entityPrefab.SetInvisibility();
                     break;
                 case TypeEffect.AttackSpeedUp:
                     entity.attSpeed = entity.initialAttSpeed;
                     break;
                 case TypeEffect.AttackUp:
-                    entity.speed = entity.initialSpeed;
-                    break;
-                case TypeEffect.SpeedUp:
                     entity.att = entity.initialAtt;
                     break;
                 case TypeEffect.Immobilization:
@@ -344,6 +395,27 @@ namespace Games.Global
                 case TypeEffect.Blind:
                     entity.isBlind = false;
                     break;
+                case TypeEffect.Weak:
+                    entity.isWeak = false;
+                    break;
+                case TypeEffect.Untargetable:
+                    entity.isUntargeatable = false;
+                    break;
+                case TypeEffect.DisableBasicAttack:
+                    entity.canBasicAttack = true;
+                    break;
+                case TypeEffect.LifeSteal:
+                    entity.hasLifeSteal = false;
+                    break;
+                case TypeEffect.Taunt:
+                    entity.hasTaunt = false;
+                    break;
+                case TypeEffect.NoAggro:
+                    entity.hasNoAggro = false;
+                    break;
+                case TypeEffect.UnkillableByBleeding:
+                    entity.isUnkillableByBleeding = false;
+                    break;
             }
         }
 
@@ -378,6 +450,9 @@ namespace Games.Global
                         }
                     }
                     break;
+                case TypeEffect.AttackUp:
+                case TypeEffect.SpeedUp:
+                case TypeEffect.AttackSpeedUp:
                 case TypeEffect.Bleed:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
@@ -390,10 +465,26 @@ namespace Games.Global
                     }
                     break;
                 case TypeEffect.Weak:
-                case TypeEffect.AttackUp:
-                case TypeEffect.SpeedUp:
-                case TypeEffect.Regen:
                 case TypeEffect.Blind:
+                case TypeEffect.Untargetable:
+                case TypeEffect.DisableBasicAttack:
+                case TypeEffect.Immobilization:
+                case TypeEffect.Thorn:
+                case TypeEffect.Mirror:
+                case TypeEffect.Slow:
+                case TypeEffect.Intangible:
+                case TypeEffect.AntiSpell:
+                case TypeEffect.DivineShield:
+                case TypeEffect.Resurrection:
+                case TypeEffect.Silence:
+                case TypeEffect.BrokenDef:
+                case TypeEffect.Confusion:
+                case TypeEffect.Will:
+                case TypeEffect.DotDamageIncrease:
+                case TypeEffect.Taunt:
+                case TypeEffect.NoAggro:
+                case TypeEffect.UnkillableByBleeding:
+                case TypeEffect.Invisibility:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
                         durationInSeconds = newEffect.durationInSeconds;
@@ -402,6 +493,8 @@ namespace Games.Global
                 case TypeEffect.MagicalDefUp:
                 case TypeEffect.PhysicalDefUp:
                 case TypeEffect.DefenseUp:
+                case TypeEffect.Regen:
+                case TypeEffect.LifeSteal:
                     durationInSeconds = newEffect.durationInSeconds;
                     level = newEffect.level;
                     break;

@@ -45,7 +45,6 @@ namespace Games.Global
 
         public Entity entity;
 
-        public bool movementBlocked = false;
         public bool cameraBlocked = false;
         public bool intentBlocked = false;
 
@@ -120,6 +119,10 @@ namespace Games.Global
         public void SetMaterial(Material material)
         {
             meshRenderer.material = material;
+        }
+
+        public virtual void SetInvisibility()
+        {
         }
     }
 }

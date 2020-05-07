@@ -903,13 +903,14 @@ MonoBehaviour:
   angleWithOneRight: {fileID: 3590441326526159950}
   positionInLeftHand: {fileID: 1897464822735068468}
   angleWithOneLeft: {fileID: 5161579070902402284}
-  movementBlocked: 0
   cameraBlocked: 0
   intentBlocked: 0
   isCharging: 0
+  canDoSomething: 1
+  canMove: 1
+  forcedDirection: {x: 0, y: 0, z: 0}
   hpBar: {fileID: 8442522903739256182}
   navMeshAgent: {fileID: 6427951248319800584}
-  aggroForced: 0
   target: {fileID: 0}
 --- !u!136 &2871207911170149337
 CapsuleCollider:
@@ -2549,6 +2550,21 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5727908350623542550, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3128078519584202232, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2569,27 +2585,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 15.876
       objectReference: {fileID: 0}
-    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5727908350623542550, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
@@ -2599,7 +2600,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0

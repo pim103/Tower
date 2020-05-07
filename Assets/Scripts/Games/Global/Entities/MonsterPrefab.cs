@@ -14,8 +14,7 @@ namespace Games.Global.Entities
 
         private PlayerPrefab playerPrefab;
 
-        public bool aggroForced;
-        public PlayerPrefab target;
+        public EntityPrefab target;
 
         private Monster monster;
         
@@ -23,7 +22,6 @@ namespace Games.Global.Entities
         {
             playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
             entity.playerInBack = new List<int>();
-            aggroForced = false;
         }
 
         private void Update()
@@ -39,10 +37,7 @@ namespace Games.Global.Entities
                 return;
             }
 
-            if (!aggroForced)
-            {
-                FindTarget();
-            }
+            FindTarget();
 
             if (canMove)
             {
@@ -58,19 +53,19 @@ namespace Games.Global.Entities
         {
             PlayerPrefab newTarget = null;
 
-            if (!aggroForced)
+            foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
             {
-                foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+                PlayerPrefab player = value.Value;
+                if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
                 {
-                    if (!value.Value.entity.isInvisible && !value.Value.entity.isUntargeatable)
-                    {
-                        newTarget = value.Value;
-                    }
+                    newTarget = player;
                 }
-            }
-            else
-            {
-                newTarget = target;
+
+                if (player.entity.hasTaunt)
+                {
+                    newTarget = player;
+                    break;
+                }
             }
 
             if (newTarget != null)
@@ -117,6 +112,18 @@ namespace Games.Global.Entities
 //                    navMeshAgent.SetDestination(transform.position);
 //                }
 //            }
+        }
+
+        public override void SetInvisibility()
+        {
+            if (entity.isInvisible)
+            {
+                meshRenderer.gameObject.SetActive(false);
+            }
+            else
+            {
+                meshRenderer.gameObject.SetActive(true);
+            }
         }
     }
 }
