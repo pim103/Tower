@@ -325,33 +325,9 @@ namespace Games.Global
                     entity.isSilence = false;
                     break;
                 case TypeEffect.BrokenDef:
-                    if (entity.underEffects.ContainsKey(TypeEffect.DefenseUp))
-                    {
-                        entity.def += entity.initialDef;
-                    }
-                    else
-                    {
-                        entity.def = entity.initialDef;
-                    }
-                    
-                    if (entity.underEffects.ContainsKey(TypeEffect.MagicalDefUp))
-                    {
-                        entity.magicalDef += entity.initialMagicalDef;
-                    }
-                    else
-                    {
-                        entity.magicalDef = entity.initialMagicalDef;
-                    }
-
-                    if (entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp))
-                    {
-                        entity.physicalDef += entity.initialPhysicalDef;
-                    }
-                    else
-                    {
-                        entity.physicalDef = entity.initialPhysicalDef;
-                    }
-
+                    entity.def = entity.underEffects.ContainsKey(TypeEffect.DefenseUp) ? entity.def + entity.initialDef : entity.initialDef;
+                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.MagicalDefUp) ? entity.magicalDef + entity.initialMagicalDef : entity.initialMagicalDef;
+                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp) ? entity.physicalDef + entity.initialPhysicalDef : entity.initialPhysicalDef;
                     break;
                 case TypeEffect.Confusion:
                     entity.isConfuse = false;
