@@ -42,7 +42,6 @@ namespace Games.Global.Entities
 
             clone.family = orig.family;
             clone.id = orig.id;
-            clone.skills = orig.skills;
             clone.mobName = orig.mobName;
             clone.nbWeapon = orig.nbWeapon;
             clone.OnDamageDealt = orig.OnDamageDealt;

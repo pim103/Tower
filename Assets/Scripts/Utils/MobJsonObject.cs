@@ -130,7 +130,7 @@ namespace Utils
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
             monster.modelName = modelName;
 
-            monster.skills = new List<Spell>();
+            // TODO : Implement spell with new system
 //            foreach (string skill in skills)
 //            {
 //                Spell newSpell = new Spell();

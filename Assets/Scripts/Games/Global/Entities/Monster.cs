@@ -14,8 +14,6 @@ namespace Games.Global.Entities
         public string weaponOriginalName;
 
         public Family family;
-        
-        public List<Spell> skills;
 
         public TypeWeapon constraint;
 

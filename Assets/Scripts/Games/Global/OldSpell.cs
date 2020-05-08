@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Games.Global
 {
-    public enum TypeSpell
+    public enum OldTypeSpell
     {
         Active,
         Passive,
@@ -15,7 +15,7 @@ namespace Games.Global
         ToggleWithPassive
     }
     
-    public enum TypeSpellInstruction
+    public enum OldTypeSpellInstruction
     {
         SelfEffect,
         EffectOnTargetWhenDamageDeal,
@@ -27,7 +27,7 @@ namespace Games.Global
         SpecialMovement
     }
 
-    public enum TypeSpellObject
+    public enum OldTypeSpellObject
     {
         Projectile,
         GroundArea,
@@ -35,16 +35,16 @@ namespace Games.Global
         OnHimself
     }
 
-    public struct WeaponNewStats
+    public struct OldWeaponNewStats
     {
         public float attSpeedModifier;
         public int damageModifier;
         public TypeWeapon typeWeapon;
     }
 
-    public struct SpellInstruction
+    public struct OldSpellInstruction
     {
-        public TypeSpellInstruction TypeSpellInstruction;
+        public OldTypeSpellInstruction OldTypeSpellInstruction;
         
         // If Type == effect
         public Effect effect;
@@ -54,24 +54,24 @@ namespace Games.Global
         
         // If type == instantiate or type == changeBasickAttack /* ID poolerSpell */
         public int idPoolObject;
-        public TypeSpellObject typeSpellObject;
+        public OldTypeSpellObject OldTypeSpellObject;
         
         // If type == changeBasicAttack
-        public WeaponNewStats weaponNewStats;
+        public OldWeaponNewStats OldWeaponNewStats;
         
         // Time wait before next instructions
         public float timeWait;
 
         // Passive or Active only when Spell.typeSpell == ActiveWithPassive || ToggleWithPassive
-        public TypeSpell specificTypeSpell;
+        public OldTypeSpell SpecificOldTypeSpell;
 
         // If Type == specialMovement
         public SpecialMovement specialMovement;
     }
 
-    public class Spell
+    public class OldSpell
     {
-        public TypeSpell typeSpell;
+        public OldTypeSpell OldTypeSpell;
         public int cost;
         public float castTime;
         public int cooldown;
@@ -81,19 +81,19 @@ namespace Games.Global
         // TODO : delete unused origin
         public Entity origin;
 
-        public List<SpellInstruction> spellInstructions;
+        public List<OldSpellInstruction> spellInstructions;
 
         // Specific for GroundArea with preview
         public GameObject spellInstantiate;
 
-        public Spell()
+        public OldSpell()
         {
-            typeSpell = TypeSpell.Active;
+            OldTypeSpell = OldTypeSpell.Active;
             cost = 0;
             castTime = 0;
             cooldown = 0;
             canLaunch = true;
-            spellInstructions = new List<SpellInstruction>();
+            spellInstructions = new List<OldSpellInstruction>();
         }
     }
 }

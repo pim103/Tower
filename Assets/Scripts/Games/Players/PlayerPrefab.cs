@@ -65,10 +65,6 @@ namespace Games.Players
             pressDefenseButton = false;
 
             StartCoroutine(NaturalRegen());
-
-            CheckPassiveSpell(entity.weapons[0].skill1);
-            CheckPassiveSpell(entity.weapons[0].skill2);
-            CheckPassiveSpell(entity.weapons[0].skill3);
         }
 
         private IEnumerator NaturalRegen()
@@ -271,201 +267,31 @@ namespace Games.Players
                 {
                     if (Input.GetKey(KeyCode.Alpha1))
                     {
-                        TryCastSpell(entity.weapons[0].skill1, true);
                     }
 
                     if (Input.GetKey(KeyCode.Alpha2))
                     {
-                        TryCastSpell(entity.weapons[0].skill2, true);
                     }
 
                     if (Input.GetKey(KeyCode.Alpha3))
                     {
-                        TryCastSpell(entity.weapons[0].skill3, true);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        TryCastSpell(entity.weapons[0].skill1);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
-                        TryCastSpell(entity.weapons[0].skill2);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
-                        TryCastSpell(entity.weapons[0].skill3);
                     }
                 }
             }
 
             mousePosition = Input.mousePosition;
-        }
-
-        private void TryCastSpell(Spell spell, bool isPreview = false)
-        {
-            if (spell.typeSpell == TypeSpell.Active ||
-                spell.typeSpell == TypeSpell.Toggle ||
-                spell.typeSpell == TypeSpell.ActiveWithPassive ||
-                spell.typeSpell == TypeSpell.ToggleWithPassive
-            )
-            {
-                if (spell.cost < entity.ressource1 && spell.canLaunch)
-                {
-                    if (isPreview)
-                    {
-                        ActivePreviewSpell(spell);
-                    }
-                    else
-                    {
-                        StartCoroutine(Cooldown(spell));
-                        StartCoroutine(CastSpell(spell));   
-                    }
-                }
-            }
-        }
-
-        private void CheckPassiveSpell(Spell spell)
-        {
-            if (spell == null)
-            {
-                return;
-            }
-
-            if (spell.typeSpell == TypeSpell.Passive || spell.typeSpell == TypeSpell.ActiveWithPassive)
-            {
-                foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-                {
-                    if ((spell.typeSpell == TypeSpell.ActiveWithPassive &&
-                        spellInstruction.specificTypeSpell == TypeSpell.Passive) || spell.typeSpell == TypeSpell.Passive)
-                    {
-                        switch (spellInstruction.TypeSpellInstruction)
-                        {
-                            case TypeSpellInstruction.SelfEffect:
-                                EffectController.ApplyEffect(entity, spellInstruction.effect);
-                                break;
-                            case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
-                                entity.damageDealExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
-                                break;
-                            case TypeSpellInstruction.SelfEffectOnDamageReceive:
-                                entity.damageReceiveExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
-                                break;;
-                            case TypeSpellInstruction.ChangeBasicAttack:
-                                Debug.Log("Change weapon");
-                                entity.weapons[0].idPoolProjectile = spellInstruction.idPoolObject;
-                                entity.weapons[0].type = spellInstruction.weaponNewStats.typeWeapon;
-                                entity.weapons[0].damage *= spellInstruction.weaponNewStats.damageModifier;
-                                entity.weapons[0].attSpeed *= spellInstruction.weaponNewStats.attSpeedModifier;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ActivePreviewSpell(Spell spell)
-        {
-            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-            {
-                if (spellInstruction.TypeSpellInstruction == TypeSpellInstruction.InstantiateSomething)
-                {
-                    if (spellInstruction.typeSpellObject == TypeSpellObject.GroundArea)
-                    {
-                        GameObject areaSpell = spell.spellInstantiate;
-                        if (areaSpell == null)
-                        {
-                            areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-                            spell.spellInstantiate = areaSpell;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        private IEnumerator Cooldown(Spell spell)
-        {
-            spell.canLaunch = false;
-            yield return new WaitForSeconds(spell.cooldown);
-            spell.canLaunch = true;
-
-            Debug.Log("Peux relancer le spell");
-        }
-        
-        private IEnumerator CastSpell(Spell spell)
-        {
-            // TODO : make anim
-            entity.ressource1 -= spell.cost;
-
-            if (spell.castTime > 0)
-            {
-                intentBlocked = true;
-            }
-            
-            yield return new WaitForSeconds(spell.castTime);
-
-            intentBlocked = false;
-            
-            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-            {
-                switch (spellInstruction.TypeSpellInstruction)
-                {
-                    case TypeSpellInstruction.InstantiateSomething:
-                        ActiveSpellObject(spell, spellInstruction);
-                        break;
-                    case TypeSpellInstruction.SelfEffect:
-                        EffectController.ApplyEffect(entity, spellInstruction.effect);
-                        break;
-                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
-                        StartCoroutine(EffectController.EffectControllerInstance.AddDamageDealExtraEffect(entity, spellInstruction.effect, spellInstruction.durationInstruction));
-                        break;
-                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
-                        StartCoroutine(EffectController.EffectControllerInstance.AddDamageReceiveExtraEffect(entity, spellInstruction.effect, spellInstruction.durationInstruction));
-                        break;
-                    case TypeSpellInstruction.SpecialMovement:
-                        PlaySpecialMovement(spellInstruction.specialMovement, spellInstruction.durationInstruction);
-                        break;
-                }
-            }
-        }
-
-        private void ActiveSpellObject(Spell spell, SpellInstruction spellInstruction)
-        {
-            switch (spellInstruction.typeSpellObject)
-            {
-                case TypeSpellObject.Projectile:
-                    GameObject projectileSpell =
-                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-
-                    Vector3 pos = transform.position;
-                    pos.y += 0.5f;
-                    projectileSpell.transform.position = pos;
-                    
-                    float rotX = projectileSpell.transform.localEulerAngles.x;
-                    projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
-                    projectileSpell.transform.forward *= 1.5f;
-
-                    projectileSpell.SetActive(true);
-
-                    ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
-                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
-                    projectilesPrefab.origin = entity;
-                    break;
-                case TypeSpellObject.GroundArea:
-                    GameObject areaSpell = spell.spellInstantiate;
-
-                    break;
-                case TypeSpellObject.OnHimself:
-                    GameObject objectPooled =
-                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-
-                    objectPooled.transform.localEulerAngles = transform.localEulerAngles;
-                    objectPooled.transform.position = transform.position;
-                    objectPooled.SetActive(true);
-                    break;
-            }
         }
 
         public void Movement()
