@@ -13,6 +13,11 @@ namespace Games.Global.Spells
     
     public class SummonSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Summon;
+        }
+
         public GameObject prefab;
         public float hp;
         public bool isTargetable;

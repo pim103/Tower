@@ -2,6 +2,11 @@
 {
     public class PassiveSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Passive;
+        }
+        
         public float interval;
         public SpellComponent linkedEffectOnInterval;
 

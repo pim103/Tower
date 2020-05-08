@@ -11,7 +11,15 @@ namespace Games.Global.Spells
     
     public enum TypeSpell
     {
-        
+        Buff,
+        SpecialAttack,
+        TargetedAttack,
+        AreaOfEffect,
+        Wave,
+        Projectile,
+        Summon,
+        Passive,
+        Transformation
     }
 
     public class SpellComponent: MonoBehaviour

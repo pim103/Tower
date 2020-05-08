@@ -5,6 +5,11 @@ namespace Games.Global.Spells
 {
     public class ProjectileSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Projectile;
+        }
+
         public GameObject prefab;
         public Vector3 trajectory;
         public float damages;

@@ -6,6 +6,11 @@ namespace Games.Global.Spells
 {
     public class AreaOfEffectSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.AreaOfEffect;
+        }
+        
         public float interval;
         public float duration;
         public Vector3 startPosition;

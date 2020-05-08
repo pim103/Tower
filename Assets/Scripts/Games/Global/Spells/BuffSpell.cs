@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 
 namespace Games.Global.Spells
@@ -11,6 +12,11 @@ namespace Games.Global.Spells
     
     public class BuffSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Buff;
+        }
+
         private float interval;
         public float duration;
 

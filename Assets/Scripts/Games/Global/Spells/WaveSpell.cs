@@ -5,6 +5,11 @@ namespace Games.Global.Spells
 {
     public class WaveSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Wave;
+        }
+
         public Vector3 startPosition;
         public int number;
         public Geometry geometryPropagation;
