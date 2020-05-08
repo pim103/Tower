@@ -211,14 +211,13 @@ namespace Games.Global
                 EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Sleep]);
             }
 
-            // TODO : check physical (thorn) or magical (mirror)
-            if (hasMirror)
+            if (hasMirror && isMagic)
             {
                 AbilityParameters newAbility = new AbilityParameters { origin = this };
                 abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, canPierce);
             }
 
-            if (hasThorn)
+            if (hasThorn && isPhysic)
             {
                 AbilityParameters newAbility = new AbilityParameters { origin = this };
                 abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, canPierce);

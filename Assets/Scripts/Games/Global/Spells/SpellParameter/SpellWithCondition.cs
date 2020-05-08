@@ -13,11 +13,11 @@
         PlayerDies,
         PlayerDoesntDie,
         
-        IfTargetHasEffect,
+        IfTargetHasEffectWhenHit,
         IfPlayerHasEffect,
         IfTargetDies,
 
-        EnemiesInArea,
+        MinEnemiesInArea,
         DamageIfTargetHasEffect
     }
     
@@ -26,7 +26,7 @@
         public InstructionTargeting instructionTargeting;
         public ConditionType conditionType;
 
-        public Effect effectOnSelf;
+        public Effect effect;
         public SpellComponent spellComponent;
 
         /* list condition */

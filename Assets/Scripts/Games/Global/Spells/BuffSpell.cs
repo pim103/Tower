@@ -31,9 +31,6 @@ namespace Games.Global.Spells
         public List<Effect> effectOnSelfOnDamageReceived;
         public List<Effect> effectOnTargetOnHit;
 
-        public Entity targetOnDamageReceived;
-        public int damagePercentageToTarget;
-
         public SpellComponent linkedSpellOnDamageReceived;
         public SpellComponent linkedSpellOnHit;
         public SpellComponent linkedSpellOnAttack;

@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 
 namespace Games.Global.Spells.SpellsController
@@ -27,6 +29,8 @@ namespace Games.Global.Spells.SpellsController
                 {
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval);
                 }
+
+                CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
             }
 
             while (buffSpell.stack > 0)
@@ -40,6 +44,35 @@ namespace Games.Global.Spells.SpellsController
             }
 
             EndBuff(entity, buffSpell);
+        }
+
+        private void CheckSpellWithCondition(Entity entity, List<SpellWithCondition> spellWithConditions)
+        {
+            List<SpellWithCondition> minEnemyInArea =
+                spellWithConditions.FindAll(spell => spell.conditionType == ConditionType.MinEnemiesInArea);
+
+            foreach (SpellWithCondition spellWithCondition in minEnemyInArea)
+            {
+                if (spellWithCondition.conditionType == ConditionType.MinEnemiesInArea)
+                {
+                    if (entity.entityInRange.Count >= spellWithCondition.level)
+                    {
+                        switch (spellWithCondition.instructionTargeting)
+                        {
+                            case InstructionTargeting.ApplyOnSelf:
+                                EffectController.ApplyEffect(entity, spellWithCondition.effect);
+                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent);
+                                break;
+                            case InstructionTargeting.ApplyOnTarget:
+                                break;
+                            case InstructionTargeting.DeleteOnSelf:
+                                break;
+                            case InstructionTargeting.DeleteOnTarget:
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         private void InitialBuff(Entity entity, BuffSpell buffSpell)
@@ -61,6 +94,30 @@ namespace Games.Global.Spells.SpellsController
                 entity.damageDealExtraEffect.Add(effect);
             }
 
+            List<SpellWithCondition> ifPlayerDies =
+                buffSpell.spellWithCondition.FindAll(condition =>
+                    condition.conditionType == ConditionType.PlayerDies);
+            List<SpellWithCondition> ifPlayerDoesntDie =
+                buffSpell.spellWithCondition.FindAll(condition =>
+                    condition.conditionType == ConditionType.PlayerDoesntDie);
+
+            if ((entity.hp - buffSpell.damageOnSelf) <= 0)
+            {
+                foreach (SpellWithCondition spellCondition in ifPlayerDies)
+                {
+                    EffectController.ApplyEffect(entity, spellCondition.effect);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent);
+                }
+            }
+            else
+            {
+                foreach (SpellWithCondition spellCondition in ifPlayerDoesntDie)
+                {
+                    EffectController.ApplyEffect(entity, spellCondition.effect);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent);
+                }
+            }
+
             entity.ApplyDamage(buffSpell.damageOnSelf);
         }
 
@@ -68,9 +125,12 @@ namespace Games.Global.Spells.SpellsController
         {
             entity.currentBuff.Remove(buffSpell);
 
-            foreach (Effect effect in buffSpell.effectOnSelf)
+            if (buffSpell.disapearOnDamageReceived)
             {
-                EffectController.StopCurrentEffect(entity, effect);
+                foreach (Effect effect in buffSpell.effectOnSelf)
+                {
+                    EffectController.StopCurrentEffect(entity, effect);
+                }
             }
 
             foreach (Effect effect in buffSpell.effectOnSelfOnDamageReceived)

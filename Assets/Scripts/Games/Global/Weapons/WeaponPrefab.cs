@@ -40,7 +40,8 @@ namespace Games.Global.Weapons
 
             weapon.FixAngleAttack(true, wielder);
 
-            do {
+            do
+            {
                 yield return new WaitForSeconds(0.1f);
             } while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay));
 
@@ -129,7 +130,7 @@ namespace Games.Global.Weapons
 
             BuffController.EntityReceivedDamage(entity);
 
-            if ( entity.hasDivineShield)
+            if (entity.hasDivineShield)
             {
                 return true;
             }
@@ -140,7 +141,8 @@ namespace Games.Global.Weapons
                 armor.OnDamageDealt(abilityParameters);
             }
 
-            List<Effect> effects = wielder.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
+            List<Effect> effects = wielder.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
+                .ToList();
             foreach (Effect effect in effects)
             {
                 Effect copy = effect;
