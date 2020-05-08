@@ -11,20 +11,44 @@ namespace Games.Global
     public class EffectController : MonoBehaviour
     {
         public static EffectController EffectControllerInstance;
-        public static readonly TypeEffect[] ControlEffect = {TypeEffect.Freezing, TypeEffect.Stun, TypeEffect.Sleep, TypeEffect.Immobilization, TypeEffect.Slow, TypeEffect.Expulsion, TypeEffect.Confusion, TypeEffect.Fear, TypeEffect.Charm };
+        public static readonly TypeEffect[] ControlEffect = {TypeEffect.Freezing, TypeEffect.Stun, TypeEffect.Sleep, TypeEffect.Immobilization, TypeEffect.Slow, TypeEffect.Expulsion, 
+            TypeEffect.Confusion, TypeEffect.Fear, TypeEffect.Charm };
+
+        public static readonly TypeEffect[] BuffEffect =
+        {
+            TypeEffect.Heal, TypeEffect.Regen, TypeEffect.Resurrection, TypeEffect.AttackUp, TypeEffect.AttackSpeedUp, TypeEffect.DefenseUp, TypeEffect.DivineShield, TypeEffect.AntiSpell, TypeEffect.Will, TypeEffect.Thorn, TypeEffect.Intangible,
+            TypeEffect.Mirror, TypeEffect.SpeedUp, TypeEffect.MagicalDefUp, TypeEffect.PhysicalDefUp, TypeEffect.Purification, TypeEffect.ResourceFill, TypeEffect.Link
+        };
 
         private void Start()
         {
             EffectControllerInstance = this;
         }
 
-        public static void ApplyEffect(Entity entity, Effect effect, bool canPropagate = true)
+        public static void ApplyEffect(Entity entity, Effect effect, List<Entity> affectedEntity = null)
         {
             if (entity.hasWill && ControlEffect.Contains(effect.typeEffect))
             {
                 return;
             }
-            
+
+            if (entity.isLinked && !BuffEffect.Contains(effect.typeEffect))
+            {
+                if (affectedEntity == null)
+                {
+                    affectedEntity = new List<Entity>();
+                }
+
+                affectedEntity.Add(entity);
+                foreach (Entity entityInRange in entity.entityInRange)
+                {
+                    if (!affectedEntity.Contains(entityInRange) && entityInRange.isLinked)
+                    {
+                        ApplyEffect(entityInRange, effect, affectedEntity);
+                    }
+                }
+            }
+
             if (entity.underEffects.ContainsKey(effect.typeEffect))
             {
                 Effect effectInList = entity.underEffects[effect.typeEffect];

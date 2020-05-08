@@ -219,16 +219,16 @@ namespace Games.Attacks
 
         private void Update()
         {
-            if (endOfGeneration)
-            {
-                if (DataObject.monsterInScene != null)
-                {
-                    foreach (Monster monster in DataObject.monsterInScene)
-                    {
-                        monster.BasicAttack();
-                    }   
-                }
-            }
+//            if (endOfGeneration)
+//            {
+//                if (DataObject.monsterInScene != null)
+//                {
+//                    foreach (Monster monster in DataObject.monsterInScene)
+//                    {
+//                        monster.BasicAttack();
+//                    }   
+//                }
+//            }
         }
 
         private void DesactiveDefenseMap()

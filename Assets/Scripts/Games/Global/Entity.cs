@@ -81,6 +81,8 @@ namespace Games.Global
 
         // Effect add to damage receive
         public Dictionary<TypeEffect, Effect> damageReceiveExtraEffect;
+
+        public List<Entity> entityInRange;
         
         public EntityPrefab entityPrefab;
 
@@ -114,6 +116,7 @@ namespace Games.Global
         public bool hasTaunt = false;
         public bool hasNoAggro = false;
         public bool isUnkillableByBleeding = false;
+        public bool isLinked = false;
         
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
@@ -122,6 +125,7 @@ namespace Games.Global
             underEffects = new Dictionary<TypeEffect, Effect>();
             damageDealExtraEffect = new Dictionary<TypeEffect, Effect>();
             damageReceiveExtraEffect = new Dictionary<TypeEffect, Effect>();
+            entityInRange = new List<Entity>();
         }
 
         // Take true damage is usefull with effect pierce

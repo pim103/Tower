@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Games.Global.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -55,7 +56,7 @@ namespace Games.Global
         UnkillableByBleeding,
         Invisibility,
         Link,
-        
+
         LifeLink,
         RefreshCd1,
         RefreshCd2,
@@ -212,6 +213,9 @@ namespace Games.Global
                     break;
                 case TypeEffect.UnkillableByBleeding:
                     entity.isUnkillableByBleeding = true;
+                    break;
+                case TypeEffect.Link:
+                    entity.isLinked = true;
                     break;
             }
         }
@@ -416,6 +420,9 @@ namespace Games.Global
                 case TypeEffect.UnkillableByBleeding:
                     entity.isUnkillableByBleeding = false;
                     break;
+                case TypeEffect.Link:
+                    entity.isLinked = false;
+                    break;
             }
         }
 
@@ -485,6 +492,7 @@ namespace Games.Global
                 case TypeEffect.NoAggro:
                 case TypeEffect.UnkillableByBleeding:
                 case TypeEffect.Invisibility:
+                case TypeEffect.Link:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
                         durationInSeconds = newEffect.durationInSeconds;
