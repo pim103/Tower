@@ -11,6 +11,7 @@ namespace Games.Global.Spells
     
     public enum TypeSpell
     {
+        Movement,
         Buff,
         SpecialAttack,
         TargetedAttack,
@@ -21,10 +22,17 @@ namespace Games.Global.Spells
         Passive,
         Transformation
     }
+    
+    public enum DamageType
+    {
+        Magical,
+        Physical
+    }
 
     public class SpellComponent: MonoBehaviour
     {
         public TypeSpell typeSpell;
+        public DamageType damageType;
     }
 
     public class Spell

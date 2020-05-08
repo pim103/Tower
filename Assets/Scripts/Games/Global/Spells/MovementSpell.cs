@@ -4,6 +4,11 @@ namespace Games.Global.Spells
 {
     public class MovementSpell : SpellComponent
     {
+        private void Start()
+        {
+            typeSpell = TypeSpell.Movement;
+        }
+
         public float duration;
         public float speed;
         public Vector3 trajectory;
