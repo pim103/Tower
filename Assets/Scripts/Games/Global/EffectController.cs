@@ -129,43 +129,5 @@ namespace Games.Global
             effect.EndEffect(entity);
             entity.underEffects.Remove(effect.typeEffect);
         }
-
-        public IEnumerator AddDamageDealExtraEffect(Entity entity, Effect effect, float duration)
-        {
-            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageDealExtraEffect[effect.typeEffect] = effect;
-            }
-            else
-            {
-                entity.damageDealExtraEffect.Add(effect.typeEffect, effect);
-            }
-            
-            yield return new WaitForSeconds(duration);
-
-            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageDealExtraEffect.Remove(effect.typeEffect);
-            }
-        }
-        
-        public IEnumerator AddDamageReceiveExtraEffect(Entity entity, Effect effect, float duration)
-        {
-            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageReceiveExtraEffect[effect.typeEffect] = effect;
-            }
-            else
-            {
-                entity.damageReceiveExtraEffect.Add(effect.typeEffect, effect);
-            }
-
-            yield return new WaitForSeconds(duration);
-
-            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageReceiveExtraEffect.Remove(effect.typeEffect);
-            }
-        }
     }
 }

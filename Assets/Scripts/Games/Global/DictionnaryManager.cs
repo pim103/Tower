@@ -3,6 +3,7 @@ using System.IO;
 using DeckBuilding;
 using Games.Global.Abilities;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
@@ -51,6 +52,7 @@ namespace Games.Global
 
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
+        public static Dictionary<int, Entity> invocationsInScene = new Dictionary<int, Entity>();
 
         public static List<GameObject> objectInScene = new List<GameObject>();
         

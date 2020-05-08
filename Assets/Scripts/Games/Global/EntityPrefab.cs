@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Linq.Expressions;
 using Games.Global.Entities;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -91,6 +93,8 @@ namespace Games.Global
 
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
         {
+            BuffController.EntityAttack(entity);
+
             weaponPrefab.BasicAttack();
         }
 

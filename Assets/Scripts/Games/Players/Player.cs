@@ -150,11 +150,11 @@ namespace Games.Players
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
 
-            Effect effect = new Effect { typeEffect = TypeEffect.Link, level = 1, launcher = this, durationInSeconds = 5};
-            damageDealExtraEffect.Add(TypeEffect.Link, effect);
+//            Effect effect = new Effect { typeEffect = TypeEffect.Link, level = 1, launcher = this, durationInSeconds = 5};
+//            damageDealExtraEffect.Add(effect);
 
-            effect = new Effect { typeEffect = TypeEffect.Bleed, level = 1, launcher = this, durationInSeconds = 5};
-            damageDealExtraEffect.Add(TypeEffect.Bleed, effect);
+//            effect = new Effect { typeEffect = TypeEffect.Bleed, level = 1, launcher = this, durationInSeconds = 5};
+//            damageDealExtraEffect.Add(effect);
 
 //            Effect effect = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, durationInSeconds = 5};
 //            EffectController.ApplyEffect(this, effect);

@@ -64,7 +64,8 @@ namespace Games.Global
         ReduceCd1,
         ReduceCd2,
         ReduceCd3,
-        DesactivePassive
+        DesactivePassive,
+        Redirection
     }
 
     public enum OriginExpulsion
@@ -216,6 +217,9 @@ namespace Games.Global
                     break;
                 case TypeEffect.Link:
                     entity.isLinked = true;
+                    break;
+                case TypeEffect.Redirection:
+                    entity.hasRedirection = true;
                     break;
             }
         }
@@ -423,6 +427,9 @@ namespace Games.Global
                 case TypeEffect.Link:
                     entity.isLinked = false;
                     break;
+                case TypeEffect.Redirection:
+                    entity.hasRedirection = false;
+                    break;
             }
         }
 
@@ -493,6 +500,7 @@ namespace Games.Global
                 case TypeEffect.UnkillableByBleeding:
                 case TypeEffect.Invisibility:
                 case TypeEffect.Link:
+                case TypeEffect.Redirection:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
                         durationInSeconds = newEffect.durationInSeconds;

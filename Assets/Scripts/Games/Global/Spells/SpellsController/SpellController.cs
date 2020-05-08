@@ -24,23 +24,10 @@ namespace Games.Global.Spells.SpellsController
             instance.StartCoroutine(PlayCastTime(entity, spell));
         }
 
-        public static IEnumerator PlayCastTime(Entity entity, Spell spell)
+        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent)
         {
-            float duration = spell.castTime;
-
-            while (duration > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                duration -= 0.1f;
-            }
-
-            if (spell.activeSpellComponent == null)
-            {
-                yield break;
-            }
-
             ISpellController iSpellController = null;
-            switch (spell.activeSpellComponent.typeSpell)
+            switch (spellComponent.typeSpell)
             {
                 case TypeSpell.Buff:
                     iSpellController = instance.buffController;
@@ -73,10 +60,36 @@ namespace Games.Global.Spells.SpellsController
 
             if (iSpellController == null)
             {
+                return;
+            }
+
+            iSpellController.LaunchSpell(entity, spellComponent);
+        }
+
+        public static IEnumerator StartCooldown(Entity entity, Spell spell)
+        {
+            spell.isOnCooldown = true;
+            yield return new WaitForSeconds(spell.cooldown);
+            spell.isOnCooldown = false;
+        }
+        
+        public static IEnumerator PlayCastTime(Entity entity, Spell spell)
+        {
+            float duration = spell.castTime;
+
+            while (duration > 0)
+            {
+                yield return new WaitForSeconds(0.1f);
+                duration -= 0.1f;
+            }
+
+            if (spell.activeSpellComponent == null)
+            {
                 yield break;
             }
 
-            iSpellController.LaunchSpell(entity, spell.activeSpellComponent);
+            StartCooldown(entity, spell);
+            CastSpellComponent(entity, spell.activeSpellComponent);
         }
     }
 }

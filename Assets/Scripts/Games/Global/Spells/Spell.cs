@@ -29,10 +29,12 @@ namespace Games.Global.Spells
         Physical
     }
 
-    public class SpellComponent: MonoBehaviour
+    public abstract class SpellComponent: MonoBehaviour
     {
         public TypeSpell typeSpell;
         public DamageType damageType;
+
+        public Coroutine currentCoroutine;
     }
 
     public class Spell
@@ -42,6 +44,7 @@ namespace Games.Global.Spells
         public float castTime;
 
         public bool deactivatePassiveWhenActive;
+        public bool isOnCooldown;
 
         // Active:
         public SpellComponent activeSpellComponent;

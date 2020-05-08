@@ -62,9 +62,6 @@ namespace Games.Global.Entities
 
         public bool InitWeapon(int idWeapon)
         {
-            Effect effect = new Effect { typeEffect = TypeEffect.Charm, level = 1, launcher = this, durationInSeconds = 5};
-            damageDealExtraEffect.Add(TypeEffect.Expulsion, effect);
-            
             if (weapons.Count < nbWeapon)
             {
                 Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);

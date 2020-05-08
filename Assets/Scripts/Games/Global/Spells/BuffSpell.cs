@@ -17,7 +17,7 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Buff;
         }
 
-        private float interval;
+        public float interval;
         public float duration;
 
         // instead of duration

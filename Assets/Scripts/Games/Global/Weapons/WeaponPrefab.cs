@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Weapons
 {
@@ -114,13 +118,18 @@ namespace Games.Global.Weapons
 
             bool isPhysic = false;
             bool isMagic = false;
-            
-            if (
-                entity.hasDivineShield || 
-                (entity.isIntangible && isPhysic) || 
-                (entity.hasAntiSpell && isMagic) || 
+
+            if ((entity.isIntangible && isPhysic) ||
+                (entity.hasAntiSpell && isMagic) ||
                 wielder.isBlind ||
                 entity.isUntargeatable)
+            {
+                return true;
+            }
+
+            BuffController.EntityReceivedDamage(entity);
+
+            if ( entity.hasDivineShield)
             {
                 return true;
             }
@@ -131,12 +140,15 @@ namespace Games.Global.Weapons
                 armor.OnDamageDealt(abilityParameters);
             }
 
-            foreach (KeyValuePair<TypeEffect, Effect> effects in wielder.damageDealExtraEffect)
+            List<Effect> effects = wielder.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
+            foreach (Effect effect in effects)
             {
-                Effect effect = effects.Value;
-                effect.positionSrcDamage = originDamage;
-                EffectController.ApplyEffect(entity, effect);
+                Effect copy = effect;
+                copy.positionSrcDamage = originDamage;
+                EffectController.ApplyEffect(entity, copy);
             }
+
+            BuffController.EntityDealDamage(wielder);
 
             int damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
             if (wielder.isWeak)

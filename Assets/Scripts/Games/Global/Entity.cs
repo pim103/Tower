@@ -6,6 +6,8 @@ using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
@@ -77,10 +79,12 @@ namespace Games.Global
         public Dictionary<TypeEffect, Effect> underEffects;
 
         // Effect add to damage deal
-        public Dictionary<TypeEffect, Effect> damageDealExtraEffect;
+        public List<Effect> damageDealExtraEffect;
 
         // Effect add to damage receive
-        public Dictionary<TypeEffect, Effect> damageReceiveExtraEffect;
+        public List<Effect> damageReceiveExtraEffect;
+
+        public List<BuffSpell> currentBuff;
 
         public List<Entity> entityInRange;
         
@@ -117,14 +121,15 @@ namespace Games.Global
         public bool hasNoAggro = false;
         public bool isUnkillableByBleeding = false;
         public bool isLinked = false;
+        public bool hasRedirection = false;
         
         public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();
-            damageDealExtraEffect = new Dictionary<TypeEffect, Effect>();
-            damageReceiveExtraEffect = new Dictionary<TypeEffect, Effect>();
+            damageDealExtraEffect = new List<Effect>();
+            damageReceiveExtraEffect = new List<Effect>();
             entityInRange = new List<Entity>();
         }
 
@@ -169,7 +174,16 @@ namespace Games.Global
                     originDamage.hp = originDamage.initialHp;
                 }
             }
-            ApplyDamage(damageReceived);
+
+            if (hasRedirection && DataObject.invocationsInScene.Count > 0)
+            {
+                DataObject.invocationsInScene[0].ApplyDamage(damageReceived * 0.75f);
+                ApplyDamage(damageReceived * 0.25f);
+            }
+            else
+            {
+                ApplyDamage(damageReceived);
+            }
 
             if (OnDamageReceive != null)
             {
@@ -186,9 +200,10 @@ namespace Games.Global
                 armor.OnDamageReceive(abilityParameters);
             }
 
-            foreach (KeyValuePair<TypeEffect, Effect> effects in damageReceiveExtraEffect)
+            List<Effect> effects = damageReceiveExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
+            foreach (Effect effect in effects)
             {
-                EffectController.ApplyEffect(this, effects.Value);
+                EffectController.ApplyEffect(this, effect);
             }
 
             if (isSleep)
