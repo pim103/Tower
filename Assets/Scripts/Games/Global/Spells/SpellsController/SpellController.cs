@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Spells.SpellsController
 {
@@ -18,6 +20,11 @@ namespace Games.Global.Spells.SpellsController
         [SerializeField] private TransformationController transformationController;
 
         public static SpellController instance;
+
+        private void Start()
+        {
+            instance = this;
+        }
 
         public static void CastSpell(Entity entity, Spell spell)
         {

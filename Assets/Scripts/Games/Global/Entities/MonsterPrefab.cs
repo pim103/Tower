@@ -20,6 +20,14 @@ namespace Games.Global.Entities
         
         private void Start()
         {
+            if (entity == null)
+            {
+                entity = new Monster();
+                entity.InitEntityList();
+                entity.entityPrefab = this;
+                entity.typeEntity = TypeEntity.MOB;
+            }
+
             playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
             entity.playerInBack = new List<int>();
         }
@@ -27,6 +35,7 @@ namespace Games.Global.Entities
         private void Update()
         {
             float diff = (float) entity.hp / (float) entity.initialHp;
+            
             hpBar.value = diff;
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);

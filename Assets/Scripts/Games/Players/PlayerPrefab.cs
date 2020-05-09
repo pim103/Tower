@@ -43,7 +43,7 @@ namespace Games.Players
 
         public bool wasConfusing = false;
 
-        private void Awake()
+        private void Start()
         {
             if (isFakePlayer)
             {

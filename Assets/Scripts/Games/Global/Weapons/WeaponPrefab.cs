@@ -115,7 +115,7 @@ namespace Games.Global.Weapons
 
         public bool TouchEntity(Entity entity, Vector3 originDamage)
         {
-            AbilityParameters abilityParameters = new AbilityParameters {origin = wielder, directTarget = entity};
+            AbilityParameters abilityParameters = new AbilityParameters { origin = wielder };
 
             bool isPhysic = false;
             bool isMagic = false;

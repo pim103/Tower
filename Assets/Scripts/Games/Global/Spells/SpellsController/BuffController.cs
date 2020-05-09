@@ -145,7 +145,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (buffSpell.currentCoroutine != null)
             {
-                buffSpell.StopCoroutine(buffSpell.currentCoroutine);
+                SpellController.instance.StopCoroutine(buffSpell.currentCoroutine);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Games.Global.Spells.SpellsController
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
-                if (buffSpell.linkedSpellOnHit)
+                if (buffSpell.linkedSpellOnHit != null)
                 {
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit);
                 }
@@ -164,7 +164,7 @@ namespace Games.Global.Spells.SpellsController
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
-                if (buffSpell.linkedSpellOnDamageReceived)
+                if (buffSpell.linkedSpellOnDamageReceived != null)
                 {
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived);
                 }
@@ -185,7 +185,7 @@ namespace Games.Global.Spells.SpellsController
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
-                if (buffSpell.linkedSpellOnAttack)
+                if (buffSpell.linkedSpellOnAttack != null)
                 {
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack);
                 }

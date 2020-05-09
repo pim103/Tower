@@ -42,7 +42,7 @@ namespace Games.Global
         
         private const int DEFAULT_NB_WEAPONS = 1;
 
-        public float initialHp;
+        public float initialHp = DEFAULT_HP;
         public int initialDef;
         public int initialMagicalDef;
         public int initialPhysicalDef;
@@ -123,7 +123,7 @@ namespace Games.Global
         public bool isLinked = false;
         public bool hasRedirection = false;
         
-        public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
+        public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
             weapons = new List<Weapon>();
             armors = new List<Armor>();
@@ -131,15 +131,16 @@ namespace Games.Global
             damageDealExtraEffect = new List<Effect>();
             damageReceiveExtraEffect = new List<Effect>();
             entityInRange = new List<Entity>();
+            currentBuff = new List<BuffSpell>();
         }
 
         // Take true damage is usefull with effect pierce
-        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, bool takeTrueDamage)
+        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, bool takeTrueDamage = false)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
             Entity originDamage = abilityParameters.origin;
-            
+
             // TODO : set var with correct bool
             bool isMagic = false;
             bool isPhysic = false;

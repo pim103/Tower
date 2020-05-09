@@ -26,8 +26,8 @@ namespace Games.Global.Spells
         public List<Effect> effectsOnPlayerOnInterval;
         public List<Effect> effectsOnAlliesOnInterval;
 
-        public List<Effect> deleteEffectsOnPlayerOnInterval;
-        public List<Effect> deleteEffectsOnEnemiesOnInterval;
+        public List<TypeEffect> deleteEffectsOnPlayerOnInterval;
+        public List<TypeEffect> deleteEffectsOnEnemiesOnInterval;
 
         public bool canStopProjectile;
         public bool randomTargetHit;
@@ -43,5 +43,10 @@ namespace Games.Global.Spells
         public SpellComponent linkedSpellOnEnd;
 
         public List<SpellWithCondition> spellWithConditions;
+        
+        /* Useless for initialisation of spell */
+        public List<Entity> enemiesInZone;
+        public List<Entity> alliesInZone;
+        public GameObject objectPooled;
     }
 }

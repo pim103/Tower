@@ -71,7 +71,8 @@ namespace Games.Global
     public enum OriginExpulsion
     {
         Entity,
-        SrcDamage
+        SrcDamage,
+        ForwardOfPositionSrcDamage
     }
     
     public enum DirectionExpulsion
@@ -525,12 +526,15 @@ namespace Games.Global
             if (originExpulsion == OriginExpulsion.Entity)
             {
                 originExpulsionPosition = launcher.entityPrefab.transform.position;
+            } else if (originExpulsion == OriginExpulsion.SrcDamage)
+            {
+                originExpulsionPosition = positionSrcDamage;
             }
 
             Vector3 dir = Vector3.zero;
             if (directionExpul == DirectionExpulsion.Out)
             {
-                if (originExpulsion == OriginExpulsion.SrcDamage)
+                if (originExpulsion == OriginExpulsion.ForwardOfPositionSrcDamage)
                 {
                     dir = positionSrcDamage;
                 }
@@ -541,7 +545,7 @@ namespace Games.Global
             }
             else if (directionExpul == DirectionExpulsion.In)
             {
-                if (originExpulsion == OriginExpulsion.SrcDamage)
+                if (originExpulsion == OriginExpulsion.ForwardOfPositionSrcDamage)
                 {
                     dir = -positionSrcDamage;
                 }

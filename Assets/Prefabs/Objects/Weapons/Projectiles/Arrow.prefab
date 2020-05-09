@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1453776971631460774}
   - component: {fileID: 9123446224821035407}
   - component: {fileID: 6196235739354833855}
-  m_Layer: 0
+  - component: {fileID: 7710534864595745486}
+  m_Layer: 19
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,6 +82,22 @@ CapsuleCollider:
   m_Height: 0.8008244
   m_Direction: 2
   m_Center: {x: 0.0016016513, y: 0, z: -0.00094771385}
+--- !u!114 &7710534864595745486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196704385024560273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca028646995e8b947a67ed8bdf42955c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphereCollider: {fileID: 0}
+  boxCollider: {fileID: 0}
+  meshCollider: {fileID: 0}
+  rigidbody: {fileID: 0}
 --- !u!1001 &7323206784503876826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,6 +109,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 7472995417437858300, guid: e2449cd004457184e80b72efd73efc66,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2357443694776074677, guid: e2449cd004457184e80b72efd73efc66,
         type: 3}
@@ -151,6 +173,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 441164926737172296, guid: e2449cd004457184e80b72efd73efc66, type: 3}
     - {fileID: 2030382752943547408, guid: e2449cd004457184e80b72efd73efc66, type: 3}
+    - {fileID: 8931603552636825913, guid: e2449cd004457184e80b72efd73efc66, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e2449cd004457184e80b72efd73efc66, type: 3}
 --- !u!4 &4978187646284680559 stripped
 Transform:

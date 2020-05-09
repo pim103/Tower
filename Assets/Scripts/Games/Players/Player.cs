@@ -146,15 +146,15 @@ namespace Games.Players
             initialRessource1 = ressource1;
             initialRessource2 = ressource2;
 
-            InitEquipementArray();
+            InitEntityList();
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
 
 //            Effect effect = new Effect { typeEffect = TypeEffect.Link, level = 1, launcher = this, durationInSeconds = 5};
 //            damageDealExtraEffect.Add(effect);
 
-//            effect = new Effect { typeEffect = TypeEffect.Bleed, level = 1, launcher = this, durationInSeconds = 5};
-//            damageDealExtraEffect.Add(effect);
+            Effect effect = new Effect { typeEffect = TypeEffect.Expulsion, level = 1, launcher = this, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
+            damageDealExtraEffect.Add(effect);
 
 //            Effect effect = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, durationInSeconds = 5};
 //            EffectController.ApplyEffect(this, effect);
@@ -189,23 +189,6 @@ namespace Games.Players
             weapons.Add(weapon);
         }
 
-        public override void TakeDamage(float initialDamage, AbilityParameters abilityParameters, bool takeTrueDamage = false)
-        {
-//            if (isBlocking)
-//            {
-//                nbShieldBlock++;
-//                if (nbShieldBlock > 4)
-//                {
-//                    EffectController.ApplyNewEffectToEntity(this, TypeEffect.Stun, 3, 1);
-//                    DesactiveBasicDefense();
-//                }
-//
-//                return;
-//            }
-
-            base.TakeDamage(initialDamage, abilityParameters, takeTrueDamage);
-        }
-        
         public override void ApplyDamage(float directDamage)
         {
             base.ApplyDamage(directDamage);

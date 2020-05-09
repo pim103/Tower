@@ -29,7 +29,7 @@ namespace Games.Global.Spells
         Physical
     }
 
-    public abstract class SpellComponent: MonoBehaviour
+    public abstract class SpellComponent
     {
         public TypeSpell typeSpell;
         public DamageType damageType;
