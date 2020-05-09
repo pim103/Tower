@@ -67,20 +67,13 @@ namespace Games.Global
             StartCoroutineEffect(entity, effect);
         }
 
-        public static void RemoveEffect(Entity entity, TypeEffect typeEffect)
-        {
-            if (entity.underEffects.ContainsKey(typeEffect))
-            {
-                StopCurrentEffect(entity, entity.underEffects[typeEffect]);
-            }
-        }
-
         public static void StartCoroutineEffect(Entity entity, Effect effect)
         {
             entity.underEffects.Add(effect.typeEffect, effect);
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, effect));
 
             effect.currentCoroutine = currentCoroutine;
+            entity.underEffects[effect.typeEffect] = effect;
         }
 
         public static IEnumerator PlayEffectOnTime(Entity entity, Effect effect)
@@ -88,6 +81,8 @@ namespace Games.Global
             Effect effectInList = entity.underEffects[effect.typeEffect];
 
             effectInList.InitialTrigger(entity);
+
+            yield return new WaitForSeconds(0.05f);
 
             if (effectInList.durationInSeconds == 0)
             {
@@ -127,6 +122,7 @@ namespace Games.Global
             }
 
             effect.EndEffect(entity);
+            
             entity.underEffects.Remove(effect.typeEffect);
         }
     }

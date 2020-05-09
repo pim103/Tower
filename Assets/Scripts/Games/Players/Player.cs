@@ -153,8 +153,8 @@ namespace Games.Players
 //            Effect effect = new Effect { typeEffect = TypeEffect.Link, level = 1, launcher = this, durationInSeconds = 5};
 //            damageDealExtraEffect.Add(effect);
 
-            Effect effect = new Effect { typeEffect = TypeEffect.Expulsion, level = 1, launcher = this, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
-            damageDealExtraEffect.Add(effect);
+//            Effect effect = new Effect { typeEffect = TypeEffect.Expulsion, level = 1, launcher = this, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
+//            damageDealExtraEffect.Add(effect);
 
 //            Effect effect = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, durationInSeconds = 5};
 //            EffectController.ApplyEffect(this, effect);

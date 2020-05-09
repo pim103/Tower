@@ -31,9 +31,13 @@ namespace Games.Global.Spells
         public List<Effect> effectOnSelfOnDamageReceived;
         public List<Effect> effectOnTargetOnHit;
 
+        public bool needNewPositionOnDamageReceived;
         public SpellComponent linkedSpellOnDamageReceived;
+        public bool needNewPositionOnHit;
         public SpellComponent linkedSpellOnHit;
+        public bool needNewPositionOnAttack;
         public SpellComponent linkedSpellOnAttack;
+        public bool needNewPositionOnInterval;
         public SpellComponent linkedSpellOnInterval;
 
         public ConditionReduceCharge conditionReduceCharge;

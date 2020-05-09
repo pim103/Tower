@@ -57,6 +57,8 @@ namespace Games.Global
 
         public Vector3 forcedDirection = Vector3.zero;
 
+        public Vector3 positionPointed;
+
         public void WantToApplyForce(Vector3 direction, int level)
         {
             StartCoroutine(ApplyForce(direction, level));
@@ -93,7 +95,7 @@ namespace Games.Global
 
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
         {
-            BuffController.EntityAttack(entity);
+            BuffController.EntityAttack(entity, positionPointed);
 
             weaponPrefab.BasicAttack();
         }

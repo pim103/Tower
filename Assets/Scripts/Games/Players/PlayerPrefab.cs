@@ -36,8 +36,6 @@ namespace Games.Players
 
         public int playerIndex;
 
-        private Vector3 positionPointed;
-
         public bool grounded;
         public bool ejected;
 
@@ -399,7 +397,7 @@ namespace Games.Players
             }
             else
             {
-                positionPointed = Vector3.zero;
+                positionPointed = Vector3.positiveInfinity;
             }
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))

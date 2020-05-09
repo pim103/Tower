@@ -70,8 +70,8 @@ namespace Games.Global.Spells.SpellsController
                 return;
             }
             
-            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
-            Debug.Log("Other layer : " + other.gameObject.layer);
+//            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
+//            Debug.Log("Other layer : " + other.gameObject.layer);
 
             if (spellComponent == null)
             {

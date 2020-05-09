@@ -27,7 +27,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (buffSpell.linkedSpellOnInterval != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, Vector3.positiveInfinity);
                 }
 
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
@@ -48,8 +48,12 @@ namespace Games.Global.Spells.SpellsController
 
         private void CheckSpellWithCondition(Entity entity, List<SpellWithCondition> spellWithConditions)
         {
-            List<SpellWithCondition> minEnemyInArea =
-                spellWithConditions.FindAll(spell => spell.conditionType == ConditionType.MinEnemiesInArea);
+            if (spellWithConditions == null)
+            {
+                return;
+            }
+
+            List<SpellWithCondition> minEnemyInArea = spellWithConditions.FindAll(spell => spell.conditionType == ConditionType.MinEnemiesInArea);
 
             foreach (SpellWithCondition spellWithCondition in minEnemyInArea)
             {
@@ -61,7 +65,7 @@ namespace Games.Global.Spells.SpellsController
                         {
                             case InstructionTargeting.ApplyOnSelf:
                                 EffectController.ApplyEffect(entity, spellWithCondition.effect);
-                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent);
+                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent, Vector3.positiveInfinity);
                                 break;
                             case InstructionTargeting.ApplyOnTarget:
                                 break;
@@ -79,42 +83,54 @@ namespace Games.Global.Spells.SpellsController
         {
             entity.currentBuff.Add(buffSpell);
 
-            foreach (Effect effect in buffSpell.effectOnSelf)
+            if (buffSpell.effectOnSelf != null)
             {
-                EffectController.ApplyEffect(entity, effect);
+                foreach (Effect effect in buffSpell.effectOnSelf)
+                {
+                    EffectController.ApplyEffect(entity, effect);
+                }
             }
 
-            foreach (Effect effect in buffSpell.effectOnSelfOnDamageReceived)
+            if (buffSpell.effectOnSelfOnDamageReceived != null)
             {
-                entity.damageReceiveExtraEffect.Add(effect);
+                foreach (Effect effect in buffSpell.effectOnSelfOnDamageReceived)
+                {
+                    entity.damageReceiveExtraEffect.Add(effect);
+                }
             }
 
-            foreach (Effect effect in buffSpell.effectOnTargetOnHit)
+            if (buffSpell.effectOnTargetOnHit != null)
             {
-                entity.damageDealExtraEffect.Add(effect);
+                foreach (Effect effect in buffSpell.effectOnTargetOnHit)
+                {
+                    entity.damageDealExtraEffect.Add(effect);
+                }
             }
 
-            List<SpellWithCondition> ifPlayerDies =
-                buffSpell.spellWithCondition.FindAll(condition =>
-                    condition.conditionType == ConditionType.PlayerDies);
-            List<SpellWithCondition> ifPlayerDoesntDie =
-                buffSpell.spellWithCondition.FindAll(condition =>
-                    condition.conditionType == ConditionType.PlayerDoesntDie);
+            List<SpellWithCondition> ifPlayerDies = null;
+            List<SpellWithCondition> ifPlayerDoesntDie = null;
 
-            if ((entity.hp - buffSpell.damageOnSelf) <= 0)
+            if (buffSpell.spellWithCondition != null)
+            {
+                ifPlayerDies = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDies);
+                
+                ifPlayerDoesntDie = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDoesntDie);
+            }
+
+            if ((entity.hp - buffSpell.damageOnSelf) <= 0 && ifPlayerDies != null)
             {
                 foreach (SpellWithCondition spellCondition in ifPlayerDies)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, Vector3.positiveInfinity);
                 }
             }
-            else
+            else if (ifPlayerDoesntDie != null)
             {
                 foreach (SpellWithCondition spellCondition in ifPlayerDoesntDie)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, Vector3.positiveInfinity);
                 }
             }
 
@@ -125,7 +141,7 @@ namespace Games.Global.Spells.SpellsController
         {
             entity.currentBuff.Remove(buffSpell);
 
-            if (buffSpell.disapearOnDamageReceived)
+            if (buffSpell.disapearOnDamageReceived && buffSpell.effectOnSelf != null)
             {
                 foreach (Effect effect in buffSpell.effectOnSelf)
                 {
@@ -133,14 +149,20 @@ namespace Games.Global.Spells.SpellsController
                 }
             }
 
-            foreach (Effect effect in buffSpell.effectOnSelfOnDamageReceived)
+            if (buffSpell.effectOnSelfOnDamageReceived != null)
             {
-                entity.damageReceiveExtraEffect.Remove(effect);
+                foreach (Effect effect in buffSpell.effectOnSelfOnDamageReceived)
+                {
+                    entity.damageReceiveExtraEffect.Remove(effect);
+                }
             }
 
-            foreach (Effect effect in buffSpell.effectOnTargetOnHit)
+            if (buffSpell.effectOnTargetOnHit != null)
             {
-                entity.damageDealExtraEffect.Remove(effect);
+                foreach (Effect effect in buffSpell.effectOnTargetOnHit)
+                {
+                    entity.damageDealExtraEffect.Remove(effect);
+                }
             }
 
             if (buffSpell.currentCoroutine != null)
@@ -149,24 +171,36 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
-        public static void EntityDealDamage(Entity entity)
+        public static void EntityDealDamage(Entity entity, Entity entityTouch)
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
                 if (buffSpell.linkedSpellOnHit != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit);
+                    Vector3 position = Vector3.positiveInfinity;
+                    if (buffSpell.needNewPositionOnHit)
+                    {
+                        position = entityTouch.entityPrefab.transform.position;
+                    }
+                    
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, position);
                 }
             }
         }
 
-        public static void EntityReceivedDamage(Entity entity)
+        public static void EntityReceivedDamage(Entity entity, Entity entityOriginOfDamage)
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
                 if (buffSpell.linkedSpellOnDamageReceived != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived);
+                    Vector3 position = Vector3.positiveInfinity;
+                    if (buffSpell.needNewPositionOnDamageReceived)
+                    {
+                        position = entityOriginOfDamage.entityPrefab.transform.position;
+                    }
+                    
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
@@ -181,13 +215,19 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
-        public static void EntityAttack(Entity entity)
+        public static void EntityAttack(Entity entity, Vector3 positionPointed)
         {
             foreach (BuffSpell buffSpell in entity.currentBuff)
             {
                 if (buffSpell.linkedSpellOnAttack != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack);
+                    Vector3 position = Vector3.positiveInfinity;
+                    if (buffSpell.needNewPositionOnAttack)
+                    {
+                        position = positionPointed;
+                    }
+                    
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, positionPointed);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnAttack)

@@ -128,7 +128,7 @@ namespace Games.Global.Weapons
                 return true;
             }
 
-            BuffController.EntityReceivedDamage(entity);
+            BuffController.EntityReceivedDamage(entity, wielder);
 
             if (entity.hasDivineShield)
             {
@@ -150,7 +150,7 @@ namespace Games.Global.Weapons
                 EffectController.ApplyEffect(entity, copy);
             }
 
-            BuffController.EntityDealDamage(wielder);
+            BuffController.EntityDealDamage(wielder, entity);
 
             int damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
             if (wielder.isWeak)

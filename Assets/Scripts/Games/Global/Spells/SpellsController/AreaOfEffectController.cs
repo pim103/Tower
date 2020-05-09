@@ -68,7 +68,6 @@ namespace Games.Global.Spells.SpellsController
         
         private void InitialArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
-            Debug.Log("Wanto to apply effect");
             foreach (Entity enemy in areaOfEffectSpell.enemiesInZone)
             {
                 EffectController.ApplyEffect(enemy, areaOfEffectSpell.effectOnHitOnStart);
@@ -143,15 +142,15 @@ namespace Games.Global.Spells.SpellsController
 
             if (areaOfEffectSpell.linkedSpellOnInterval != null)
             {
+                Vector3 position = Vector3.positiveInfinity;
                 if (areaOfEffectSpell.randomPosition)
                 {
-                    Vector3 newPos = Vector3.zero;
                     if (areaOfEffectSpell.geometry == Geometry.Sphere)
                     {
                         float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
                         float rx = Random.Range(0.0f, areaOfEffectSpell.scale.x / 2);
                         float rz = Random.Range(0.0f, areaOfEffectSpell.scale.z / 2);
-                        newPos = new Vector3
+                        position = new Vector3
                         {
                             x = areaOfEffectSpell.startPosition.x + rx * Mathf.Cos(t), 
                             y = areaOfEffectSpell.startPosition.y, 
@@ -160,24 +159,16 @@ namespace Games.Global.Spells.SpellsController
                     }
                     else
                     {
-                        newPos = new Vector3
+                        position = new Vector3
                         {
                             x = areaOfEffectSpell.startPosition.x + Random.Range(-areaOfEffectSpell.scale.x/2, areaOfEffectSpell.scale.x/2), 
                             y = areaOfEffectSpell.startPosition.y, 
                             z = areaOfEffectSpell.startPosition.z + Random.Range(-areaOfEffectSpell.scale.z/2, areaOfEffectSpell.scale.z/2)
                         };
                     }
-
-                    if (areaOfEffectSpell.linkedSpellOnInterval.typeSpell == TypeSpell.AreaOfEffect)
-                    {
-                        AreaOfEffectSpell newArea = (AreaOfEffectSpell) areaOfEffectSpell.linkedSpellOnInterval;
-                        newArea.startPosition = newPos;
-                        areaOfEffectSpell.linkedSpellOnInterval = newArea;
-                    }
-                    
                 }
-                
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval);
+
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position);
             }
 
             IntervalHitEnemies(entity, areaOfEffectSpell);
@@ -224,7 +215,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (areaOfEffectSpell.linkedSpellOnEnd != null)
             {
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd);
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, Vector3.positiveInfinity);
             }
             
             areaOfEffectSpell.objectPooled.SetActive(false);   

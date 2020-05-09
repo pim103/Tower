@@ -45,11 +45,12 @@ namespace TestC
             AreaOfEffectSpell linked = new AreaOfEffectSpell
             {
                 startPosition = Vector3.zero,
-                scale = Vector3.one * 20,
+                scale = Vector3.one * 5,
                 onePlay = true,
-                damagesOnEnemiesOnInterval = 30.0f,
+                damagesOnEnemiesOnInterval = 15.0f,
                 typeSpell = TypeSpell.AreaOfEffect,
                 geometry = Geometry.Sphere,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition
             };
 
             Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 1, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
@@ -60,20 +61,38 @@ namespace TestC
             {
                 startPosition = Vector3.zero,
                 scale = Vector3.one * 20,
-                duration = 5,
-                interval = 1.5f,
+                duration = 50,
+                interval = 0.5f,
                 typeSpell = TypeSpell.AreaOfEffect,
                 geometry = Geometry.Sphere,
                 canStopProjectile = true,
                 randomPosition = true,
-                onePlay = true,
-                damagesOnEnemiesOnInterval = 20.0f,
-                effectOnHitOnStart = repulse,
-                linkedSpellOnEnd = linked
+//                onePlay = true,
+                damagesOnEnemiesOnInterval = 10.0f,
+                effectsOnEnemiesOnInterval = effects,
+                linkedSpellOnInterval = linked,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition
+            };
+
+            Effect resurrect = new Effect
+                {launcher = player.entity, level = 1, durationInSeconds = 10, typeEffect = TypeEffect.Resurrection};
+            List<Effect> effectsOnSelf = new List<Effect>();
+            effectsOnSelf.Add(resurrect);
+
+            BuffSpell buffSpell = new BuffSpell
+            {
+                duration = 5,
+                interval = 0.5f,
+                typeSpell = TypeSpell.Buff,
+                damageOnSelf = 100,
+                effectOnSelf = effectsOnSelf,
+                linkedSpellOnHit = area,
+                needNewPositionOnHit = true,
+                positionToStartSpell = PositionToStartSpell.Himself
             };
 
             player.entity.att = 15;
-            SpellController.CastSpellComponent(player.entity, area);
+            SpellController.CastSpellComponent(player.entity, buffSpell, Vector3.positiveInfinity);
         }
     }
 }

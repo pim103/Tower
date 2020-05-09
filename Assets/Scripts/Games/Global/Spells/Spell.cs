@@ -29,12 +29,21 @@ namespace Games.Global.Spells
         Physical
     }
 
+    public enum PositionToStartSpell
+    {
+        Himself,
+        DynamicPosition,
+        AlreadySet
+    }
+
     public abstract class SpellComponent
     {
         public TypeSpell typeSpell;
         public DamageType damageType;
 
         public Coroutine currentCoroutine;
+
+        public PositionToStartSpell positionToStartSpell;
     }
 
     public class Spell

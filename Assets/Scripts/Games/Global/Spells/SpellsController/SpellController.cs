@@ -31,8 +31,43 @@ namespace Games.Global.Spells.SpellsController
             instance.StartCoroutine(PlayCastTime(entity, spell));
         }
 
-        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent)
+        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition)
         {
+            switch (spellComponent.positionToStartSpell)
+            {
+                case PositionToStartSpell.DynamicPosition:
+                    switch (spellComponent.typeSpell)
+                    {
+                        case TypeSpell.Buff:
+                            break;
+                        case TypeSpell.Projectile:
+                            break;
+                        case TypeSpell.Summon:
+                            break;
+                        case TypeSpell.Transformation:
+                            break;
+                        case TypeSpell.Wave:
+                            break;
+                        case TypeSpell.SpecialAttack:
+                            break;
+                        case TypeSpell.AreaOfEffect:
+                            AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
+                            area.startPosition = startPosition;
+                            break;
+                        case TypeSpell.TargetedAttack:
+                            break;
+                        case TypeSpell.Movement:
+                            break;
+                    }
+
+                    break;
+            }
+        }
+        
+        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition)
+        {
+            SetOriginalPosition(spellComponent, startPosition);
+
             ISpellController iSpellController = null;
             switch (spellComponent.typeSpell)
             {
@@ -96,7 +131,7 @@ namespace Games.Global.Spells.SpellsController
             }
 
             StartCooldown(entity, spell);
-            CastSpellComponent(entity, spell.activeSpellComponent);
+            CastSpellComponent(entity, spell.activeSpellComponent, Vector3.positiveInfinity);
         }
     }
 }
