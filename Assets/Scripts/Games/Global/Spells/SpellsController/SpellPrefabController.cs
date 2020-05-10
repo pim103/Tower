@@ -18,15 +18,6 @@ namespace Games.Global.Spells.SpellsController
         {
             originOfSpell = originEntity;
             spellComponent = originSpellComponent;
-
-//            if (originSpellComponent.typeSpell == TypeSpell.AreaOfEffect)
-//            {
-//                rigidbody.isKinematic = true;
-//            }
-//            else
-//            {
-//                rigidbody.isKinematic = false;
-//            }
         }
 
         public void ActiveCollider(Geometry geometry)

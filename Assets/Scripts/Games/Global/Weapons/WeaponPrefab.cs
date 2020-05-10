@@ -33,11 +33,6 @@ namespace Games.Global.Weapons
             animator.speed = weapon.attSpeed + wielder.attSpeed;
             animator.Play(weapon.animationToPlay);
 
-            if (weapon.type == TypeWeapon.Distance)
-            {
-                PoolProjectiles();
-            }
-
             weapon.FixAngleAttack(true, wielder);
 
             do
@@ -62,22 +57,6 @@ namespace Games.Global.Weapons
                 isAttacking = true;
                 StartCoroutine(PlayAnimationAttack());
             }
-        }
-
-        private void PoolProjectiles()
-        {
-            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(weapon.idPoolProjectile);
-
-            proj.transform.position = transform.position;
-            float rotX = proj.transform.localEulerAngles.x;
-
-            proj.transform.localEulerAngles = wielder.entityPrefab.transform.eulerAngles + (Vector3.right * rotX);
-            proj.SetActive(true);
-
-            ProjectilesPrefab projectilesPrefab = proj.GetComponent<ProjectilesPrefab>();
-            projectilesPrefab.rigidbody.AddForce(wielder.entityPrefab.transform.forward * 1000, ForceMode.Acceleration);
-
-            projectilesPrefab.weaponOrigin = this;
         }
 
         private void OnTriggerEnter(Collider other)

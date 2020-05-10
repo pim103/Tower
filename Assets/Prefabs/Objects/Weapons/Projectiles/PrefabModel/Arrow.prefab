@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 2357443694776074677}
   - component: {fileID: 6366160809292702656}
   - component: {fileID: 1130174044283767903}
-  - component: {fileID: 8931603552636825913}
-  - component: {fileID: 2030382752943547408}
-  - component: {fileID: 441164926737172296}
   m_Layer: 14
   m_Name: Arrow
   m_TagString: Untagged
@@ -80,50 +77,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &8931603552636825913
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7472995417437858300}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2030382752943547408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7472995417437858300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 362b57be6d05cda4e876db825555ac34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponOrigin: {fileID: 0}
-  rigidbody: {fileID: 441164926737172296}
-  typeProjectile: 0
-  explosionArea: {fileID: 0}
-  disapearOnHitEntity: 1
---- !u!54 &441164926737172296
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7472995417437858300}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
