@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Games;
 using Games.Global;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -57,6 +58,14 @@ namespace TestC
             List<Effect> effects = new List<Effect>();
             effects.Add(repulse);
             
+            
+            Effect regen = new Effect
+                {launcher = player.entity, level = 2, durationInSeconds = 10, typeEffect = TypeEffect.Regen};
+
+            SpellWithCondition spellWithCondition = new SpellWithCondition { effect = regen, conditionType = ConditionType.IfTargetDies};
+            List<SpellWithCondition> spellWithConditions = new List<SpellWithCondition>();
+            spellWithConditions.Add(spellWithCondition);
+
             AreaOfEffectSpell area = new AreaOfEffectSpell
             {
                 startPosition = Vector3.zero,
@@ -67,10 +76,11 @@ namespace TestC
                 geometry = Geometry.Sphere,
                 canStopProjectile = true,
                 randomPosition = true,
-//                onePlay = true,
-                damagesOnEnemiesOnInterval = 10.0f,
-                effectsOnEnemiesOnInterval = effects,
-                linkedSpellOnInterval = linked,
+                onePlay = true,
+                damagesOnEnemiesOnInterval = 100.0f,
+                spellWithConditions = spellWithConditions,
+//                effectsOnEnemiesOnInterval = effects,
+//                linkedSpellOnInterval = linked,
                 positionToStartSpell = PositionToStartSpell.DynamicPosition
             };
 

@@ -22,8 +22,12 @@ namespace Games.Global.Entities
         {
             if (entity == null)
             {
-                entity = new Monster();
-                entity.InitEntityList();
+                monster = new Monster();
+
+                monster.SetMonsterPrefab(this);
+                monster.InitEntityList();
+
+                entity = monster;
                 entity.entityPrefab = this;
                 entity.typeEntity = TypeEntity.MOB;
             }

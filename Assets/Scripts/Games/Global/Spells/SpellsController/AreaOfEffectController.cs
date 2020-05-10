@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Games.Global.Abilities;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
+using Debug = UnityEngine.Debug;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Games.Global.Spells.SpellsController
@@ -74,55 +77,99 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
+        private void PlaySpecialCondition(Entity entity, Entity enemy, AreaOfEffectSpell areaOfEffectSpell)
+        {
+            if (areaOfEffectSpell.spellWithConditions == null)
+            {
+                return;
+            }
+
+            foreach (SpellWithCondition spell in areaOfEffectSpell.spellWithConditions)
+            {
+                switch (spell.conditionType)
+                {
+                    case ConditionType.IfPlayerHasEffect:
+                        if (entity.underEffects.ContainsKey(spell.conditionEffect.typeEffect))
+                        {
+                            if (spell.instructionTargeting == InstructionTargeting.ApplyOnTarget)
+                            {
+                                EffectController.ApplyEffect(enemy, spell.effect);
+                            }
+                        }
+                        break;
+                    case ConditionType.IfTargetHasEffectWhenHit:
+                        if (enemy.underEffects.ContainsKey(spell.conditionEffect.typeEffect))
+                        {
+                            switch (spell.instructionTargeting)
+                            {
+                                case InstructionTargeting.ApplyOnTarget:
+                                    EffectController.ApplyEffect(enemy, spell.effect);
+                                    break;
+                                case InstructionTargeting.DeleteOnTarget:
+                                    if (enemy.underEffects.ContainsKey(spell.effect.typeEffect))
+                                    {
+                                        EffectController.StopCurrentEffect(enemy, enemy.underEffects[spell.effect.typeEffect]);
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
         private void IntervalHitEnemies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
             AbilityParameters paramaters = new AbilityParameters { origin = entity };
+            List<Entity> enemies = areaOfEffectSpell.enemiesInZone;
 
-            if (!areaOfEffectSpell.randomTargetHit)
-            {
-                foreach (Entity enemy in areaOfEffectSpell.enemiesInZone)
-                {
-                    enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval, paramaters);
-
-                    if (areaOfEffectSpell.appliesPlayerOnHitEffect)
-                    {
-                        List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
-                            .ToList();
-                        foreach (Effect effect in effects)
-                        {
-                            Effect copy = effect;
-                            copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                            EffectController.ApplyEffect(enemy, copy);
-                        }
-                    }
-
-                    if (areaOfEffectSpell.effectsOnEnemiesOnInterval != null)
-                    {
-                        foreach (Effect effect in areaOfEffectSpell.effectsOnEnemiesOnInterval)
-                        {
-                            Effect copy = effect;
-                            copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                            EffectController.ApplyEffect(enemy, effect);
-                        }
-                    }
-
-                    if (areaOfEffectSpell.deleteEffectsOnEnemiesOnInterval != null)
-                    {
-                        foreach (TypeEffect typeEffect in areaOfEffectSpell.deleteEffectsOnEnemiesOnInterval)
-                        {
-                            if (entity.underEffects.ContainsKey(typeEffect))
-                            {
-                                EffectController.StopCurrentEffect(entity, entity.underEffects[typeEffect]);
-                            }
-                        }
-                    }
-                }
-            }
-            else
+            if (areaOfEffectSpell.randomTargetHit)
             {
                 int rand = Random.Range(0, areaOfEffectSpell.enemiesInZone.Count);
                 Entity enemy = areaOfEffectSpell.enemiesInZone[rand];
-                enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval, paramaters);
+                enemies.Clear();
+                enemies.Add(enemy);
+            }
+            
+            foreach (Entity enemy in enemies)
+            {
+                SpellWithCondition conditionSpell;
+                int extraDamage = 0;
+
+                if (areaOfEffectSpell.spellWithConditions != null)
+                {
+                    if ((conditionSpell = areaOfEffectSpell.spellWithConditions.Find(spell =>
+                            spell.conditionType == ConditionType.DamageIfTargetHasEffect)) != null)
+                    {
+                        if (enemy.underEffects.ContainsKey(conditionSpell.conditionEffect.typeEffect))
+                        {
+                            extraDamage = conditionSpell.level;
+                        }
+                    }
+
+                    if ((conditionSpell = areaOfEffectSpell.spellWithConditions.Find(spell =>
+                            spell.conditionType == ConditionType.IfTargetDies)) != null)
+                    {
+                        if (enemy.hp - areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage < 0)
+                        {
+                            EffectController.ApplyEffect(entity, conditionSpell.effect);
+                        }
+                    }
+                }
+
+                enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage, paramaters);
+
+                if (areaOfEffectSpell.appliesPlayerOnHitEffect)
+                {
+                    List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
+                        .ToList();
+                    foreach (Effect effect in effects)
+                    {
+                        Effect copy = effect;
+                        copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
+                        EffectController.ApplyEffect(enemy, copy);
+                    }
+                }
 
                 if (areaOfEffectSpell.effectsOnEnemiesOnInterval != null)
                 {
@@ -133,46 +180,26 @@ namespace Games.Global.Spells.SpellsController
                         EffectController.ApplyEffect(enemy, effect);
                     }
                 }
-            }
-        }
 
-        private void IntervalArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
-        {
-            AbilityParameters paramaters = new AbilityParameters { origin = entity };
-
-            if (areaOfEffectSpell.linkedSpellOnInterval != null)
-            {
-                Vector3 position = Vector3.positiveInfinity;
-                if (areaOfEffectSpell.randomPosition)
+                if (areaOfEffectSpell.deleteEffectsOnEnemiesOnInterval != null)
                 {
-                    if (areaOfEffectSpell.geometry == Geometry.Sphere)
+                    foreach (TypeEffect typeEffect in areaOfEffectSpell.deleteEffectsOnEnemiesOnInterval)
                     {
-                        float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
-                        float rx = Random.Range(0.0f, areaOfEffectSpell.scale.x / 2);
-                        float rz = Random.Range(0.0f, areaOfEffectSpell.scale.z / 2);
-                        position = new Vector3
+                        if (entity.underEffects.ContainsKey(typeEffect))
                         {
-                            x = areaOfEffectSpell.startPosition.x + rx * Mathf.Cos(t), 
-                            y = areaOfEffectSpell.startPosition.y, 
-                            z = areaOfEffectSpell.startPosition.z + rz * Mathf.Sin(t)
-                        };
-                    }
-                    else
-                    {
-                        position = new Vector3
-                        {
-                            x = areaOfEffectSpell.startPosition.x + Random.Range(-areaOfEffectSpell.scale.x/2, areaOfEffectSpell.scale.x/2), 
-                            y = areaOfEffectSpell.startPosition.y, 
-                            z = areaOfEffectSpell.startPosition.z + Random.Range(-areaOfEffectSpell.scale.z/2, areaOfEffectSpell.scale.z/2)
-                        };
+                            EffectController.StopCurrentEffect(entity, entity.underEffects[typeEffect]);
+                        }
                     }
                 }
 
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position);
+                PlaySpecialCondition(entity, enemy, areaOfEffectSpell);
             }
+        }
 
-            IntervalHitEnemies(entity, areaOfEffectSpell);
-
+        private void IntervalHitAllies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
+        {
+            AbilityParameters paramaters = new AbilityParameters { origin = entity };
+            
             foreach (Entity ally in areaOfEffectSpell.alliesInZone)
             {
                 if (ally == entity)
@@ -209,6 +236,43 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
             }
+        }
+
+        private void IntervalArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
+        {
+            if (areaOfEffectSpell.linkedSpellOnInterval != null)
+            {
+                Vector3 position = Vector3.positiveInfinity;
+                if (areaOfEffectSpell.randomPosition)
+                {
+                    if (areaOfEffectSpell.geometry == Geometry.Sphere)
+                    {
+                        float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
+                        float rx = Random.Range(0.0f, areaOfEffectSpell.scale.x / 2);
+                        float rz = Random.Range(0.0f, areaOfEffectSpell.scale.z / 2);
+                        position = new Vector3
+                        {
+                            x = areaOfEffectSpell.startPosition.x + rx * Mathf.Cos(t), 
+                            y = areaOfEffectSpell.startPosition.y, 
+                            z = areaOfEffectSpell.startPosition.z + rz * Mathf.Sin(t)
+                        };
+                    }
+                    else
+                    {
+                        position = new Vector3
+                        {
+                            x = areaOfEffectSpell.startPosition.x + Random.Range(-areaOfEffectSpell.scale.x/2, areaOfEffectSpell.scale.x/2), 
+                            y = areaOfEffectSpell.startPosition.y, 
+                            z = areaOfEffectSpell.startPosition.z + Random.Range(-areaOfEffectSpell.scale.z/2, areaOfEffectSpell.scale.z/2)
+                        };
+                    }
+                }
+
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position);
+            }
+
+            IntervalHitEnemies(entity, areaOfEffectSpell);
+            IntervalHitAllies(entity, areaOfEffectSpell);
         }
 
         private static void EndArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
