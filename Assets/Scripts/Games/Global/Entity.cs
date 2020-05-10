@@ -27,7 +27,7 @@ namespace Games.Global
     }
 
     // Class for mobs and players
-    public abstract class Entity: ItemModel
+    public class Entity: ItemModel
     {
         public int IdEntity;
         
@@ -35,7 +35,7 @@ namespace Games.Global
         
         private const float DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
-        private const int DEFAULT_ATT = 0;
+        private const float DEFAULT_ATT = 0;
         private const float DEFAULT_SPEED = 10;
         private const float DEFAULT_ATT_SPEED = 1;
         private const float DEFAULT_RESSOURCE = 50;
@@ -46,7 +46,7 @@ namespace Games.Global
         public int initialDef;
         public int initialMagicalDef;
         public int initialPhysicalDef;
-        public int initialAtt;
+        public float initialAtt;
         public float initialSpeed;
         public float initialAttSpeed;
         public float initialRessource1;
@@ -54,7 +54,7 @@ namespace Games.Global
 
         public float hp = DEFAULT_HP;
         public int def = DEFAULT_DEF;
-        public int att = DEFAULT_ATT;
+        public float att = DEFAULT_ATT;
         public float speed = DEFAULT_SPEED;
         public float attSpeed = DEFAULT_ATT_SPEED;
         public int magicalDef = 0;
@@ -92,9 +92,20 @@ namespace Games.Global
 
         public bool doingSkill = false;
 
-        public abstract void BasicAttack();
-        public abstract void BasicDefense();
-        public abstract void DesactiveBasicDefense();
+        public virtual void BasicAttack()
+        {
+            
+        }
+
+        public virtual void BasicDefense()
+        {
+            
+        }
+
+        public virtual void DesactiveBasicDefense()
+        {
+            
+        }
 
         // Bool set by effect
         public bool isWeak = false;

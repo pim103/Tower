@@ -102,11 +102,6 @@ namespace Games.Global
             weaponPrefab.SetPositionToParent(position, angle);
         }
 
-        public void SetMaterial(Material material)
-        {
-            meshRenderer.material = material;
-        }
-
         public virtual void SetInvisibility()
         {
         }

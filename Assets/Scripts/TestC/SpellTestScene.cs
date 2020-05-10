@@ -40,9 +40,14 @@ namespace TestC
         private IEnumerator Waiting()
         {
             yield return new WaitForSeconds(5f);
-            TestSpell();
+            OtherSpell();
         }
 
+        private void OtherSpell()
+        {
+            
+        }
+        
         private void TestSpell()
         {
 //            AreaOfEffectSpell linked = new AreaOfEffectSpell

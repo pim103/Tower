@@ -131,7 +131,7 @@ namespace Games.Global.Weapons
 
             BuffController.EntityDealDamage(wielder, entity);
 
-            int damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
+            float damage = weapon.damage + wielder.att + weapon.oneHitDamageUp;
             if (wielder.isWeak)
             {
                 damage /= 2;

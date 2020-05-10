@@ -18,18 +18,21 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Summon;
         }
 
-        public GameObject prefab;
+        public int idPoolObject;
+
         public float hp;
         public bool isTargetable;
-        public List<Vector3> startPosition;
+        public Vector3 startPosition;
+        public List<Vector3> positionPresets;
         public float duration;
         public float attackDamage;
+        public float moveSpeed;
         public int summonNumber;
         public float attackSpeed;
         public int nbUseSpells;
 
         public SummonBehaviorType summonBehaviorType;
-        
+
         // Destroy other invocation of same type
         public bool isUnique;
         public bool canMove;
@@ -40,5 +43,8 @@ namespace Games.Global.Spells
         public List<SpellComponent> spells;
         public SpellComponent basicAttack;
         public SpellComponent spellWhenPlayerCall;
+        
+        /* useless for initialisation of spell */
+        public List<GenericSummonSpell> prefabsSummon;
     }
 }
