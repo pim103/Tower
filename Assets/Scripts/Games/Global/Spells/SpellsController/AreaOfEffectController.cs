@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Games.Global.Abilities;
+using Games.Global.Armors;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -127,9 +128,62 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
+        private void BasicAttack(Entity entity, Entity enemy, float extraDamage, AreaOfEffectSpell areaOfEffectSpell)
+        {
+            AbilityParameters paramaters = new AbilityParameters { origin = entity };
+
+            if ((enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
+                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
+                entity.isBlind ||
+                enemy.isUntargeatable)
+            {
+                return;
+            }
+
+            BuffController.EntityReceivedDamage(enemy, entity);
+
+            if (entity.hasDivineShield)
+            {
+                return;
+            }
+
+            Weapon weapon = entity.weapons[0];
+
+            if (weapon != null)
+            {
+                weapon.OnDamageDealt(paramaters);
+                extraDamage += weapon.damage;
+            }
+
+            foreach (Armor armor in entity.armors)
+            {
+                armor.OnDamageDealt(paramaters);
+            }
+
+            List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
+                .ToList();
+            foreach (Effect effect in effects)
+            {
+                Effect copy = effect;
+                copy.positionSrcDamage = entity.entityPrefab.transform.position;
+                EffectController.ApplyEffect(enemy, copy);
+            }
+
+            BuffController.EntityDealDamage(entity, enemy);
+
+            float damage = entity.att + extraDamage;
+            if (entity.isWeak)
+            {
+                damage /= 2;
+            }
+
+            enemy.TakeDamage(damage, paramaters, entity.canPierce);
+        }
+
         private void IntervalHitEnemies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
             AbilityParameters paramaters = new AbilityParameters { origin = entity };
+
             List<Entity> enemies = new List<Entity>();
 
             if (areaOfEffectSpell.randomTargetHit && areaOfEffectSpell.enemiesInZone.Count > 0)
@@ -170,17 +224,24 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
 
-                enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage, paramaters);
-
-                if (areaOfEffectSpell.appliesPlayerOnHitEffect)
+                if (areaOfEffectSpell.isBasicAttack)
                 {
-                    List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
-                        .ToList();
-                    foreach (Effect effect in effects)
+                    BasicAttack(entity, enemy, extraDamage, areaOfEffectSpell);
+                }
+                else
+                {
+                    enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage, paramaters);
+
+                    if (areaOfEffectSpell.appliesPlayerOnHitEffect && !areaOfEffectSpell.isBasicAttack)
                     {
-                        Effect copy = effect;
-                        copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                        EffectController.ApplyEffect(enemy, copy);
+                        List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
+                            .ToList();
+                        foreach (Effect effect in effects)
+                        {
+                            Effect copy = effect;
+                            copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
+                            EffectController.ApplyEffect(enemy, copy);
+                        }
                     }
                 }
 

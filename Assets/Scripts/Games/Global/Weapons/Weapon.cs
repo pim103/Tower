@@ -1,4 +1,5 @@
-﻿using Games.Players;
+﻿using Games.Global.Spells;
+using Games.Players;
 using UnityEngine;
 
 namespace Games.Global.Weapons
@@ -41,9 +42,7 @@ namespace Games.Global.Weapons
 
         public string animationToPlay;
 
-        public int idPoolProjectile;
-
-        public int oneHitDamageUp = 0;
+        public Spell basicAttack;
 
         public virtual void InitPlayerSkill(Classes classe)
         {

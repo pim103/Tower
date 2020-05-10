@@ -48,7 +48,8 @@ namespace Games.Global
 
         [SerializeField] public Transform positionInLeftHand;
         [SerializeField] public Transform angleWithOneLeft;
-
+        [SerializeField] public NavMeshAgent navMeshAgent;
+        
         public Entity entity;
 
         public bool cameraBlocked = false;
@@ -72,11 +73,21 @@ namespace Games.Global
 
         public IEnumerator ApplyForce(Vector3 direction, int level)
         {
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = false;
+            }
+
             rigidbodyEntity.isKinematic = false;
 
             rigidbodyEntity.AddForce((direction * level * 5), ForceMode.Impulse);
             yield return new WaitForSeconds(1);
             rigidbodyEntity.isKinematic = true;
+            
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = true;
+            }
         }
 
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
@@ -84,6 +95,7 @@ namespace Games.Global
             BuffController.EntityAttack(entity, positionPointed);
 
             weaponPrefab.BasicAttack();
+            SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
         }
 
         public void AddItemInHand(Weapon weapon)
@@ -106,14 +118,21 @@ namespace Games.Global
             weaponPrefab.SetWielder(entity);
             weaponPrefab.SetWeapon(weapon);
             weaponPrefab.SetPositionToParent(position, angle);
+
+            entity.basicAttack = weapon.basicAttack;
         }
 
         public virtual void SetInvisibility()
         {
         }
 
-        public void MoveToTarget(NavMeshAgent navMeshAgent, float range)
+        public void MoveToTarget(float range)
         {
+            if (!navMeshAgent.enabled)
+            {
+                return;
+            }
+
             if (entity.isFeared || entity.isCharmed)
             {
                 navMeshAgent.SetDestination(transform.position + forcedDirection);

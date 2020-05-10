@@ -10,7 +10,6 @@ namespace Games.Global.Entities
     public class MonsterPrefab : EntityPrefab
     {
         [SerializeField] private Slider hpBar;
-        [SerializeField] private NavMeshAgent navMeshAgent;
 
         private PlayerPrefab playerPrefab;
 
@@ -56,11 +55,11 @@ namespace Games.Global.Entities
             {
                 if (monster.constraint == TypeWeapon.Cac)
                 {
-                    MoveToTarget(navMeshAgent, 1);
+                    MoveToTarget(1);
                 }
                 else
                 {
-                    MoveToTarget(navMeshAgent, 10);
+                    MoveToTarget(10);
                 }
             }
             else

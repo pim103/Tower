@@ -44,6 +44,8 @@ namespace Games.Global.Spells
         public Coroutine currentCoroutine;
 
         public PositionToStartSpell positionToStartSpell;
+
+        public bool isBasicAttack;
     }
 
     public class Spell

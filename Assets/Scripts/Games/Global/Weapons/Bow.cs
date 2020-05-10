@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Games.Global.Abilities;
-//using Games.Global.Patterns;
+using System.Diagnostics;
+using Games.Global.Spells;
 using Games.Players;
 using UnityEngine;
-//using PA_INST = Games.Global.Patterns.PatternInstructions;
+using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Weapons
 {
@@ -11,11 +11,7 @@ namespace Games.Global.Weapons
     {
         public Bow()
         {
-           //pattern = //pattern[2];
-           //pattern[0] = //pattern(PA_INST.BACK, 0.2f);
-           //pattern[1] = //pattern(PA_INST.FRONT, 0.2f);
            animationToPlay = "BowAttack";
-           idPoolProjectile = 0;
         }
 
         public override void FixAngleAttack(bool isFirstIteration, Entity wielder)
@@ -32,7 +28,30 @@ namespace Games.Global.Weapons
 
         public override void InitPlayerSkill(Classes classe)
         {
+            switch (classe)
+            {
+                case Classes.Warrior:
+                    ProjectileSpell projectile = new ProjectileSpell
+                    {
+                        damages = 0,
+                        duration = 5,
+                        speed = 15,
+                        damageType = DamageType.Physical,
+                        isBasicAttack = true,
+                        idPoolObject = 0,
+                        positionToStartSpell = PositionToStartSpell.DynamicPosition,
+                        trajectoryType = Trajectory.OriginForward
+                    };
 
+                    basicAttack = new Spell
+                    {
+                        cost = 0,
+                        cooldown = 1,
+                        castTime = 0,
+                        activeSpellComponent = projectile
+                    };
+                    break;
+            }
         }
     }
 }

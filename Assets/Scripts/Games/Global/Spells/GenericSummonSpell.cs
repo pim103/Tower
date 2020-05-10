@@ -8,8 +8,6 @@ namespace Games.Global.Spells
 {
     public class GenericSummonSpell : EntityPrefab
     {
-        [SerializeField] private NavMeshAgent navMeshAgent;
-        
         public Entity summoner;
         public Entity summon;
 
@@ -65,11 +63,11 @@ namespace Games.Global.Spells
             if (summonBehaviorType == SummonBehaviorType.Melee ||
                 summonBehaviorType == SummonBehaviorType.MoveOnTargetAndDie)
             {
-                MoveToTarget(navMeshAgent, 1);
+                MoveToTarget(1);
             }
             else if (summonBehaviorType == SummonBehaviorType.Distance)
             {
-                MoveToTarget(navMeshAgent, 10);
+                MoveToTarget(10);
             }
             
         }

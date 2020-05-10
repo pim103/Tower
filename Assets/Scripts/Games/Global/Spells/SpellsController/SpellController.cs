@@ -21,14 +21,24 @@ namespace Games.Global.Spells.SpellsController
 
         public static SpellController instance;
 
+        public static Spell sp = null;
+
         private void Start()
         {
             instance = this;
         }
 
-        public static void CastSpell(Entity entity, Spell spell)
+        public static void CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
-            instance.StartCoroutine(PlayCastTime(entity, spell));
+            if (spell == null)
+            {
+                return;
+            }
+
+            if (!spell.isOnCooldown)
+            {
+                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
+            }
         }
 
         private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
@@ -124,7 +134,7 @@ namespace Games.Global.Spells.SpellsController
             spell.isOnCooldown = false;
         }
         
-        public static IEnumerator PlayCastTime(Entity entity, Spell spell)
+        public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
             float duration = spell.castTime;
 
@@ -139,8 +149,8 @@ namespace Games.Global.Spells.SpellsController
                 yield break;
             }
 
-            StartCooldown(entity, spell);
-            CastSpellComponent(entity, spell.activeSpellComponent, Vector3.positiveInfinity);
+            instance.StartCoroutine(StartCooldown(entity, spell));
+            CastSpellComponent(entity, spell.activeSpellComponent, startPosition, target);
         }
     }
 }

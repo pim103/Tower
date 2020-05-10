@@ -45,7 +45,12 @@ namespace TestC
 
         private void OtherSpell()
         {
-            
+            player.entity.att = 15;
+
+            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
+            List<Effect> effects = new List<Effect>();
+            effects.Add(repulse);
+            player.entity.damageDealExtraEffect.Add(repulse);
         }
         
         private void TestSpell()
