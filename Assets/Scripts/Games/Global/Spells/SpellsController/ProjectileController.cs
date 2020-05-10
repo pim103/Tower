@@ -43,7 +43,8 @@ namespace Games.Global.Spells.SpellsController
             genericSpellPrefab.transform.localEulerAngles = projectileSpell.initialRotation;
 
             genericSpellPrefab.transform.localScale = Vector3.one;
-            Instantiate(projectileSpell.prefab, genericSpellPrefab.transform);
+            GameObject prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(projectileSpell.idPoolObject);
+            prefabWanted.transform.parent = genericSpellPrefab.transform;
 
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
             spellPrefabController.SetValues(entity, projectileSpell);

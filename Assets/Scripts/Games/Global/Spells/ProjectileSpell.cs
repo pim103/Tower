@@ -10,7 +10,7 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Projectile;
         }
 
-        public GameObject prefab;
+        public int idPoolObject;
         public Vector3 startPosition;
         public Vector3 initialRotation;
         public Vector3 trajectory;

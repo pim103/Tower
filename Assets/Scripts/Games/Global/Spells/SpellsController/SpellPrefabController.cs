@@ -14,19 +14,6 @@ namespace Games.Global.Spells.SpellsController
         public SpellComponent spellComponent;
         public Entity originOfSpell;
 
-//        public void Update()
-//        {
-//            if (spellComponent != null && spellComponent.typeSpell == TypeSpell.AreaOfEffect)
-//            {
-//                AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
-//
-//                if (area.wantToFollow && area.transformToFollow)
-//                {
-//                    transform.position = area.transformToFollow.position;
-//                }
-//            }
-//        }
-
         public void SetValues(Entity originEntity, SpellComponent originSpellComponent)
         {
             originOfSpell = originEntity;

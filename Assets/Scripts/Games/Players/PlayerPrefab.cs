@@ -401,7 +401,7 @@ namespace Games.Players
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Explosion")))
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Spell")))
             {
                 positionPointed = hit.point;
             }
