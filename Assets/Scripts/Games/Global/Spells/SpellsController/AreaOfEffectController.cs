@@ -303,7 +303,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (areaOfEffectSpell.linkedSpellOnEnd != null)
             {
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition);
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition, entity);
             }
 
             areaOfEffectSpell.objectPooled.transform.parent = parent;

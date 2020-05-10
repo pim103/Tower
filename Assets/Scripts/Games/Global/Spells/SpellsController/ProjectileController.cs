@@ -20,7 +20,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (projectileSpell.linkedSpellOnEnable != null)
             {
-                SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnEnable, projectileSpell.startPosition);
+                SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnEnable, projectileSpell.startPosition, entity);
             }
 
             float duration = projectileSpell.duration;
@@ -100,7 +100,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (projectileSpell.linkedSpellOnDisable != null)
             {
-                SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnDisable, projectileSpell.objectPooled.transform.position);
+                SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnDisable, projectileSpell.objectPooled.transform.position, entity);
             }
 
             projectileSpell.objectPooled.SetActive(false);

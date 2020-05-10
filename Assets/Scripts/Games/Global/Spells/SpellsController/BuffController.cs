@@ -27,7 +27,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (buffSpell.linkedSpellOnInterval != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, Vector3.positiveInfinity);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, entity.entityPrefab.transform.position, entity);
                 }
 
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
@@ -65,7 +65,7 @@ namespace Games.Global.Spells.SpellsController
                         {
                             case InstructionTargeting.ApplyOnSelf:
                                 EffectController.ApplyEffect(entity, spellWithCondition.effect);
-                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent, Vector3.positiveInfinity);
+                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent, entity.entityPrefab.transform.position, entity);
                                 break;
                             case InstructionTargeting.ApplyOnTarget:
                                 break;
@@ -122,7 +122,7 @@ namespace Games.Global.Spells.SpellsController
                 foreach (SpellWithCondition spellCondition in ifPlayerDies)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, Vector3.positiveInfinity);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, entity.entityPrefab.transform.position, entity);
                 }
             }
             else if (ifPlayerDoesntDie != null)
@@ -130,7 +130,7 @@ namespace Games.Global.Spells.SpellsController
                 foreach (SpellWithCondition spellCondition in ifPlayerDoesntDie)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, Vector3.positiveInfinity);
+                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, entity.entityPrefab.transform.position, entity);
                 }
             }
 
@@ -183,7 +183,7 @@ namespace Games.Global.Spells.SpellsController
                         position = entityTouch.entityPrefab.transform.position;
                     }
                     
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, position);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, position, entity);
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace Games.Global.Spells.SpellsController
                         position = entityOriginOfDamage.entityPrefab.transform.position;
                     }
                     
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position, entity);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
@@ -221,13 +221,13 @@ namespace Games.Global.Spells.SpellsController
             {
                 if (buffSpell.linkedSpellOnAttack != null)
                 {
-                    Vector3 position = Vector3.positiveInfinity;
+                    Vector3 position = entity.entityPrefab.transform.position;
                     if (buffSpell.needNewPositionOnAttack)
                     {
                         position = positionPointed;
                     }
-                    
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, positionPointed);
+
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, position, entity);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnAttack)
