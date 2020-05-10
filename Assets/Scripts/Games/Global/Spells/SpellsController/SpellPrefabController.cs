@@ -89,6 +89,7 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Transformation:
                     break;
                 case TypeSpell.Wave:
+                    WaveController.EntityTriggerEnter(originOfSpell, other, (WaveSpell) spellComponent, other.gameObject.layer == spellLayer);
                     break;
                 case TypeSpell.SpecialAttack:
                     break;

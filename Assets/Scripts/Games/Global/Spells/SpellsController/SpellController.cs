@@ -47,6 +47,8 @@ namespace Games.Global.Spells.SpellsController
                         case TypeSpell.Transformation:
                             break;
                         case TypeSpell.Wave:
+                            WaveSpell wave = (WaveSpell) spellComponent;
+                            wave.startPosition = startPosition;
                             break;
                         case TypeSpell.SpecialAttack:
                             break;

@@ -11,13 +11,18 @@ namespace Games.Global.Spells
         }
 
         public Vector3 startPosition;
-        public int number;
+        public Vector3 initialRotation;
+
         public Geometry geometryPropagation;
+        public int initialWidth;
         public float duration;
         public float damages;
 
         public List<Effect> effectsOnHit;
         public float incrementAmplitudeByTime;
         public float speedPropagation;
+        
+        /* Useless for instantiation of spell */
+        public GameObject objectPooled;
     }
 }
