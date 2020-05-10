@@ -24,13 +24,10 @@ namespace Games.Global.Spells
 
         public MovementSpellType movementSpellType;
         public Entity target;
-        
-        public float damageOnHit;
 
         public Vector3 tpPosition;
 
-        public Effect effectOnHit;
-
+        public SpellComponent linkedSpellAtTheStart;
         public SpellComponent linkedSpellAtTheEnd;
     }
 }

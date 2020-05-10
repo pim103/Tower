@@ -14,32 +14,32 @@ namespace Games.Global.Spells.SpellsController
         public SpellComponent spellComponent;
         public Entity originOfSpell;
 
-        public void Update()
-        {
-            if (spellComponent != null && spellComponent.typeSpell == TypeSpell.AreaOfEffect)
-            {
-                AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
-
-                if (area.transformToFollow)
-                {
-                    transform.position = area.transformToFollow.position;
-                }
-            }
-        }
+//        public void Update()
+//        {
+//            if (spellComponent != null && spellComponent.typeSpell == TypeSpell.AreaOfEffect)
+//            {
+//                AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
+//
+//                if (area.wantToFollow && area.transformToFollow)
+//                {
+//                    transform.position = area.transformToFollow.position;
+//                }
+//            }
+//        }
 
         public void SetValues(Entity originEntity, SpellComponent originSpellComponent)
         {
             originOfSpell = originEntity;
             spellComponent = originSpellComponent;
 
-            if (originSpellComponent.typeSpell == TypeSpell.AreaOfEffect)
-            {
-                rigidbody.isKinematic = true;
-            }
-            else
-            {
-                rigidbody.isKinematic = false;
-            }
+//            if (originSpellComponent.typeSpell == TypeSpell.AreaOfEffect)
+//            {
+//                rigidbody.isKinematic = true;
+//            }
+//            else
+//            {
+//                rigidbody.isKinematic = false;
+//            }
         }
 
         public void ActiveCollider(Geometry geometry)
@@ -63,10 +63,9 @@ namespace Games.Global.Spells.SpellsController
             int playerLayer = LayerMask.NameToLayer("Player");
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int spellLayer = LayerMask.NameToLayer("Spell");
-            
 
-            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
-            Debug.Log("Other layer : " + other.gameObject.layer);
+//            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
+//            Debug.Log("Other layer : " + other.gameObject.layer);
             if (other.gameObject.layer != playerLayer && other.gameObject.layer != monsterLayer &&
                 other.gameObject.layer != spellLayer)
             {

@@ -56,11 +56,10 @@ namespace TestC
 //                positionToStartSpell = PositionToStartSpell.DynamicPosition
 //            };
 //
-            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 1, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
+            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
             List<Effect> effects = new List<Effect>();
             effects.Add(repulse);
-//            
-//            
+
 //            Effect regen = new Effect
 //                {launcher = player.entity, level = 2, durationInSeconds = 10, typeEffect = TypeEffect.Regen};
 //
@@ -119,31 +118,32 @@ namespace TestC
 //                linkedSpellOnDisable = area
 //            };
 
-            MovementSpell movementSpell = new MovementSpell
-            {
-                duration = 0.5f,
-                speed = 25,
-                trajectory = player.transform.forward,
-                movementSpellType = MovementSpellType.TpWithTarget,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition
-            };
-            
             AreaOfEffectSpell area = new AreaOfEffectSpell
             {
                 startPosition = Vector3.zero,
-                scale = Vector3.one * 20,
-                duration = 50,
-                interval = 0.5f,
+                scale = Vector3.one * 2,
+                duration = 3,
+                interval = 0.05f,
                 typeSpell = TypeSpell.AreaOfEffect,
                 geometry = Geometry.Sphere,
-                canStopProjectile = true,
-                randomTargetHit = true,
                 damagesOnEnemiesOnInterval = 11.0f,
-                linkedSpellOnInterval = movementSpell,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition
+                effectsOnEnemiesOnInterval = effects,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition,
+                wantToFollow = true
+            };
+            
+            MovementSpell movementSpell = new MovementSpell
+            {
+                duration = 3f,
+                speed = 20,
+                isFollowingMouse = true,
+                trajectory = player.transform.forward,
+                movementSpellType = MovementSpellType.Charge,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition,
+                linkedSpellAtTheStart = area
             };
 
-            SpellController.CastSpellComponent(player.entity, area, player.positionPointed);
+            SpellController.CastSpellComponent(player.entity, movementSpell, player.positionPointed);
         }
     }
 }

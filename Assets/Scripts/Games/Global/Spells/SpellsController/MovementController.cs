@@ -15,7 +15,11 @@ namespace Games.Global.Spells.SpellsController
         {
             MovementSpell movementSpell = (MovementSpell) spellComponent;
 
-            
+            if (movementSpell.linkedSpellAtTheStart != null)
+            {
+                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity);
+            }
+
             if (movementSpell.movementSpellType == MovementSpellType.Tp || movementSpell.movementSpellType == MovementSpellType.TpWithTarget)
             {
                 DoTp(entity, movementSpell);

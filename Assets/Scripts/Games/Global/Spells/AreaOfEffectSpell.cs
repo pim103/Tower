@@ -29,6 +29,7 @@ namespace Games.Global.Spells
         public List<TypeEffect> deleteEffectsOnPlayerOnInterval;
         public List<TypeEffect> deleteEffectsOnEnemiesOnInterval;
 
+        public bool wantToFollow;
         public bool canStopProjectile;
         public bool randomTargetHit;
         public bool randomPosition;

@@ -15,6 +15,8 @@ namespace Games.Global.Spells.SpellsController
 {
     public class AreaOfEffectController : MonoBehaviour, ISpellController
     {
+        private static Transform parent;
+
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, spellComponent));
@@ -57,6 +59,8 @@ namespace Games.Global.Spells.SpellsController
 
             GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
 
+            parent = genericSpellPrefab.transform.parent;
+            
             genericSpellPrefab.transform.localScale = areaOfEffectSpell.scale;
             genericSpellPrefab.transform.position = areaOfEffectSpell.startPosition;
 
@@ -65,6 +69,11 @@ namespace Games.Global.Spells.SpellsController
             spellPrefabController.SetValues(entity, areaOfEffectSpell);
 
             areaOfEffectSpell.objectPooled = genericSpellPrefab;
+
+            if (areaOfEffectSpell.wantToFollow && areaOfEffectSpell.transformToFollow)
+            {
+                genericSpellPrefab.transform.parent = areaOfEffectSpell.transformToFollow;
+            }
             
             genericSpellPrefab.SetActive(true);
         }
@@ -273,7 +282,7 @@ namespace Games.Global.Spells.SpellsController
                 }
 
                 Entity enemy = null;
-                if (areaOfEffectSpell.randomTargetHit == true)
+                if (areaOfEffectSpell.randomTargetHit)
                 {
                     int rand = Random.Range(0, areaOfEffectSpell.enemiesInZone.Count);
                     if (areaOfEffectSpell.enemiesInZone.Count > 0)
@@ -297,6 +306,7 @@ namespace Games.Global.Spells.SpellsController
                 SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition);
             }
 
+            areaOfEffectSpell.objectPooled.transform.parent = parent;
             areaOfEffectSpell.objectPooled.SetActive(false);
             
             if (areaOfEffectSpell.currentCoroutine != null)
