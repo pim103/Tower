@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Assertions.Comparers;
 using UnityEngine.Serialization;
 
 namespace Games.Global
@@ -18,21 +22,21 @@ namespace Games.Global
         Charge,
         HeavyBasicAttack
     }
-    
-    public class EntityPrefab: MonoBehaviour
+
+    public class EntityPrefab : MonoBehaviour
     {
         // virtual hand look at cursor or target
 //        [SerializeField] public GameObject virtualHand;
-        
+
         // hand play animation of weapon
 //        [SerializeField] public GameObject hand;
 
         [SerializeField] public GameObject rightHand;
         [SerializeField] public GameObject leftHand;
-        
+
 //        [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Rigidbody rigidbodyEntity;
-        
+
         [SerializeField] protected MeshRenderer meshRenderer;
 
         [SerializeField] public Animator animator;
@@ -41,7 +45,7 @@ namespace Games.Global
 
         [SerializeField] public Transform positionInRightHand;
         [SerializeField] public Transform angleWithOneRight;
-        
+
         [SerializeField] public Transform positionInLeftHand;
         [SerializeField] public Transform angleWithOneLeft;
 
@@ -59,6 +63,8 @@ namespace Games.Global
 
         public Vector3 positionPointed;
 
+        public Entity target;
+
         public void WantToApplyForce(Vector3 direction, int level)
         {
             StartCoroutine(ApplyForce(direction, level));
@@ -67,7 +73,7 @@ namespace Games.Global
         public IEnumerator ApplyForce(Vector3 direction, int level)
         {
             rigidbodyEntity.isKinematic = false;
-            
+
             rigidbodyEntity.AddForce((direction * level * 5), ForceMode.Impulse);
             yield return new WaitForSeconds(1);
             rigidbodyEntity.isKinematic = true;
@@ -104,6 +110,118 @@ namespace Games.Global
 
         public virtual void SetInvisibility()
         {
+        }
+
+        public void MoveToTarget(NavMeshAgent navMeshAgent, float range)
+        {
+            if (entity.isFeared || entity.isCharmed)
+            {
+                navMeshAgent.SetDestination(transform.position + forcedDirection);
+                return;
+            }
+
+            if (target != null)
+            {
+                navMeshAgent.SetDestination(target.entityPrefab.transform.position);
+
+                if (navMeshAgent.remainingDistance <= range && navMeshAgent.hasPath)
+                {
+                    navMeshAgent.SetDestination(transform.position);
+                }
+            }
+        }
+
+        public void FindTarget()
+        {
+            Entity newTarget = null;
+            bool findEnemyWithTaunt = false;
+            float dist = 10000;
+            float minDistAggro = 100;
+
+            switch (entity.typeEntity)
+            {
+                case TypeEntity.MOB:
+                    foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+                    {
+                        PlayerPrefab player = value.Value;
+                        float newDist = Vector3.Distance(transform.position, player.transform.position);
+
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = player.entity;
+                            }
+                        }
+
+                        if (player.entity.hasTaunt)
+                        {
+                            newTarget = player.entity;
+                            findEnemyWithTaunt = true;
+                            break;
+                        }
+                    }
+
+                    foreach (Entity summon in DataObject.invocationsInScene)
+                    {
+                        float newDist = Vector3.Distance(transform.position, summon.entityPrefab.transform.position);
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!summon.isInvisible && !summon.isUntargeatable && !summon.hasNoAggro && !findEnemyWithTaunt)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = summon;
+                            }
+                        }
+
+                        if (summon.hasTaunt)
+                        {
+                            newTarget = summon;
+                            break;
+                        }
+                    }
+
+                    break;
+                case TypeEntity.PLAYER:
+                    foreach (Monster monster in DataObject.monsterInScene)
+                    {
+                        float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!monster.isInvisible && !monster.isUntargeatable && !monster.hasNoAggro)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = monster;
+                            }
+                        }
+
+                        if (monster.hasTaunt)
+                        {
+                            newTarget = monster;
+                            break;
+                        }
+                    }
+
+                    break;
+            }
+
+            target = newTarget;
         }
     }
 }

@@ -85,10 +85,12 @@ namespace Games.Global
         public List<Effect> damageReceiveExtraEffect;
 
         public List<BuffSpell> currentBuff;
-
         public List<Entity> entityInRange;
-        
+
         public EntityPrefab entityPrefab;
+
+        public Spell basicAttack;
+        public List<Spell> spells;
 
         public bool doingSkill = false;
 

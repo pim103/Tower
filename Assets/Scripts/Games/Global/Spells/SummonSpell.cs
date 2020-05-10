@@ -40,10 +40,10 @@ namespace Games.Global.Spells
         public SpellComponent linkedSpellOnEnable;
         public SpellComponent linkedSpellOnDisapear;
 
-        public List<SpellComponent> spells;
-        public SpellComponent basicAttack;
+        public List<Spell> spells;
+        public Spell basicAttack;
         public SpellComponent spellWhenPlayerCall;
-        
+
         /* useless for initialisation of spell */
         public List<GenericSummonSpell> prefabsSummon;
     }

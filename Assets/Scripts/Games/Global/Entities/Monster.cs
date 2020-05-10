@@ -21,7 +21,7 @@ namespace Games.Global.Entities
 
         public override void BasicAttack()
         {
-            if (monsterPrefab.target)
+            if (monsterPrefab.target != null)
             {
                 monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
             }
