@@ -9,7 +9,7 @@ namespace Games.Global.Spells.SpellsController
     {
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = StartCoroutine(PlayBuffSpell(entity, spellComponent));
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayBuffSpell(entity, spellComponent));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 

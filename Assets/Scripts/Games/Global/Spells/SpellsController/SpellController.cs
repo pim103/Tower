@@ -41,6 +41,8 @@ namespace Games.Global.Spells.SpellsController
                         case TypeSpell.Buff:
                             break;
                         case TypeSpell.Projectile:
+                            ProjectileSpell projectileSpell = (ProjectileSpell) spellComponent;
+                            projectileSpell.startPosition = startPosition;
                             break;
                         case TypeSpell.Summon:
                             break;

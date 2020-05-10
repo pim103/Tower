@@ -6,7 +6,7 @@ namespace Games.Global.Spells
 {
     public class AreaOfEffectSpell : SpellComponent
     {
-        private void Start()
+        public AreaOfEffectSpell()
         {
             typeSpell = TypeSpell.AreaOfEffect;
         }

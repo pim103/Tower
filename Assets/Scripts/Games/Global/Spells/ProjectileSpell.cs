@@ -5,15 +5,21 @@ namespace Games.Global.Spells
 {
     public class ProjectileSpell : SpellComponent
     {
-        private void Start()
+        public ProjectileSpell()
         {
             typeSpell = TypeSpell.Projectile;
         }
 
         public GameObject prefab;
+        public Vector3 startPosition;
+        public Vector3 initialRotation;
         public Vector3 trajectory;
+        public float speed;
+        
         public float damages;
         public List<Effect> effectsOnHit;
+
+        public float duration;
 
         public bool passingThroughEntity;
 
@@ -21,5 +27,8 @@ namespace Games.Global.Spells
 
         public SpellComponent linkedSpellOnEnable;
         public SpellComponent linkedSpellOnDisable;
+
+        /* Useless for instantiation of spell */
+        public GameObject objectPooled;
     }
 }

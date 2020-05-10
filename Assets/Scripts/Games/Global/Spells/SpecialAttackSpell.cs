@@ -2,7 +2,7 @@
 {
     public class SpecialAttackSpell : SpellComponent
     {
-        private void Start()
+        public SpecialAttackSpell()
         {
             typeSpell = TypeSpell.SpecialAttack;
         }

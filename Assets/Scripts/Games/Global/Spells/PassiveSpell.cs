@@ -2,7 +2,7 @@
 {
     public class PassiveSpell : SpellComponent
     {
-        private void Start()
+        public PassiveSpell()
         {
             typeSpell = TypeSpell.Passive;
         }

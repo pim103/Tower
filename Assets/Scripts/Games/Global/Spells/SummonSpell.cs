@@ -13,7 +13,7 @@ namespace Games.Global.Spells
     
     public class SummonSpell : SpellComponent
     {
-        private void Start()
+        public SummonSpell()
         {
             typeSpell = TypeSpell.Summon;
         }

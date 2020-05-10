@@ -17,7 +17,7 @@ namespace Games.Global.Spells.SpellsController
     {
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = StartCoroutine(PlayAreaSpell(entity, spellComponent));
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, spellComponent));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 
@@ -281,19 +281,30 @@ namespace Games.Global.Spells.SpellsController
             {
                 SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, Vector3.positiveInfinity);
             }
+
+            areaOfEffectSpell.objectPooled.SetActive(false);
             
-            areaOfEffectSpell.objectPooled.SetActive(false);   
+            if (areaOfEffectSpell.currentCoroutine != null)
+            {
+                SpellController.instance.StopCoroutine(areaOfEffectSpell.currentCoroutine);
+            }
         }
 
         public static void EntityTriggerEnter(Entity origin, Collider other, AreaOfEffectSpell areaOfEffectSpell, bool isSpell)
         {
             if (isSpell)
             {
-                SpellComponent spell = other.GetComponent<SpellPrefabController>().spellComponent;
+                SpellPrefabController spellPrefab = other.transform.GetComponent<SpellPrefabController>();
+                if (spellPrefab == null)
+                {
+                    spellPrefab = other.transform.parent.GetComponent<SpellPrefabController>();
+                }
+
+                SpellComponent spell = spellPrefab.spellComponent;
                 if (spell.typeSpell == TypeSpell.Projectile && areaOfEffectSpell.canStopProjectile)
                 {
-                    // TODO : Remove projectile
-                    Debug.Log("Remove projectile");
+                    ProjectileSpell projSpell = (ProjectileSpell) spell;
+                    ProjectileController.EndArea(origin, projSpell);
                 }
 
                 return;

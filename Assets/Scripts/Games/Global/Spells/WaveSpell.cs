@@ -5,7 +5,7 @@ namespace Games.Global.Spells
 {
     public class WaveSpell : SpellComponent
     {
-        private void Start()
+        public WaveSpell()
         {
             typeSpell = TypeSpell.Wave;
         }

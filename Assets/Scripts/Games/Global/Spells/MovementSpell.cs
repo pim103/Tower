@@ -4,7 +4,7 @@ namespace Games.Global.Spells
 {
     public class MovementSpell : SpellComponent
     {
-        private void Start()
+        public MovementSpell()
         {
             typeSpell = TypeSpell.Movement;
         }

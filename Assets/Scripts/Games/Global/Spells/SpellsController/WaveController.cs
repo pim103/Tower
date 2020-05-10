@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Games.Global.Weapons;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace Games.Global.Spells.SpellsController
     {
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = StartCoroutine(PlayWaveSpell(entity, spellComponent));
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, spellComponent));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 
@@ -104,7 +103,12 @@ namespace Games.Global.Spells.SpellsController
         
         private static void EndArea(Entity entity, WaveSpell waveSpell)
         {
-            waveSpell.objectPooled.SetActive(false);   
+            waveSpell.objectPooled.SetActive(false);
+            
+            if (waveSpell.currentCoroutine != null)
+            {
+                SpellController.instance.StopCoroutine(waveSpell.currentCoroutine);
+            }
         }
     }
 }

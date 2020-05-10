@@ -12,7 +12,7 @@ namespace Games.Global.Spells
     
     public class BuffSpell : SpellComponent
     {
-        private void Start()
+        public BuffSpell()
         {
             typeSpell = TypeSpell.Buff;
         }

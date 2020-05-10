@@ -10,7 +10,7 @@ namespace Games.Global.Spells
     
     public class TargetedAttackSpell : SpellComponent
     {
-        private void Start()
+        public TargetedAttackSpell()
         {
             typeSpell = TypeSpell.TargetedAttack;
         }

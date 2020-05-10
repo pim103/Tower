@@ -15,6 +15,8 @@ namespace TestC
     public class SpellTestScene : MonoBehaviour
     {
         [SerializeField] private PlayerPrefab player;
+
+        [SerializeField] private GameObject arrowPrefab;
         
         // Start is called before the first frame update
         void Awake()
@@ -37,6 +39,8 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
+            yield return new WaitForSeconds(5f);
+            TestSpell();
             yield return new WaitForSeconds(5f);
             TestSpell();
         }
@@ -66,23 +70,21 @@ namespace TestC
 //            List<SpellWithCondition> spellWithConditions = new List<SpellWithCondition>();
 //            spellWithConditions.Add(spellWithCondition);
 //
-//            AreaOfEffectSpell area = new AreaOfEffectSpell
-//            {
-//                startPosition = Vector3.zero,
-//                scale = Vector3.one * 20,
-//                duration = 50,
-//                interval = 0.5f,
-//                typeSpell = TypeSpell.AreaOfEffect,
-//                geometry = Geometry.Sphere,
-//                canStopProjectile = true,
-//                randomPosition = true,
+            AreaOfEffectSpell area = new AreaOfEffectSpell
+            {
+                startPosition = Vector3.zero,
+                scale = Vector3.one * 20,
+                duration = 50,
+                interval = 0.5f,
+                typeSpell = TypeSpell.AreaOfEffect,
+                geometry = Geometry.Sphere,
+                canStopProjectile = true,
 //                onePlay = true,
-//                damagesOnEnemiesOnInterval = 100.0f,
-//                spellWithConditions = spellWithConditions,
-////                effectsOnEnemiesOnInterval = effects,
-////                linkedSpellOnInterval = linked,
-//                positionToStartSpell = PositionToStartSpell.DynamicPosition
-//            };
+                damagesOnEnemiesOnInterval = 50.0f,
+//                effectsOnEnemiesOnInterval = effects,
+//                linkedSpellOnInterval = linked,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition
+            };
 //
 //            Effect resurrect = new Effect
 //                {launcher = player.entity, level = 1, durationInSeconds = 10, typeEffect = TypeEffect.Resurrection};
@@ -104,23 +106,36 @@ namespace TestC
 //            player.entity.att = 15;
 //            SpellController.CastSpellComponent(player.entity, buffSpell, Vector3.positiveInfinity);
 
-            Debug.Log(player.transform.localEulerAngles);
-            WaveSpell waveSpell = new WaveSpell
+//            WaveSpell waveSpell = new WaveSpell
+//            {
+//                typeSpell = TypeSpell.Wave,
+//                duration = 10, 
+//                geometryPropagation = Geometry.Square, 
+//                initialRotation = player.transform.localEulerAngles,
+//                initialWidth = 10, 
+//                speedPropagation = 5,
+//                incrementAmplitudeByTime = 5,
+//                positionToStartSpell = PositionToStartSpell.Himself,
+//                startPosition = player.transform.position,
+//                effectsOnHit = effects,
+//                damages = 15
+//            };
+            ProjectileSpell projectileSpell = new ProjectileSpell
             {
-                typeSpell = TypeSpell.Wave,
-                duration = 10, 
-                geometryPropagation = Geometry.Square, 
+                prefab = arrowPrefab,
+                duration = 5,
+                speed = 4,
                 initialRotation = player.transform.localEulerAngles,
-                initialWidth = 10, 
-                speedPropagation = 5,
-                incrementAmplitudeByTime = 5,
+                trajectory = player.transform.forward,
                 positionToStartSpell = PositionToStartSpell.Himself,
-                startPosition = player.transform.position,
+                startPosition = player.transform.position + (Vector3.up * 1.5f),
                 effectsOnHit = effects,
-                damages = 15
+                damages = 10,
+                damageMultiplierOnDistance = 1.5f,
+                linkedSpellOnDisable = area
             };
 
-            SpellController.CastSpellComponent(player.entity, waveSpell, Vector3.positiveInfinity);
+            SpellController.CastSpellComponent(player.entity, projectileSpell, Vector3.positiveInfinity);
         }
     }
 }

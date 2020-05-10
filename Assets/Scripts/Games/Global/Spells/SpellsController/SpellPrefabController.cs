@@ -63,15 +63,15 @@ namespace Games.Global.Spells.SpellsController
             int playerLayer = LayerMask.NameToLayer("Player");
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int spellLayer = LayerMask.NameToLayer("Spell");
+            
 
+            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
+            Debug.Log("Other layer : " + other.gameObject.layer);
             if (other.gameObject.layer != playerLayer && other.gameObject.layer != monsterLayer &&
                 other.gameObject.layer != spellLayer)
             {
                 return;
             }
-            
-//            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
-//            Debug.Log("Other layer : " + other.gameObject.layer);
 
             if (spellComponent == null)
             {
@@ -83,6 +83,7 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Buff:
                     break;
                 case TypeSpell.Projectile:
+                    ProjectileController.EntityTriggerEnter(originOfSpell, other, (ProjectileSpell) spellComponent, other.gameObject.layer == spellLayer);
                     break;
                 case TypeSpell.Summon:
                     break;
