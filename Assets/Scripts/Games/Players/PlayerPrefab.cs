@@ -351,21 +351,31 @@ namespace Games.Players
                 transform.Rotate(Vector3.up * 180);
                 return;
             }
-            else if(entity.isCharmed)
+            
+            if(entity.isCharmed)
             {
                 Entity launcher = entity.underEffects[TypeEffect.Charm].launcher;
                 transform.LookAt(launcher.entityPrefab.transform);
                 return;
             }
-            else
+
+            if (cameraBlocked)
             {
-                Vector3 eulerAngles = transform.localEulerAngles;
-                eulerAngles.x = 0;
-                eulerAngles.z = 0;
-                transform.localEulerAngles = eulerAngles;
+                return;
             }
+
+            Vector3 eulerAngles = transform.localEulerAngles;
+            eulerAngles.x = 0;
+            eulerAngles.z = 0;
+            transform.localEulerAngles = eulerAngles;
+
+            float rotationSpeed = 5;
             
-            int rotationSpeed = 5;
+            
+            if (isCharging)
+            {
+                rotationSpeed = 0.1f;
+            }
             
             float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
             float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
@@ -413,7 +423,6 @@ namespace Games.Players
 
         public override void SetInvisibility()
         {
-            Debug.Log("Aloa");
             int count = 0;
 
             if (materialBackUpForSkin == null)

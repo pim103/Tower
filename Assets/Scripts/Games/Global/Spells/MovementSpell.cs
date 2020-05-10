@@ -2,6 +2,14 @@
 
 namespace Games.Global.Spells
 {
+    public enum MovementSpellType
+    {
+        Dash,
+        Charge,
+        Tp,
+        TpWithTarget
+    }
+    
     public class MovementSpell : SpellComponent
     {
         public MovementSpell()
@@ -14,10 +22,12 @@ namespace Games.Global.Spells
         public Vector3 trajectory;
         public bool isFollowingMouse;
 
+        public MovementSpellType movementSpellType;
+        public Entity target;
+        
         public float damageOnHit;
 
         public Vector3 tpPosition;
-        public Quaternion rotation;
 
         public Effect effectOnHit;
 

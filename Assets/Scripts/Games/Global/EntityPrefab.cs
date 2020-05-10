@@ -73,26 +73,6 @@ namespace Games.Global
             rigidbodyEntity.isKinematic = true;
         }
 
-        public void PlaySpecialMovement(SpecialMovement specialMovement, float durationSpecialMovement = 0)
-        {
-//            switch (specialMovement)
-//            {
-//                case SpecialMovement.Dash:
-//                    rigidbodyEntity.AddRelativeForce(Vector3.forward * 30f, ForceMode.Impulse);
-//                    break;
-//                case SpecialMovement.BackDash:
-//                    rigidbodyEntity.AddRelativeForce(Vector3.back * 30f, ForceMode.Impulse);
-//                    break;
-//                case SpecialMovement.Charge:
-//                    StartCoroutine(PlayCharge(durationSpecialMovement));
-//                    break;
-//                case SpecialMovement.HeavyBasicAttack:
-//                    entity.weapons[0].oneHitDamageUp = 20;
-//                    entity.BasicAttack();
-//                    break;
-//            }
-        }
-
         public void PlayBasicAttack(WeaponPrefab weaponPrefab)
         {
             BuffController.EntityAttack(entity, positionPointed);

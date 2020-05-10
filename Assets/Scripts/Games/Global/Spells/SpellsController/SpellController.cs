@@ -31,7 +31,7 @@ namespace Games.Global.Spells.SpellsController
             instance.StartCoroutine(PlayCastTime(entity, spell));
         }
 
-        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition)
+        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
         {
             switch (spellComponent.positionToStartSpell)
             {
@@ -57,20 +57,25 @@ namespace Games.Global.Spells.SpellsController
                         case TypeSpell.AreaOfEffect:
                             AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
                             area.startPosition = startPosition;
+                            area.transformToFollow = target != null ? target.entityPrefab.transform : null;
                             break;
                         case TypeSpell.TargetedAttack:
                             break;
                         case TypeSpell.Movement:
+                            MovementSpell movement = (MovementSpell) spellComponent;
+                            movement.tpPosition = startPosition;
+                            movement.trajectory = startPosition;
+                            movement.target = target;
                             break;
                     }
 
                     break;
             }
         }
-        
-        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition)
+
+        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
         {
-            SetOriginalPosition(spellComponent, startPosition);
+            SetOriginalPosition(spellComponent, startPosition, target);
 
             ISpellController iSpellController = null;
             switch (spellComponent.typeSpell)

@@ -121,16 +121,20 @@ namespace Games.Global.Spells.SpellsController
         private void IntervalHitEnemies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
             AbilityParameters paramaters = new AbilityParameters { origin = entity };
-            List<Entity> enemies = areaOfEffectSpell.enemiesInZone;
+            List<Entity> enemies = new List<Entity>();
 
-            if (areaOfEffectSpell.randomTargetHit)
+            if (areaOfEffectSpell.randomTargetHit && areaOfEffectSpell.enemiesInZone.Count > 0)
             {
                 int rand = Random.Range(0, areaOfEffectSpell.enemiesInZone.Count);
                 Entity enemy = areaOfEffectSpell.enemiesInZone[rand];
                 enemies.Clear();
                 enemies.Add(enemy);
             }
-            
+            else
+            {
+                enemies = areaOfEffectSpell.enemiesInZone;
+            }
+
             foreach (Entity enemy in enemies)
             {
                 SpellWithCondition conditionSpell;
@@ -242,7 +246,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (areaOfEffectSpell.linkedSpellOnInterval != null)
             {
-                Vector3 position = Vector3.positiveInfinity;
+                Vector3 position = areaOfEffectSpell.startPosition;
                 if (areaOfEffectSpell.randomPosition)
                 {
                     if (areaOfEffectSpell.geometry == Geometry.Sphere)
@@ -268,7 +272,18 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
 
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position);
+                Entity enemy = null;
+                if (areaOfEffectSpell.randomTargetHit == true)
+                {
+                    int rand = Random.Range(0, areaOfEffectSpell.enemiesInZone.Count);
+                    if (areaOfEffectSpell.enemiesInZone.Count > 0)
+                    {
+                        enemy = areaOfEffectSpell.enemiesInZone[rand];
+                        position = enemy.entityPrefab.transform.position;
+                    }
+                }
+
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position, enemy);
             }
 
             IntervalHitEnemies(entity, areaOfEffectSpell);
@@ -279,7 +294,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (areaOfEffectSpell.linkedSpellOnEnd != null)
             {
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, Vector3.positiveInfinity);
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition);
             }
 
             areaOfEffectSpell.objectPooled.SetActive(false);

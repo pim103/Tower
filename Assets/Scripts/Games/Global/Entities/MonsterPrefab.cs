@@ -81,10 +81,10 @@ namespace Games.Global.Entities
                 }
             }
 
-            if (newTarget != null)
-            {
-                gameObject.transform.LookAt(newTarget.playerTransform);
-            }
+//            if (newTarget != null)
+//            {
+//                gameObject.transform.LookAt(newTarget.playerTransform);
+//            }
 
             target = newTarget;
         }

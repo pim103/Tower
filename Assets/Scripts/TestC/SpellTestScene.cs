@@ -41,8 +41,6 @@ namespace TestC
         {
             yield return new WaitForSeconds(5f);
             TestSpell();
-            yield return new WaitForSeconds(5f);
-            TestSpell();
         }
 
         private void TestSpell()
@@ -70,21 +68,6 @@ namespace TestC
 //            List<SpellWithCondition> spellWithConditions = new List<SpellWithCondition>();
 //            spellWithConditions.Add(spellWithCondition);
 //
-            AreaOfEffectSpell area = new AreaOfEffectSpell
-            {
-                startPosition = Vector3.zero,
-                scale = Vector3.one * 20,
-                duration = 50,
-                interval = 0.5f,
-                typeSpell = TypeSpell.AreaOfEffect,
-                geometry = Geometry.Sphere,
-                canStopProjectile = true,
-//                onePlay = true,
-                damagesOnEnemiesOnInterval = 50.0f,
-//                effectsOnEnemiesOnInterval = effects,
-//                linkedSpellOnInterval = linked,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition
-            };
 //
 //            Effect resurrect = new Effect
 //                {launcher = player.entity, level = 1, durationInSeconds = 10, typeEffect = TypeEffect.Resurrection};
@@ -120,22 +103,47 @@ namespace TestC
 //                effectsOnHit = effects,
 //                damages = 15
 //            };
-            ProjectileSpell projectileSpell = new ProjectileSpell
+
+//            ProjectileSpell projectileSpell = new ProjectileSpell
+//            {
+//                prefab = arrowPrefab,
+//                duration = 5,
+//                speed = 4,
+//                initialRotation = player.transform.localEulerAngles,
+//                trajectory = player.transform.forward,
+//                positionToStartSpell = PositionToStartSpell.Himself,
+//                startPosition = player.transform.position + (Vector3.up * 1.5f),
+//                effectsOnHit = effects,
+//                damages = 10,
+//                damageMultiplierOnDistance = 1.5f,
+//                linkedSpellOnDisable = area
+//            };
+
+            MovementSpell movementSpell = new MovementSpell
             {
-                prefab = arrowPrefab,
-                duration = 5,
-                speed = 4,
-                initialRotation = player.transform.localEulerAngles,
+                duration = 0.5f,
+                speed = 25,
                 trajectory = player.transform.forward,
-                positionToStartSpell = PositionToStartSpell.Himself,
-                startPosition = player.transform.position + (Vector3.up * 1.5f),
-                effectsOnHit = effects,
-                damages = 10,
-                damageMultiplierOnDistance = 1.5f,
-                linkedSpellOnDisable = area
+                movementSpellType = MovementSpellType.TpWithTarget,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition
+            };
+            
+            AreaOfEffectSpell area = new AreaOfEffectSpell
+            {
+                startPosition = Vector3.zero,
+                scale = Vector3.one * 20,
+                duration = 50,
+                interval = 0.5f,
+                typeSpell = TypeSpell.AreaOfEffect,
+                geometry = Geometry.Sphere,
+                canStopProjectile = true,
+                randomTargetHit = true,
+                damagesOnEnemiesOnInterval = 11.0f,
+                linkedSpellOnInterval = movementSpell,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition
             };
 
-            SpellController.CastSpellComponent(player.entity, projectileSpell, Vector3.positiveInfinity);
+            SpellController.CastSpellComponent(player.entity, area, player.positionPointed);
         }
     }
 }
