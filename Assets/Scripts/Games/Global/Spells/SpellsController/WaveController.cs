@@ -21,8 +21,8 @@ namespace Games.Global.Spells.SpellsController
             float duration = waveSpell.duration;
             while (duration > 0)
             {
-                yield return new WaitForSeconds(0.1f);
-                duration -= 0.1f;
+                yield return new WaitForSeconds(0.05f);
+                duration -= 0.05f;
 
                 WavePropagation(entity, waveSpell);
             }
@@ -62,11 +62,11 @@ namespace Games.Global.Spells.SpellsController
 
         private void WavePropagation(Entity entity, WaveSpell waveSpell)
         {
-            float amplitudePropagation = waveSpell.incrementAmplitudeByTime * 0.1f;
+            float amplitudePropagation = waveSpell.incrementAmplitudeByTime * 0.05f;
 
             if (waveSpell.geometryPropagation == Geometry.Square)
             {
-                float speed = waveSpell.speedPropagation * 0.1f;
+                float speed = waveSpell.speedPropagation * 0.05f;
                 waveSpell.objectPooled.transform.position += (waveSpell.objectPooled.transform.forward * speed);
 
                 waveSpell.objectPooled.transform.localScale += (Vector3.right * amplitudePropagation);
