@@ -7,16 +7,49 @@ namespace Games.Global.Spells.SpellsController
 {
     public class SummonController : MonoBehaviour, ISpellController
     {
+        public SummonSpell Clone(SpellComponent spellComponent)
+        {
+            SummonSpell origin = (SummonSpell) spellComponent;
+
+            SummonSpell cloneSummonSpell = new SummonSpell
+            {
+                duration = origin.duration,
+                hp = origin.hp,
+                spells = origin.spells,
+                attackDamage = origin.attackDamage,
+                attackSpeed = origin.attackSpeed,
+                basicAttack = origin.basicAttack,
+                canMove = origin.canMove,
+                currentCoroutine = origin.currentCoroutine,
+                damageType = origin.damageType,
+                isTargetable = origin.isTargetable,
+                isUnique = origin.isUnique,
+                moveSpeed = origin.moveSpeed,
+                positionPresets = origin.positionPresets,
+                prefabsSummon = origin.prefabsSummon,
+                startPosition = origin.startPosition,
+                summonNumber = origin.summonNumber,
+                typeSpell = origin.typeSpell,
+                idPoolObject = origin.idPoolObject,
+                isBasicAttack = origin.isBasicAttack,
+                nbUseSpells = origin.nbUseSpells,
+                summonBehaviorType = origin.summonBehaviorType,
+                linkedSpellOnDisapear = origin.linkedSpellOnDisapear,
+                linkedSpellOnEnable = origin.linkedSpellOnEnable,
+                positionToStartSpell = origin.positionToStartSpell,
+                spellWhenPlayerCall = origin.spellWhenPlayerCall
+            };
+            return cloneSummonSpell;
+        }
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlaySummonSpell(entity, spellComponent));
+            SummonSpell summonSpell = Clone(spellComponent);
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlaySummonSpell(entity, summonSpell));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 
-        public IEnumerator PlaySummonSpell(Entity entity, SpellComponent spellComponent)
+        public IEnumerator PlaySummonSpell(Entity entity, SummonSpell summonSpell)
         {
-            SummonSpell summonSpell = (SummonSpell) spellComponent;
-
             PoolSummon(entity, summonSpell);
             
             float duration = summonSpell.duration;
