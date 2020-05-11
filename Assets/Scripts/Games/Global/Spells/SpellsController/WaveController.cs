@@ -6,16 +6,38 @@ namespace Games.Global.Spells.SpellsController
 {
     public class WaveController : MonoBehaviour, ISpellController
     {
+        private WaveSpell Clone(SpellComponent spellComponent)
+        {
+            WaveSpell origin = (WaveSpell) spellComponent;
+            WaveSpell clone = new WaveSpell
+            {
+                damages = origin.damages,
+                duration = origin.duration,
+                damageType = origin.damageType,
+                geometryPropagation = origin.geometryPropagation,
+                initialRotation = origin.initialRotation,
+                initialWidth = origin.initialWidth,
+                speedPropagation = origin.speedPropagation,
+                startPosition = origin.startPosition,
+                typeSpell = origin.typeSpell,
+                effectsOnHit = origin.effectsOnHit,
+                isBasicAttack = origin.isBasicAttack,
+                incrementAmplitudeByTime = origin.incrementAmplitudeByTime,
+                positionToStartSpell = origin.positionToStartSpell
+            };
+
+            return clone;
+        }
+        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, spellComponent));
+            WaveSpell waveSpell = Clone(spellComponent);
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, waveSpell));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 
-        private IEnumerator PlayWaveSpell(Entity entity, SpellComponent spellComponent)
+        private IEnumerator PlayWaveSpell(Entity entity, WaveSpell waveSpell)
         {
-            WaveSpell waveSpell = (WaveSpell) spellComponent;
-
             PoolAreaWithParameter(entity, waveSpell);
 
             float duration = waveSpell.duration;

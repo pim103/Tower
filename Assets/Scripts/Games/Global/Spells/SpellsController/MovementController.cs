@@ -5,16 +5,38 @@ namespace Games.Global.Spells.SpellsController
 {
     public class MovementController : MonoBehaviour, ISpellController
     {
+        private MovementSpell Clone(SpellComponent spellComponent)
+        {
+            MovementSpell origin = (MovementSpell) spellComponent;
+            MovementSpell clone = new MovementSpell
+            {
+                duration = origin.duration,
+                speed = origin.speed,
+                target = origin.target,
+                trajectory = origin.trajectory,
+                damageType = origin.damageType,
+                tpPosition = origin.tpPosition,
+                typeSpell = origin.typeSpell,
+                isBasicAttack = origin.isBasicAttack,
+                isFollowingMouse = origin.isFollowingMouse,
+                movementSpellType = origin.movementSpellType,
+                positionToStartSpell = origin.positionToStartSpell,
+                linkedSpellAtTheEnd = origin.linkedSpellAtTheEnd,
+                linkedSpellAtTheStart = origin.linkedSpellAtTheStart
+            };
+
+            return clone;
+        }
+        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayMovementSpell(entity, spellComponent));
+            MovementSpell movementSpell = Clone(spellComponent);
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayMovementSpell(entity, movementSpell));
             spellComponent.currentCoroutine = currentCoroutine;
         }
 
-        private IEnumerator PlayMovementSpell(Entity entity, SpellComponent spellComponent)
+        private IEnumerator PlayMovementSpell(Entity entity, MovementSpell movementSpell)
         {
-            MovementSpell movementSpell = (MovementSpell) spellComponent;
-
             if (movementSpell.linkedSpellAtTheStart != null)
             {
                 SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity);
