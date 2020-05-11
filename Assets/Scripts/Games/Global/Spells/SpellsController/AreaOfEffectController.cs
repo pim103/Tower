@@ -64,7 +64,7 @@ namespace Games.Global.Spells.SpellsController
         {
             AreaOfEffectSpell areaOfEffectSpell = Clone(spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, areaOfEffectSpell));
-            spellComponent.currentCoroutine = currentCoroutine;
+            areaOfEffectSpell.currentCoroutine = currentCoroutine;
         }
 
         private IEnumerator PlayAreaSpell(Entity entity, AreaOfEffectSpell areaOfEffectSpell)

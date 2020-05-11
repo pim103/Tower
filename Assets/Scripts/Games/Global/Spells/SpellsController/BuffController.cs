@@ -48,7 +48,7 @@ namespace Games.Global.Spells.SpellsController
         {
             BuffSpell buffSpell = Clone(spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayBuffSpell(entity, buffSpell));
-            spellComponent.currentCoroutine = currentCoroutine;
+            buffSpell.currentCoroutine = currentCoroutine;
         }
 
         private IEnumerator PlayBuffSpell(Entity entity, BuffSpell buffSpell)

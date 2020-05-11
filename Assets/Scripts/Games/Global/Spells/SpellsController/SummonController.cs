@@ -45,7 +45,7 @@ namespace Games.Global.Spells.SpellsController
         {
             SummonSpell summonSpell = Clone(spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlaySummonSpell(entity, summonSpell));
-            spellComponent.currentCoroutine = currentCoroutine;
+            summonSpell.currentCoroutine = currentCoroutine;
         }
 
         public IEnumerator PlaySummonSpell(Entity entity, SummonSpell summonSpell)

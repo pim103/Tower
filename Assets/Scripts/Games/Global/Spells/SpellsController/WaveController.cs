@@ -33,7 +33,7 @@ namespace Games.Global.Spells.SpellsController
         {
             WaveSpell waveSpell = Clone(spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, waveSpell));
-            spellComponent.currentCoroutine = currentCoroutine;
+            waveSpell.currentCoroutine = currentCoroutine;
         }
 
         private IEnumerator PlayWaveSpell(Entity entity, WaveSpell waveSpell)

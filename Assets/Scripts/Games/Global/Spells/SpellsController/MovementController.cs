@@ -32,7 +32,7 @@ namespace Games.Global.Spells.SpellsController
         {
             MovementSpell movementSpell = Clone(spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayMovementSpell(entity, movementSpell));
-            spellComponent.currentCoroutine = currentCoroutine;
+            movementSpell.currentCoroutine = currentCoroutine;
         }
 
         private IEnumerator PlayMovementSpell(Entity entity, MovementSpell movementSpell)
