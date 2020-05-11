@@ -51,11 +51,15 @@ namespace TestC
 
             List<Vector3> positions = new List<Vector3>();
             positions.Add(Vector3.forward);
+            positions.Add(Vector3.forward);
+            positions.Add(Vector3.forward);
+            positions.Add(Vector3.forward);
+            positions.Add(Vector3.forward);
 
             SummonSpell summonSpell = new SummonSpell
             {
                 duration = 10,
-                hp = 10,
+                hp = 50,
                 basicAttack = sword.basicAttack,
                 attackDamage = 40,
                 attackSpeed = 1,
@@ -64,7 +68,7 @@ namespace TestC
                 isTargetable = true,
                 idPoolObject = 2,
                 moveSpeed = 10,
-                summonNumber = 1,
+                summonNumber = 5,
                 BehaviorType = BehaviorType.Melee,
                 positionToStartSpell = PositionToStartSpell.DynamicPosition,
                 positionPresets = positions

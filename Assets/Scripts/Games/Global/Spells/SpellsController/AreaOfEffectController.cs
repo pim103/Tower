@@ -102,7 +102,7 @@ namespace Games.Global.Spells.SpellsController
             GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
 
             parent = genericSpellPrefab.transform.parent;
-            
+
             genericSpellPrefab.transform.localScale = areaOfEffectSpell.scale;
             genericSpellPrefab.transform.position = areaOfEffectSpell.startPosition;
             genericSpellPrefab.transform.localEulerAngles = entity.entityPrefab.transform.localEulerAngles;

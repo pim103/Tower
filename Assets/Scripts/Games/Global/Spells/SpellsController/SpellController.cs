@@ -55,6 +55,8 @@ namespace Games.Global.Spells.SpellsController
                             projectileSpell.startPosition = startPosition;
                             break;
                         case TypeSpell.Summon:
+                            SummonSpell summonSpell = (SummonSpell) spellComponent;
+                            summonSpell.startPosition = startPosition;
                             break;
                         case TypeSpell.Transformation:
                             break;
