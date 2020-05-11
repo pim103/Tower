@@ -171,7 +171,7 @@ namespace Games.Transitions
                             break;
                         case GridTileController.TypeData.Trap:
                             TrapBehavior currentTrapBehavior = cellController.content.GetComponent<TrapBehavior>();
-                            stringToSend += "3:" + (int) currentTrapBehavior.mainType + ":[";
+                            stringToSend += "3:" + (int) currentTrapBehavior.mainType + /*":"+ currentTrapBehavior.rotation +*/ ":[";
                             if (currentTrapBehavior.trapEffects.Any())
                             {
                                 foreach (var effect in currentTrapBehavior.trapEffects)

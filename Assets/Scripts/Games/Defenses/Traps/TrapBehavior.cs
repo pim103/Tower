@@ -31,7 +31,9 @@ namespace Games.Defenses
     
         [SerializeField]
         public GameObject[] trapModels;
-    
+
+        public int rotation = 0;
+
         public void CopyBehavior(TrapBehavior newTrapBehavior)
         {
             mainType = newTrapBehavior.mainType;
