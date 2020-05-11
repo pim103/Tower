@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1869628687301897147}
   - component: {fileID: 1869628687301897146}
   - component: {fileID: 1869628687301897145}
-  - component: {fileID: 8765592628195400090}
   - component: {fileID: 115459911557053537}
+  - component: {fileID: 5285308526228947645}
   m_Layer: 11
   m_Name: BasicMonster
   m_TagString: Untagged
@@ -114,32 +114,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8765592628195400090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869628687301897144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f609fa33a47a044ab756f8a9f2b5976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightHand: {fileID: 0}
-  leftHand: {fileID: 0}
-  rigidbodyEntity: {fileID: 1869628687301897145}
-  meshRenderer: {fileID: 1869628687301897147}
-  animator: {fileID: 0}
-  characterMesh: {fileID: 0}
-  movementBlocked: 0
-  cameraBlocked: 0
-  intentBlocked: 0
-  isCharging: 0
-  hpBar: {fileID: 1237704919439136648}
-  navMeshAgent: {fileID: 115459911557053537}
-  aggroForced: 0
-  target: {fileID: 0}
 --- !u!195 &115459911557053537
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -162,6 +136,38 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5285308526228947645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869628687301897144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7e27be17abfac47b6f341176ae3cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
+  rigidbodyEntity: {fileID: 1869628687301897145}
+  meshRenderer: {fileID: 1869628687301897147}
+  animator: {fileID: 0}
+  characterMesh: {fileID: 0}
+  positionInRightHand: {fileID: 0}
+  angleWithOneRight: {fileID: 0}
+  positionInLeftHand: {fileID: 0}
+  angleWithOneLeft: {fileID: 0}
+  navMeshAgent: {fileID: 115459911557053537}
+  cameraBlocked: 0
+  intentBlocked: 0
+  isCharging: 0
+  canDoSomething: 1
+  canMove: 1
+  forcedDirection: {x: 0, y: 0, z: 0}
+  positionPointed: {x: 0, y: 0, z: 0}
+  nbUseSpells: 0
+  selfGameObject: {fileID: 1869628687301897144}
 --- !u!1 &8514356219809148618
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1896343025879470424
 Transform:
   m_ObjectHideFlags: 0
@@ -219,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4116ab2e405a3364dbbc909d100c751c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterPrefab: {fileID: 8765592628195400090}
+  monsterPrefab: {fileID: 0}
 --- !u!1001 &682040312229272817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -310,6 +316,11 @@ PrefabInstance:
     - target: {fileID: 1684468281776099442, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1684468281776099442, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: b7f42235f97e66f49b5f921a6149e73c,
@@ -417,27 +428,27 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5727908350623542550, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2126807541526447818, guid: b7f42235f97e66f49b5f921a6149e73c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2825038454530258384, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
@@ -447,7 +458,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922943401868372287, guid: b7f42235f97e66f49b5f921a6149e73c,
+    - target: {fileID: 2639919538410385103, guid: b7f42235f97e66f49b5f921a6149e73c,
         type: 3}
       propertyPath: m_Layer
       value: 0
@@ -460,15 +471,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3799258362033698066}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1237704919439136648 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2707960013206266522, guid: b7f42235f97e66f49b5f921a6149e73c,
-    type: 3}
-  m_PrefabInstance: {fileID: 3799258362033698066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

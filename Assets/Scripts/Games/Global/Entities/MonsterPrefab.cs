@@ -61,13 +61,6 @@ namespace Games.Global.Entities
             return (Monster) entity;
         }
 
-        public void EntityDie()
-        {
-            DataObject.monsterInScene.Remove((Monster) entity);
-
-            gameObject.SetActive(false);
-        }
-
         public override void SetInvisibility()
         {
             if (entity.isInvisible)

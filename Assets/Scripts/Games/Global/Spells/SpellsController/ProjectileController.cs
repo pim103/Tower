@@ -169,8 +169,8 @@ namespace Games.Global.Spells.SpellsController
 
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
 
-            if ((origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.PLAYER) ||
-                (origin.typeEntity == TypeEntity.PLAYER && entityEnter.typeEntity == TypeEntity.MOB))
+            if ((origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES) ||
+                (origin.typeEntity == TypeEntity.ALLIES && entityEnter.typeEntity == TypeEntity.MOB))
             {
                 float extraDamage = 0;
                 if (projectileSpell.damageMultiplierOnDistance != 0)

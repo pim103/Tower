@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -71,7 +72,9 @@ namespace Games.Global.Spells.SpellsController
                     summon.DestroySummon();
                 }
             }
-            
+
+            summonSpell.prefabsSummon = new List<GenericSummonSpell>();
+
             for (int nbSummon = 0; nbSummon < summonSpell.summonNumber; nbSummon++)
             {
                 GameObject summon = ObjectPooler.SharedInstance.GetPooledObject(summonSpell.idPoolObject);
@@ -80,6 +83,7 @@ namespace Games.Global.Spells.SpellsController
                 GenericSummonSpell genericSummonSpell = summon.GetComponent<GenericSummonSpell>();
                 genericSummonSpell.SummonEntity(entity, summonSpell, summon);
 
+                summon.SetActive(true);
                 summonSpell.prefabsSummon.Add(genericSummonSpell);
             }
         }

@@ -189,10 +189,9 @@ namespace Games.Global.Spells.SpellsController
                 return;
             }
 
-            Weapon weapon = entity.weapons[0];
-
-            if (weapon != null)
+            if (entity.weapons.Count > 0)
             {
+                Weapon weapon = entity.weapons[0];
                 weapon.OnDamageDealt(paramaters);
                 extraDamage += weapon.damage;
             }
@@ -440,8 +439,8 @@ namespace Games.Global.Spells.SpellsController
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
             
-            if ( (origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.PLAYER ) ||
-                 (origin.typeEntity == TypeEntity.PLAYER && entityEnter.typeEntity == TypeEntity.MOB ))
+            if ( (origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||
+                 (origin.typeEntity == TypeEntity.ALLIES && entityEnter.typeEntity == TypeEntity.MOB ))
             {
                 areaOfEffectSpell.enemiesInZone.Add(entityEnter);
             }
@@ -453,8 +452,8 @@ namespace Games.Global.Spells.SpellsController
 
         public static void EntityTriggerExit(Entity origin, Entity entityExit, AreaOfEffectSpell areaOfEffectSpell)
         {
-            if ( (origin.typeEntity == TypeEntity.MOB && entityExit.typeEntity == TypeEntity.PLAYER ) ||
-                 (origin.typeEntity == TypeEntity.PLAYER && entityExit.typeEntity == TypeEntity.MOB ))
+            if ( (origin.typeEntity == TypeEntity.MOB && entityExit.typeEntity == TypeEntity.ALLIES ) ||
+                 (origin.typeEntity == TypeEntity.ALLIES && entityExit.typeEntity == TypeEntity.MOB ))
             {
                 if (areaOfEffectSpell.enemiesInZone.Contains(entityExit))
                 {

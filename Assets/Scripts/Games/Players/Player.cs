@@ -92,9 +92,10 @@ namespace Games.Players
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;
-            typeEntity = TypeEntity.PLAYER;
+            typeEntity = TypeEntity.ALLIES;
 
             IdEntity = GameController.PlayerIndex;
+            isPlayer = true;
 
             switch(classe)
             {
@@ -182,27 +183,6 @@ namespace Games.Players
             // TODO : Add init weapon => change basic attack spell
 
             weapons.Add(weapon);
-        }
-
-        public override void ApplyDamage(float directDamage)
-        {
-            base.ApplyDamage(directDamage);
-            
-            if (hp <= 0)
-            {
-                if (shooldResurrect)
-                {
-                    hp = initialHp / 2;
-                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
-
-                    return;
-                }
-                
-                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
-                Debug.Log("Vous êtes mort");
-                Cursor.lockState = CursorLockMode.None;
-                SceneManager.LoadScene("MenuScene");
-            }
         }
     }
 }

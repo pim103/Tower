@@ -37,24 +37,6 @@ namespace Games.Global.Entities
             throw new NotImplementedException();
         }
 
-        public override void ApplyDamage(float directDamage)
-        {
-            base.ApplyDamage(directDamage);
-
-            if (hp <= 0)
-            {
-                if (shooldResurrect)
-                {
-                    hp = initialHp / 2;
-                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
-                    
-                    return;
-                }
-
-                monsterPrefab.EntityDie();
-            }
-        }
-
         public void SetMonsterPrefab(MonsterPrefab newMonsterPrefab)
         {
             monsterPrefab = newMonsterPrefab;

@@ -11,8 +11,10 @@ using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking.Client;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -21,7 +23,7 @@ namespace Games.Global
 {
     public enum TypeEntity
     {
-        PLAYER,
+        ALLIES,
         MOB
     }
     
@@ -38,6 +40,9 @@ namespace Games.Global
     public class Entity: ItemModel
     {
         public int IdEntity;
+
+        public bool isPlayer = false;
+        public bool isSummon = false;
         
         private ItemModel itemModel;
         
@@ -251,6 +256,27 @@ namespace Games.Global
         public virtual void ApplyDamage(float directDamage)
         {
             hp -= directDamage;
+            
+            if (hp <= 0)
+            {
+                if (shooldResurrect)
+                {
+                    hp = initialHp / 2;
+                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
+
+                    return;
+                }
+
+                entityPrefab.EntityDie();
+
+                if (isPlayer)
+                {
+                    TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
+                    Debug.Log("Vous êtes mort");
+                    Cursor.lockState = CursorLockMode.None;
+                    SceneManager.LoadScene("MenuScene");
+                }
+            }
         }
     }
 }

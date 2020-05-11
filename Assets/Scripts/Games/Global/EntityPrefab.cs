@@ -131,10 +131,10 @@ namespace Games.Global
         public void PlayBasicAttack()
         {
             BuffController.EntityAttack(entity, positionPointed);
-            WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
 
-            if (weaponPrefab != null)
+            if (entity.weapons.Count > 0)
             {
+                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
                 weaponPrefab.BasicAttack();    
             }
 
@@ -165,7 +165,6 @@ namespace Games.Global
             weaponPrefab.SetWeapon(weapon);
             weaponPrefab.SetPositionToParent(position, angle);
 
-            Debug.Log(weapon.basicAttack);
             entity.basicAttack = weapon.basicAttack;
         }
 
@@ -189,7 +188,7 @@ namespace Games.Global
                     break;
                 case BehaviorType.Melee:
                 case BehaviorType.MoveOnTargetAndDie:
-                    if (navMeshAgent.remainingDistance <= 1)
+                    if (navMeshAgent.remainingDistance <= 3)
                     {
                         PlayBasicAttack();
                     }
@@ -283,7 +282,7 @@ namespace Games.Global
                     }
 
                     break;
-                case TypeEntity.PLAYER:
+                case TypeEntity.ALLIES:
                     foreach (Monster monster in DataObject.monsterInScene)
                     {
                         float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
@@ -312,6 +311,34 @@ namespace Games.Global
             }
 
             target = newTarget;
+        }
+        
+        public void EntityDie()
+        {
+            if (entity.typeEntity == TypeEntity.MOB)
+            {
+                if (!entity.isSummon)
+                {
+                    DataObject.monsterInScene.Remove((Monster) entity);
+                }
+                else
+                {
+                    DataObject.invocationsInScene.Remove(entity);
+                }
+            }
+            else if (entity.typeEntity == TypeEntity.ALLIES)
+            {
+                if (entity.isPlayer)
+                {
+                    DataObject.playerInScene.Remove(GameController.PlayerIndex);
+                }
+                else if (entity.isSummon)
+                {
+                    DataObject.invocationsInScene.Remove(entity);
+                }
+            }
+
+            gameObject.SetActive(false);
         }
     }
 }

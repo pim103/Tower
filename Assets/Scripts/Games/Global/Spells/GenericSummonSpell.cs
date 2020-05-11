@@ -43,14 +43,19 @@ namespace Games.Global.Spells
                 isUntargeatable = !summonSpell.isTargetable,
                 spells = summonSpell.spells,
                 basicAttack = summonSpell.basicAttack,
-                BehaviorType = summonSpell.BehaviorType
+                BehaviorType = summonSpell.BehaviorType,
+                isSummon = true
             };
+
+            entity = summon;
+            entity.InitEntityList();
+            entity.entityPrefab = this;
 
             if (linkedSpellOnEnable != null)
             {
                 SpellController.CastSpellComponent(summon, linkedSpellOnEnable, selfGameObject.transform.position, summon);
             }
-            
+
             DataObject.invocationsInScene.Add(summon);
         }
 

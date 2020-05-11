@@ -39,7 +39,7 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
             OtherSpell();
         }
 
@@ -47,6 +47,30 @@ namespace TestC
         {
             player.entity.att = 15;
 
+            Sword sword = new Sword();
+
+            List<Vector3> positions = new List<Vector3>();
+            positions.Add(Vector3.forward);
+
+            SummonSpell summonSpell = new SummonSpell
+            {
+                duration = 10,
+                hp = 10,
+                basicAttack = sword.basicAttack,
+                attackDamage = 40,
+                attackSpeed = 1,
+                damageType = DamageType.Physical,
+                canMove = true,
+                isTargetable = true,
+                idPoolObject = 2,
+                moveSpeed = 10,
+                summonNumber = 1,
+                BehaviorType = BehaviorType.Melee,
+                positionToStartSpell = PositionToStartSpell.DynamicPosition,
+                positionPresets = positions
+            };
+
+            SpellController.CastSpellComponent(player.entity, summonSpell, player.transform.position, player.entity);
 //            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
 //            List<Effect> effects = new List<Effect>();
 //            effects.Add(repulse);
