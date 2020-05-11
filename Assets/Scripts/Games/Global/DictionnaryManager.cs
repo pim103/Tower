@@ -16,7 +16,7 @@ namespace Games.Global
         [SerializeField] private GameObject[] monsterGameObjects;
         [SerializeField] private GameObject[] weaponsGameObject;
 
-        public void Start()
+        public void Awake()
         {
             AbilityManager.InitAbilities();
             GroupsPosition.InitPosition();
@@ -25,7 +25,7 @@ namespace Games.Global
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
         }
-        
+
         private void FetchCollection()
         {
             List<CollectionJsonObject> dJsonObjects = new List<CollectionJsonObject>();

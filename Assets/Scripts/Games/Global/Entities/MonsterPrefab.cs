@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
@@ -23,10 +24,14 @@ namespace Games.Global.Entities
 
                 monster.SetMonsterPrefab(this);
                 monster.InitEntityList();
+                monster.weaponOriginalName = "Basic_Bow";
+                monster.BehaviorType = BehaviorType.Distance;
 
                 entity = monster;
                 entity.entityPrefab = this;
                 entity.typeEntity = TypeEntity.MOB;
+
+                monster.InitOriginalWeapon();
 
                 DataObject.monsterInScene.Add(monster);
             }
@@ -42,30 +47,6 @@ namespace Games.Global.Entities
             hpBar.value = diff;
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
-
-            if (!canDoSomething)
-            {
-                navMeshAgent.SetDestination(transform.position);
-                return;
-            }
-
-            FindTarget();
-
-            if (canMove)
-            {
-                if (monster.constraint == TypeWeapon.Cac)
-                {
-                    MoveToTarget(1);
-                }
-                else
-                {
-                    MoveToTarget(10);
-                }
-            }
-            else
-            {
-                navMeshAgent.SetDestination(transform.position);
-            }
         }
 
         public void SetMonster(Monster monster)

@@ -2,15 +2,7 @@
 using UnityEngine;
 
 namespace Games.Global.Spells
-{
-    public enum SummonBehaviorType
-    {
-        MoveOnTargetAndDie,
-        Distance,
-        Melee,
-        WithoutTarget
-    }
-    
+{   
     public class SummonSpell : SpellComponent
     {
         public SummonSpell()
@@ -31,7 +23,7 @@ namespace Games.Global.Spells
         public float attackSpeed;
         public int nbUseSpells;
 
-        public SummonBehaviorType summonBehaviorType;
+        public BehaviorType BehaviorType;
 
         // Destroy other invocation of same type
         public bool isUnique;

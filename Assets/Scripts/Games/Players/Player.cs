@@ -29,12 +29,6 @@ namespace Games.Players
         private PlayerPrefab playerPrefab;
 
         public Classes mainClass;
-        
-        /*
-         * Specific Warrior
-         */
-        public int nbShieldBlock = 0;
-        public bool isBlocking = false;
 
         public void SetPlayerPrefab(PlayerPrefab playerPrefab)
         {
@@ -43,9 +37,9 @@ namespace Games.Players
 
         public override void BasicAttack()
         {
-            playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+            playerPrefab.PlayBasicAttack();
         }
-        
+
         public override void BasicDefense()
         {
             Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };

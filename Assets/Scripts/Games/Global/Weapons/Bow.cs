@@ -12,6 +12,26 @@ namespace Games.Global.Weapons
         public Bow()
         {
            animationToPlay = "BowAttack";
+           
+           ProjectileSpell projectile = new ProjectileSpell
+           {
+               damages = 0,
+               duration = 5,
+               speed = 15,
+               damageType = DamageType.Physical,
+               isBasicAttack = true,
+               idPoolObject = 0,
+               positionToStartSpell = PositionToStartSpell.DynamicPosition,
+               trajectoryType = Trajectory.OriginForward
+           };
+
+           basicAttack = new Spell
+           {
+               cost = 0,
+               cooldown = 1,
+               castTime = 0,
+               activeSpellComponent = projectile
+           };
         }
 
         public override void FixAngleAttack(bool isFirstIteration, Entity wielder)
@@ -31,25 +51,7 @@ namespace Games.Global.Weapons
             switch (classe)
             {
                 case Classes.Warrior:
-                    ProjectileSpell projectile = new ProjectileSpell
-                    {
-                        damages = 0,
-                        duration = 5,
-                        speed = 15,
-                        damageType = DamageType.Physical,
-                        isBasicAttack = true,
-                        idPoolObject = 0,
-                        positionToStartSpell = PositionToStartSpell.DynamicPosition,
-                        trajectoryType = Trajectory.OriginForward
-                    };
-
-                    basicAttack = new Spell
-                    {
-                        cost = 0,
-                        cooldown = 1,
-                        castTime = 0,
-                        activeSpellComponent = projectile
-                    };
+                    
                     break;
             }
         }

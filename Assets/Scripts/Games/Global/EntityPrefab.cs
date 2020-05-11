@@ -66,6 +66,44 @@ namespace Games.Global
 
         public Entity target;
 
+        private void FixedUpdate()
+        {
+            if (entity.BehaviorType == BehaviorType.Player)
+            {
+                return;
+            }
+
+            if (!canDoSomething)
+            {
+                navMeshAgent.SetDestination(transform.position);
+                return;
+            }
+
+            FindTarget();
+
+            if (canMove)
+            {
+                if (entity.BehaviorType == BehaviorType.Melee ||
+                    entity.BehaviorType == BehaviorType.MoveOnTargetAndDie)
+                {
+                    MoveToTarget(1);
+                }
+                else if (entity.BehaviorType == BehaviorType.Distance)
+                {
+                    MoveToTarget(10);
+                }
+            }
+            else
+            {
+                navMeshAgent.SetDestination(transform.position);
+            }
+
+            if (target != null)
+            {
+                AttackTarget();   
+            }
+        }
+
         public void WantToApplyForce(Vector3 direction, int level)
         {
             StartCoroutine(ApplyForce(direction, level));
@@ -90,12 +128,20 @@ namespace Games.Global
             }
         }
 
-        public void PlayBasicAttack(WeaponPrefab weaponPrefab)
+        public void PlayBasicAttack()
         {
             BuffController.EntityAttack(entity, positionPointed);
+            WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
 
-            weaponPrefab.BasicAttack();
-            SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
+            if (weaponPrefab != null)
+            {
+                weaponPrefab.BasicAttack();    
+            }
+
+            if (entity.basicAttack != null)
+            {
+                SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
+            }
         }
 
         public void AddItemInHand(Weapon weapon)
@@ -119,11 +165,36 @@ namespace Games.Global
             weaponPrefab.SetWeapon(weapon);
             weaponPrefab.SetPositionToParent(position, angle);
 
+            Debug.Log(weapon.basicAttack);
             entity.basicAttack = weapon.basicAttack;
         }
 
         public virtual void SetInvisibility()
         {
+        }
+
+        public void AttackTarget()
+        {
+            transform.LookAt(target.entityPrefab.transform);
+            Vector3 localEulerAngles = transform.localEulerAngles;
+            localEulerAngles.x = 0;
+            localEulerAngles.z = 0;
+            transform.localEulerAngles = localEulerAngles;
+
+            // TODO : adapt range of weapon for attack
+            switch (entity.BehaviorType)
+            {
+                case BehaviorType.Distance:
+                    PlayBasicAttack();
+                    break;
+                case BehaviorType.Melee:
+                case BehaviorType.MoveOnTargetAndDie:
+                    if (navMeshAgent.remainingDistance <= 1)
+                    {
+                        PlayBasicAttack();
+                    }
+                    break;
+            }
         }
 
         public void MoveToTarget(float range)

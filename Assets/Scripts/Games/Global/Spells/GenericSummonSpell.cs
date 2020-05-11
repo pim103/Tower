@@ -18,8 +18,6 @@ namespace Games.Global.Spells
 
         public SpellComponent spellWhenPlayerCall;
 
-        public SummonBehaviorType summonBehaviorType;
-
         public GameObject selfGameObject;
 
         public void SummonEntity(Entity newSummoner, SummonSpell summonSpell, GameObject newGameObject)
@@ -30,7 +28,6 @@ namespace Games.Global.Spells
             linkedSpellOnEnable = summonSpell.linkedSpellOnEnable;
             linkedSpellOnDisapear = summonSpell.linkedSpellOnDisapear;
 
-            summonBehaviorType = summonSpell.summonBehaviorType;
             selfGameObject = newGameObject;
 
             summon = new Entity
@@ -45,7 +42,8 @@ namespace Games.Global.Spells
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
                 spells = summonSpell.spells,
-                basicAttack = summonSpell.basicAttack
+                basicAttack = summonSpell.basicAttack,
+                BehaviorType = summonSpell.BehaviorType
             };
 
             if (linkedSpellOnEnable != null)
@@ -54,22 +52,6 @@ namespace Games.Global.Spells
             }
             
             DataObject.invocationsInScene.Add(summon);
-        }
-
-        private void FixedUpdate()
-        {
-            FindTarget();
-
-            if (summonBehaviorType == SummonBehaviorType.Melee ||
-                summonBehaviorType == SummonBehaviorType.MoveOnTargetAndDie)
-            {
-                MoveToTarget(1);
-            }
-            else if (summonBehaviorType == SummonBehaviorType.Distance)
-            {
-                MoveToTarget(10);
-            }
-            
         }
 
         public void DestroySummon()

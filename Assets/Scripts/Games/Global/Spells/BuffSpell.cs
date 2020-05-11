@@ -46,6 +46,6 @@ namespace Games.Global.Spells
 
         public List<SpellWithCondition> spellWithCondition;
 
-        public SummonBehaviorType newPlayerBehaviour;
+        public BehaviorType newPlayerBehaviour;
     }
 }

@@ -33,7 +33,7 @@ namespace Games.Global.Spells.SpellsController
                 idPoolObject = origin.idPoolObject,
                 isBasicAttack = origin.isBasicAttack,
                 nbUseSpells = origin.nbUseSpells,
-                summonBehaviorType = origin.summonBehaviorType,
+                BehaviorType = origin.BehaviorType,
                 linkedSpellOnDisapear = origin.linkedSpellOnDisapear,
                 linkedSpellOnEnable = origin.linkedSpellOnEnable,
                 positionToStartSpell = origin.positionToStartSpell,

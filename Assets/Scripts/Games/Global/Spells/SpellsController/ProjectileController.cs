@@ -84,8 +84,8 @@ namespace Games.Global.Spells.SpellsController
 
             genericSpellPrefab.transform.position = projectileSpell.startPosition;
             genericSpellPrefab.transform.localEulerAngles = initialRotation;
-
             genericSpellPrefab.transform.localScale = Vector3.one;
+
             GameObject prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(projectileSpell.idPoolObject);
             prefabWanted.transform.parent = genericSpellPrefab.transform;
             prefabWanted.transform.localPosition = Vector3.zero;

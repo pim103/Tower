@@ -29,7 +29,7 @@ namespace TestC
             classe.classe = Classes.Warrior;
 
             Identity weapon = new Identity();
-            weapon.categoryWeapon = CategoryWeapon.BOW;
+            weapon.categoryWeapon = CategoryWeapon.SHORT_SWORD;
 
             ChooseDeckAndClasse.currentRoleIdentity = classe;
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;
@@ -47,12 +47,12 @@ namespace TestC
         {
             player.entity.att = 15;
 
-            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
-            List<Effect> effects = new List<Effect>();
-            effects.Add(repulse);
-            player.entity.damageDealExtraEffect.Add(repulse);
+//            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
+//            List<Effect> effects = new List<Effect>();
+//            effects.Add(repulse);
+//            player.entity.damageDealExtraEffect.Add(repulse);
         }
-        
+
         private void TestSpell()
         {
 //            AreaOfEffectSpell linked = new AreaOfEffectSpell
@@ -65,7 +65,7 @@ namespace TestC
 //                geometry = Geometry.Sphere,
 //                positionToStartSpell = PositionToStartSpell.DynamicPosition
 //            };
-//
+
             Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, launcher = player.entity, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
             List<Effect> effects = new List<Effect>();
             effects.Add(repulse);

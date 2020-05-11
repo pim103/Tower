@@ -217,20 +217,6 @@ namespace Games.Attacks
             }
         }
 
-        private void Update()
-        {
-//            if (endOfGeneration)
-//            {
-//                if (DataObject.monsterInScene != null)
-//                {
-//                    foreach (Monster monster in DataObject.monsterInScene)
-//                    {
-//                        monster.BasicAttack();
-//                    }   
-//                }
-//            }
-        }
-
         private void DesactiveDefenseMap()
         {
             if (hoverDetector.objectInHand != null)

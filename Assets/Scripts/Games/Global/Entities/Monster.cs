@@ -23,7 +23,7 @@ namespace Games.Global.Entities
         {
             if (monsterPrefab.target != null)
             {
-                monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+                monsterPrefab.PlayBasicAttack();
             }
         }
         

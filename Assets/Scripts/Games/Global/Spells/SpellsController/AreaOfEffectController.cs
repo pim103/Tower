@@ -105,6 +105,7 @@ namespace Games.Global.Spells.SpellsController
             
             genericSpellPrefab.transform.localScale = areaOfEffectSpell.scale;
             genericSpellPrefab.transform.position = areaOfEffectSpell.startPosition;
+            genericSpellPrefab.transform.localEulerAngles = entity.entityPrefab.transform.localEulerAngles;
 
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
             spellPrefabController.ActiveCollider(areaOfEffectSpell.geometry);

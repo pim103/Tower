@@ -43,7 +43,7 @@ namespace Games.Global.Spells.SpellsController
 
             return clone;
         }
-        
+
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
             BuffSpell buffSpell = Clone(spellComponent);

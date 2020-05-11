@@ -22,8 +22,16 @@ namespace Games.Global
     public enum TypeEntity
     {
         PLAYER,
-        MOB,
-        BOSS
+        MOB
+    }
+    
+    public enum BehaviorType
+    {
+        Player,
+        MoveOnTargetAndDie,
+        Distance,
+        Melee,
+        WithoutTarget
     }
 
     // Class for mobs and players
@@ -91,6 +99,8 @@ namespace Games.Global
 
         public Spell basicAttack;
         public List<Spell> spells;
+
+        public BehaviorType BehaviorType;
 
         public bool doingSkill = false;
 
