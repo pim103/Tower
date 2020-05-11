@@ -23,8 +23,8 @@ public class SocialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateSocialPanel("Benoît");
-        UpdateSocialPanel("Medhi");
+        UpdateSocialPanel("Pytchoun");
+        UpdateSocialPanel("Kaze");
     }
 
     // Update is called once per frame
