@@ -23,7 +23,9 @@ namespace Games.Global.Spells.SpellsController
                 effectsOnHit = origin.effectsOnHit,
                 isBasicAttack = origin.isBasicAttack,
                 incrementAmplitudeByTime = origin.incrementAmplitudeByTime,
-                positionToStartSpell = origin.positionToStartSpell
+                OriginalDirection = origin.OriginalDirection,
+                OriginalPosition = origin.OriginalPosition,
+                trajectoryNormalized = origin.trajectoryNormalized,
             };
 
             return clone;

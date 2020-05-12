@@ -13,7 +13,6 @@ namespace Games.Global.Spells
         
         public float interval;
         public float duration;
-        public Vector3 startPosition;
         public Transform transformToFollow;
 
         public Geometry geometry;

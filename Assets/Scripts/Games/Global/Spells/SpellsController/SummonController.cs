@@ -37,8 +37,11 @@ namespace Games.Global.Spells.SpellsController
                 BehaviorType = origin.BehaviorType,
                 linkedSpellOnDisapear = origin.linkedSpellOnDisapear,
                 linkedSpellOnEnable = origin.linkedSpellOnEnable,
-                positionToStartSpell = origin.positionToStartSpell,
-                spellWhenPlayerCall = origin.spellWhenPlayerCall
+                spellWhenPlayerCall = origin.spellWhenPlayerCall,
+                OriginalDirection = origin.OriginalDirection,
+                OriginalPosition = origin.OriginalPosition,
+                initialRotation = origin.initialRotation,
+                trajectoryNormalized = origin.trajectoryNormalized,
             };
             return cloneSummonSpell;
         }

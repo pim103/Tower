@@ -30,7 +30,6 @@ namespace Games.Global.Spells.SpellsController
                 linkedSpellOnAttack = origin.linkedSpellOnAttack,
                 linkedSpellOnHit = origin.linkedSpellOnHit,
                 linkedSpellOnInterval = origin.linkedSpellOnInterval,
-                positionToStartSpell = origin.positionToStartSpell,
                 effectOnTargetOnHit = origin.effectOnTargetOnHit,
                 linkedSpellOnDamageReceived = origin.linkedSpellOnDamageReceived,
                 needNewPositionOnAttack = origin.needNewPositionOnAttack,
@@ -38,7 +37,12 @@ namespace Games.Global.Spells.SpellsController
                 needNewPositionOnInterval = origin.needNewPositionOnInterval,
                 effectOnSelfOnDamageReceived = origin.effectOnSelfOnDamageReceived,
                 effectOnSelfWhenNoCharge = origin.effectOnSelfWhenNoCharge,
-                needNewPositionOnDamageReceived = origin.needNewPositionOnDamageReceived
+                needNewPositionOnDamageReceived = origin.needNewPositionOnDamageReceived,
+                OriginalDirection = origin.OriginalDirection,
+                OriginalPosition = origin.OriginalPosition,
+                startPosition = origin.startPosition,
+                initialRotation = origin.initialRotation,
+                trajectoryNormalized = origin.trajectoryNormalized,
             };
 
             return clone;

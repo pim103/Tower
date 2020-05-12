@@ -46,7 +46,6 @@ namespace Games.Global.Spells.SpellsController
                 wantToFollow = origin.wantToFollow,
                 linkedSpellOnEnd = origin.linkedSpellOnEnd,
                 linkedSpellOnInterval = origin.linkedSpellOnInterval,
-                positionToStartSpell = origin.positionToStartSpell,
                 appliesPlayerOnHitEffect = origin.appliesPlayerOnHitEffect,
                 damagesOnEnemiesOnInterval = origin.damagesOnAlliesOnInterval,
                 effectOnHitOnStart = origin.effectOnHitOnStart,
@@ -54,7 +53,11 @@ namespace Games.Global.Spells.SpellsController
                 effectsOnEnemiesOnInterval = origin.effectsOnEnemiesOnInterval,
                 effectsOnPlayerOnInterval = origin.effectsOnPlayerOnInterval,
                 deleteEffectsOnEnemiesOnInterval = origin.deleteEffectsOnEnemiesOnInterval,
-                deleteEffectsOnPlayerOnInterval = origin.deleteEffectsOnPlayerOnInterval
+                deleteEffectsOnPlayerOnInterval = origin.deleteEffectsOnPlayerOnInterval,
+                OriginalPosition = OriginalPosition.Caster,
+                OriginalDirection = OriginalDirection.Forward,
+                initialRotation = origin.initialRotation,
+                trajectoryNormalized = origin.trajectoryNormalized,
             };
 
             return cloneAreaOfEffectSpell;

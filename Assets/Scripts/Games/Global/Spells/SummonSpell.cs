@@ -14,7 +14,6 @@ namespace Games.Global.Spells
 
         public float hp;
         public bool isTargetable;
-        public Vector3 startPosition;
         public List<Vector3> positionPresets;
         public float duration;
         public float attackDamage;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Players;
 using UnityEngine;
@@ -23,7 +24,8 @@ namespace Games.Global.Weapons
                 scale = Vector3.one + Vector3.forward,
                 onePlay = true,
                 isBasicAttack = true,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition
+                OriginalPosition = OriginalPosition.Caster,
+                OriginalDirection = OriginalDirection.Forward
             };
 
             basicAttack = new Spell

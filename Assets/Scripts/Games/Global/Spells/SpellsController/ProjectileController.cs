@@ -20,11 +20,10 @@ namespace Games.Global.Spells.SpellsController
                 damages = origin.damages,
                 duration = origin.duration,
                 speed = origin.speed,
-                trajectory = origin.trajectory,
+                trajectoryNormalized = origin.trajectoryNormalized,
                 damageType = origin.damageType,
                 initialRotation = origin.initialRotation,
                 startPosition = origin.startPosition,
-                trajectoryType = origin.trajectoryType,
                 typeSpell = origin.typeSpell,
                 effectsOnHit = origin.effectsOnHit,
                 idPoolObject = origin.idPoolObject,
@@ -33,7 +32,8 @@ namespace Games.Global.Spells.SpellsController
                 damageMultiplierOnDistance = origin.damageMultiplierOnDistance,
                 linkedSpellOnDisable = origin.linkedSpellOnDisable,
                 linkedSpellOnEnable = origin.linkedSpellOnEnable,
-                positionToStartSpell = origin.positionToStartSpell
+                OriginalDirection = origin.OriginalDirection,
+                OriginalPosition = origin.OriginalPosition
             };
 
             return cloneProjectileSpell;
@@ -74,16 +74,8 @@ namespace Games.Global.Spells.SpellsController
         {
             GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
 
-            Vector3 initialRotation = projectileSpell.initialRotation;
-            
-            if (projectileSpell.trajectoryType == Trajectory.OriginForward)
-            {
-                initialRotation = entity.entityPrefab.transform.localEulerAngles;
-                projectileSpell.trajectory = entity.entityPrefab.transform.forward;
-            }
-
             genericSpellPrefab.transform.position = projectileSpell.startPosition;
-            genericSpellPrefab.transform.localEulerAngles = initialRotation;
+            genericSpellPrefab.transform.localEulerAngles = projectileSpell.initialRotation;
             genericSpellPrefab.transform.localScale = Vector3.one;
 
             GameObject prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(projectileSpell.idPoolObject);
@@ -104,7 +96,7 @@ namespace Games.Global.Spells.SpellsController
         private void UpdatePosition(Entity entity, ProjectileSpell projectileSpell)
         {
             float speed = projectileSpell.speed * 0.05f;
-            projectileSpell.objectPooled.transform.position += (projectileSpell.trajectory * speed);
+            projectileSpell.objectPooled.transform.position += (projectileSpell.trajectoryNormalized * speed);
         }
 
         private static void BasicAttack(Entity entity, Entity enemy, float extraDamage, ProjectileSpell projectileSpell)

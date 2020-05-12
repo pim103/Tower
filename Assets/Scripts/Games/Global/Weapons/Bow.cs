@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 using Games.Players;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -21,8 +22,8 @@ namespace Games.Global.Weapons
                damageType = DamageType.Physical,
                isBasicAttack = true,
                idPoolObject = 0,
-               positionToStartSpell = PositionToStartSpell.DynamicPosition,
-               trajectoryType = Trajectory.OriginForward
+               OriginalPosition = OriginalPosition.Caster,
+               OriginalDirection = OriginalDirection.Forward
            };
 
            basicAttack = new Spell

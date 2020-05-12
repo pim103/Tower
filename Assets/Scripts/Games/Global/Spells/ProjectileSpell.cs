@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace Games.Global.Spells
 {
-    public enum Trajectory
-    {
-        OriginForward,
-        AlreadySet
-    }
-    
     public class ProjectileSpell : SpellComponent
     {
         public ProjectileSpell()
@@ -18,10 +12,6 @@ namespace Games.Global.Spells
 
         public int idPoolObject;
 
-        public Trajectory trajectoryType;
-        public Vector3 startPosition;
-        public Vector3 initialRotation;
-        public Vector3 trajectory;
         public float speed;
         
         public float damages;

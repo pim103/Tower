@@ -19,7 +19,6 @@ namespace Games.Global.Spells
 
         public float duration;
         public float speed;
-        public Vector3 trajectory;
         public bool isFollowingMouse;
 
         public MovementSpellType movementSpellType;

@@ -10,9 +10,6 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Wave;
         }
 
-        public Vector3 startPosition;
-        public Vector3 initialRotation;
-
         public Geometry geometryPropagation;
         public int initialWidth;
         public float duration;

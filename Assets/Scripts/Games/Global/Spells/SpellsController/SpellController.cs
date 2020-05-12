@@ -1,11 +1,22 @@
-using System;
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Global.Spells.SpellsController
 {
+    public enum OriginalPosition
+    {
+        Caster,
+        Target,
+        PositionInParameter
+    }
+
+    public enum OriginalDirection
+    {
+        None,
+        Forward,
+        Random
+    }
+
     public class SpellController : MonoBehaviour
     {
         [SerializeField] private BuffController buffController;
@@ -59,46 +70,34 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
-        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
+        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity caster, Entity target = null)
         {
-            switch (spellComponent.positionToStartSpell)
+            switch (spellComponent.OriginalPosition)
             {
-                case PositionToStartSpell.DynamicPosition:
-                    switch (spellComponent.typeSpell)
-                    {
-                        case TypeSpell.Buff:
-                            break;
-                        case TypeSpell.Projectile:
-                            ProjectileSpell projectileSpell = (ProjectileSpell) spellComponent;
-                            projectileSpell.startPosition = startPosition;
-                            break;
-                        case TypeSpell.Summon:
-                            SummonSpell summonSpell = (SummonSpell) spellComponent;
-                            summonSpell.startPosition = startPosition;
-                            break;
-                        case TypeSpell.Transformation:
-                            break;
-                        case TypeSpell.Wave:
-                            WaveSpell wave = (WaveSpell) spellComponent;
-                            wave.startPosition = startPosition;
-                            break;
-                        case TypeSpell.SpecialAttack:
-                            break;
-                        case TypeSpell.AreaOfEffect:
-                            AreaOfEffectSpell area = (AreaOfEffectSpell) spellComponent;
-                            area.startPosition = startPosition;
-                            area.transformToFollow = target != null ? target.entityPrefab.transform : null;
-                            break;
-                        case TypeSpell.TargetedAttack:
-                            break;
-                        case TypeSpell.Movement:
-                            MovementSpell movement = (MovementSpell) spellComponent;
-                            movement.tpPosition = startPosition;
-                            movement.trajectory = startPosition;
-                            movement.target = target;
-                            break;
-                    }
+                case OriginalPosition.Caster:
+                    spellComponent.startPosition = caster.entityPrefab.transform.position;
+                    break;
+                case OriginalPosition.Target:
+                    spellComponent.startPosition = target.entityPrefab.transform.position;
+                    break;
+                case OriginalPosition.PositionInParameter:
+                    spellComponent.startPosition = startPosition;
+                    break;
+            }
 
+            switch (spellComponent.OriginalDirection)
+            {
+                case OriginalDirection.Forward:
+                    spellComponent.initialRotation = caster.entityPrefab.transform.localEulerAngles;
+                    spellComponent.trajectoryNormalized = caster.entityPrefab.transform.forward;
+                    break;
+                case OriginalDirection.Random:
+                    Vector3 rand = new Vector3();
+                    rand.x = 0;
+                    rand.y = Random.Range(0, 360);
+                    rand.z = 0;
+                    spellComponent.initialRotation = rand;
+                    spellComponent.trajectoryNormalized = rand.normalized;
                     break;
             }
         }

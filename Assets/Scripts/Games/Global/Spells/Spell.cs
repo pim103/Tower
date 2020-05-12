@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Games.Global.Spells.SpellsController;
+using UnityEngine;
 
 namespace Games.Global.Spells
 {
@@ -43,7 +44,12 @@ namespace Games.Global.Spells
 
         public Coroutine currentCoroutine;
 
-        public PositionToStartSpell positionToStartSpell;
+        public OriginalPosition OriginalPosition;
+        public OriginalDirection OriginalDirection;
+
+        public Vector3 startPosition;
+        public Vector3 initialRotation;
+        public Vector3 trajectoryNormalized;
 
         public bool isBasicAttack;
     }

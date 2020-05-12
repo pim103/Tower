@@ -70,7 +70,6 @@ namespace TestC
                 moveSpeed = 10,
                 summonNumber = 5,
                 BehaviorType = BehaviorType.Melee,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition,
                 positionPresets = positions
             };
 
@@ -166,8 +165,9 @@ namespace TestC
                 geometry = Geometry.Sphere,
                 damagesOnEnemiesOnInterval = 11.0f,
                 effectsOnEnemiesOnInterval = effects,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition,
-                wantToFollow = true
+                wantToFollow = true,
+                OriginalPosition = OriginalPosition.Caster,
+                OriginalDirection = OriginalDirection.Forward
             };
             
             MovementSpell movementSpell = new MovementSpell
@@ -175,10 +175,10 @@ namespace TestC
                 duration = 3f,
                 speed = 20,
                 isFollowingMouse = true,
-                trajectory = player.transform.forward,
                 movementSpellType = MovementSpellType.Charge,
-                positionToStartSpell = PositionToStartSpell.DynamicPosition,
-                linkedSpellAtTheStart = area
+                linkedSpellAtTheStart = area,
+                OriginalPosition = OriginalPosition.Caster,
+                OriginalDirection = OriginalDirection.Forward
             };
 
             SpellController.CastSpellComponent(player.entity, movementSpell, player.positionPointed);

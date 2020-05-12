@@ -13,16 +13,19 @@ namespace Games.Global.Spells.SpellsController
                 duration = origin.duration,
                 speed = origin.speed,
                 target = origin.target,
-                trajectory = origin.trajectory,
+                startPosition = origin.startPosition,
+                initialRotation = origin.initialRotation,
+                trajectoryNormalized = origin.trajectoryNormalized,
                 damageType = origin.damageType,
                 tpPosition = origin.tpPosition,
                 typeSpell = origin.typeSpell,
                 isBasicAttack = origin.isBasicAttack,
                 isFollowingMouse = origin.isFollowingMouse,
                 movementSpellType = origin.movementSpellType,
-                positionToStartSpell = origin.positionToStartSpell,
                 linkedSpellAtTheEnd = origin.linkedSpellAtTheEnd,
-                linkedSpellAtTheStart = origin.linkedSpellAtTheStart
+                linkedSpellAtTheStart = origin.linkedSpellAtTheStart,
+                OriginalPosition = origin.OriginalPosition,
+                OriginalDirection = origin.OriginalDirection
             };
 
             return clone;
@@ -97,7 +100,7 @@ namespace Games.Global.Spells.SpellsController
             }
             else
             {
-                entityPrefab.transform.position += (movementSpell.trajectory * speed);
+                entityPrefab.transform.position += (movementSpell.trajectoryNormalized * speed);
             }
         }
 
