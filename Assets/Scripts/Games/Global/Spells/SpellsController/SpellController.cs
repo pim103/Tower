@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Games.Global.Spells.SpellsController
 {
@@ -66,6 +67,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (!spell.isOnCooldown)
             {
+                spell.isOnCooldown = true;
                 instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
             }
         }
@@ -148,11 +150,10 @@ namespace Games.Global.Spells.SpellsController
 
         public static IEnumerator StartCooldown(Entity entity, Spell spell)
         {
-            spell.isOnCooldown = true;
             yield return new WaitForSeconds(spell.cooldown);
             spell.isOnCooldown = false;
         }
-        
+
         public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
             float duration = spell.castTime;
