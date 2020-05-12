@@ -54,7 +54,7 @@ public class ChatBoxManager : MonoBehaviour
         if (!string.IsNullOrWhiteSpace(chatBox.text) && Input.GetKeyDown(KeyCode.Return))
         {
             // Check if it is a private message
-            if (chatBox.text.Length > 3 && chatBox.text[0] == '/' && chatBox.text[1] == 'w' && chatBox.text[2] == ' ')
+            if (chatBox.text.Length > 3 && chatBox.text[0] == '/' && chatBox.text[1] == 'w' && chatBox.text[2] == ' ' && chatBox.text[3] != ' ')
             {
                 string user = "";
                 string message = "";
@@ -109,7 +109,7 @@ public class ChatBoxManager : MonoBehaviour
             }
 
             // Check if it is a invite to a party
-            else if (chatBox.text.Length > 8 && chatBox.text[0] == '/' && chatBox.text[1] == 'i' && chatBox.text[2] == 'n' && chatBox.text[3] == 'v' && chatBox.text[4] == 'i' && chatBox.text[5] == 't' && chatBox.text[6] == 'e' && chatBox.text[7] == ' ')
+            else if (chatBox.text.Length > 8 && chatBox.text[0] == '/' && chatBox.text[1] == 'i' && chatBox.text[2] == 'n' && chatBox.text[3] == 'v' && chatBox.text[4] == 'i' && chatBox.text[5] == 't' && chatBox.text[6] == 'e' && chatBox.text[7] == ' ' && chatBox.text[8] != ' ')
             {
                 string user = "";
 
