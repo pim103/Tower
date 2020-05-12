@@ -175,6 +175,18 @@ namespace Games.Global.Spells.SpellsController
             }
 
             entity.ApplyDamage(buffSpell.damageOnSelf);
+
+            if (buffSpell.triggerInvocationCallOneTime)
+            {
+                foreach (Entity summon in DataObject.invocationsInScene)
+                {
+                    GenericSummonSpell genericSummonSpell = (GenericSummonSpell) summon.entityPrefab;
+                    if (genericSummonSpell.summoner == entity)
+                    {
+                        genericSummonSpell.TriggerSpellWhenPlayerCall();
+                    }
+                }
+            }
         }
 
         public static void EndBuff(Entity entity, BuffSpell buffSpell)

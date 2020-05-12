@@ -30,6 +30,16 @@ namespace Games.Global.Spells
 
             selfGameObject = newGameObject;
 
+            List<Spell> spellsClone = new List<Spell>();
+
+            if (summonSpell.spells != null)
+            {
+                foreach (Spell spellOrigin in summonSpell.spells)
+                {
+                    spellsClone.Add(SpellController.Clone(spellOrigin));
+                }
+            }
+            
             summon = new Entity
             {
                 def = 0,
@@ -41,7 +51,7 @@ namespace Games.Global.Spells
                 speed = summonSpell.moveSpeed,
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
-                spells = summonSpell.spells,
+                spells = spellsClone,
                 basicAttack = SpellController.Clone(summonSpell.basicAttack),
                 BehaviorType = summonSpell.BehaviorType,
                 isSummon = true
@@ -68,6 +78,14 @@ namespace Games.Global.Spells
 
             DataObject.invocationsInScene.Remove(summon);
             selfGameObject.SetActive(false);
+        }
+
+        public void TriggerSpellWhenPlayerCall()
+        {
+            if (spellWhenPlayerCall != null)
+            {
+                SpellController.CastSpellComponent(entity, spellWhenPlayerCall, transform.position, target);
+            }
         }
     }
 }

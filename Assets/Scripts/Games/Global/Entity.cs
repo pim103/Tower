@@ -35,6 +35,11 @@ namespace Games.Global
         Melee,
         WithoutTarget
     }
+    
+    public enum AttackBehaviorType {
+        Random,
+        AllSpellsIFirst
+    }
 
     // Class for mobs and players
     public class Entity: ItemModel
@@ -106,6 +111,7 @@ namespace Games.Global
         public List<Spell> spells;
 
         public BehaviorType BehaviorType;
+        public AttackBehaviorType AttackBehaviorType;
 
         public bool doingSkill = false;
 
@@ -163,15 +169,14 @@ namespace Games.Global
         }
 
         // Take true damage is usefull with effect pierce
-        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, bool takeTrueDamage = false)
+        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
             Entity originDamage = abilityParameters.origin;
 
-            // TODO : set var with correct bool
-            bool isMagic = false;
-            bool isPhysic = false;
+            bool isMagic = damageType == DamageType.Magical;
+            bool isPhysic = damageType == DamageType.Physical;
 
             if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || originDamage.isBlind)
             {
@@ -243,13 +248,13 @@ namespace Games.Global
             if (hasMirror && isMagic)
             {
                 AbilityParameters newAbility = new AbilityParameters { origin = this };
-                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, canPierce);
+                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
             }
 
             if (hasThorn && isPhysic)
             {
                 AbilityParameters newAbility = new AbilityParameters { origin = this };
-                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, canPierce);
+                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
             }
         }
 

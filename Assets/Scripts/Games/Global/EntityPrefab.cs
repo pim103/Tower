@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
@@ -12,29 +13,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Games.Global
 {
-    public enum SpecialMovement
-    {
-        Dash,
-        BackDash,
-        Charge,
-        HeavyBasicAttack
-    }
-
     public class EntityPrefab : MonoBehaviour
     {
-        // virtual hand look at cursor or target
-//        [SerializeField] public GameObject virtualHand;
-
-        // hand play animation of weapon
-//        [SerializeField] public GameObject hand;
-
         [SerializeField] public GameObject rightHand;
         [SerializeField] public GameObject leftHand;
 
-//        [SerializeField] private MovementPatternController movementPatternController;
         [SerializeField] private Rigidbody rigidbodyEntity;
 
         [SerializeField] protected MeshRenderer meshRenderer;
@@ -172,6 +159,35 @@ namespace Games.Global
         {
         }
 
+        public bool CastSpell()
+        {
+            if (entity.spells == null || entity.spells.Count == 0)
+            {
+                return false;
+            }
+            
+            switch (entity.AttackBehaviorType)
+            {
+                case AttackBehaviorType.AllSpellsIFirst:
+                    foreach (Spell spell in entity.spells)
+                    {
+                        if (!spell.isOnCooldown)
+                        {
+                            SpellController.CastSpell(entity, spell, transform.position, target);
+                            return true;
+                        }
+                    }
+                    break;
+                case AttackBehaviorType.Random:
+                    int rand = Random.Range(0, entity.spells.Count);
+                    SpellController.CastSpell(entity, entity.spells[rand], transform.position, target);
+
+                    return !entity.spells[rand].isOnCooldown;
+            }
+
+            return false;
+        }
+
         public void AttackTarget()
         {
             transform.LookAt(target.entityPrefab.transform);
@@ -180,19 +196,22 @@ namespace Games.Global
             localEulerAngles.z = 0;
             transform.localEulerAngles = localEulerAngles;
 
-            // TODO : adapt range of weapon for attack
-            switch (entity.BehaviorType)
+            if (!CastSpell())
             {
-                case BehaviorType.Distance:
-                    PlayBasicAttack();
-                    break;
-                case BehaviorType.Melee:
-                case BehaviorType.MoveOnTargetAndDie:
-                    if (navMeshAgent.remainingDistance <= 3)
-                    {
+                switch (entity.BehaviorType)
+                {
+                    // TODO : adapt range of weapon for attack
+                    case BehaviorType.Distance:
                         PlayBasicAttack();
-                    }
-                    break;
+                        break;
+                    case BehaviorType.Melee:
+                    case BehaviorType.MoveOnTargetAndDie:
+                        if (navMeshAgent.remainingDistance <= 3)
+                        {
+                            PlayBasicAttack();
+                        }
+                        break;
+                }
             }
         }
 

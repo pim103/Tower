@@ -47,5 +47,7 @@ namespace Games.Global.Spells
         public List<SpellWithCondition> spellWithCondition;
 
         public BehaviorType newPlayerBehaviour;
+
+        public bool triggerInvocationCallOneTime;
     }
 }

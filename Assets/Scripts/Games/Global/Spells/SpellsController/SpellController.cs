@@ -78,9 +78,17 @@ namespace Games.Global.Spells.SpellsController
             {
                 case OriginalPosition.Caster:
                     spellComponent.startPosition = caster.entityPrefab.transform.position;
+                    if (spellComponent.needPositionToMidToEntity)
+                    {
+                        spellComponent.startPosition += Vector3.up * (caster.entityPrefab.transform.localScale.y / 2);
+                    }
                     break;
                 case OriginalPosition.Target:
                     spellComponent.startPosition = target.entityPrefab.transform.position;
+                    if (spellComponent.needPositionToMidToEntity)
+                    {
+                        spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
+                    }
                     break;
                 case OriginalPosition.PositionInParameter:
                     spellComponent.startPosition = startPosition;
@@ -106,7 +114,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
         {
-            SetOriginalPosition(spellComponent, startPosition, target);
+            SetOriginalPosition(spellComponent, startPosition, entity, target);
 
             ISpellController iSpellController = null;
             switch (spellComponent.typeSpell)

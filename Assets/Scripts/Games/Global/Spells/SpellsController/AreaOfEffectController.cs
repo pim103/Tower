@@ -116,11 +116,14 @@ namespace Games.Global.Spells.SpellsController
 
             areaOfEffectSpell.objectPooled = genericSpellPrefab;
 
-            if (areaOfEffectSpell.wantToFollow && areaOfEffectSpell.transformToFollow)
+            if (areaOfEffectSpell.wantToFollow)
             {
-                genericSpellPrefab.transform.parent = areaOfEffectSpell.transformToFollow;
+                if (areaOfEffectSpell.OriginalPosition == OriginalPosition.Caster)
+                {
+                    genericSpellPrefab.transform.parent = entity.entityPrefab.transform;
+                }
             }
-            
+
             genericSpellPrefab.SetActive(true);
         }
         
@@ -221,7 +224,7 @@ namespace Games.Global.Spells.SpellsController
                 damage /= 2;
             }
 
-            enemy.TakeDamage(damage, paramaters, entity.canPierce);
+            enemy.TakeDamage(damage, paramaters, areaOfEffectSpell.damageType ,entity.canPierce);
         }
 
         private void IntervalHitEnemies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
@@ -274,7 +277,7 @@ namespace Games.Global.Spells.SpellsController
                 }
                 else
                 {
-                    enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage, paramaters);
+                    enemy.TakeDamage(areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage, paramaters, areaOfEffectSpell.damageType);
 
                     if (areaOfEffectSpell.appliesPlayerOnHitEffect && !areaOfEffectSpell.isBasicAttack)
                     {
@@ -344,7 +347,7 @@ namespace Games.Global.Spells.SpellsController
                     continue;
                 }
 
-                ally.TakeDamage(areaOfEffectSpell.damagesOnAlliesOnInterval, paramaters);
+                ally.TakeDamage(areaOfEffectSpell.damagesOnAlliesOnInterval, paramaters, areaOfEffectSpell.damageType);
 
                 if (areaOfEffectSpell.effectsOnAlliesOnInterval != null)
                 {

@@ -52,6 +52,7 @@ namespace Games.Global.Spells
         public Vector3 trajectoryNormalized;
 
         public bool isBasicAttack;
+        public bool needPositionToMidToEntity;
     }
 
     public class Spell

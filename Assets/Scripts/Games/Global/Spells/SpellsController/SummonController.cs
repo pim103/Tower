@@ -70,9 +70,15 @@ namespace Games.Global.Spells.SpellsController
         {
             if (summonSpell.isUnique)
             {
-                foreach (GenericSummonSpell summon in summonSpell.prefabsSummon)
+                List<Entity> invocs = DataObject.invocationsInScene.FindAll(invoc => ((GenericSummonSpell) invoc.entityPrefab).summoner == entity);
+
+                foreach (Entity summon in invocs)
                 {
-                    summon.DestroySummon();
+                    GenericSummonSpell genericSummonSpell = (GenericSummonSpell) summon.entityPrefab;
+                    if (genericSummonSpell.summoner == entity)
+                    {
+                        genericSummonSpell.DestroySummon();
+                    }
                 }
             }
 

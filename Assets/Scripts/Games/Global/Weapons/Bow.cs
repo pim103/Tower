@@ -13,7 +13,7 @@ namespace Games.Global.Weapons
         public Bow()
         {
            animationToPlay = "BowAttack";
-           
+
            ProjectileSpell projectile = new ProjectileSpell
            {
                damages = 0,
@@ -23,7 +23,8 @@ namespace Games.Global.Weapons
                isBasicAttack = true,
                idPoolObject = 0,
                OriginalPosition = OriginalPosition.Caster,
-               OriginalDirection = OriginalDirection.Forward
+               OriginalDirection = OriginalDirection.Forward,
+               needPositionToMidToEntity = true
            };
 
            basicAttack = new Spell

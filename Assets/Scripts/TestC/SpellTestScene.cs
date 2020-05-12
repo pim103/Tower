@@ -39,8 +39,11 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-            yield return new WaitForSeconds(1f);
-            OtherSpell();
+            yield return new WaitForSeconds(3f);
+            TestSpell();
+//            
+//            yield return new WaitForSeconds(5f);
+//            OtherSpell();
         }
 
         private void OtherSpell()
@@ -70,7 +73,8 @@ namespace TestC
                 moveSpeed = 10,
                 summonNumber = 5,
                 BehaviorType = BehaviorType.Melee,
-                positionPresets = positions
+                positionPresets = positions,
+                isUnique = true
             };
 
             SpellController.CastSpellComponent(player.entity, summonSpell, player.transform.position, player.entity);
@@ -125,21 +129,6 @@ namespace TestC
 //            player.entity.att = 15;
 //            SpellController.CastSpellComponent(player.entity, buffSpell, Vector3.positiveInfinity);
 
-//            WaveSpell waveSpell = new WaveSpell
-//            {
-//                typeSpell = TypeSpell.Wave,
-//                duration = 10, 
-//                geometryPropagation = Geometry.Square, 
-//                initialRotation = player.transform.localEulerAngles,
-//                initialWidth = 10, 
-//                speedPropagation = 5,
-//                incrementAmplitudeByTime = 5,
-//                positionToStartSpell = PositionToStartSpell.Himself,
-//                startPosition = player.transform.position,
-//                effectsOnHit = effects,
-//                damages = 15
-//            };
-
 //            ProjectileSpell projectileSpell = new ProjectileSpell
 //            {
 //                prefab = arrowPrefab,
@@ -167,7 +156,8 @@ namespace TestC
                 effectsOnEnemiesOnInterval = effects,
                 wantToFollow = true,
                 OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward
+                OriginalDirection = OriginalDirection.Forward,
+                transformToFollow = player.transform
             };
             
             MovementSpell movementSpell = new MovementSpell
@@ -181,7 +171,7 @@ namespace TestC
                 OriginalDirection = OriginalDirection.Forward
             };
 
-            SpellController.CastSpellComponent(player.entity, movementSpell, player.positionPointed);
+            SpellController.CastSpellComponent(player.entity, movementSpell, player.positionPointed, player.target);
         }
     }
 }

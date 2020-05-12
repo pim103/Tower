@@ -148,7 +148,7 @@ namespace Games.Global.Spells.SpellsController
                 damage /= 2;
             }
 
-            enemy.TakeDamage(damage, paramaters, entity.canPierce);
+            enemy.TakeDamage(damage, paramaters, projectileSpell.damageType, entity.canPierce);
         }
 
         public static void EntityTriggerEnter(Entity origin, Collider other, ProjectileSpell projectileSpell,
@@ -179,7 +179,7 @@ namespace Games.Global.Spells.SpellsController
                 else
                 {
                     AbilityParameters paramaters = new AbilityParameters {origin = origin};
-                    entityEnter.TakeDamage(projectileSpell.damages + extraDamage, paramaters);
+                    entityEnter.TakeDamage(projectileSpell.damages + extraDamage, paramaters, projectileSpell.damageType);
                 }
 
                 if (projectileSpell.effectsOnHit != null)
