@@ -404,6 +404,15 @@ namespace Games.Players
             if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Spell")))
             {
                 positionPointed = hit.point;
+
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+                {
+                    EntityPrefab entityPrefab = hit.collider.GetComponent<EntityPrefab>();
+                    if (entityPrefab.entity.typeEntity == TypeEntity.MOB)
+                    {
+                        target = entityPrefab.entity;
+                    }
+                }
             }
             else
             {

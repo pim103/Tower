@@ -20,24 +20,6 @@ namespace Games.Global.Spells
 
         public GameObject selfGameObject;
 
-        private Spell CloneBasicAttack(Spell basicAttack)
-        {
-            Spell clone = new Spell
-            {
-                cooldown = basicAttack.cooldown,
-                cost = basicAttack.cooldown,
-                castTime = basicAttack.cooldown,
-                activeSpellComponent = basicAttack.activeSpellComponent,
-                isOnCooldown = basicAttack.isOnCooldown,
-                passiveSpellComponent = basicAttack.passiveSpellComponent,
-                recastSpellComponent = basicAttack.recastSpellComponent,
-                deactivatePassiveWhenActive = basicAttack.deactivatePassiveWhenActive,
-                duringCastSpellComponent = basicAttack.duringCastSpellComponent
-            };
-
-            return clone;
-        }
-        
         public void SummonEntity(Entity newSummoner, SummonSpell summonSpell, GameObject newGameObject)
         {
             summoner = newSummoner;
@@ -60,7 +42,7 @@ namespace Games.Global.Spells
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
                 spells = summonSpell.spells,
-                basicAttack = CloneBasicAttack(summonSpell.basicAttack),
+                basicAttack = SpellController.Clone(summonSpell.basicAttack),
                 BehaviorType = summonSpell.BehaviorType,
                 isSummon = true
             };

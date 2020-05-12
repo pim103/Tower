@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
@@ -26,6 +26,24 @@ namespace Games.Global.Spells.SpellsController
         private void Start()
         {
             instance = this;
+        }
+
+        public static Spell Clone(Spell origin)
+        {
+            Spell clone = new Spell
+            {
+                cooldown = origin.cooldown,
+                cost = origin.cooldown,
+                castTime = origin.cooldown,
+                activeSpellComponent = origin.activeSpellComponent,
+                isOnCooldown = origin.isOnCooldown,
+                passiveSpellComponent = origin.passiveSpellComponent,
+                recastSpellComponent = origin.recastSpellComponent,
+                deactivatePassiveWhenActive = origin.deactivatePassiveWhenActive,
+                duringCastSpellComponent = origin.duringCastSpellComponent
+            };
+
+            return clone;
         }
 
         public static void CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
