@@ -47,7 +47,7 @@ public class KeyBindManager : MonoBehaviour
     {
         if (Input.GetKeyDown(keys["Up"]))
         {
-            Debug.Log("Up");
+            Debug.Log("J'ai appuyé sur keys['Up']");
         }
     }
 
