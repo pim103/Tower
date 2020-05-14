@@ -69,12 +69,8 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Wave:
                     WaveController.EntityTriggerEnter(originOfSpell, other, (WaveSpell) spellComponent, other.gameObject.layer == spellLayer);
                     break;
-                case TypeSpell.SpecialAttack:
-                    break;
                 case TypeSpell.AreaOfEffect:
                     AreaOfEffectController.EntityTriggerEnter(originOfSpell, other, (AreaOfEffectSpell)spellComponent, other.gameObject.layer == spellLayer);
-                    break;
-                case TypeSpell.TargetedAttack:
                     break;
                 case TypeSpell.Movement:
                     break;
@@ -110,12 +106,8 @@ namespace Games.Global.Spells.SpellsController
                     break;
                 case TypeSpell.Wave:
                     break;
-                case TypeSpell.SpecialAttack:
-                    break;
                 case TypeSpell.AreaOfEffect:
                     AreaOfEffectController.EntityTriggerExit(originOfSpell, entityEnter, (AreaOfEffectSpell)spellComponent);
-                    break;
-                case TypeSpell.TargetedAttack:
                     break;
                 case TypeSpell.Movement:
                     break;

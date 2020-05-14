@@ -39,10 +39,10 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-            yield return new WaitForSeconds(3f);
-            TestSpell();
+//            yield return new WaitForSeconds(3f);
+//            TestSpell();
 //            
-//            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(5f);
 //            OtherSpell();
         }
 
@@ -50,7 +50,6 @@ namespace TestC
         {
             player.entity.att = 15;
 
-            Sword sword = new Sword();
 
             List<Vector3> positions = new List<Vector3>();
             positions.Add(Vector3.forward);
@@ -58,23 +57,49 @@ namespace TestC
             positions.Add(Vector3.forward);
             positions.Add(Vector3.forward);
             positions.Add(Vector3.forward);
+            
+            AreaOfEffectSpell area = new AreaOfEffectSpell
+            {
+                startPosition = Vector3.zero,
+                scale = Vector3.one * 20,
+                onePlay = true,
+                damagesOnEnemiesOnInterval = 30.0f,
+                geometry = Geometry.Sphere,
+                OriginalDirection = OriginalDirection.None,
+                OriginalPosition = OriginalPosition.Caster
+            };
+
+            Spell newSpell = new Spell
+            {
+                cost = 0,
+                cooldown = 2,
+                castTime = 0,
+                activeSpellComponent = area
+            };
+
+            List<Spell> spells = new List<Spell>();
+            spells.Add(newSpell);
+            
 
             SummonSpell summonSpell = new SummonSpell
             {
-                duration = 10,
+                duration = 50,
                 hp = 50,
-                basicAttack = sword.basicAttack,
+//                basicAttack = sword.basicAttack,
                 attackDamage = 40,
                 attackSpeed = 1,
-                damageType = DamageType.Physical,
+                damageType = DamageType.Magical,
                 canMove = true,
                 isTargetable = true,
                 idPoolObject = 2,
                 moveSpeed = 10,
-                summonNumber = 5,
-                BehaviorType = BehaviorType.Melee,
+                summonNumber = 2,
+                BehaviorType = BehaviorType.Distance,
                 positionPresets = positions,
-                isUnique = true
+                isUnique = true,
+                nbUseSpells = 2,
+                spells = spells,
+                AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst
             };
 
             SpellController.CastSpellComponent(player.entity, summonSpell, player.transform.position, player.entity);

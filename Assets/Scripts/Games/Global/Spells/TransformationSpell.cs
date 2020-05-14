@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Games.Global.Spells
 {
@@ -10,10 +11,7 @@ namespace Games.Global.Spells
         }
 
         public GameObject prefab;
-        public SpellComponent spell1;
-        public SpellComponent spell2;
-        public SpellComponent spell3;
-
+        public List<Spell> newSpells;
         public float duration;
     }
 }

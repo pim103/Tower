@@ -136,9 +136,7 @@ GameObject:
   - component: {fileID: 52772910}
   - component: {fileID: 52772909}
   - component: {fileID: 52772908}
-  - component: {fileID: 52772907}
   - component: {fileID: 52772906}
-  - component: {fileID: 52772905}
   - component: {fileID: 52772904}
   - component: {fileID: 52772903}
   m_Layer: 0
@@ -172,18 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c20ca677c7f5a498816db6715b97b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &52772905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b111864c94b10eb498ce7cb89ab68894, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &52772906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,18 +180,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 376bab91269ba4145961fb073a36bc97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af40b1a715ca364e990ccdd79942d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &52772908
@@ -283,8 +257,6 @@ MonoBehaviour:
   buffController: {fileID: 52772911}
   areaOfEffectController: {fileID: 52772912}
   movementController: {fileID: 52772910}
-  specialAttackController: {fileID: 52772907}
-  targetedAttackController: {fileID: 52772905}
   waveController: {fileID: 52772903}
   projectileController: {fileID: 52772908}
   summonController: {fileID: 52772906}
@@ -792,7 +764,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 6.95e-43, y: 0, z: 0, w: -9.706099e-23}
+  m_BoundingSphereOverride: {x: 5.583e-42, y: 1.06e-43, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -825,7 +797,7 @@ PrefabInstance:
     - target: {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8521370539131973237, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
@@ -885,12 +857,12 @@ PrefabInstance:
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4059769c6bac754189732fbec904bb2, type: 3}
@@ -1015,7 +987,7 @@ PrefabInstance:
     - target: {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8521370539131973237, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
@@ -1075,12 +1047,12 @@ PrefabInstance:
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4059769c6bac754189732fbec904bb2, type: 3}

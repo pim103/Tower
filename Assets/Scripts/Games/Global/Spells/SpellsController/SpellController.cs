@@ -8,7 +8,8 @@ namespace Games.Global.Spells.SpellsController
     {
         Caster,
         Target,
-        PositionInParameter
+        PositionInParameter,
+        ClosestEnemyFromCaster
     }
 
     public enum OriginalDirection
@@ -23,8 +24,6 @@ namespace Games.Global.Spells.SpellsController
         [SerializeField] private BuffController buffController;
         [SerializeField] private AreaOfEffectController areaOfEffectController;
         [SerializeField] private MovementController movementController;
-        [SerializeField] private SpecialAttackController specialAttackController;
-        [SerializeField] private TargetedAttackController targetedAttackController;
         [SerializeField] private WaveController waveController;
         [SerializeField] private ProjectileController projectileController;
         [SerializeField] private SummonController summonController;
@@ -40,7 +39,7 @@ namespace Games.Global.Spells.SpellsController
             instance = this;
         }
 
-        public static Spell Clone(Spell origin)
+        public static Spell Clone(Spell origin, int nbUse = -1)
         {
             Spell clone = new Spell
             {
@@ -52,24 +51,36 @@ namespace Games.Global.Spells.SpellsController
                 passiveSpellComponent = origin.passiveSpellComponent,
                 recastSpellComponent = origin.recastSpellComponent,
                 deactivatePassiveWhenActive = origin.deactivatePassiveWhenActive,
-                duringCastSpellComponent = origin.duringCastSpellComponent
+                duringCastSpellComponent = origin.duringCastSpellComponent,
+                nbUse = nbUse
             };
 
             return clone;
         }
 
-        public static void CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
+        public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
             if (spell == null)
             {
-                return;
+                return false;
             }
 
-            if (!spell.isOnCooldown)
+            if (!spell.isOnCooldown && spell.nbUse != 0)
             {
+                if (spell.nbUse > 0)
+                {
+                    spell.nbUse--;
+                }
+
                 spell.isOnCooldown = true;
                 instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
             }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity caster, Entity target = null)
@@ -134,14 +145,8 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Wave:
                     iSpellController = instance.waveController;
                     break;
-                case TypeSpell.SpecialAttack:
-                    iSpellController = instance.specialAttackController;
-                    break;
                 case TypeSpell.AreaOfEffect:
                     iSpellController = instance.areaOfEffectController;
-                    break;
-                case TypeSpell.TargetedAttack:
-                    iSpellController = instance.targetedAttackController;
                     break;
                 case TypeSpell.Movement:
                     iSpellController = instance.movementController;

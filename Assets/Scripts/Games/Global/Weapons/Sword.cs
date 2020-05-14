@@ -17,35 +17,16 @@ namespace Games.Global.Weapons
         public Sword()
         {
             animationToPlay = "ShortSwordAttack";
-            
-            Effect repulse = new Effect { typeEffect = TypeEffect.Expulsion, level = 10, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
-            List<Effect> effects = new List<Effect>();
-            effects.Add(repulse);
 
             AreaOfEffectSpell area = new AreaOfEffectSpell
             {
-                startPosition = Vector3.zero,
-                scale = Vector3.one * 4,
-                duration = 3,
-                interval = 0.05f,
-                typeSpell = TypeSpell.AreaOfEffect,
-                geometry = Geometry.Square,
-                damagesOnEnemiesOnInterval = 11.0f,
-                effectsOnEnemiesOnInterval = effects,
-                wantToFollow = true,
+                scale = Vector3.one * 20,
+                onePlay = true,
+                damagesOnEnemiesOnInterval = 30.0f,
+                geometry = Geometry.Sphere,
+                OriginalDirection = OriginalDirection.None,
                 OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward
-            };
-            
-            MovementSpell movementSpell = new MovementSpell
-            {
-                duration = 3f,
-                speed = 20,
-                isFollowingMouse = true,
-                movementSpellType = MovementSpellType.Charge,
-                linkedSpellAtTheStart = area,
-                OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward
+                damageType = DamageType.Physical
             };
             
 //            AreaOfEffectSpell area = new AreaOfEffectSpell
@@ -63,9 +44,9 @@ namespace Games.Global.Weapons
             basicAttack = new Spell
             {
                 cost = 0,
-                cooldown = 1,
+                cooldown = 0.1f,
                 castTime = 0,
-                activeSpellComponent = movementSpell
+                activeSpellComponent = area
             };
         }
 

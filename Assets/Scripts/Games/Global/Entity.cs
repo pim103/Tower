@@ -108,6 +108,7 @@ namespace Games.Global
         public EntityPrefab entityPrefab;
 
         public Spell basicAttack;
+        public Spell basicDefense;
         public List<Spell> spells;
 
         public BehaviorType BehaviorType;
@@ -156,6 +157,7 @@ namespace Games.Global
         public bool isUnkillableByBleeding = false;
         public bool isLinked = false;
         public bool hasRedirection = false;
+        public bool hasPassiveDeactivate = false;
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
@@ -182,6 +184,15 @@ namespace Games.Global
             {
                 return;
             }
+            
+            if (isMagic)
+            {
+                damageReceived = (damageReceived - magicalDef) > 0 ? (damageReceived - magicalDef) : 0;
+            } 
+            else if (isPhysic)
+            {
+                damageReceived = (damageReceived - physicalDef) > 0 ? (damageReceived - physicalDef) : 0;
+            }
 
             if (takeTrueDamage ||
                 (originDamage.canPierceOnBack && 
@@ -189,15 +200,6 @@ namespace Games.Global
                 ))
             {
                 damageReceived = initialDamage;
-
-                if (isMagic)
-                {
-                    damageReceived = (damageReceived - magicalDef) > 0 ? (damageReceived - magicalDef) : 0;
-                } 
-                else if (isPhysic)
-                {
-                    damageReceived = (damageReceived - physicalDef) > 0 ? (damageReceived - physicalDef) : 0;
-                }
             }
 
             if (originDamage.hasLifeSteal)

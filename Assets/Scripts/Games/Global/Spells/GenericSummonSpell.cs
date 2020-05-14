@@ -11,8 +11,6 @@ namespace Games.Global.Spells
         public Entity summoner;
         public Entity summon;
 
-        public int nbUseSpells;
-        
         public SpellComponent linkedSpellOnEnable;
         public SpellComponent linkedSpellOnDisapear;
 
@@ -36,10 +34,10 @@ namespace Games.Global.Spells
             {
                 foreach (Spell spellOrigin in summonSpell.spells)
                 {
-                    spellsClone.Add(SpellController.Clone(spellOrigin));
+                    spellsClone.Add(SpellController.Clone(spellOrigin, summonSpell.nbUseSpells));
                 }
             }
-            
+
             summon = new Entity
             {
                 def = 0,
@@ -52,8 +50,9 @@ namespace Games.Global.Spells
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
                 spells = spellsClone,
-                basicAttack = SpellController.Clone(summonSpell.basicAttack),
+                basicAttack = (summonSpell.basicAttack != null ? SpellController.Clone(summonSpell.basicAttack) : null),
                 BehaviorType = summonSpell.BehaviorType,
+                AttackBehaviorType = summonSpell.AttackBehaviorType,
                 isSummon = true
             };
 

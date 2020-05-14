@@ -14,8 +14,6 @@ namespace Games.Global.Spells
     {
         Movement,
         Buff,
-        SpecialAttack,
-        TargetedAttack,
         AreaOfEffect,
         Wave,
         Projectile,
@@ -53,6 +51,7 @@ namespace Games.Global.Spells
 
         public bool isBasicAttack;
         public bool needPositionToMidToEntity;
+        public bool castByPassive;
     }
 
     public class Spell
@@ -63,6 +62,8 @@ namespace Games.Global.Spells
 
         public bool deactivatePassiveWhenActive;
         public bool isOnCooldown;
+
+        public int nbUse = -1;
 
         // Active:
         public SpellComponent activeSpellComponent;

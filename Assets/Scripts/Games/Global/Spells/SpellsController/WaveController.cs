@@ -127,6 +127,7 @@ namespace Games.Global.Spells.SpellsController
         
         private static void EndArea(Entity entity, WaveSpell waveSpell)
         {
+            waveSpell.objectPooled.transform.localScale = Vector3.one;
             waveSpell.objectPooled.SetActive(false);
             
             if (waveSpell.currentCoroutine != null)

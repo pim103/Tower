@@ -33,7 +33,8 @@ namespace Games.Global.Spells.SpellsController
                 linkedSpellOnDisable = origin.linkedSpellOnDisable,
                 linkedSpellOnEnable = origin.linkedSpellOnEnable,
                 OriginalDirection = origin.OriginalDirection,
-                OriginalPosition = origin.OriginalPosition
+                OriginalPosition = origin.OriginalPosition,
+                needPositionToMidToEntity = origin.needPositionToMidToEntity
             };
 
             return cloneProjectileSpell;
@@ -82,6 +83,7 @@ namespace Games.Global.Spells.SpellsController
             prefabWanted.transform.parent = genericSpellPrefab.transform;
             prefabWanted.transform.localPosition = Vector3.zero;
             prefabWanted.transform.localEulerAngles = Vector3.zero;
+            prefabWanted.transform.localScale = Vector3.one;
 
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
             spellPrefabController.SetValues(entity, projectileSpell);
@@ -205,6 +207,7 @@ namespace Games.Global.Spells.SpellsController
                     projectileSpell.objectPooled.transform.position, entity);
             }
 
+            projectileSpell.objectPooled.transform.localScale = Vector3.one / 10;
             projectileSpell.objectPooled.SetActive(false);
             projectileSpell.prefabPooled.SetActive(false);
 

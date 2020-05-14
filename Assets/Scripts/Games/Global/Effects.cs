@@ -65,7 +65,7 @@ namespace Games.Global
         ReduceCd1,
         ReduceCd2,
         ReduceCd3,
-        DesactivePassive,
+        DeactivatePassive,
         Redirection
     }
 
@@ -222,6 +222,9 @@ namespace Games.Global
                     break;
                 case TypeEffect.Redirection:
                     entity.hasRedirection = true;
+                    break;
+                case TypeEffect.DeactivatePassive:
+                    entity.hasPassiveDeactivate = true;
                     break;
             }
         }
@@ -431,6 +434,9 @@ namespace Games.Global
                     break;
                 case TypeEffect.Redirection:
                     entity.hasRedirection = false;
+                    break;
+                case TypeEffect.DeactivatePassive:
+                    entity.hasPassiveDeactivate = false;
                     break;
             }
         }

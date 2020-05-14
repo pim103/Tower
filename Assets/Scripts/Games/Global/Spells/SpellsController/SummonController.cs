@@ -42,6 +42,7 @@ namespace Games.Global.Spells.SpellsController
                 OriginalPosition = origin.OriginalPosition,
                 initialRotation = origin.initialRotation,
                 trajectoryNormalized = origin.trajectoryNormalized,
+                AttackBehaviorType = origin.AttackBehaviorType,
             };
             return cloneSummonSpell;
         }

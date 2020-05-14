@@ -43,6 +43,7 @@ namespace Games.Global.Spells.SpellsController
                 startPosition = origin.startPosition,
                 initialRotation = origin.initialRotation,
                 trajectoryNormalized = origin.trajectoryNormalized,
+                castByPassive = origin.castByPassive
             };
 
             return clone;
@@ -62,6 +63,11 @@ namespace Games.Global.Spells.SpellsController
 
             while (duration > 0)
             {
+                if (entity.hasPassiveDeactivate && buffSpell.castByPassive)
+                {
+                    continue;
+                }
+
                 yield return new WaitForSeconds(buffSpell.interval);
                 duration -= buffSpell.interval;
 

@@ -11,8 +11,7 @@ using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions.Comparers;
-using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace Games.Global
@@ -171,9 +170,8 @@ namespace Games.Global
                 case AttackBehaviorType.AllSpellsIFirst:
                     foreach (Spell spell in entity.spells)
                     {
-                        if (!spell.isOnCooldown)
+                        if (SpellController.CastSpell(entity, spell, transform.position, target))
                         {
-                            SpellController.CastSpell(entity, spell, transform.position, target);
                             return true;
                         }
                     }

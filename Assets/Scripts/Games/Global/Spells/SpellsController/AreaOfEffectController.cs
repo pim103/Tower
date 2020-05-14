@@ -47,7 +47,7 @@ namespace Games.Global.Spells.SpellsController
                 linkedSpellOnEnd = origin.linkedSpellOnEnd,
                 linkedSpellOnInterval = origin.linkedSpellOnInterval,
                 appliesPlayerOnHitEffect = origin.appliesPlayerOnHitEffect,
-                damagesOnEnemiesOnInterval = origin.damagesOnAlliesOnInterval,
+                damagesOnEnemiesOnInterval = origin.damagesOnEnemiesOnInterval,
                 effectOnHitOnStart = origin.effectOnHitOnStart,
                 effectsOnAlliesOnInterval = origin.effectsOnAlliesOnInterval,
                 effectsOnEnemiesOnInterval = origin.effectsOnEnemiesOnInterval,
@@ -57,7 +57,7 @@ namespace Games.Global.Spells.SpellsController
                 OriginalPosition = OriginalPosition.Caster,
                 OriginalDirection = OriginalDirection.Forward,
                 initialRotation = origin.initialRotation,
-                trajectoryNormalized = origin.trajectoryNormalized,
+                trajectoryNormalized = origin.trajectoryNormalized
             };
 
             return cloneAreaOfEffectSpell;
@@ -414,6 +414,7 @@ namespace Games.Global.Spells.SpellsController
                 SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition, entity);
             }
 
+            areaOfEffectSpell.objectPooled.transform.localScale = Vector3.one;
             areaOfEffectSpell.objectPooled.transform.parent = parent;
             areaOfEffectSpell.objectPooled.SetActive(false);
             

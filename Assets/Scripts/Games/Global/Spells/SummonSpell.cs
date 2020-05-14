@@ -23,6 +23,7 @@ namespace Games.Global.Spells
         public int nbUseSpells;
 
         public BehaviorType BehaviorType;
+        public AttackBehaviorType AttackBehaviorType;
 
         // Destroy other invocation of same type
         public bool isUnique;

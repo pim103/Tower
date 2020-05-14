@@ -6,11 +6,11 @@
         {
             typeSpell = TypeSpell.Passive;
         }
-        
+
         public float interval;
         public SpellComponent linkedEffectOnInterval;
 
         public SpellComponent permanentLinkedEffect;
-        public SpellComponent newDefensiveSpell;
+        public Spell newDefensiveSpell;
     }
 }
