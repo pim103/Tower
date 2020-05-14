@@ -2,6 +2,7 @@
 using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Armors;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
 using Networking.Client;
@@ -145,14 +146,7 @@ namespace Games.Players
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
 
-//            Effect effect = new Effect { typeEffect = TypeEffect.Link, level = 1, launcher = this, durationInSeconds = 5};
-//            damageDealExtraEffect.Add(effect);
-
-//            Effect effect = new Effect { typeEffect = TypeEffect.Expulsion, level = 1, launcher = this, directionExpul = DirectionExpulsion.Out, originExpulsion = OriginExpulsion.SrcDamage};
-//            damageDealExtraEffect.Add(effect);
-
-//            Effect effect = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, durationInSeconds = 5};
-//            EffectController.ApplyEffect(this, effect);
+            SpellController.CastPassiveSpell(this);
         }
 
         private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)

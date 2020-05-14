@@ -65,6 +65,8 @@ namespace Games.Global.Spells
                 SpellController.CastSpellComponent(summon, linkedSpellOnEnable, selfGameObject.transform.position, summon);
             }
 
+            SpellController.CastPassiveSpell(entity);
+
             DataObject.invocationsInScene.Add(summon);
         }
 

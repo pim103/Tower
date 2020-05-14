@@ -49,7 +49,6 @@ namespace Games.Global
         Untargetable,
         Heal,
         ResourceFill,
-
         DisableBasicAttack,
         LifeSteal,
         Taunt,
@@ -57,7 +56,6 @@ namespace Games.Global
         UnkillableByBleeding,
         Invisibility,
         Link,
-
         LifeLink,
         RefreshCd1,
         RefreshCd2,
@@ -65,6 +63,7 @@ namespace Games.Global
         ReduceCd1,
         ReduceCd2,
         ReduceCd3,
+        CanRecast,
         DeactivatePassive,
         Redirection
     }
@@ -225,6 +224,12 @@ namespace Games.Global
                     break;
                 case TypeEffect.DeactivatePassive:
                     entity.hasPassiveDeactivate = true;
+                    break;
+                case TypeEffect.CanRecast:
+                    entity.canRecast = true;
+                    break;
+                case TypeEffect.LifeLink:
+                    entity.hasLifeLink = true;
                     break;
             }
         }
@@ -438,6 +443,12 @@ namespace Games.Global
                 case TypeEffect.DeactivatePassive:
                     entity.hasPassiveDeactivate = false;
                     break;
+                case TypeEffect.CanRecast:
+                    entity.canRecast = false;
+                    break;
+                case TypeEffect.LifeLink:
+                    entity.hasLifeLink = false;
+                    break;
             }
         }
 
@@ -509,6 +520,8 @@ namespace Games.Global
                 case TypeEffect.Invisibility:
                 case TypeEffect.Link:
                 case TypeEffect.Redirection:
+                case TypeEffect.DeactivatePassive:
+                case TypeEffect.CanRecast:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
                         durationInSeconds = newEffect.durationInSeconds;

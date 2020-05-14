@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global.Abilities;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using UnityEngine;
 
@@ -58,6 +59,8 @@ namespace Games.Global.Entities
 
                 return true;
             }
+
+            SpellController.CastPassiveSpell(this);
 
             return false;
         }

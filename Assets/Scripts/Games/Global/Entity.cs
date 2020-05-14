@@ -158,6 +158,8 @@ namespace Games.Global
         public bool isLinked = false;
         public bool hasRedirection = false;
         public bool hasPassiveDeactivate = false;
+        public bool canRecast = false;
+        public bool hasLifeLink = false;
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
@@ -200,6 +202,19 @@ namespace Games.Global
                 ))
             {
                 damageReceived = initialDamage;
+            }
+
+            if (originDamage.hasLifeLink)
+            {
+                if (originDamage.isSummon)
+                {
+                    GenericSummonSpell genericSummonSpell = (GenericSummonSpell) originDamage.entityPrefab;
+                    genericSummonSpell.summoner.hp =
+                        genericSummonSpell.summoner.hp + (damageReceived * 0.25f) <=
+                        genericSummonSpell.summoner.initialHp
+                            ? genericSummonSpell.summoner.hp + (damageReceived * 0.25f)
+                            : genericSummonSpell.summoner.initialHp;
+                }
             }
 
             if (originDamage.hasLifeSteal)

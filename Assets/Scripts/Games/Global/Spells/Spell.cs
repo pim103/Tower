@@ -28,13 +28,6 @@ namespace Games.Global.Spells
         Physical
     }
 
-    public enum PositionToStartSpell
-    {
-        Himself,
-        DynamicPosition,
-        AlreadySet
-    }
-
     public abstract class SpellComponent
     {
         public TypeSpell typeSpell;
@@ -65,6 +58,9 @@ namespace Games.Global.Spells
 
         public int nbUse = -1;
 
+        public bool canCastDuringCast = false;
+        public bool wantToCastDuringCast = false;
+
         // Active:
         public SpellComponent activeSpellComponent;
 
@@ -73,8 +69,11 @@ namespace Games.Global.Spells
 
         // DuringCast:
         public SpellComponent duringCastSpellComponent;
+        public bool interruptCurrentCast;
 
-        //Recast - InterruptCast
+        //Recast
         public SpellComponent recastSpellComponent;
+        public bool canRecast;
+        public bool alreadyRecast;
     }
 }

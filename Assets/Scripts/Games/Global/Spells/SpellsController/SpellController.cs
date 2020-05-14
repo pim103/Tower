@@ -32,8 +32,6 @@ namespace Games.Global.Spells.SpellsController
 
         public static SpellController instance;
 
-        public static Spell sp = null;
-
         private void Start()
         {
             instance = this;
@@ -73,6 +71,15 @@ namespace Games.Global.Spells.SpellsController
                 }
 
                 spell.isOnCooldown = true;
+                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
+            }
+            else if (spell.canCastDuringCast)
+            {
+                spell.wantToCastDuringCast = true;
+            }
+            else if (spell.canRecast && !spell.alreadyRecast && entity.canRecast)
+            {
+                spell.alreadyRecast = true;
                 instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
             }
             else
@@ -165,16 +172,34 @@ namespace Games.Global.Spells.SpellsController
         {
             yield return new WaitForSeconds(spell.cooldown);
             spell.isOnCooldown = false;
+            spell.alreadyRecast = false;
         }
 
         public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
             float duration = spell.castTime;
 
+            if (spell.duringCastSpellComponent != null)
+            {
+                spell.canCastDuringCast = true;
+            }
+
             while (duration > 0)
             {
                 yield return new WaitForSeconds(0.1f);
                 duration -= 0.1f;
+
+                if (spell.wantToCastDuringCast)
+                {
+                    spell.wantToCastDuringCast = false;
+                    spell.canCastDuringCast = false;
+                    
+                    CastSpellComponent(entity, spell.duringCastSpellComponent, startPosition, target);
+                    if (spell.interruptCurrentCast)
+                    {
+                        yield break;
+                    }
+                }
             }
 
             if (spell.activeSpellComponent == null)
@@ -184,6 +209,17 @@ namespace Games.Global.Spells.SpellsController
 
             instance.StartCoroutine(StartCooldown(entity, spell));
             CastSpellComponent(entity, spell.activeSpellComponent, startPosition, target);
+        }
+
+        public static void CastPassiveSpell(Entity entity)
+        {
+            foreach (Spell spell in entity.spells)
+            {
+                if (spell.passiveSpellComponent != null)
+                {
+                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.positionPointed, entity.entityPrefab.target);
+                }
+            }
         }
     }
 }
