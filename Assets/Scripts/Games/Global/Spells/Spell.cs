@@ -49,6 +49,7 @@ namespace Games.Global.Spells
 
     public class Spell
     {
+        public float initialCooldown;
         public float cooldown;
         public float cost;
         public float castTime;

@@ -231,6 +231,48 @@ namespace Games.Global
                 case TypeEffect.LifeLink:
                     entity.hasLifeLink = true;
                     break;
+                case TypeEffect.RefreshCd1:
+                    if (entity.spells.Count > 0)
+                    {
+                        entity.spells[0].isOnCooldown = false;
+                        entity.spells[0].alreadyRecast = false;
+                    }
+                    break;
+                case TypeEffect.RefreshCd2:
+                    if (entity.spells.Count > 1)
+                    {
+                        entity.spells[1].isOnCooldown = false;
+                        entity.spells[1].alreadyRecast = false;
+                    }
+                    break;
+                case TypeEffect.RefreshCd3:
+                    if (entity.spells.Count > 2)
+                    {
+                        entity.spells[2].isOnCooldown = false;
+                        entity.spells[2].alreadyRecast = false;
+                    }
+                    break;
+                case TypeEffect.ReduceCd1:
+                    if (entity.spells.Count > 0)
+                    {
+                        entity.spells[0].initialCooldown = entity.spells[0].cooldown;
+                        entity.spells[0].cooldown = level;
+                    }
+                    break;
+                case TypeEffect.ReduceCd2:
+                    if (entity.spells.Count > 1)
+                    {
+                        entity.spells[1].initialCooldown = entity.spells[1].cooldown;
+                        entity.spells[1].cooldown = level;
+                    }
+                    break;
+                case TypeEffect.ReduceCd3:
+                    if (entity.spells.Count > 2)
+                    {
+                        entity.spells[2].initialCooldown = entity.spells[2].cooldown;
+                        entity.spells[2].cooldown = level;
+                    }
+                    break;
             }
         }
 
@@ -449,6 +491,24 @@ namespace Games.Global
                 case TypeEffect.LifeLink:
                     entity.hasLifeLink = false;
                     break;
+                case TypeEffect.ReduceCd1:
+                    if (entity.spells.Count > 0)
+                    {
+                        entity.spells[0].cooldown = entity.spells[0].initialCooldown;
+                    }
+                    break;
+                case TypeEffect.ReduceCd2:
+                    if (entity.spells.Count > 1)
+                    {
+                        entity.spells[1].cooldown = entity.spells[1].initialCooldown;
+                    }
+                    break;
+                case TypeEffect.ReduceCd3:
+                    if (entity.spells.Count > 2)
+                    {
+                        entity.spells[2].cooldown = entity.spells[2].initialCooldown;
+                    }
+                    break;
             }
         }
 
@@ -522,6 +582,9 @@ namespace Games.Global
                 case TypeEffect.Redirection:
                 case TypeEffect.DeactivatePassive:
                 case TypeEffect.CanRecast:
+                case TypeEffect.ReduceCd1:
+                case TypeEffect.ReduceCd2:
+                case TypeEffect.ReduceCd3:
                     if (durationInSeconds < newEffect.durationInSeconds)
                     {
                         durationInSeconds = newEffect.durationInSeconds;
