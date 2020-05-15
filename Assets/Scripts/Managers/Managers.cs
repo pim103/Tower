@@ -10,12 +10,11 @@ public class Managers : MonoBehaviour
     {
         if (instance != null)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            Destroy(Managers.instance.gameObject);
         }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 }
