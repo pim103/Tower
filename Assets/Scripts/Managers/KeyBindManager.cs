@@ -72,14 +72,14 @@ public class KeyBindManager : MonoBehaviour
             {
                 switch (e.button)
                 {
-                    case 0:
-                        keys[currentKey.name] = KeyCode.Mouse0;
-                        currentKey.transform.GetChild(0).GetComponent<Text>().text = KeyCode.Mouse0.ToString();
-                        break;
-                    case 1:
-                        keys[currentKey.name] = KeyCode.Mouse1;
-                        currentKey.transform.GetChild(0).GetComponent<Text>().text = KeyCode.Mouse1.ToString();
-                        break;
+                case 0:
+                    keys[currentKey.name] = KeyCode.Mouse0;
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = KeyCode.Mouse0.ToString();
+                    break;
+                case 1:
+                    keys[currentKey.name] = KeyCode.Mouse1;
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = KeyCode.Mouse1.ToString();
+                    break;
                 }
 
                 currentKey.GetComponent<Image>().color = normal;
