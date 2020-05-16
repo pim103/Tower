@@ -49,7 +49,7 @@ namespace Menus
             form.AddField("accountEmail", loginField.text);
             form.AddField("accountPassword", passwordField.text);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/logging.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.HttpsEndpoint + "/services/account/logging.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

@@ -23,31 +23,18 @@ namespace Networking.Client
     public static class TowersWebSocket
 
     {
-        // Start is called before the first frame update
-        public static string END_POINT_GAME;
-        public static string END_POINT_CHAT;
         public static WebSocket wsGame;
         public static WebSocket wsChat;
-        //private CanStartHandler testMessage = null;
 
         static TowersWebSocket()
         {
-            if (NetworkingController.Environnement == "PROD")
-            {
-                END_POINT_GAME = "wss://towers.heolia.eu/websocket";
-                END_POINT_CHAT = "wss://towers.heolia.eu/chat";
-            }
-            else if (NetworkingController.Environnement == "LOCAL")
-            {
-                END_POINT_GAME = "ws://localhost:8081";
-                END_POINT_CHAT = "ws://localhost:8082";
-            }
+
         }
 
         public static void InitializeWebsocketEndpoint()
         {
-            wsGame = new WebSocket(END_POINT_GAME);
-            wsChat = new WebSocket(END_POINT_CHAT);
+            wsGame = new WebSocket(NetworkingController.WebSocketEndpointRooms);
+            wsChat = new WebSocket(NetworkingController.WebSocketEndpointChat);
         }
 
         public static void TowerSender(string target, string roomId, string rawKey = null, string rawData = null)
@@ -57,8 +44,7 @@ namespace Networking.Client
             json += "\"_ROOMID\":" + "\"" + roomId + "\",";
             json += "\""+ rawKey + "\":" + "\"" + rawData + "\"";
             json += "}";
-
-            //Debug.Log(json);
+            
             wsGame.Send(json);
         }
         

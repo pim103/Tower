@@ -38,6 +38,7 @@ namespace Menus
             ActivateMenu(Menu.Connection);
             NetworkingController.CurrentRoomToken = staticRoomId;
             NetworkingController.Environnement = environnement;
+            NetworkingController.SetEnvironement();
         }
 
         public void ActivateMenu(Menu menuIndex)

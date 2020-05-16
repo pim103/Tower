@@ -96,7 +96,11 @@ namespace Menus
 
         IEnumerator LoadJsonRoom()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            
+            WWWForm form = new WWWForm();
+            form.AddField("searchForRanked", 0);
+            form.AddField("gameToken", NetworkingController.GameToken);
+            var www = UnityWebRequest.Post(NetworkingController.HttpsEndpoint + "/services/room/list.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -112,6 +116,10 @@ namespace Menus
                     roomListing.SetRoomInfo(room);
                     Debug.Log(roomListing.RoomInfo.mode);
                 }
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }
