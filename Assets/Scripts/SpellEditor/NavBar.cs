@@ -14,6 +14,8 @@ namespace SpellEditor
     
     public class NavBar : MonoBehaviour
     {
+        [SerializeField] private SpellPanel spellPanelScript;
+        
         [SerializeField] private Button createSpellButton;
         [SerializeField] private Button createSpellComponentButton;
         [SerializeField] private Button createSpellEffectButton;
@@ -45,6 +47,7 @@ namespace SpellEditor
                     effectPanel.SetActive(true);
                     break;
                 case Panel.Spell:
+                    spellPanelScript.InitSpellPanel();
                     spellPanel.SetActive(true);
                     break;
                 case Panel.SpellComponent:

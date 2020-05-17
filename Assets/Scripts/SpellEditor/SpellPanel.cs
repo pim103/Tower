@@ -32,12 +32,22 @@ namespace SpellEditor
         void Start()
         {
             save.onClick.AddListener(SaveCurrentPanel);
+        }
 
+        public void InitSpellPanel()
+        {
             List<string> listNames = ListCreatedElement.SpellComponents.Keys.ToList();
 
+            activeSpellComponent.options.Clear();
             activeSpellComponent.AddOptions(listNames);
+            
+            passiveSpellComponent.options.Clear();
             passiveSpellComponent.AddOptions(listNames);
+            
+            duringSpellComponent.options.Clear();
             duringSpellComponent.AddOptions(listNames);
+            
+            recastSpellComponent.options.Clear();
             recastSpellComponent.AddOptions(listNames);
         }
         

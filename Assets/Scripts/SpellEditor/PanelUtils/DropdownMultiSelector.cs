@@ -19,7 +19,7 @@ namespace SpellEditor.PanelUtils
         [SerializeField] private Dropdown dropdown;
         [SerializeField] private SelectedObject selectedObject;
 
-        private List<string> selectedIndex;
+        public List<string> selectedIndex;
 
         private Texture2D selectColor;
         private Texture2D initialColor;
@@ -61,13 +61,11 @@ namespace SpellEditor.PanelUtils
 
             if (selectedIndex.Contains(value))
             {
-                Debug.Log("unselect");
                 selectedIndex.Remove(value);
                 dropdown.options[newIndex].image = Sprite.Create(initialColor, rect, Vector2.zero);
             }
             else
             {
-                Debug.Log("select");
                 selectedIndex.Add(value);
                 dropdown.options[newIndex].image = Sprite.Create(selectColor, rect, Vector2.zero);
             }
@@ -78,29 +76,28 @@ namespace SpellEditor.PanelUtils
         public void InitDropdownMultiSelect()
         {
             selectedIndex = new List<string>();
-            List<string> listNames = null;
+            List<string> listNames = new List<string>();
             dropdown.options.Clear();
+
+            listNames.Add("Choose your " + selectedObject);
 
             switch (selectedObject)
             {
                 case SelectedObject.Effect:
-                    listNames = ListCreatedElement.Effects.Keys.ToList();
+                    listNames.AddRange(ListCreatedElement.Effects.Keys.ToList());
                     Debug.Log(listNames);
                     break;
                 case SelectedObject.Spell:
-                    listNames = ListCreatedElement.Spell.Keys.ToList();
+                    listNames.AddRange(ListCreatedElement.Spell.Keys.ToList());
                     break;
                 case SelectedObject.SpellComponent:
-                    listNames = ListCreatedElement.SpellComponents.Keys.ToList();
+                    listNames.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
                     break;
                 case SelectedObject.SpellWithCondition:
                     break;
             }
 
-            if (listNames != null)
-            {
-                dropdown.AddOptions(listNames);
-            }
+            dropdown.AddOptions(listNames);
         }
     }
 }

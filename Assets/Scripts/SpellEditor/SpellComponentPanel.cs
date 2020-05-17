@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
@@ -106,11 +107,56 @@ namespace SpellEditor
 
         public void SaveCurrentPanel()
         {
+            SpellComponent spellComponentToSave = null;
+
+            if (nameSpellComponent.text == "")
+            {
+                return;
+            }
+
+            switch ((TypeSpell) typeSpell.value)
+            {
+                case TypeSpell.Buff:
+                    break;
+                case TypeSpell.Movement:
+                    break;
+                case TypeSpell.Passive:
+                    break;
+                case TypeSpell.Projectile:
+                    spellComponentToSave = projectilePanel.SaveProjectile();
+                    break;
+                case TypeSpell.Summon:
+                    break;
+                case TypeSpell.Transformation:
+                    break;
+                case TypeSpell.Wave:
+                    break;
+                case TypeSpell.AreaOfEffect:
+                    break;
+            }
+
+            if (spellComponentToSave == null)
+            {
+                return;
+            }
+
+            spellComponentToSave.damageType = (DamageType) typeDamage.value;
+            spellComponentToSave.typeSpell = (TypeSpell) typeSpell.value;
+            spellComponentToSave.OriginalDirection = (OriginalDirection) direction.value;
+            spellComponentToSave.OriginalPosition = (OriginalPosition) position.value;
+
+            spellComponentToSave.isBasicAttack = isBasicAttack.isOn;
+            spellComponentToSave.needPositionToMidToEntity = positionMidEntity.isOn;
+            spellComponentToSave.castByPassive = castByPassive.isOn;
+
+            ListCreatedElement.SpellComponents.Add(nameSpellComponent.text, spellComponentToSave);
+
             ResetCurrentSpellComponent();
         }
 
-        public void ResetCurrentSpellComponent()
+        private void ResetCurrentSpellComponent()
         {
+            nameSpellComponent.text = "";
             typeDamage.value = 0;
             typeSpell.value = 0;
             position.value = 0;
