@@ -18,10 +18,13 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     [SerializeField] private Text price;
 
+    public GameObject ConfirmePurchasePanel;
     public GameObject ConfirmationPurchasePanel;
     public GameObject ErrorPurchasePanel;
 
     private ShopItem shopItem;
+
+    private static ShopItem currentShopItem;
 
     public void AddItem(ShopItem shopItem)
     {
@@ -50,7 +53,12 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // Check if user have the money
         if (AccountManager.MyInstance.AccountMoney  >= shopItem.Price)
         {
-            Buy();
+            currentShopItem = shopItem;
+
+            if (ConfirmePurchasePanel != null)
+            {
+                ConfirmePurchasePanel.SetActive(true);
+            }
         }
         else
         {
@@ -74,10 +82,10 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     /// <summary>
     /// User buy something
     /// </summary>
-    private void Buy()
+    public void Buy()
     {
         // Remove the money from the user account
-        AccountManager.MyInstance.AccountMoney -= shopItem.Price;
+        AccountManager.MyInstance.AccountMoney -= currentShopItem.Price;
 
         if (ConfirmationPurchasePanel != null)
         {
@@ -85,9 +93,9 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
         // Add the item to the user account
-        for (int i = 0; i < shopItem.Amount; i++)
+        for (int i = 0; i < currentShopItem.Amount; i++)
         {
-            AccountManager.MyInstance.AddResource(shopItem.Resource.ID);
-        }  
+            AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);
+        }
     }
 }

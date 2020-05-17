@@ -34,7 +34,7 @@ public class ShopWindow : MonoBehaviour
         {
             page.Add(items[i]);
 
-            if (page.Count == 10 || i == items.Length - 1)
+            if (page.Count == 12 || i == items.Length - 1)
             {
                 pages.Add(page);
                 page = new List<ShopItem>();
