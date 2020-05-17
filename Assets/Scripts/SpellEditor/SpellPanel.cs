@@ -100,6 +100,7 @@ namespace SpellEditor
 
         public void ResetCurrentSpell()
         {
+            nameSpell.text = "";
             cooldown.text = "";
             cost.text = "";
             castTime.text = "";

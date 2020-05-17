@@ -29,6 +29,7 @@ namespace SpellEditor
         private Dictionary<string, GameObject> panels;
 
         [SerializeField] private ProjectilePanel projectilePanel;
+        [SerializeField] private PassivePanel passivePanel;
 
         // Start is called before the first frame update
         void Start()
@@ -85,6 +86,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.Passive:
                     panels["PassivePanel"].SetActive(true);
+                    passivePanel.InitPassivePanel();
                     break;
                 case TypeSpell.Projectile:
                     panels["ProjectilePanel"].SetActive(true);
@@ -121,6 +123,7 @@ namespace SpellEditor
                 case TypeSpell.Movement:
                     break;
                 case TypeSpell.Passive:
+                    spellComponentToSave = passivePanel.SavePassive();
                     break;
                 case TypeSpell.Projectile:
                     spellComponentToSave = projectilePanel.SaveProjectile();
