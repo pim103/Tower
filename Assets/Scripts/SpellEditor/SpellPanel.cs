@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +32,13 @@ namespace SpellEditor
         void Start()
         {
             save.onClick.AddListener(SaveCurrentPanel);
+
+            List<string> listNames = ListCreatedElement.SpellComponents.Keys.ToList();
+
+            activeSpellComponent.AddOptions(listNames);
+            passiveSpellComponent.AddOptions(listNames);
+            duringSpellComponent.AddOptions(listNames);
+            recastSpellComponent.AddOptions(listNames);
         }
         
         public void SaveCurrentPanel()
