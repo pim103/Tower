@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
+using SpellEditor.ComponentPanel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,8 @@ namespace SpellEditor
         [SerializeField] private GameObject[] panelsTypeSpell;
 
         private Dictionary<string, GameObject> panels;
+
+        [SerializeField] private ProjectilePanel projectilePanel;
 
         // Start is called before the first frame update
         void Start()
@@ -84,6 +87,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.Projectile:
                     panels["ProjectilePanel"].SetActive(true);
+                    projectilePanel.InitProjectilePanel();
                     break;
                 case TypeSpell.Summon:
                     panels["SummonPanel"].SetActive(true);
