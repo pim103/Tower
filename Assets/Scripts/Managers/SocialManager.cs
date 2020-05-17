@@ -16,6 +16,9 @@ public class SocialManager : MonoBehaviour
     public GameObject SocialPanel;
     public GameObject SocialBoxContent;
     public GameObject usernameObject;
+    public GameObject AddSocialPanel;
+    public InputField AddSocialPanelInput;
+    public ChatBoxManager chatBoxManager;
 
     [Header("Social list")]
     [SerializeField] List<Social> socialList = new List<Social>();
@@ -23,8 +26,8 @@ public class SocialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateSocialPanel("Benoît");
-        UpdateSocialPanel("Medhi");
+        UpdateSocialPanel("Pytchoun");
+        UpdateSocialPanel("Kaze");
     }
 
     // Update is called once per frame
@@ -62,6 +65,47 @@ public class SocialManager : MonoBehaviour
         newSocial.usernameObject.text = newSocial.username;
 
         socialList.Add(newSocial);
+    }
+
+    /// <summary>
+    /// Toggle Add Social Panel
+    /// </summary>
+    public void ToggleAddSocialPanel()
+    {
+        if (AddSocialPanel != null)
+        {
+            bool isActive = AddSocialPanel.activeSelf;
+
+            AddSocialPanel.SetActive(!isActive);
+        }
+    }
+
+    /// <summary>
+    /// Add a friend
+    /// </summary>
+    public void AddAFriend()
+    {
+        // Check if input isn't empty
+        if (!string.IsNullOrWhiteSpace(AddSocialPanelInput.text))
+        {
+            // Check if user exist
+            if (true)
+            {
+                // Add the user as a friend
+                Debug.Log("Ajout de l'ami.");
+
+                // Send a confirmation message
+                chatBoxManager.SendMessageToChat("L'utilisateur a été ajouté à votre liste d'ami.", Message.MessageType.server);
+            }
+            else
+            {
+                // Send an error message
+                chatBoxManager.SendMessageToChat("Le destinataire est introuvable.", Message.MessageType.server);
+            }
+
+            // Clean the input field
+            AddSocialPanelInput.text = "";
+        }
     }
 }
 

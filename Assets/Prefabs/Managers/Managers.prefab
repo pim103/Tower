@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6910383223021829936}
+  - component: {fileID: 1538145296994011809}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -37,6 +38,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1538145296994011809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910383223021829937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58eed7cdbd2a1e34ab0a8f10ebca2e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &762949943626185581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,6 +155,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 762949943626185581}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &185928351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 762949943708824050, guid: 19b1caccb5d0b4540a02e338f016cfbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 762949943626185581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9804790bd94c4419934100b2bc5927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1417554574228330991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,6 +240,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8276393206626226447, guid: e2e3b51b6f47304419a7e4d0ffd0e9e8,
         type: 3}
+    - target: {fileID: 3253404819822347802, guid: a2bd6da1f02cec54c96bdd619c7ca68d,
+        type: 3}
+      propertyPath: chatBoxManager
+      value: 
+      objectReference: {fileID: 185928351}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2bd6da1f02cec54c96bdd619c7ca68d, type: 3}
 --- !u!4 &7083078064076095875 stripped
@@ -439,6 +469,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2085594977380773769, guid: 00d8b620b1df08645b754a815dd18a6e,
+        type: 3}
+      propertyPath: AccountMoney
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00d8b620b1df08645b754a815dd18a6e, type: 3}
