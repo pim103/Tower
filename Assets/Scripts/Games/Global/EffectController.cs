@@ -58,7 +58,7 @@ namespace Games.Global
                 return;
             }
 
-            if (effect.durationInSeconds <= -1.00001)
+            if (effect.durationInSeconds <= -0.9999)
             {
                 entity.underEffects.Add(effect.typeEffect, effect);
                 return;
