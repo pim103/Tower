@@ -19,17 +19,21 @@ namespace SpellEditor.PanelUtils
         [SerializeField] private Dropdown dropdown;
         [SerializeField] private SelectedObject selectedObject;
 
-        private List<int> selectedIndex;
+        private List<string> selectedIndex;
 
         private Texture2D selectColor;
         private Texture2D initialColor;
         private Rect rect;
 
+        [SerializeField] private Button showSelected;
+        [SerializeField] private GameObject panelSelected;
+        [SerializeField] private ShowPanel showPanel;
+        
         private void Start()
-        {
-            selectedIndex = new List<int>();
-            
+        {   
             dropdown.onValueChanged.AddListener(SelectValue);
+            showSelected.onClick.AddListener(ShowPanel);
+            
             initialColor = new Texture2D(1, 1);
             initialColor.SetPixel(0, 0, Color.white);
             initialColor.Apply();
@@ -40,6 +44,12 @@ namespace SpellEditor.PanelUtils
             rect = new Rect(0,0, 1,1);
         }
 
+        private void ShowPanel()
+        {
+            panelSelected.SetActive(true);
+            showPanel.FillData(selectedIndex);
+        }
+        
         private void SelectValue(int newIndex)
         {
             if (newIndex == 0)
@@ -47,16 +57,18 @@ namespace SpellEditor.PanelUtils
                 return;
             }
 
-            if (selectedIndex.Contains(newIndex))
+            string value = dropdown.options[newIndex].text;
+
+            if (selectedIndex.Contains(value))
             {
                 Debug.Log("unselect");
-                selectedIndex.Remove(newIndex);
+                selectedIndex.Remove(value);
                 dropdown.options[newIndex].image = Sprite.Create(initialColor, rect, Vector2.zero);
             }
             else
             {
                 Debug.Log("select");
-                selectedIndex.Add(newIndex);
+                selectedIndex.Add(value);
                 dropdown.options[newIndex].image = Sprite.Create(selectColor, rect, Vector2.zero);
             }
 
@@ -65,7 +77,9 @@ namespace SpellEditor.PanelUtils
 
         public void InitDropdownMultiSelect()
         {
+            selectedIndex = new List<string>();
             List<string> listNames = null;
+            dropdown.options.Clear();
 
             switch (selectedObject)
             {
@@ -80,7 +94,6 @@ namespace SpellEditor.PanelUtils
                     listNames = ListCreatedElement.SpellComponents.Keys.ToList();
                     break;
                 case SelectedObject.SpellWithCondition:
-//                    listNames = ListCreatedElement.SpellComponents.Keys.ToList();
                     break;
             }
 
