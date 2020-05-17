@@ -36,7 +36,9 @@ namespace SpellEditor
 
         public void InitSpellPanel()
         {
-            List<string> listNames = ListCreatedElement.SpellComponents.Keys.ToList();
+            List<string> listNames = new List<string>();
+            listNames.Add("None");
+            listNames.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
 
             activeSpellComponent.options.Clear();
             activeSpellComponent.AddOptions(listNames);

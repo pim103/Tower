@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using FullSerializer;
+using Games.Global.Spells;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +19,7 @@ namespace SpellEditor
     public class NavBar : MonoBehaviour
     {
         [SerializeField] private SpellPanel spellPanelScript;
+        [SerializeField] private Button exportSpells;
         
         [SerializeField] private Button createSpellButton;
         [SerializeField] private Button createSpellComponentButton;
@@ -33,6 +38,8 @@ namespace SpellEditor
             createSpellButton.onClick.AddListener(delegate { SwitchPanel(Panel.Spell); });
             createSpellComponentButton.onClick.AddListener(delegate { SwitchPanel(Panel.SpellComponent); });
             createSpellEffectButton.onClick.AddListener(delegate { SwitchPanel(Panel.Effect); });
+            
+            exportSpells.onClick.AddListener(ExportSpells);
         }
 
         private void SwitchPanel(Panel newPanel)
@@ -53,6 +60,16 @@ namespace SpellEditor
                 case Panel.SpellComponent:
                     spellComponentPanel.SetActive(true);
                     break;
+            }
+        }
+
+        private void ExportSpells()
+        {
+            foreach (KeyValuePair<string, Spell> valuePair in ListCreatedElement.Spell)
+            {
+                fsSerializer serializer = new fsSerializer();
+                serializer.TrySerialize(valuePair.Value.GetType(), valuePair.Value, out fsData data);
+                File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + valuePair.Key + ".json", fsJsonPrinter.CompressedJson(data));
             }
         }
     }
