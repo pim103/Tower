@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Games.Global.Spells
 {   
+    [Serializable]
     public class SummonSpell : SpellComponent
     {
         public SummonSpell()

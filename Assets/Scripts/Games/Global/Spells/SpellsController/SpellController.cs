@@ -213,6 +213,11 @@ namespace Games.Global.Spells.SpellsController
 
         public static void CastPassiveSpell(Entity entity)
         {
+            if (entity.spells == null)
+            {
+                return;
+            }
+
             foreach (Spell spell in entity.spells)
             {
                 if (spell.passiveSpellComponent != null)

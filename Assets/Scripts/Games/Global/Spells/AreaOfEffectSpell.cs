@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 
 namespace Games.Global.Spells
 {
+    [Serializable]
     public class AreaOfEffectSpell : SpellComponent
     {
         public AreaOfEffectSpell()

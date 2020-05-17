@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -81,6 +82,7 @@ namespace Games.Global
         In
     }
 
+    [Serializable]
     public struct Effect
     {
         public TypeEffect typeEffect;

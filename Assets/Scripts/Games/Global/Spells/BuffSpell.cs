@@ -10,6 +10,7 @@ namespace Games.Global.Spells
         OnDamageReceived
     }
     
+    [Serializable]
     public class BuffSpell : SpellComponent
     {
         public BuffSpell()

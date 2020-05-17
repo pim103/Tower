@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using FullSerializer;
 using Games;
 using Games.Global;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -39,11 +41,89 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-//            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.1f);
+            SerializedSpell();
 //            TestSpell();
 //            
-            yield return new WaitForSeconds(5f);
+//            yield return new WaitForSeconds(5f);
 //            OtherSpell();
+        }
+
+        [Serializable]
+        public class Example
+        {
+            public Example2 example;
+            public int zero;
+        }
+
+        [Serializable]
+        public class Example2
+        {
+            public int ok;
+            public string nice;
+            public Example3 ex;
+        } 
+
+        [Serializable]
+        public class Example3
+        {
+            public int encore;
+            public string stringencore;
+        }
+        
+        private void SerializedSpell()
+        {
+            SummonSpell summonSpell = new SummonSpell
+            {
+                duration = 50,
+                hp = 50,
+                attackDamage = 40,
+                attackSpeed = 1,
+                damageType = DamageType.Magical,
+                canMove = true,
+                isTargetable = true,
+                idPoolObject = 2,
+                moveSpeed = 10,
+                summonNumber = 2,
+                BehaviorType = BehaviorType.Distance,
+                isUnique = true,
+                nbUseSpells = 2,
+                AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst
+            };
+
+            Effect effect = new Effect
+            {
+                level = 2,
+                typeEffect = TypeEffect.Burn,
+                durationInSeconds = 10
+            };
+            
+            AreaOfEffectSpell area = new AreaOfEffectSpell
+            {
+                startPosition = Vector3.zero,
+                scale = Vector3.one * 20,
+                onePlay = true,
+                damagesOnEnemiesOnInterval = 30.0f,
+                geometry = Geometry.Sphere,
+                OriginalDirection = OriginalDirection.None,
+                OriginalPosition = OriginalPosition.Caster,
+                linkedSpellOnEnd = summonSpell,
+                effectOnHitOnStart = effect
+            };
+
+            Spell newSpell = new Spell
+            {
+                cost = 0,
+                cooldown = 2,
+                castTime = 0,
+                activeSpellComponent = area
+            };
+
+            fsSerializer serializer = new fsSerializer();
+            fsData data;
+            serializer.TrySerialize(newSpell.GetType(), newSpell, out data);
+            File.WriteAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json", fsJsonPrinter.CompressedJson(data));
+//            AreaOfEffectSpell newArea = JsonUtility.FromJson<AreaOfEffectSpell>(File.ReadAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json"));
         }
 
         private void OtherSpell()

@@ -1,5 +1,8 @@
-﻿namespace Games.Global.Spells
+﻿using System;
+
+namespace Games.Global.Spells
 {
+    [Serializable]
     public class PassiveSpell : SpellComponent
     {
         public PassiveSpell()

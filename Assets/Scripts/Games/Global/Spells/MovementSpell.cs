@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Games.Global.Spells
 {
@@ -10,6 +11,7 @@ namespace Games.Global.Spells
         TpWithTarget
     }
     
+    [Serializable]
     public class MovementSpell : SpellComponent
     {
         public MovementSpell()

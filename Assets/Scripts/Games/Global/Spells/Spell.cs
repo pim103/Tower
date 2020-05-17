@@ -1,4 +1,5 @@
-﻿using Games.Global.Spells.SpellsController;
+﻿using System;
+using Games.Global.Spells.SpellsController;
 using UnityEngine;
 
 namespace Games.Global.Spells
@@ -28,7 +29,8 @@ namespace Games.Global.Spells
         Physical
     }
 
-    public abstract class SpellComponent
+    [Serializable]
+    public class SpellComponent
     {
         public TypeSpell typeSpell;
         public DamageType damageType;
@@ -47,6 +49,7 @@ namespace Games.Global.Spells
         public bool castByPassive;
     }
 
+    [Serializable]
     public class Spell
     {
         public float initialCooldown;
