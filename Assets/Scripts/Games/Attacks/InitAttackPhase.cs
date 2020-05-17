@@ -217,20 +217,6 @@ namespace Games.Attacks
             }
         }
 
-        private void Update()
-        {
-            if (endOfGeneration)
-            {
-                if (DataObject.monsterInScene != null)
-                {
-                    foreach (Monster monster in DataObject.monsterInScene)
-                    {
-                        monster.BasicAttack();
-                    }   
-                }
-            }
-        }
-
         private void DesactiveDefenseMap()
         {
             if (hoverDetector.objectInHand != null)
@@ -298,7 +284,7 @@ namespace Games.Attacks
             }
             else
             {
-                string map = "GRID\":\"{-2:-3:1:1:[0,0,0,0,0];}\"}";
+                string map = "GRID\":\"{-2:-3:1:1:[0,2,0,0,0];}\"}";
                 GeneratingMap(map, GameController.PlayerIndex);
             }
 

@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Players;
+using UnityEngine;
+
 //using PA_INST = Games.Global.Patterns.PatternInstructions;
 
 namespace Games.Global.Weapons
@@ -9,76 +14,50 @@ namespace Games.Global.Weapons
     [Serializable]
     public class Sword : Weapon
     {
-        
-        
         public Sword()
         {
             animationToPlay = "ShortSwordAttack";
+
+            AreaOfEffectSpell area = new AreaOfEffectSpell
+            {
+                scale = Vector3.one * 20,
+                onePlay = true,
+                damagesOnEnemiesOnInterval = 30.0f,
+                geometry = Geometry.Sphere,
+                OriginalDirection = OriginalDirection.None,
+                OriginalPosition = OriginalPosition.Caster,
+                damageType = DamageType.Physical
+            };
+            
+//            AreaOfEffectSpell area = new AreaOfEffectSpell
+//            {
+//                damageType = DamageType.Physical,
+//                geometry = Geometry.Cone,
+//                scale = Vector3.one + Vector3.forward,
+//                onePlay = true,
+//                isBasicAttack = true,
+//                OriginalPosition = OriginalPosition.Caster,
+//                OriginalDirection = OriginalDirection.Forward,
+//                needPositionToMidToEntity = true
+//            };
+
+            basicAttack = new Spell
+            {
+                cost = 0,
+                cooldown = 0.1f,
+                castTime = 0,
+                activeSpellComponent = area
+            };
         }
 
         public override void InitPlayerSkill(Classes classe)
         {
-            base.InitPlayerSkill(classe);
-
             switch (classe)
             {
-                case Classes.Mage:
-                    break;
-                case Classes.Rogue:
-                    break;
-                case Classes.Ranger:
-                    break;
                 case Classes.Warrior:
-                    InitWarriorSpell();
+                    
                     break;
             }
-        }
-
-        private void InitWarriorSpell()
-        {   
-            SpellInstruction spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
-                specialMovement = SpecialMovement.Charge,
-                timeWait = 0,
-                durationInstruction = 3
-            };
-
-            Spell spell1 = new Spell {typeSpell = TypeSpell.Active, cooldown = 1, castTime = 0, cost = 1};
-            spell1.spellInstructions.Add(spellInstruction);
-
-            /* Spell 2 */
-
-            Effect effect = new Effect { typeEffect = TypeEffect.DefeneseUp, level = 2 };
-            
-            spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SelfEffect,
-                effect = effect,
-                timeWait = 0,
-                durationInstruction = 5
-            };
-
-            Spell spell2 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10 };
-            spell2.spellInstructions.Add(spellInstruction);
-
-            /* Spell 3 */
-
-            spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
-                timeWait = 0,
-                specialMovement = SpecialMovement.HeavyBasicAttack
-            };
-
-            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 1, cost = 1, castTime = 2};
-            spell3.spellInstructions.Add(spellInstruction);
-
-            /* Setting Spell */
-
-            skill1 = spell1;
-            skill2 = spell2;
-            skill3 = spell3;
         }
     }
 }

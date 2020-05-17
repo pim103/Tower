@@ -6,11 +6,15 @@ using System.Linq;
 using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Entities;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking.Client;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -19,40 +23,60 @@ namespace Games.Global
 {
     public enum TypeEntity
     {
-        PLAYER,
-        MOB,
-        BOSS
+        ALLIES,
+        MOB
+    }
+    
+    public enum BehaviorType
+    {
+        Player,
+        MoveOnTargetAndDie,
+        Distance,
+        Melee,
+        WithoutTarget
+    }
+    
+    public enum AttackBehaviorType {
+        Random,
+        AllSpellsIFirst
     }
 
     // Class for mobs and players
-    public abstract class Entity: ItemModel
+    public class Entity: ItemModel
     {
         public int IdEntity;
+
+        public bool isPlayer = false;
+        public bool isSummon = false;
         
         private ItemModel itemModel;
         
         private const float DEFAULT_HP = 100;
         private const int DEFAULT_DEF = 10;
-        private const int DEFAULT_ATT = 0;
-        private const int DEFAULT_SPEED = 10;
+        private const float DEFAULT_ATT = 0;
+        private const float DEFAULT_SPEED = 10;
         private const float DEFAULT_ATT_SPEED = 1;
         private const float DEFAULT_RESSOURCE = 50;
         
         private const int DEFAULT_NB_WEAPONS = 1;
 
-        public float initialHp;
+        public float initialHp = DEFAULT_HP;
         public int initialDef;
-        public int initialAtt;
-        public int initialSpeed;
+        public int initialMagicalDef;
+        public int initialPhysicalDef;
+        public float initialAtt;
+        public float initialSpeed;
         public float initialAttSpeed;
         public float initialRessource1;
         public float initialRessource2;
 
         public float hp = DEFAULT_HP;
         public int def = DEFAULT_DEF;
-        public int att = DEFAULT_ATT;
-        public int speed = DEFAULT_SPEED;
+        public float att = DEFAULT_ATT;
+        public float speed = DEFAULT_SPEED;
         public float attSpeed = DEFAULT_ATT_SPEED;
+        public int magicalDef = 0;
+        public int physicalDef = 0;
 
         public float ressource1 = DEFAULT_RESSOURCE;
         public float ressource2 = 0;
@@ -73,183 +97,144 @@ namespace Games.Global
         public Dictionary<TypeEffect, Effect> underEffects;
 
         // Effect add to damage deal
-        public Dictionary<TypeEffect, Effect> damageDealExtraEffect;
+        public List<Effect> damageDealExtraEffect;
 
         // Effect add to damage receive
-        public Dictionary<TypeEffect, Effect> damageReceiveExtraEffect;
+        public List<Effect> damageReceiveExtraEffect;
 
-        public EffectInterface effectInterface;
+        public List<BuffSpell> currentBuff;
+        public List<Entity> entityInRange;
+
         public EntityPrefab entityPrefab;
+
+        public Spell basicAttack;
+        public Spell basicDefense;
+        public List<Spell> spells;
+
+        public BehaviorType BehaviorType;
+        public AttackBehaviorType AttackBehaviorType;
 
         public bool doingSkill = false;
 
-        public abstract void BasicAttack();
-        public abstract void BasicDefense();
-        public abstract void DesactiveBasicDefense();
-
-        public void ApplyNewEffect(TypeEffect typeEffect, float duration, int level = 1, Entity originEffect = null, float ressourceCost = 0)
+        public virtual void BasicAttack()
         {
-            Effect effect = new Effect();
-            effect.level = level;
-            effect.durationInSeconds = duration;
-            effect.typeEffect = typeEffect;
-
-            effect.launcher = originEffect;
-            effect.ressourceCost = ressourceCost;
-
-            if (ressource1 < ressourceCost)
-            {
-                return;
-            }
-
-            if (underEffects.ContainsKey(effect.typeEffect))
-            {
-                Effect effectInList = underEffects[effect.typeEffect];
-                effectInList.UpdateEffect(effect);
-
-                underEffects[effect.typeEffect] = effectInList;
-                return;
-            }
-
-            effectInterface.StartCoroutineEffect(effect);
-        }
-        
-        public void ApplyEffect(Effect effect, bool canPropagate = true)
-        {
-            if (underEffects.ContainsKey(TypeEffect.Link) && canPropagate)
-            {
-                List<Monster> monsterWithLink =
-                    DataObject.monsterInScene.FindAll(monster =>
-                        monster.underEffects.ContainsKey(TypeEffect.Link));
-
-                foreach (Monster monsterLink in monsterWithLink)
-                {
-                    if (monsterLink.IdEntity != IdEntity)
-                    {
-                        Debug.Log("Find another monster");
-                        monsterLink.ApplyEffect(effect, false);
-                    }
-                }
-            }
             
-            if (underEffects.ContainsKey(effect.typeEffect))
-            {
-                Effect effectInList = underEffects[effect.typeEffect];
-                effectInList.UpdateEffect(effect);
-
-                underEffects[effect.typeEffect] = effectInList;
-                return;
-            }
-
-            if (effect.durationInSeconds == -1)
-            {
-                underEffects.Add(effect.typeEffect, effect);
-                return;
-            }
-
-            effectInterface.StartCoroutineEffect(effect);
         }
 
-        public void RemoveEffect(TypeEffect typeEffect)
+        public virtual void BasicDefense()
         {
-            if (underEffects.ContainsKey(typeEffect))
-            {
-                effectInterface.StopCurrentEffect(underEffects[typeEffect]);
-            }
+            
         }
 
-        public void InitialTrigger(Effect effect)
+        public virtual void DesactiveBasicDefense()
         {
-            switch (effect.typeEffect)
-            {
-                case TypeEffect.Invisibility:
-                    entityPrefab.SetMaterial(StaticMaterials.invisibleMaterial);
-                    break;
-                case TypeEffect.AttackSpeedUp:
-                    attSpeed = initialAttSpeed + (0.5f * effect.level);
-                    break;
-                case TypeEffect.AttackUp:
-                    att = initialAtt + (1 * effect.level);
-                    break;
-                case TypeEffect.SpeedUp:
-                    speed = initialSpeed + (1 * effect.level);
-                    break;
-                case TypeEffect.DefeneseUp:
-                    def = initialDef + (1 * effect.level);
-                    break;
-            }
+            
         }
 
-        public void TriggerEffect(Effect effect)
-        {
-            switch (effect.typeEffect)
-            {
-                case TypeEffect.Burn:
-                    if (underEffects.ContainsKey(TypeEffect.Sleep))
-                    {
-                        underEffects.Remove(TypeEffect.Sleep);
-                    }
-
-                    ApplyDamage(0.2f);
-                    break;
-                case TypeEffect.Bleed:
-                    ApplyDamage(0.1f * effect.level);
-                    break;
-                case TypeEffect.Poison:
-                    ApplyDamage(0.1f);
-                    break;
-                case TypeEffect.Regen:
-                    hp += 0.2f;
-                    break;
-            }
-        }
-
-        public void EndEffect(Effect effect)
-        {
-            switch (effect.typeEffect)
-            {
-                case TypeEffect.Invisibility:
-                    entityPrefab.SetMaterial(StaticMaterials.defaultMaterial);
-                    break;
-                case TypeEffect.AttackSpeedUp:
-                    attSpeed = initialAttSpeed;
-                    break;
-                case TypeEffect.AttackUp:
-                    speed = initialSpeed;
-                    break;
-                case TypeEffect.SpeedUp:
-                    att = initialAtt;
-                    break;
-                case TypeEffect.DefeneseUp:
-                    def = initialDef;
-                    break;
-            }
-        }
-
-        public void InitEquipementArray(int nbWeapons = DEFAULT_NB_WEAPONS)
+        // Bool set by effect
+        public bool isWeak = false;
+        public bool canPierce = false;
+        public bool isInvisible = false;
+        public bool isUntargeatable = false;
+        public bool isSleep = false;
+        public bool canPierceOnBack = false;
+        public bool hasThorn = false;
+        public bool hasMirror = false;
+        public bool isIntangible = false;
+        public bool hasAntiSpell = false;
+        public bool hasDivineShield = false;
+        public bool shooldResurrect = false;
+        public bool isSilence = false;
+        public bool isConfuse = false;
+        public bool hasWill = false;
+        public bool isFeared = false;
+        public bool isCharmed = false;
+        public bool isBlind = false;
+        public bool canBasicAttack = true;
+        public bool hasLifeSteal = false;
+        public bool hasTaunt = false;
+        public bool hasNoAggro = false;
+        public bool isUnkillableByBleeding = false;
+        public bool isLinked = false;
+        public bool hasRedirection = false;
+        public bool hasPassiveDeactivate = false;
+        public bool canRecast = false;
+        public bool hasLifeLink = false;
+        
+        public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();
-            damageDealExtraEffect = new Dictionary<TypeEffect, Effect>();
-            damageReceiveExtraEffect = new Dictionary<TypeEffect, Effect>();
+            damageDealExtraEffect = new List<Effect>();
+            damageReceiveExtraEffect = new List<Effect>();
+            entityInRange = new List<Entity>();
+            currentBuff = new List<BuffSpell>();
         }
 
-        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
+        // Take true damage is usefull with effect pierce
+        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
-            if (underEffects.ContainsKey(TypeEffect.BrokenDef) || 
-                abilityParameters.origin.underEffects.ContainsKey(TypeEffect.Pierce) ||
-                (abilityParameters.origin.underEffects.ContainsKey(TypeEffect.PierceOnBack) && 
+            Entity originDamage = abilityParameters.origin;
+
+            bool isMagic = damageType == DamageType.Magical;
+            bool isPhysic = damageType == DamageType.Physical;
+
+            if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || originDamage.isBlind)
+            {
+                return;
+            }
+            
+            if (isMagic)
+            {
+                damageReceived = (damageReceived - magicalDef) > 0 ? (damageReceived - magicalDef) : 0;
+            } 
+            else if (isPhysic)
+            {
+                damageReceived = (damageReceived - physicalDef) > 0 ? (damageReceived - physicalDef) : 0;
+            }
+
+            if (takeTrueDamage ||
+                (originDamage.canPierceOnBack && 
                  playerInBack.Contains(abilityParameters.origin.IdEntity)
                 ))
             {
                 damageReceived = initialDamage;
             }
 
-            Debug.Log("Dégat reçu : " + damageReceived);
-            ApplyDamage(damageReceived);
+            if (originDamage.hasLifeLink)
+            {
+                if (originDamage.isSummon)
+                {
+                    GenericSummonSpell genericSummonSpell = (GenericSummonSpell) originDamage.entityPrefab;
+                    genericSummonSpell.summoner.hp =
+                        genericSummonSpell.summoner.hp + (damageReceived * 0.25f) <=
+                        genericSummonSpell.summoner.initialHp
+                            ? genericSummonSpell.summoner.hp + (damageReceived * 0.25f)
+                            : genericSummonSpell.summoner.initialHp;
+                }
+            }
+
+            if (originDamage.hasLifeSteal)
+            {
+                originDamage.hp += damageReceived * originDamage.underEffects[TypeEffect.LifeSteal].level;
+                if (originDamage.hp > originDamage.initialHp)
+                {
+                    originDamage.hp = originDamage.initialHp;
+                }
+            }
+
+            if (hasRedirection && DataObject.invocationsInScene.Count > 0)
+            {
+                DataObject.invocationsInScene[0].ApplyDamage(damageReceived * 0.75f);
+                ApplyDamage(damageReceived * 0.25f);
+            }
+            else
+            {
+                ApplyDamage(damageReceived);
+            }
 
             if (OnDamageReceive != null)
             {
@@ -266,20 +251,54 @@ namespace Games.Global
                 armor.OnDamageReceive(abilityParameters);
             }
 
-            foreach (KeyValuePair<TypeEffect, Effect> effects in damageReceiveExtraEffect)
+            List<Effect> effects = damageReceiveExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
+            foreach (Effect effect in effects)
             {
-                ApplyEffect(effects.Value);
+                EffectController.ApplyEffect(this, effect);
             }
 
-            if (underEffects.ContainsKey(TypeEffect.Sleep))
+            if (isSleep)
             {
-                underEffects.Remove(TypeEffect.Sleep);
+                EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Sleep]);
+            }
+
+            if (hasMirror && isMagic)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = this };
+                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
+            }
+
+            if (hasThorn && isPhysic)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = this };
+                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
             }
         }
 
         public virtual void ApplyDamage(float directDamage)
         {
             hp -= directDamage;
+            
+            if (hp <= 0)
+            {
+                if (shooldResurrect)
+                {
+                    hp = initialHp / 2;
+                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
+
+                    return;
+                }
+
+                entityPrefab.EntityDie();
+
+                if (isPlayer)
+                {
+                    TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
+                    Debug.Log("Vous êtes mort");
+                    Cursor.lockState = CursorLockMode.None;
+                    SceneManager.LoadScene("MenuScene");
+                }
+            }
         }
     }
 }

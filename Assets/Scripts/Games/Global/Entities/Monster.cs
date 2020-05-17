@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global.Abilities;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using UnityEngine;
 
@@ -14,8 +15,6 @@ namespace Games.Global.Entities
         public string weaponOriginalName;
 
         public Family family;
-        
-        public List<Spell> skills;
 
         public TypeWeapon constraint;
 
@@ -23,9 +22,9 @@ namespace Games.Global.Entities
 
         public override void BasicAttack()
         {
-            if (monsterPrefab.target)
+            if (monsterPrefab.target != null)
             {
-                monsterPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+                monsterPrefab.PlayBasicAttack();
             }
         }
         
@@ -37,16 +36,6 @@ namespace Games.Global.Entities
         public override void DesactiveBasicDefense()
         {
             throw new NotImplementedException();
-        }
-
-        public override void ApplyDamage(float directDamage)
-        {
-            base.ApplyDamage(directDamage);
-
-            if (hp <= 0)
-            {
-                monsterPrefab.EntityDie();
-            }
         }
 
         public void SetMonsterPrefab(MonsterPrefab newMonsterPrefab)
@@ -70,6 +59,8 @@ namespace Games.Global.Entities
 
                 return true;
             }
+
+            SpellController.CastPassiveSpell(this);
 
             return false;
         }

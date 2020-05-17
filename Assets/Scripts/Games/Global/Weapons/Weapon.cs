@@ -1,4 +1,5 @@
-﻿using Games.Players;
+﻿using Games.Global.Spells;
+using Games.Players;
 using UnityEngine;
 
 namespace Games.Global.Weapons
@@ -41,19 +42,10 @@ namespace Games.Global.Weapons
 
         public string animationToPlay;
 
-        public Spell skill1;
-        public Spell skill2;
-        public Spell skill3;
-
-        public int idPoolProjectile;
-
-        public int oneHitDamageUp = 0;
+        public Spell basicAttack;
 
         public virtual void InitPlayerSkill(Classes classe)
         {
-            skill1 = new Spell();
-            skill2 = new Spell();
-            skill3 = new Spell();
         }
 
         public virtual void FixAngleAttack(bool isFirstIteration, Entity wielder)

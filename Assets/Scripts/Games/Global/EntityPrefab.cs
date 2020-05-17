@@ -1,35 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using Games.Global.Entities;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.AI;
+using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace Games.Global
 {
-    public enum SpecialMovement
+    public class EntityPrefab : MonoBehaviour
     {
-        Dash,
-        BackDash,
-        Charge,
-        HeavyBasicAttack
-    }
-    
-    public class EntityPrefab: MonoBehaviour
-    {
-        // virtual hand look at cursor or target
-//        [SerializeField] public GameObject virtualHand;
-        
-        // hand play animation of weapon
-//        [SerializeField] public GameObject hand;
-
         [SerializeField] public GameObject rightHand;
         [SerializeField] public GameObject leftHand;
-        
-//        [SerializeField] private MovementPatternController movementPatternController;
+
         [SerializeField] private Rigidbody rigidbodyEntity;
-        
+
         [SerializeField] protected MeshRenderer meshRenderer;
 
         [SerializeField] public Animator animator;
@@ -38,82 +31,103 @@ namespace Games.Global
 
         [SerializeField] public Transform positionInRightHand;
         [SerializeField] public Transform angleWithOneRight;
-        
+
         [SerializeField] public Transform positionInLeftHand;
         [SerializeField] public Transform angleWithOneLeft;
-
+        [SerializeField] public NavMeshAgent navMeshAgent;
+        
         public Entity entity;
 
-        public bool movementBlocked = false;
         public bool cameraBlocked = false;
         public bool intentBlocked = false;
 
         public bool isCharging = false;
-        
-        public IEnumerator PlayCharge(float duration)
+
+        public bool canDoSomething = true;
+        public bool canMove = true;
+
+        public Vector3 forcedDirection = Vector3.zero;
+
+        public Vector3 positionPointed;
+
+        public Entity target;
+
+        private void FixedUpdate()
         {
-            movementBlocked = true;
-            isCharging = true;
-
-            Vector3 initialForward = transform.forward;
-
-            while (duration > 0)
+            if (entity.BehaviorType == BehaviorType.Player)
             {
-                rigidbodyEntity.velocity = (initialForward * 20);
-                
-                yield return new WaitForSeconds(0.1f);
-                duration -= 0.1f;
+                return;
             }
-            movementBlocked = false;
-            isCharging = false;
-        }
 
-        private IEnumerator ApplyForce()
-        {
-            rigidbodyEntity.isKinematic = false;
-            
-            rigidbodyEntity.AddRelativeForce(Vector3.back * 10, ForceMode.Impulse);
-            yield return new WaitForSeconds(2);
-            rigidbodyEntity.isKinematic = true;
-        }
-
-        public void OnCollisionEnter(Collision other)
-        {
-            int monsterLayer = LayerMask.NameToLayer("Monster");
-            
-            if (isCharging)
+            if (!canDoSomething)
             {
-                if (monsterLayer == other.gameObject.layer)
+                navMeshAgent.SetDestination(transform.position);
+                return;
+            }
+
+            FindTarget();
+
+            if (canMove)
+            {
+                if (entity.BehaviorType == BehaviorType.Melee ||
+                    entity.BehaviorType == BehaviorType.MoveOnTargetAndDie)
                 {
-                    MonsterPrefab monsterPrefab = other.gameObject.GetComponent<MonsterPrefab>();
-                    StartCoroutine(monsterPrefab.ApplyForce());
+                    MoveToTarget(1);
+                }
+                else if (entity.BehaviorType == BehaviorType.Distance)
+                {
+                    MoveToTarget(10);
                 }
             }
-        }
-
-        public void PlaySpecialMovement(SpecialMovement specialMovement, float durationSpecialMovement = 0)
-        {
-            switch (specialMovement)
+            else
             {
-                case SpecialMovement.Dash:
-                    rigidbodyEntity.AddRelativeForce(Vector3.forward * 30f, ForceMode.Impulse);
-                    break;
-                case SpecialMovement.BackDash:
-                    rigidbodyEntity.AddRelativeForce(Vector3.back * 30f, ForceMode.Impulse);
-                    break;
-                case SpecialMovement.Charge:
-                    StartCoroutine(PlayCharge(durationSpecialMovement));
-                    break;
-                case SpecialMovement.HeavyBasicAttack:
-                    entity.weapons[0].oneHitDamageUp = 20;
-                    entity.BasicAttack();
-                    break;
+                navMeshAgent.SetDestination(transform.position);
+            }
+
+            if (target != null)
+            {
+                AttackTarget();   
             }
         }
 
-        public void PlayBasicAttack(WeaponPrefab weaponPrefab)
+        public void WantToApplyForce(Vector3 direction, int level)
         {
-            weaponPrefab.BasicAttack();
+            StartCoroutine(ApplyForce(direction, level));
+        }
+
+        public IEnumerator ApplyForce(Vector3 direction, int level)
+        {
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = false;
+            }
+
+            rigidbodyEntity.isKinematic = false;
+
+            rigidbodyEntity.AddForce((direction * level * 5), ForceMode.Impulse);
+            yield return new WaitForSeconds(1);
+            rigidbodyEntity.isKinematic = true;
+            
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = true;
+            }
+        }
+
+        public void PlayBasicAttack()
+        {
+            BuffController.EntityAttack(entity, positionPointed);
+
+            if (entity.weapons.Count > 0)
+            {
+                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+                weaponPrefab.BasicAttack();    
+            }
+
+            if (entity.basicAttack != null)
+            {
+                SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
+            }
         }
 
         public void AddItemInHand(Weapon weapon)
@@ -136,99 +150,212 @@ namespace Games.Global
             weaponPrefab.SetWielder(entity);
             weaponPrefab.SetWeapon(weapon);
             weaponPrefab.SetPositionToParent(position, angle);
-        }
-        
-        public void StartCoroutineEffect(Effect effect)
-        {
-            entity.underEffects.Add(effect.typeEffect, effect);
-            Coroutine currentCoroutine = StartCoroutine(PlayEffectOnTime(effect));
 
-            effect.currentCoroutine = currentCoroutine;
-            entity.underEffects[effect.typeEffect] = effect;
+            entity.basicAttack = weapon.basicAttack;
         }
 
-        public IEnumerator PlayEffectOnTime(Effect effect)
+        public virtual void SetInvisibility()
         {
-            Effect effectInList = entity.underEffects[effect.typeEffect];
+        }
 
-            entity.InitialTrigger(effectInList);
-            
-            while (effectInList.durationInSeconds > 0)
+        public bool CastSpell()
+        {
+            if (entity.spells == null || entity.spells.Count == 0)
             {
-                yield return new WaitForSeconds(0.1f);
-                if (effect.launcher != null && effect.ressourceCost > 0)
-                {
-                    effect.launcher.ressource1 -= effect.ressourceCost;
-
-                    if (effect.launcher.ressource1 <= 0)
+                return false;
+            }
+            
+            switch (entity.AttackBehaviorType)
+            {
+                case AttackBehaviorType.AllSpellsIFirst:
+                    foreach (Spell spell in entity.spells)
                     {
-                        StopCurrentEffect(effect);
-                        yield break;
+                        if (SpellController.CastSpell(entity, spell, transform.position, target))
+                        {
+                            return true;
+                        }
                     }
+                    break;
+                case AttackBehaviorType.Random:
+                    int rand = Random.Range(0, entity.spells.Count);
+                    SpellController.CastSpell(entity, entity.spells[rand], transform.position, target);
+
+                    return !entity.spells[rand].isOnCooldown;
+            }
+
+            return false;
+        }
+
+        public void AttackTarget()
+        {
+            transform.LookAt(target.entityPrefab.transform);
+            Vector3 localEulerAngles = transform.localEulerAngles;
+            localEulerAngles.x = 0;
+            localEulerAngles.z = 0;
+            transform.localEulerAngles = localEulerAngles;
+
+            if (!CastSpell())
+            {
+                switch (entity.BehaviorType)
+                {
+                    // TODO : adapt range of weapon for attack
+                    case BehaviorType.Distance:
+                        PlayBasicAttack();
+                        break;
+                    case BehaviorType.Melee:
+                    case BehaviorType.MoveOnTargetAndDie:
+                        if (navMeshAgent.remainingDistance <= 3)
+                        {
+                            PlayBasicAttack();
+                        }
+                        break;
                 }
-
-                entity.TriggerEffect(effectInList);
-
-                effectInList = entity.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.1f;
-                entity.underEffects[effect.typeEffect] = effectInList;
             }
-
-            StopCurrentEffect(effect);
         }
 
-        public void StopCurrentEffect(Effect effect)
+        public void MoveToTarget(float range)
         {
-            if (effect.currentCoroutine != null)
+            if (!navMeshAgent.enabled)
             {
-                StopCoroutine(effect.currentCoroutine);
+                return;
             }
 
-            entity.EndEffect(effect);
-            entity.underEffects.Remove(effect.typeEffect);
+            if (entity.isFeared || entity.isCharmed)
+            {
+                navMeshAgent.SetDestination(transform.position + forcedDirection);
+                return;
+            }
+
+            if (target != null)
+            {
+                navMeshAgent.SetDestination(target.entityPrefab.transform.position);
+
+                if (navMeshAgent.remainingDistance <= range && navMeshAgent.hasPath)
+                {
+                    navMeshAgent.SetDestination(transform.position);
+                }
+            }
         }
 
-        public void SetMaterial(Material material)
+        public void FindTarget()
         {
-            meshRenderer.material = material;
+            Entity newTarget = null;
+            bool findEnemyWithTaunt = false;
+            float dist = 10000;
+            float minDistAggro = 100;
+
+            switch (entity.typeEntity)
+            {
+                case TypeEntity.MOB:
+                    foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+                    {
+                        PlayerPrefab player = value.Value;
+                        float newDist = Vector3.Distance(transform.position, player.transform.position);
+
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = player.entity;
+                            }
+                        }
+
+                        if (player.entity.hasTaunt)
+                        {
+                            newTarget = player.entity;
+                            findEnemyWithTaunt = true;
+                            break;
+                        }
+                    }
+
+                    foreach (Entity summon in DataObject.invocationsInScene)
+                    {
+                        float newDist = Vector3.Distance(transform.position, summon.entityPrefab.transform.position);
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!summon.isInvisible && !summon.isUntargeatable && !summon.hasNoAggro && !findEnemyWithTaunt)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = summon;
+                            }
+                        }
+
+                        if (summon.hasTaunt)
+                        {
+                            newTarget = summon;
+                            break;
+                        }
+                    }
+
+                    break;
+                case TypeEntity.ALLIES:
+                    foreach (Monster monster in DataObject.monsterInScene)
+                    {
+                        float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
+                        if (newDist > minDistAggro)
+                        {
+                            continue;
+                        }
+
+                        if (!monster.isInvisible && !monster.isUntargeatable && !monster.hasNoAggro)
+                        {
+                            if ((dist > newDist))
+                            {
+                                dist = newDist;
+                                newTarget = monster;
+                            }
+                        }
+
+                        if (monster.hasTaunt)
+                        {
+                            newTarget = monster;
+                            break;
+                        }
+                    }
+
+                    break;
+            }
+
+            target = newTarget;
         }
         
-        public IEnumerator AddDamageDealExtraEffect(Effect effect, float duration)
+        public void EntityDie()
         {
-            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
+            if (entity.typeEntity == TypeEntity.MOB)
             {
-                entity.damageDealExtraEffect[effect.typeEffect] = effect;
+                if (!entity.isSummon)
+                {
+                    DataObject.monsterInScene.Remove((Monster) entity);
+                }
+                else
+                {
+                    DataObject.invocationsInScene.Remove(entity);
+                }
             }
-            else
+            else if (entity.typeEntity == TypeEntity.ALLIES)
             {
-                entity.damageDealExtraEffect.Add(effect.typeEffect, effect);
-            }
-            
-            yield return new WaitForSeconds(duration);
-
-            if (entity.damageDealExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageDealExtraEffect.Remove(effect.typeEffect);
-            }
-        }
-        
-        public IEnumerator AddDamageReceiveExtraEffect(Effect effect, float duration)
-        {
-            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageReceiveExtraEffect[effect.typeEffect] = effect;
-            }
-            else
-            {
-                entity.damageReceiveExtraEffect.Add(effect.typeEffect, effect);
+                if (entity.isPlayer)
+                {
+                    DataObject.playerInScene.Remove(GameController.PlayerIndex);
+                }
+                else if (entity.isSummon)
+                {
+                    DataObject.invocationsInScene.Remove(entity);
+                }
             }
 
-            yield return new WaitForSeconds(duration);
-
-            if (entity.damageReceiveExtraEffect.ContainsKey(effect.typeEffect))
-            {
-                entity.damageReceiveExtraEffect.Remove(effect.typeEffect);
-            }
+            gameObject.SetActive(false);
         }
     }
 }
