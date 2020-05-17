@@ -1,7 +1,9 @@
-﻿using Networking;
+﻿using System;
+using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static Networking.Client.TowersWebSocket;
 
 namespace Menus
 {   

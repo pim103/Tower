@@ -42,51 +42,22 @@ namespace Menus
             });
         }
 
-        private void CreateMatch()
+        public void CreateMatch()
         {
-            StartCoroutine(CreateMatchRequest());
+            StartCoroutine(Room.CreateMatchRequest(mc));
         }
 
-        private void SearchMatch()
+        public void SearchMatch()
         {
             StartCoroutine(LoadRoomRequest());
         }
         
-        IEnumerator CreateMatchRequest()
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("name", "RANKED_" + UniqueKey.KeyGenerator.GetUniqueKey(50));
-            form.AddField("roomOwner", NetworkingController.AuthToken);
-            form.AddField("maxPlayer", 2);
-            form.AddField("mode", "1v1");
-            form.AddField("isRanked", 1);
-            form.AddField("isPublic", 1);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/room/add.php", form);
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 201)
-            {
-                yield return new WaitForSeconds(0.5f);
-                NetworkingController.CurrentRoomToken = www.downloadHandler.text;
-                yield return new WaitForSeconds(0.5f);
-                mc.ActivateMenu(MenuController.Menu.ListingPlayer);
-            }
-            else if (www.responseCode == 406)
-            {
-                Debug.Log("Impossible de créer la room");
-            }
-            else
-            {
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-                Debug.Log("Serveur d'authentification indisponible.");
-            }
-        }
-        
         IEnumerator LoadRoomRequest()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            WWWForm form = new WWWForm();
+            form.AddField("searchForRanked", 1);
+            form.AddField("gameToken", NetworkingController.GameToken);
+            var www = UnityWebRequest.Post(NetworkingController.HttpsEndpoint + "/services/room/list.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

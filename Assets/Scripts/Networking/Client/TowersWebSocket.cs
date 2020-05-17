@@ -8,18 +8,6 @@ using WebSocketSharp;
 
 namespace Networking.Client
 {
-    [Serializable]
-    public class CanStartHandler
-    {
-        [FormerlySerializedAs("Message")] 
-        public string message;
-
-        public CanStartHandler(string message)
-        {
-            this.message = message;
-        }
-    }
-
     public static class TowersWebSocket
 
     {
