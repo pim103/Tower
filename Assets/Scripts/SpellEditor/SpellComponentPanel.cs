@@ -29,7 +29,10 @@ namespace SpellEditor
         private Dictionary<string, GameObject> panels;
 
         [SerializeField] private ProjectilePanel projectilePanel;
+
         [SerializeField] private PassivePanel passivePanel;
+
+        [SerializeField] private BuffSpellPanel buffSpellPanel ;
 
         // Start is called before the first frame update
         void Start()
@@ -80,6 +83,7 @@ namespace SpellEditor
             {
                 case TypeSpell.Buff:
                     panels["BuffPanel"].SetActive(true);
+                    buffSpellPanel.InitBuffPanel();
                     break;
                 case TypeSpell.Movement:
                     panels["MovementPanel"].SetActive(true);
@@ -119,6 +123,7 @@ namespace SpellEditor
             switch ((TypeSpell) typeSpell.value)
             {
                 case TypeSpell.Buff:
+                    spellComponentToSave = buffSpellPanel.SaveCurrentPanel();
                     break;
                 case TypeSpell.Movement:
                     break;
