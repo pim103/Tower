@@ -38,6 +38,8 @@ namespace SpellEditor
 
         [SerializeField] private TransformationPanel transformationPanel;
 
+        [SerializeField] private MovementPanel movementPanel;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -76,7 +78,7 @@ namespace SpellEditor
                 go.SetActive(false);
             }
         }
-        
+
         public void ChangeTypeSpell(int newIndex)
         {
             TypeSpell newTypeSpell = (TypeSpell) newIndex;
@@ -91,6 +93,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.Movement:
                     panels["MovementPanel"].SetActive(true);
+                    movementPanel.InitMovementPanel();
                     break;
                 case TypeSpell.Passive:
                     panels["PassivePanel"].SetActive(true);
@@ -132,6 +135,7 @@ namespace SpellEditor
                     spellComponentToSave = buffSpellPanel.SaveCurrentPanel();
                     break;
                 case TypeSpell.Movement:
+                    spellComponentToSave = movementPanel.SaveMovement();
                     break;
                 case TypeSpell.Passive:
                     spellComponentToSave = passivePanel.SavePassive();
