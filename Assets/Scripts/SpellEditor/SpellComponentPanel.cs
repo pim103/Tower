@@ -33,6 +33,8 @@ namespace SpellEditor
         [SerializeField] private PassivePanel passivePanel;
 
         [SerializeField] private BuffSpellPanel buffSpellPanel ;
+        
+        [SerializeField] private WavePanel wavePanel ;
 
         // Start is called before the first frame update
         void Start()
@@ -104,6 +106,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.Wave:
                     panels["WavePanel"].SetActive(true);
+                    wavePanel.InitWavePanel();
                     break;
                 case TypeSpell.AreaOfEffect:
                     panels["AreaOfEffectPanel"].SetActive(true);
@@ -138,6 +141,7 @@ namespace SpellEditor
                 case TypeSpell.Transformation:
                     break;
                 case TypeSpell.Wave:
+                    spellComponentToSave = wavePanel.SaveCurrentPanel();
                     break;
                 case TypeSpell.AreaOfEffect:
                     break;

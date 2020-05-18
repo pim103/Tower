@@ -126,7 +126,13 @@ namespace SpellEditor
                 if (effectsOnSelf.selectedIndex.Contains(effect.Key))
                 {
                     effectsOnSelfList.Add(effect.Value);
+                }
+                if (effectsOnDamageReceived.selectedIndex.Contains(effect.Key))
+                {
                     effectsOnSelfOnDamageReceived.Add(effect.Value);
+                }
+                if (effectOnTargetOnHit.selectedIndex.Contains(effect.Key))
+                {
                     effectsOnTargetOnHit.Add(effect.Value);
                 }
             }
