@@ -120,9 +120,19 @@ namespace TestC
             };
 
             fsSerializer serializer = new fsSerializer();
-            fsData data;
-            serializer.TrySerialize(newSpell.GetType(), newSpell, out data);
-            File.WriteAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json", fsJsonPrinter.CompressedJson(data));
+            fsData data = fsJsonParser.Parse(File.ReadAllText(Application.dataPath + "/Data/SpellsJson/passiveWithSameActive.json"));
+
+            Spell spell = null;
+            serializer.TryDeserialize(data, ref spell);
+
+            Debug.Log(spell.activeSpellComponent.damageType);
+            Debug.Log(spell.passiveSpellComponent.damageType);
+            Debug.Log(spell.recastSpellComponent);
+
+//            fsSerializer serializer = new fsSerializer();
+//            fsData data;
+//            serializer.TrySerialize(newSpell.GetType(), newSpell, out data);
+//            File.WriteAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json", fsJsonPrinter.CompressedJson(data));
 //            AreaOfEffectSpell newArea = JsonUtility.FromJson<AreaOfEffectSpell>(File.ReadAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json"));
         }
 

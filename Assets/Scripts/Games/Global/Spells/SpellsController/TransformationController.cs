@@ -21,7 +21,7 @@ namespace Games.Global.Spells.SpellsController
                 OriginalPosition = origin.OriginalPosition,
                 needPositionToMidToEntity = origin.needPositionToMidToEntity,
                 duration = origin.duration,
-                prefab = origin.prefab,
+                idPoolPrefab = origin.idPoolPrefab,
                 newSpells = origin.newSpells,
                 castByPassive = origin.castByPassive
             };

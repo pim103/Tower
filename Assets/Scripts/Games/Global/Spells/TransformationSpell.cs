@@ -12,7 +12,7 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Transformation;
         }
 
-        public GameObject prefab;
+        public int idPoolPrefab;
         public List<Spell> newSpells;
         public float duration;
     }

@@ -49,8 +49,8 @@ namespace SpellEditor.ComponentPanel
             {
                 damages = damage.text != "" ? Int32.Parse(damage.text) : 0,
                 duration = duration.text != "" ? Int32.Parse(duration.text) : 0,
-                speed = duration.text != "" ? Int32.Parse(duration.text) : 1,
-                damageMultiplierOnDistance = duration.text != "" ? Int32.Parse(duration.text) : 0,
+                speed = speed.text != "" ? Int32.Parse(speed.text) : 1,
+                damageMultiplierOnDistance = multiplier.text != "" ? Int32.Parse(multiplier.text) : 0,
                 idPoolObject = Int32.Parse(idPoolObject.text),
                 passingThroughEntity = passingThrough.isOn,
                 linkedSpellOnEnable = linkedSpellOnEnable.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnEnable.options[linkedSpellOnEnable.value].text] : null,

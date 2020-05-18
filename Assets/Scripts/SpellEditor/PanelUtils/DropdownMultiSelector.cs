@@ -85,7 +85,7 @@ namespace SpellEditor.PanelUtils
             {
                 case SelectedObject.Effect:
                     listNames.AddRange(ListCreatedElement.Effects.Keys.ToList());
-                    Debug.Log(listNames);
+                    Debug.Log(listNames.Count);
                     break;
                 case SelectedObject.Spell:
                     listNames.AddRange(ListCreatedElement.Spell.Keys.ToList());
