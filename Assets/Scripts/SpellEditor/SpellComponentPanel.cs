@@ -39,6 +39,8 @@ namespace SpellEditor
         [SerializeField] private TransformationPanel transformationPanel;
 
         [SerializeField] private MovementPanel movementPanel;
+        
+        [SerializeField] private SummonPanel summonPanel;
 
         // Start is called before the first frame update
         void Start()
@@ -105,6 +107,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.Summon:
                     panels["SummonPanel"].SetActive(true);
+                    summonPanel.InitSummonPanel();
                     break;
                 case TypeSpell.Transformation:
                     panels["TransformationPanel"].SetActive(true);
@@ -144,6 +147,7 @@ namespace SpellEditor
                     spellComponentToSave = projectilePanel.SaveProjectile();
                     break;
                 case TypeSpell.Summon:
+                    spellComponentToSave = summonPanel.SaveCurrentPanel();
                     break;
                 case TypeSpell.Transformation:
                     spellComponentToSave = transformationPanel.SaveTransformation();
