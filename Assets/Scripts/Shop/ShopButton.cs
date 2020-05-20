@@ -11,19 +11,16 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     [Header("References")]
     [SerializeField] private Image icon;
-
     [SerializeField] private Text ressourceName;
-
     [SerializeField] private Text amount;
-
     [SerializeField] private Text price;
 
     public GameObject ConfirmePurchasePanel;
     public GameObject ConfirmationPurchasePanel;
     public GameObject ErrorPurchasePanel;
+    public Text PurchaseDescription;
 
     private ShopItem shopItem;
-
     private static ShopItem currentShopItem;
 
     public void AddItem(ShopItem shopItem)
@@ -38,7 +35,7 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (shopItem.Price > 0)
         {
-            price.text = "Prix: " + shopItem.Price.ToString() + "€";
+            price.text = "Prix : " + shopItem.Price.ToString() + "€";
         }
         else
         {
@@ -54,10 +51,15 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (AccountManager.MyInstance.AccountMoney  >= shopItem.Price)
         {
             currentShopItem = shopItem;
+            foreach (var item in currentShopItem.GetType().GetFields())
+            {
+                Debug.Log(item + " : " + item.GetValue(currentShopItem));
+            }
 
             if (ConfirmePurchasePanel != null)
             {
                 ConfirmePurchasePanel.SetActive(true);
+                PurchaseDescription.text = currentShopItem.Amount.ToString() + " " + currentShopItem.Resource.ResourceName + " pour " + currentShopItem.Price.ToString() + "€";
             }
         }
         else

@@ -10,14 +10,11 @@ public class ShopWindow : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ShopButton[] shopButtons;
-
     [SerializeField] private Text pageNumber;
+    [SerializeField] private ShopManager shopManager;
 
     private List<List<ShopItem>> pages = new List<List<ShopItem>>();
-
     private int pageIndex;
-
-    [SerializeField] private ShopManager shopManager;
 
     void Start()
     {
