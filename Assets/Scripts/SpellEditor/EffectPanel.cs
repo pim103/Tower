@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Games.Global;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,8 @@ namespace SpellEditor
         [SerializeField] private InputField duration;
         [SerializeField] private InputField level;
 
+        [SerializeField] private Dropdown effectSelector;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -34,6 +37,18 @@ namespace SpellEditor
             enumNames = Enum.GetNames(typeof(DirectionExpulsion));
             listNames = new List<string>(enumNames);
             directionDropdown.AddOptions(listNames);
+            
+            effectSelector.onValueChanged.AddListener(EditEffectAfterSelectorChoice);
+        }
+
+        public void InitEffectPanel()
+        {
+            List<string> listNames = new List<string>();
+            listNames.Add("Nouvel effet");
+            listNames.AddRange(ListCreatedElement.Effects.Keys.ToList());
+
+            effectSelector.options.Clear();
+            effectSelector.AddOptions(listNames);
         }
 
         public void SaveCurrentPanel()
@@ -62,8 +77,18 @@ namespace SpellEditor
                 level = Int32.Parse(level.text),
                 durationInSeconds = float.Parse(duration.text),
             };
-            
-            ListCreatedElement.Effects.Add(nameEffect.text, newEffect);
+        
+            if (effectSelector.value != 0)
+            {
+                Debug.Log("WARNING - ERASE DATA");
+                string effectChoose = effectSelector.options[effectSelector.value].text;
+
+                NavBar.ModifyExistingComponent(ListCreatedElement.Effects[effectChoose], newEffect);
+            }
+            else
+            {
+                ListCreatedElement.Effects.Add(nameEffect.text, newEffect);
+            }
 
             ResetCurrentEffect();
         }
@@ -73,10 +98,36 @@ namespace SpellEditor
             typeEffectDropdown.value = 0;
             directionDropdown.value = 0;
             originDropdown.value = 0;
+            effectSelector.value = 0;
 
             nameEffect.text = "";
             duration.text = "";
             level.text = "";
+        }
+
+        public void EditEffectAfterSelectorChoice(int newIndex)
+        {
+            if (newIndex == 0)
+            {
+                return;
+            }
+
+            string effectChoose = effectSelector.options[newIndex].text;
+
+            if (!ListCreatedElement.Effects.ContainsKey(effectChoose))
+            {
+                return;
+            }
+
+            Effect effectSelected = ListCreatedElement.Effects[effectChoose];
+
+            typeEffectDropdown.value = (int) effectSelected.typeEffect;
+            directionDropdown.value = (int) effectSelected.directionExpul;
+            originDropdown.value = (int) effectSelected.originExpulsion;
+
+            nameEffect.text = effectSelected.nameEffect;
+            duration.text = effectSelected.durationInSeconds.ToString();
+            level.text = effectSelected.level.ToString();
         }
     }
 }

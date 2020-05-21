@@ -21,6 +21,7 @@ namespace SpellEditor
     public class NavBar : MonoBehaviour
     {
         [SerializeField] private SpellPanel spellPanelScript;
+        [SerializeField] private EffectPanel effectPanelScript;
         [SerializeField] private Button exportSpells;
         [SerializeField] private Button importSpell;
         
@@ -46,6 +47,19 @@ namespace SpellEditor
             importSpell.onClick.AddListener(ChooseSpellToImport);
         }
 
+        public static void ModifyExistingComponent(object component, object newComponent)
+        {
+            if (component.GetType() != newComponent.GetType())
+            {
+                return;
+            }
+
+            foreach (PropertyInfo prop in component.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance))
+            {
+                prop.SetValue(component, prop.GetValue(newComponent));
+            }
+        }
+
         private void SwitchPanel(Panel newPanel)
         {
             spellPanel.SetActive(false);
@@ -55,6 +69,7 @@ namespace SpellEditor
             switch (newPanel)
             {
                 case Panel.Effect:
+                    effectPanelScript.InitEffectPanel();
                     effectPanel.SetActive(true);
                     break;
                 case Panel.Spell:
@@ -87,18 +102,8 @@ namespace SpellEditor
             }
 
             string jsonSpell = File.ReadAllText(path);
-            
-            Debug.Log("Before import");
-            Debug.Log("Nombre d'effets" + ListCreatedElement.Effects.Count);
-            Debug.Log("Nombre de spell" + ListCreatedElement.Spell.Count);
-            Debug.Log("Nombre de spellComponent" + ListCreatedElement.SpellComponents.Count);
 
             ImportSpell(jsonSpell);
-
-            Debug.Log("After import");
-            Debug.Log("Nombre d'effets" + ListCreatedElement.Effects.Count);
-            Debug.Log("Nombre de spell" + ListCreatedElement.Spell.Count);
-            Debug.Log("Nombre de spellComponent" + ListCreatedElement.SpellComponents.Count);
         }
 
         private void ImportSpell(string jsonSpell)

@@ -75,7 +75,7 @@ namespace Games.Global
         SrcDamage,
         ForwardOfPositionSrcDamage
     }
-    
+
     public enum DirectionExpulsion
     {
         Out,
@@ -83,24 +83,24 @@ namespace Games.Global
     }
 
     [Serializable]
-    public struct Effect
+    public class Effect
     {
-        public string nameEffect;
+        public string nameEffect { get; set; }
 
-        public TypeEffect typeEffect;
-        public int level;
-        public float durationInSeconds;
+        public TypeEffect typeEffect { get; set; }
+        public int level { get; set; }
+        public float durationInSeconds { get; set; }
 
-        public Entity launcher;
-        public float ressourceCost;
+        public Entity launcher { get; set; }
+        public float ressourceCost { get; set; }
 
-        public Coroutine currentCoroutine;
+        public Coroutine currentCoroutine { get; set; }
 
         // direction use for effect expulsion
 //        public Vector3 direction;
-        public DirectionExpulsion directionExpul;
-        public OriginExpulsion originExpulsion;
-        public Vector3 positionSrcDamage;
+        public DirectionExpulsion directionExpul { get; set; }
+        public OriginExpulsion originExpulsion { get; set; }
+        public Vector3 positionSrcDamage { get; set; }
 
         public void InitialTrigger(Entity entity)
         {
@@ -188,7 +188,7 @@ namespace Games.Global
                             EffectController.StopCurrentEffect(entity, entity.underEffects[type]);
                         }
                     }
-                    
+
                     break;
                 case TypeEffect.Fear:
                     entity.isFeared = true;
@@ -241,6 +241,7 @@ namespace Games.Global
                         entity.spells[0].isOnCooldown = false;
                         entity.spells[0].alreadyRecast = false;
                     }
+
                     break;
                 case TypeEffect.RefreshCd2:
                     if (entity.spells.Count > 1)
@@ -248,6 +249,7 @@ namespace Games.Global
                         entity.spells[1].isOnCooldown = false;
                         entity.spells[1].alreadyRecast = false;
                     }
+
                     break;
                 case TypeEffect.RefreshCd3:
                     if (entity.spells.Count > 2)
@@ -255,6 +257,7 @@ namespace Games.Global
                         entity.spells[2].isOnCooldown = false;
                         entity.spells[2].alreadyRecast = false;
                     }
+
                     break;
                 case TypeEffect.ReduceCd1:
                     if (entity.spells.Count > 0)
@@ -262,6 +265,7 @@ namespace Games.Global
                         entity.spells[0].initialCooldown = entity.spells[0].cooldown;
                         entity.spells[0].cooldown = level;
                     }
+
                     break;
                 case TypeEffect.ReduceCd2:
                     if (entity.spells.Count > 1)
@@ -269,6 +273,7 @@ namespace Games.Global
                         entity.spells[1].initialCooldown = entity.spells[1].cooldown;
                         entity.spells[1].cooldown = level;
                     }
+
                     break;
                 case TypeEffect.ReduceCd3:
                     if (entity.spells.Count > 2)
@@ -276,6 +281,7 @@ namespace Games.Global
                         entity.spells[2].initialCooldown = entity.spells[2].cooldown;
                         entity.spells[2].cooldown = level;
                     }
+
                     break;
             }
         }
@@ -284,14 +290,16 @@ namespace Games.Global
         {
             float extraDamage = launcher.underEffects.ContainsKey(TypeEffect.DotDamageIncrease) ? 0.2f : 0;
             Vector3 dir = Vector3.zero;
-            
+
             switch (typeEffect)
             {
                 case TypeEffect.SpeedUp:
                     entity.speed = entity.initialSpeed + (1 * level);
                     break;
                 case TypeEffect.Slow:
-                    entity.speed = entity.underEffects.ContainsKey(TypeEffect.SpeedUp) ? entity.speed / 2 : entity.initialSpeed / 2;
+                    entity.speed = entity.underEffects.ContainsKey(TypeEffect.SpeedUp)
+                        ? entity.speed / 2
+                        : entity.initialSpeed / 2;
                     break;
                 case TypeEffect.Burn:
                     if (entity.underEffects.ContainsKey(TypeEffect.Sleep))
@@ -327,18 +335,25 @@ namespace Games.Global
                     {
                         entity.ApplyDamage(0.1f * level);
                     }
+
                     break;
                 case TypeEffect.Poison:
                     entity.ApplyDamage(0.1f + extraDamage);
                     break;
                 case TypeEffect.DefenseUp:
-                    entity.def = entity.underEffects.ContainsKey(TypeEffect.BrokenDef) ? (1 * level) : entity.initialDef + (1 * level);
+                    entity.def = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                        ? (1 * level)
+                        : entity.initialDef + (1 * level);
                     break;
                 case TypeEffect.PhysicalDefUp:
-                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef) ? (1 * level) : entity.initialPhysicalDef + (1 * level);
+                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                        ? (1 * level)
+                        : entity.initialPhysicalDef + (1 * level);
                     break;
                 case TypeEffect.MagicalDefUp:
-                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef) ? (1 * level) : entity.initialMagicalDef + (1 * level);
+                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                        ? (1 * level)
+                        : entity.initialMagicalDef + (1 * level);
                     break;
                 case TypeEffect.AttackUp:
                     entity.att = entity.initialAtt + (1 * level);
@@ -381,6 +396,7 @@ namespace Games.Global
                     {
                         entity.entityPrefab.canDoSomething = true;
                     }
+
                     break;
                 case TypeEffect.Sleep:
                     entity.isSleep = false;
@@ -388,6 +404,7 @@ namespace Games.Global
                     {
                         entity.entityPrefab.canDoSomething = true;
                     }
+
                     break;
                 case TypeEffect.SpeedUp:
                     entity.speed = entity.initialSpeed;
@@ -440,9 +457,15 @@ namespace Games.Global
                     entity.isSilence = false;
                     break;
                 case TypeEffect.BrokenDef:
-                    entity.def = entity.underEffects.ContainsKey(TypeEffect.DefenseUp) ? entity.def + entity.initialDef : entity.initialDef;
-                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.MagicalDefUp) ? entity.magicalDef + entity.initialMagicalDef : entity.initialMagicalDef;
-                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp) ? entity.physicalDef + entity.initialPhysicalDef : entity.initialPhysicalDef;
+                    entity.def = entity.underEffects.ContainsKey(TypeEffect.DefenseUp)
+                        ? entity.def + entity.initialDef
+                        : entity.initialDef;
+                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.MagicalDefUp)
+                        ? entity.magicalDef + entity.initialMagicalDef
+                        : entity.initialMagicalDef;
+                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp)
+                        ? entity.physicalDef + entity.initialPhysicalDef
+                        : entity.initialPhysicalDef;
                     break;
                 case TypeEffect.Confusion:
                     entity.isConfuse = false;
@@ -500,18 +523,21 @@ namespace Games.Global
                     {
                         entity.spells[0].cooldown = entity.spells[0].initialCooldown;
                     }
+
                     break;
                 case TypeEffect.ReduceCd2:
                     if (entity.spells.Count > 1)
                     {
                         entity.spells[1].cooldown = entity.spells[1].initialCooldown;
                     }
+
                     break;
                 case TypeEffect.ReduceCd3:
                     if (entity.spells.Count > 2)
                     {
                         entity.spells[2].cooldown = entity.spells[2].initialCooldown;
                     }
+
                     break;
             }
         }
@@ -528,6 +554,7 @@ namespace Games.Global
                     {
                         durationInSeconds = 20;
                     }
+
                     break;
                 case TypeEffect.Freezing:
                     if (durationInSeconds < newEffect.durationInSeconds)
@@ -541,11 +568,13 @@ namespace Games.Global
 
                         if (level == 4)
                         {
-                            Effect stunEffect = new Effect { typeEffect = TypeEffect.Stun, level = 1, durationInSeconds = 1, launcher = entity};
+                            Effect stunEffect = new Effect
+                                {typeEffect = TypeEffect.Stun, level = 1, durationInSeconds = 1, launcher = entity};
                             EffectController.ApplyEffect(entity, stunEffect);
                             EffectController.StopCurrentEffect(entity, this);
                         }
                     }
+
                     break;
                 case TypeEffect.AttackUp:
                 case TypeEffect.SpeedUp:
@@ -560,6 +589,7 @@ namespace Games.Global
                     {
                         level += newEffect.level;
                     }
+
                     break;
                 case TypeEffect.Weak:
                 case TypeEffect.Blind:
@@ -593,6 +623,7 @@ namespace Games.Global
                     {
                         durationInSeconds = newEffect.durationInSeconds;
                     }
+
                     break;
                 case TypeEffect.MagicalDefUp:
                 case TypeEffect.PhysicalDefUp:
@@ -609,11 +640,12 @@ namespace Games.Global
         {
             Vector3 originExpulsionPosition = entity.entityPrefab.transform.position;
             Vector3 entityPosition = entity.entityPrefab.transform.position;
-            
+
             if (originExpulsion == OriginExpulsion.Entity)
             {
                 originExpulsionPosition = launcher.entityPrefab.transform.position;
-            } else if (originExpulsion == OriginExpulsion.SrcDamage)
+            }
+            else if (originExpulsion == OriginExpulsion.SrcDamage)
             {
                 originExpulsionPosition = positionSrcDamage;
             }

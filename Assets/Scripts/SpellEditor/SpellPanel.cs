@@ -27,11 +27,14 @@ namespace SpellEditor
         [SerializeField] private Dropdown passiveSpellComponent;
         [SerializeField] private Dropdown duringSpellComponent;
         [SerializeField] private Dropdown recastSpellComponent;
+
+        [SerializeField] private Dropdown spellSelector;
         
         // Start is called before the first frame update
         void Start()
         {
             save.onClick.AddListener(SaveCurrentPanel);
+            spellSelector.onValueChanged.AddListener(EditSpellAfterSelectorChoice);
         }
 
         public void InitSpellPanel()
@@ -51,6 +54,13 @@ namespace SpellEditor
             
             recastSpellComponent.options.Clear();
             recastSpellComponent.AddOptions(listNames);
+
+            listNames = new List<string>();
+            listNames.Add("Nouveau spell");
+            listNames.AddRange(ListCreatedElement.Spell.Keys.ToList());
+
+            spellSelector.options.Clear();
+            spellSelector.AddOptions(listNames);
         }
         
         public void SaveCurrentPanel()
@@ -95,7 +105,17 @@ namespace SpellEditor
                 duringCastSpellComponent = duringSpellComponent.value != 0 ? ListCreatedElement.SpellComponents[duringSpellComponent.options[duringSpellComponent.value].text] : null
             };
 
-            ListCreatedElement.Spell.Add(nameSpell.text, spell);
+            if (spellSelector.value != 0)
+            {
+                Debug.Log("WARNING - ERASE DATA");
+                string spellChoose = spellSelector.options[spellSelector.value].text;
+
+                NavBar.ModifyExistingComponent(ListCreatedElement.Spell[spellChoose], spell);
+            }
+            else
+            {
+                ListCreatedElement.Spell.Add(nameSpell.text, spell);
+            }
 
             ResetCurrentSpell();
         }
@@ -116,6 +136,38 @@ namespace SpellEditor
             passiveSpellComponent.value = 0;
             recastSpellComponent.value = 0;
             duringSpellComponent.value = 0;
+            spellSelector.value = 0;
+        }
+        
+        public void EditSpellAfterSelectorChoice(int newIndex)
+        {
+            if (newIndex == 0)
+            {
+                return;
+            }
+
+            string spellChoose = spellSelector.options[newIndex].text;
+
+            if (!ListCreatedElement.Spell.ContainsKey(spellChoose))
+            {
+                return;
+            }
+
+            Spell spellSelected = ListCreatedElement.Spell[spellChoose];
+            nameSpell.text = spellSelected.nameSpell;
+            cooldown.text = spellSelected.cooldown.ToString();
+            cost.text = spellSelected.cost.ToString();
+            castTime.text = spellSelected.castTime.ToString();
+            nbUse.text = spellSelected.nbUse.ToString();
+            canRecast.isOn = spellSelected.canRecast;
+            canCastDuringCast.isOn = spellSelected.canCastDuringCast;
+            interruptCast.isOn = spellSelected.interruptCurrentCast;
+            deactivePassive.isOn = spellSelected.deactivatePassiveWhenActive;
+
+            activeSpellComponent.value = spellSelected.activeSpellComponent != null ? activeSpellComponent.options.FindIndex(option => option.text == spellSelected.activeSpellComponent.nameSpellComponent) : 0;
+            passiveSpellComponent.value = spellSelected.passiveSpellComponent != null ? passiveSpellComponent.options.FindIndex(option => option.text == spellSelected.passiveSpellComponent.nameSpellComponent) : 0;
+            recastSpellComponent.value = spellSelected.recastSpellComponent != null ? recastSpellComponent.options.FindIndex(option => option.text == spellSelected.recastSpellComponent.nameSpellComponent) : 0;
+            duringSpellComponent.value = spellSelected.duringCastSpellComponent != null ? duringSpellComponent.options.FindIndex(option => option.text == spellSelected.duringCastSpellComponent.nameSpellComponent) : 0;
         }
     }
 }
