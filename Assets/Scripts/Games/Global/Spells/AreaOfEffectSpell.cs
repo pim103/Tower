@@ -15,7 +15,6 @@ namespace Games.Global.Spells
 
         public float interval { get; set; }
         public float duration { get; set; }
-        public Transform transformToFollow { get; set; }
 
         public Geometry geometry { get; set; }
         public Vector3 scale { get; set; }

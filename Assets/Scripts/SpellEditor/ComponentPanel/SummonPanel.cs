@@ -97,12 +97,12 @@ namespace SpellEditor.ComponentPanel
             }
 
             SummonSpell newSummonSpell = new SummonSpell();
-            newSummonSpell.hp = hp.text != "" ? Int32.Parse(hp.text) : 1;
-            newSummonSpell.duration = duration.text != "" ? Int32.Parse(duration.text) : 1;
-            newSummonSpell.attackDamage = attackDamage.text != "" ? Int32.Parse(attackDamage.text) : 0;
-            newSummonSpell.moveSpeed = speed.text != "" ? Int32.Parse(speed.text) : 0;
+            newSummonSpell.hp = hp.text != "" ? float.Parse(hp.text) : 1;
+            newSummonSpell.duration = duration.text != "" ? float.Parse(duration.text) : 1;
+            newSummonSpell.attackDamage = attackDamage.text != "" ? float.Parse(attackDamage.text) : 0;
+            newSummonSpell.moveSpeed = speed.text != "" ? float.Parse(speed.text) : 0;
             newSummonSpell.summonNumber = summonNumber.text != "" ? Int32.Parse(summonNumber.text) : 1;
-            newSummonSpell.attackSpeed = attackSpeed.text != "" ? Int32.Parse(attackSpeed.text) : 0;
+            newSummonSpell.attackSpeed = attackSpeed.text != "" ? float.Parse(attackSpeed.text) : 0;
             newSummonSpell.nbUseSpells = nbUseSpells.text != "" ? Int32.Parse(nbUseSpells.text) : 0;
 
             newSummonSpell.BehaviorType = (BehaviorType) behaviorType.value;

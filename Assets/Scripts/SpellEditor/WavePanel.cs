@@ -57,11 +57,11 @@ public class WavePanel : MonoBehaviour
         WaveSpell newWaveSpell = new WaveSpell
         {
             geometryPropagation = (Geometry) geometry.value,
-            duration = duration.text == "" ? 1 : Int32.Parse(duration.text),
+            duration = duration.text == "" ? 1 : float.Parse(duration.text),
             initialWidth = initialWidth.text == "" ? 1 : Int32.Parse(initialWidth.text),
-            damages = damages.text == "" ? 0 : Int32.Parse(damages.text),
-            incrementAmplitudeByTime = incrementAmplitudeByTime.text == "" ? 0.1f : Int32.Parse(incrementAmplitudeByTime.text),
-            speedPropagation = speedPropagation.text == "" ? 0.1f : Int32.Parse(speedPropagation.text),
+            damages = damages.text == "" ? 0 : float.Parse(damages.text),
+            incrementAmplitudeByTime = incrementAmplitudeByTime.text == "" ? 0.1f : float.Parse(incrementAmplitudeByTime.text),
+            speedPropagation = speedPropagation.text == "" ? 0.1f : float.Parse(speedPropagation.text),
             effectsOnHit = effectsOnHitList
         };
 

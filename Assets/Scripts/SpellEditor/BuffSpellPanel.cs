@@ -141,12 +141,12 @@ namespace SpellEditor
             {
                 return null;
             }
-            newBuffSpell.duration = duration.text == "" ? 0 : Int32.Parse(duration.text);
+            newBuffSpell.duration = duration.text == "" ? 0 : float.Parse(duration.text);
 
-            newBuffSpell.interval = interval.text == "" ? 0 : Int32.Parse(interval.text);
+            newBuffSpell.interval = interval.text == "" ? 0 : float.Parse(interval.text);
             newBuffSpell.stack = stack.text == "" ? 0 : Int32.Parse(stack.text);
             
-            newBuffSpell.damageOnSelf = damageOnSelf.text == "" ? 0 : Int32.Parse(damageOnSelf.text);
+            newBuffSpell.damageOnSelf = damageOnSelf.text == "" ? 0 : float.Parse(damageOnSelf.text);
         
             newBuffSpell.disapearOnDamageReceived = disappearOnDamageReceived.isOn;
             newBuffSpell.needNewPositionOnDamageReceived = needNewPositionOnDamageReceived.isOn;

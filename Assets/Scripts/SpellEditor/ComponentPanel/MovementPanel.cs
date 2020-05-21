@@ -40,8 +40,8 @@ namespace SpellEditor.ComponentPanel
         {
             MovementSpell movementPanel = new MovementSpell
             {
-                duration = duration.text != "" ? Int32.Parse(duration.text) : -1,
-                speed = speed.text != "" ? Int32.Parse(speed.text) : 1,
+                duration = duration.text != "" ? float.Parse(duration.text) : -1,
+                speed = speed.text != "" ? float.Parse(speed.text) : 1,
                 isFollowingMouse = isFollowingMouse.isOn,
                 movementSpellType = (MovementSpellType) typeMovement.value,
                 linkedSpellAtTheStart = linkedSpellAtTheStart.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellAtTheStart.options[linkedSpellAtTheStart.value].text] : null,

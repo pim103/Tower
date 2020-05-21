@@ -79,10 +79,11 @@ namespace SpellEditor
 
             Spell spell = new Spell
             {
+
                 nameSpell = nameSpell.text,
-                cooldown = Int32.Parse(cooldown.text),
-                cost = Int32.Parse(cost.text),
-                castTime = Int32.Parse(castTime.text),
+                cooldown = float.Parse(cooldown.text),
+                cost = float.Parse(cost.text),
+                castTime = float.Parse(castTime.text),
                 nbUse = Int32.Parse(nbUse.text),
                 canRecast = canRecast.isOn,
                 canCastDuringCast = canCastDuringCast.isOn,

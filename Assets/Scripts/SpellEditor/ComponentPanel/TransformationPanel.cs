@@ -38,7 +38,7 @@ namespace SpellEditor.ComponentPanel
             
             TransformationSpell transformationSpell = new TransformationSpell
             {
-                duration = duration.text != "" ? Int32.Parse(duration.text) : -1,
+                duration = duration.text != "" ? float.Parse(duration.text) : -1,
                 idPoolPrefab = idPoolObject.text != "" ? Int32.Parse(idPoolObject.text) : -1,
                 newSpells = newSpells
             };

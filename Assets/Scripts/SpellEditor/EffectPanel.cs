@@ -60,7 +60,7 @@ namespace SpellEditor
                 originExpulsion = (OriginExpulsion) originDropdown.value,
                 directionExpul = (DirectionExpulsion) directionDropdown.value,
                 level = Int32.Parse(level.text),
-                durationInSeconds = Int32.Parse(duration.text),
+                durationInSeconds = float.Parse(duration.text),
             };
             
             ListCreatedElement.Effects.Add(nameEffect.text, newEffect);

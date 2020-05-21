@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Games.Global;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,8 @@ namespace SpellEditor.PanelUtils
         Effect,
         Spell,
         SpellComponent,
-        SpellWithCondition
+        SpellWithCondition,
+        TypeEffects
     }
     
     public class DropdownMultiSelector : MonoBehaviour
@@ -93,6 +95,10 @@ namespace SpellEditor.PanelUtils
                     listNames.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
                     break;
                 case SelectedObject.SpellWithCondition:
+                    break;
+                case SelectedObject.TypeEffects:
+                    string[] enumNames = Enum.GetNames(typeof(TypeEffect));
+                    listNames.AddRange(enumNames.ToList());
                     break;
             }
 

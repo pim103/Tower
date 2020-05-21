@@ -41,6 +41,8 @@ namespace SpellEditor
         [SerializeField] private MovementPanel movementPanel;
         
         [SerializeField] private SummonPanel summonPanel;
+        
+        [SerializeField] private AreaOfEffectPanel areaOfEffectPanel;
 
         // Start is called before the first frame update
         void Start()
@@ -119,6 +121,7 @@ namespace SpellEditor
                     break;
                 case TypeSpell.AreaOfEffect:
                     panels["AreaOfEffectPanel"].SetActive(true);
+                    areaOfEffectPanel.InitAreaOfEffectPanel();
                     break;
             }
         }
@@ -156,6 +159,7 @@ namespace SpellEditor
                     spellComponentToSave = wavePanel.SaveCurrentPanel();
                     break;
                 case TypeSpell.AreaOfEffect:
+                    spellComponentToSave = areaOfEffectPanel.SaveCurrentPanel();
                     break;
             }
 

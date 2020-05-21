@@ -42,7 +42,6 @@ namespace Games.Global.Spells.SpellsController
                 isBasicAttack = origin.isBasicAttack,
                 randomTargetHit = origin.randomTargetHit,
                 spellWithConditions = origin.spellWithConditions,
-                transformToFollow = origin.transformToFollow,
                 wantToFollow = origin.wantToFollow,
                 linkedSpellOnEnd = origin.linkedSpellOnEnd,
                 linkedSpellOnInterval = origin.linkedSpellOnInterval,

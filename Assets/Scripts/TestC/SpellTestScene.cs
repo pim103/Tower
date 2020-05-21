@@ -271,8 +271,7 @@ namespace TestC
                 effectsOnEnemiesOnInterval = effects,
                 wantToFollow = true,
                 OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward,
-                transformToFollow = player.transform
+                OriginalDirection = OriginalDirection.Forward
             };
             
             MovementSpell movementSpell = new MovementSpell

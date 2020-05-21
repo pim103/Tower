@@ -55,7 +55,7 @@ namespace SpellEditor.ComponentPanel
 
             PassiveSpell passiveSpell = new PassiveSpell
             {
-                interval = interval.text != "" ? Int32.Parse(interval.text) : 0,
+                interval = interval.text != "" ? float.Parse(interval.text) : 0,
                 linkedEffectOnInterval = linkedSpellOnInterval.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnInterval.options[linkedSpellOnInterval.value].text] : null,
                 permanentLinkedEffect = permanentLinkedEffect.value != 0 ? ListCreatedElement.SpellComponents[permanentLinkedEffect.options[permanentLinkedEffect.value].text] : null,
                 newDefensiveSpell = newDefensiveSpell.value != 0 ? ListCreatedElement.Spell[newDefensiveSpell.options[newDefensiveSpell.value].text] : null
