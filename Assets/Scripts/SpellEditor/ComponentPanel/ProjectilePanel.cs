@@ -26,14 +26,15 @@ namespace SpellEditor.ComponentPanel
         public void InitProjectilePanel()
         {
             ResetProjectile();
-            
-            List<string> listNames = ListCreatedElement.SpellComponents.Keys.ToList();
+
+            List<string> listOptionsSpellComponent = new List<string> {"None"};
+            listOptionsSpellComponent.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
 
             linkedSpellOnDisable.options.Clear();
             linkedSpellOnEnable.options.Clear();
 
-            linkedSpellOnDisable.AddOptions(listNames);
-            linkedSpellOnEnable.AddOptions(listNames);
+            linkedSpellOnDisable.AddOptions(listOptionsSpellComponent);
+            linkedSpellOnEnable.AddOptions(listOptionsSpellComponent);
 
             effectMultiSelector.InitDropdownMultiSelect();
         }
@@ -44,7 +45,7 @@ namespace SpellEditor.ComponentPanel
             {
                 return null;
             }
-            
+
             ProjectileSpell projSpell = new ProjectileSpell
             {
                 damages = damage.text != "" ? float.Parse(damage.text) : 0,
@@ -53,8 +54,12 @@ namespace SpellEditor.ComponentPanel
                 damageMultiplierOnDistance = multiplier.text != "" ? float.Parse(multiplier.text) : 0,
                 idPoolObject = Int32.Parse(idPoolObject.text),
                 passingThroughEntity = passingThrough.isOn,
-                linkedSpellOnEnable = linkedSpellOnEnable.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnEnable.options[linkedSpellOnEnable.value].text] : null,
-                linkedSpellOnDisable = linkedSpellOnDisable.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnDisable.options[linkedSpellOnDisable.value].text] : null
+                linkedSpellOnEnable = linkedSpellOnEnable.value != 0
+                    ? ListCreatedElement.SpellComponents[linkedSpellOnEnable.options[linkedSpellOnEnable.value].text]
+                    : null,
+                linkedSpellOnDisable = linkedSpellOnDisable.value != 0
+                    ? ListCreatedElement.SpellComponents[linkedSpellOnDisable.options[linkedSpellOnDisable.value].text]
+                    : null
             };
 
             projSpell.effectsOnHit = new List<Effect>();
@@ -78,6 +83,27 @@ namespace SpellEditor.ComponentPanel
 
             linkedSpellOnEnable.value = 0;
             linkedSpellOnDisable.value = 0;
+        }
+
+        public void FillCurrentPanel(ProjectileSpell projectileSpell)
+        {
+            idPoolObject.text = projectileSpell.idPoolObject.ToString();
+            speed.text = projectileSpell.speed.ToString();
+            damage.text = projectileSpell.damages.ToString();
+            duration.text = projectileSpell.duration.ToString();
+            multiplier.text = projectileSpell.damageMultiplierOnDistance.ToString();
+            passingThrough.isOn = projectileSpell.passingThroughEntity;
+
+            linkedSpellOnEnable.value = projectileSpell.linkedSpellOnEnable != null
+                ? linkedSpellOnEnable.options.FindIndex(option =>
+                    option.text == projectileSpell.linkedSpellOnEnable.nameSpellComponent)
+                : 0;
+            linkedSpellOnDisable.value = projectileSpell.linkedSpellOnDisable != null
+                ? linkedSpellOnDisable.options.FindIndex(option =>
+                    option.text == projectileSpell.linkedSpellOnDisable.nameSpellComponent)
+                : 0;
+
+            effectMultiSelector.InitDropdownWithValue(projectileSpell.effectsOnHit);
         }
     }
 }

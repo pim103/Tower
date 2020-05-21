@@ -36,6 +36,7 @@ namespace SpellEditor.ComponentPanel
 
         private void ResetPassivePanel()
         {
+            interval.text = "";
             newDefensiveSpell.value = 0;
             permanentLinkedEffect.value = 0;
             linkedSpellOnInterval.value = 0;
@@ -43,7 +44,7 @@ namespace SpellEditor.ComponentPanel
 
         public SpellComponent SavePassive()
         {
-            if (newDefensiveSpell.value == 0 && linkedSpellOnInterval.value == 0  && permanentLinkedEffect.value == 0)
+            if (newDefensiveSpell.value == 0 && linkedSpellOnInterval.value == 0 && permanentLinkedEffect.value == 0)
             {
                 return null;
             }
@@ -56,13 +57,39 @@ namespace SpellEditor.ComponentPanel
             PassiveSpell passiveSpell = new PassiveSpell
             {
                 interval = interval.text != "" ? float.Parse(interval.text) : 0,
-                linkedEffectOnInterval = linkedSpellOnInterval.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnInterval.options[linkedSpellOnInterval.value].text] : null,
-                permanentLinkedEffect = permanentLinkedEffect.value != 0 ? ListCreatedElement.SpellComponents[permanentLinkedEffect.options[permanentLinkedEffect.value].text] : null,
-                newDefensiveSpell = newDefensiveSpell.value != 0 ? ListCreatedElement.Spell[newDefensiveSpell.options[newDefensiveSpell.value].text] : null
+                linkedEffectOnInterval = linkedSpellOnInterval.value != 0
+                    ? ListCreatedElement.SpellComponents[
+                        linkedSpellOnInterval.options[linkedSpellOnInterval.value].text]
+                    : null,
+                permanentLinkedEffect = permanentLinkedEffect.value != 0
+                    ? ListCreatedElement.SpellComponents[
+                        permanentLinkedEffect.options[permanentLinkedEffect.value].text]
+                    : null,
+                newDefensiveSpell = newDefensiveSpell.value != 0
+                    ? ListCreatedElement.Spell[newDefensiveSpell.options[newDefensiveSpell.value].text]
+                    : null
             };
 
             ResetPassivePanel();
             return passiveSpell;
+        }
+
+        public void FillCurrentPanel(PassiveSpell passiveSpell)
+        {
+            interval.text = passiveSpell.interval.ToString();
+
+            newDefensiveSpell.value = passiveSpell.newDefensiveSpell != null
+                ? newDefensiveSpell.options.FindIndex(option =>
+                    option.text == passiveSpell.newDefensiveSpell.nameSpell)
+                : 0;
+            permanentLinkedEffect.value = passiveSpell.permanentLinkedEffect != null
+                ? permanentLinkedEffect.options.FindIndex(option =>
+                    option.text == passiveSpell.permanentLinkedEffect.nameSpellComponent)
+                : 0;
+            linkedSpellOnInterval.value = passiveSpell.linkedEffectOnInterval != null
+                ? linkedSpellOnInterval.options.FindIndex(option =>
+                    option.text == passiveSpell.linkedEffectOnInterval.nameSpellComponent)
+                : 0;
         }
     }
 }

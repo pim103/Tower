@@ -16,14 +16,14 @@ namespace SpellEditor
         [SerializeField] private InputField duration;
         [SerializeField] private InputField stack;
         [SerializeField] private InputField damageOnSelf;
-        
+
         [SerializeField] private Toggle disappearOnDamageReceived;
         [SerializeField] private Toggle needNewPositionOnDamageReceived;
         [SerializeField] private Toggle needNewPositionOnHit;
         [SerializeField] private Toggle needNewPositionOnAttack;
         [SerializeField] private Toggle needNewPositionOnInterval;
         [SerializeField] private Toggle triggerInvocationCallOneTime;
-        
+
         [SerializeField] private Dropdown replaceProjectile;
         [SerializeField] private Dropdown linkedSpellOnDamageReceived;
         [SerializeField] private Dropdown linkedSpellOnHit;
@@ -51,6 +51,7 @@ namespace SpellEditor
             {
                 nameList.Add(spellComponent.Key);
             }
+
             linkedSpellOnDamageReceived.ClearOptions();
             linkedSpellOnDamageReceived.AddOptions(nameList);
             linkedSpellOnHit.ClearOptions();
@@ -59,7 +60,7 @@ namespace SpellEditor
             linkedSpellOnAttack.AddOptions(nameList);
             linkedSpellOnInterval.ClearOptions();
             linkedSpellOnInterval.AddOptions(nameList);
-            
+
             string[] enumNames = Enum.GetNames(typeof(ConditionReduceCharge));
             List<string> listNames = new List<string>(enumNames);
             conditionReduceCharge.ClearOptions();
@@ -82,7 +83,7 @@ namespace SpellEditor
                 return null;
             }).ToList();
             replaceProjectile.AddOptions(projectileSpells);
-            
+
             effectOnSelfWhenNoCharge.ClearOptions();
             effectOnSelfWhenNoCharge.AddOptions(nameList);
             effectsOnSelf.InitDropdownMultiSelect();
@@ -123,17 +124,19 @@ namespace SpellEditor
         public BuffSpell SaveCurrentPanel()
         {
             BuffSpell newBuffSpell = new BuffSpell();
-            
+
             foreach (var effect in ListCreatedElement.Effects)
             {
                 if (effectsOnSelf.selectedIndex.Contains(effect.Key))
                 {
                     effectsOnSelfList.Add(effect.Value);
                 }
+
                 if (effectsOnDamageReceived.selectedIndex.Contains(effect.Key))
                 {
                     effectsOnSelfOnDamageReceived.Add(effect.Value);
                 }
+
                 if (effectOnTargetOnHit.selectedIndex.Contains(effect.Key))
                 {
                     effectsOnTargetOnHit.Add(effect.Value);
@@ -149,17 +152,22 @@ namespace SpellEditor
                 }
             }
             //needs spellwithcondition
-            if ((duration.text != "" && interval.text == "") || (duration.text == "" && stack.text == "") /*|| (linkedSpellOnDamageReceived.value == 0 && linkedSpellOnAttack.value == 0 && linkedSpellOnHit.value == 0 && linkedSpellOnInterval.value == 0)*/)
+            if ((duration.text != "" && interval.text == "") ||
+                (duration.text == "" &&
+                 stack.text == ""
+                ) /*|| (linkedSpellOnDamageReceived.value == 0 && linkedSpellOnAttack.value == 0 && linkedSpellOnHit.value == 0 && linkedSpellOnInterval.value == 0)*/
+            )
             {
                 return null;
             }
+
             newBuffSpell.duration = duration.text == "" ? 0 : float.Parse(duration.text);
 
             newBuffSpell.interval = interval.text == "" ? 0 : float.Parse(interval.text);
             newBuffSpell.stack = stack.text == "" ? 0 : Int32.Parse(stack.text);
-            
+
             newBuffSpell.damageOnSelf = damageOnSelf.text == "" ? 0 : float.Parse(damageOnSelf.text);
-        
+
             newBuffSpell.disapearOnDamageReceived = disappearOnDamageReceived.isOn;
             newBuffSpell.needNewPositionOnDamageReceived = needNewPositionOnDamageReceived.isOn;
             newBuffSpell.needNewPositionOnHit = needNewPositionOnHit.isOn;
@@ -169,24 +177,67 @@ namespace SpellEditor
 
             if (replaceProjectile.GetType() == typeof(ProjectileSpell))
             {
-                newBuffSpell.replaceProjectile = replaceProjectile.value != 0 ? (ProjectileSpell) ListCreatedElement.SpellComponents[replaceProjectile.options[replaceProjectile.value].text] : null;
+                newBuffSpell.replaceProjectile = replaceProjectile.value != 0
+                    ? (ProjectileSpell) ListCreatedElement.SpellComponents[
+                        replaceProjectile.options[replaceProjectile.value].text]
+                    : null;
             }
-            
-            
-            newBuffSpell.linkedSpellOnDamageReceived = linkedSpellOnDamageReceived.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnDamageReceived.options[linkedSpellOnDamageReceived.value].text] : null;
-            newBuffSpell.linkedSpellOnHit = linkedSpellOnHit.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnHit.options[linkedSpellOnHit.value].text] : null;
-            newBuffSpell.linkedSpellOnAttack = linkedSpellOnAttack.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnAttack.options[linkedSpellOnAttack.value].text] : null;
-            newBuffSpell.linkedSpellOnInterval = linkedSpellOnInterval.value != 0 ? ListCreatedElement.SpellComponents[linkedSpellOnInterval.options[linkedSpellOnInterval.value].text] : null;
+
+
+            newBuffSpell.linkedSpellOnDamageReceived = linkedSpellOnDamageReceived.value != 0
+                ? ListCreatedElement.SpellComponents[
+                    linkedSpellOnDamageReceived.options[linkedSpellOnDamageReceived.value].text]
+                : null;
+            newBuffSpell.linkedSpellOnHit = linkedSpellOnHit.value != 0
+                ? ListCreatedElement.SpellComponents[linkedSpellOnHit.options[linkedSpellOnHit.value].text]
+                : null;
+            newBuffSpell.linkedSpellOnAttack = linkedSpellOnAttack.value != 0
+                ? ListCreatedElement.SpellComponents[linkedSpellOnAttack.options[linkedSpellOnAttack.value].text]
+                : null;
+            newBuffSpell.linkedSpellOnInterval = linkedSpellOnInterval.value != 0
+                ? ListCreatedElement.SpellComponents[linkedSpellOnInterval.options[linkedSpellOnInterval.value].text]
+                : null;
             newBuffSpell.conditionReduceCharge = (ConditionReduceCharge) conditionReduceCharge.value;
-            newBuffSpell.effectOnSelfWhenNoCharge = effectOnSelfWhenNoCharge.value != 0 ? ListCreatedElement.Effects[effectOnSelfWhenNoCharge.options[effectOnSelfWhenNoCharge.value].text] : new Effect();
+            newBuffSpell.effectOnSelfWhenNoCharge = effectOnSelfWhenNoCharge.value != 0
+                ? ListCreatedElement.Effects[effectOnSelfWhenNoCharge.options[effectOnSelfWhenNoCharge.value].text]
+                : new Effect();
             newBuffSpell.newPlayerBehaviour = (BehaviorType) behaviorType.value;
             newBuffSpell.effectOnSelf = effectsOnSelfList;
             newBuffSpell.effectOnSelfOnDamageReceived = effectsOnSelfOnDamageReceived;
             newBuffSpell.effectOnTargetOnHit = effectsOnTargetOnHit;
             newBuffSpell.spellWithCondition = spellWithConditionList;
             ResetCurrentPanel();
-            
+
             return newBuffSpell;
+        }
+
+        public void FillCurrentPanel(BuffSpell buffSpell)
+        {
+            interval.text = buffSpell.interval.ToString();
+            duration.text = buffSpell.duration.ToString();
+            stack.text = buffSpell.stack.ToString();
+            damageOnSelf.text = buffSpell.damageOnSelf.ToString();
+
+            disappearOnDamageReceived.isOn = buffSpell.disapearOnDamageReceived;
+            needNewPositionOnDamageReceived.isOn = buffSpell.needNewPositionOnDamageReceived;
+            needNewPositionOnHit.isOn = buffSpell.needNewPositionOnHit;
+            needNewPositionOnAttack.isOn = buffSpell.needNewPositionOnAttack;
+            needNewPositionOnInterval.isOn = buffSpell.needNewPositionOnInterval;
+            triggerInvocationCallOneTime.isOn = buffSpell.triggerInvocationCallOneTime;
+
+            linkedSpellOnDamageReceived.value = buffSpell.linkedSpellOnDamageReceived != null ? linkedSpellOnDamageReceived.options.FindIndex(option => option.text == buffSpell.linkedSpellOnDamageReceived.nameSpellComponent) : 0;
+            linkedSpellOnHit.value = buffSpell.linkedSpellOnHit != null ? linkedSpellOnHit.options.FindIndex(option => option.text == buffSpell.linkedSpellOnHit.nameSpellComponent) : 0;
+            linkedSpellOnAttack.value = buffSpell.linkedSpellOnAttack != null ? linkedSpellOnAttack.options.FindIndex(option => option.text == buffSpell.linkedSpellOnAttack.nameSpellComponent) : 0;
+            linkedSpellOnInterval.value = buffSpell.linkedSpellOnInterval != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == buffSpell.linkedSpellOnInterval.nameSpellComponent) : 0;
+            replaceProjectile.value = buffSpell.replaceProjectile != null ? replaceProjectile.options.FindIndex(option => option.text == buffSpell.replaceProjectile.nameSpellComponent) : 0;
+            conditionReduceCharge.value = (int) buffSpell.conditionReduceCharge;
+            effectOnSelfWhenNoCharge.value = buffSpell.effectOnSelfWhenNoCharge != null ? effectOnSelfWhenNoCharge.options.FindIndex(option => option.text == buffSpell.effectOnSelfWhenNoCharge.nameEffect) : 0;
+            behaviorType.value = (int) buffSpell.newPlayerBehaviour;
+
+            effectsOnSelf.InitDropdownWithValue(buffSpell.effectOnSelf);
+            effectsOnDamageReceived.InitDropdownWithValue(buffSpell.effectOnSelfOnDamageReceived);
+            effectOnTargetOnHit.InitDropdownWithValue(buffSpell.effectOnTargetOnHit);
+            spellWithCondition.InitDropdownWithValue(buffSpell.spellWithCondition);
         }
     }
 }

@@ -114,6 +114,11 @@ namespace SpellEditor
             }
             else
             {
+                if (ListCreatedElement.Spell.ContainsKey(nameSpell.text))
+                {
+                    Debug.Log("!!!!!!!! TRY TO CREATE SPELL WITH SAME NAME - PLEASE CHOOSE ANOTHER NAME OR SELECT SPELL !!!!!!!!");
+                    return;
+                }
                 ListCreatedElement.Spell.Add(nameSpell.text, spell);
             }
 

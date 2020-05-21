@@ -190,7 +190,22 @@ namespace SpellEditor
             spellComponentToSave.needPositionToMidToEntity = positionMidEntity.isOn;
             spellComponentToSave.castByPassive = castByPassive.isOn;
 
-            ListCreatedElement.SpellComponents.Add(nameSpellComponent.text, spellComponentToSave);
+            if (spellComponentSelector.value != 0)
+            {
+                Debug.Log("WARNING - ERASE DATA");
+                string spellComponentChoose = spellComponentSelector.options[spellComponentSelector.value].text;
+
+                NavBar.ModifyExistingComponent(ListCreatedElement.SpellComponents[spellComponentChoose], spellComponentToSave);
+            }
+            else
+            {
+                if (ListCreatedElement.SpellComponents.ContainsKey(nameSpellComponent.text))
+                {
+                    Debug.Log("!!!!!!!! TRY TO CREATE SPELLCOMPONENT WITH SAME NAME - PLEASE CHOOSE ANOTHER NAME OR SELECT SPELLCOMPONENT !!!!!!!!");
+                    return;
+                }
+                ListCreatedElement.SpellComponents.Add(nameSpellComponent.text, spellComponentToSave);
+            }
 
             ResetCurrentSpellComponent();
         }
@@ -202,6 +217,7 @@ namespace SpellEditor
             typeSpell.value = 0;
             position.value = 0;
             direction.value = 0;
+            spellComponentSelector.value = 0;
 
             isBasicAttack.isOn = false;
             positionMidEntity.isOn = false;
@@ -233,6 +249,34 @@ namespace SpellEditor
             isBasicAttack.isOn = spellComponentSelected.isBasicAttack;
             positionMidEntity.isOn = spellComponentSelected.needPositionToMidToEntity;
             castByPassive.isOn = spellComponentSelected.castByPassive;
+            
+            switch ((TypeSpell) typeSpell.value)
+            {
+                case TypeSpell.Buff:
+                    buffSpellPanel.FillCurrentPanel((BuffSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Movement:
+                    movementPanel.FillCurrentPanel((MovementSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Passive:
+                    passivePanel.FillCurrentPanel((PassiveSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Projectile:
+                    projectilePanel.FillCurrentPanel((ProjectileSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Summon:
+                    summonPanel.FillCurrentPanel((SummonSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Transformation:
+                    transformationPanel.FillCurrentPanel((TransformationSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.Wave:
+                    wavePanel.FillCurrentPanel((WaveSpell) spellComponentSelected);
+                    break;
+                case TypeSpell.AreaOfEffect:
+                    areaOfEffectPanel.FillCurrentPanel((AreaOfEffectSpell) spellComponentSelected);
+                    break;
+            }
         }
     }
 }

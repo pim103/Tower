@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -104,6 +106,50 @@ namespace SpellEditor.PanelUtils
             }
 
             dropdown.AddOptions(listNames);
+        }
+        
+        public void InitDropdownWithValue<T>(List<T> genericObjects)
+        {
+            if (genericObjects == null || genericObjects.Count == 0)
+            {
+                return;
+            }
+
+            foreach (T obj in genericObjects)
+            {
+                if (obj == null)
+                {
+                    continue;
+                }
+
+                switch (selectedObject)
+                {
+                    case SelectedObject.Effect:
+                        Effect effect = obj as Effect;
+                        selectedIndex.Add(effect.nameEffect);
+                        break;
+                    case SelectedObject.Spell:
+                        Spell spell = obj as Spell;
+                        selectedIndex.Add(spell.nameSpell);
+                        break;
+                    case SelectedObject.SpellComponent:
+                        SpellComponent spellComponent = obj as SpellComponent;
+                        selectedIndex.Add(spellComponent.nameSpellComponent);
+                        break;
+                    case SelectedObject.SpellWithCondition:
+                        SpellWithCondition spellWithCondition = obj as SpellWithCondition;
+                        selectedIndex.Add(spellWithCondition.nameSpellWithCondition);
+                        break;
+                }
+            }
+        }
+
+        public void InitDropdownWithValueFromEnum(List<TypeEffect> typeEffectList)
+        {
+            foreach (TypeEffect type in typeEffectList)
+            {
+                selectedIndex.Add(type.ToString());
+            }
         }
     }
 }

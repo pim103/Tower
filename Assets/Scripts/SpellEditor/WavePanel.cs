@@ -68,4 +68,15 @@ public class WavePanel : MonoBehaviour
         ResetCurrentPanel();
         return newWaveSpell;
     }
+    
+    public void FillCurrentPanel(WaveSpell waveSpell)
+    {
+        geometry.value = (int) waveSpell.geometryPropagation;
+        initialWidth.text = waveSpell.initialWidth.ToString();
+        duration.text = waveSpell.duration.ToString();
+        damages.text = waveSpell.damages.ToString();
+        incrementAmplitudeByTime.text = waveSpell.incrementAmplitudeByTime.ToString();
+        speedPropagation.text = waveSpell.speedPropagation.ToString();
+        effectsOnHit.InitDropdownWithValue(waveSpell.effectsOnHit);
+    }
 }

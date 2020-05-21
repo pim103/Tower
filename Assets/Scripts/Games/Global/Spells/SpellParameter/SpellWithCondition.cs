@@ -23,15 +23,16 @@
     
     public class SpellWithCondition
     {
-        public InstructionTargeting instructionTargeting;
-        public ConditionType conditionType;
+        public InstructionTargeting instructionTargeting { get; set; }
+        public ConditionType conditionType { get; set; }
 
-        public Effect effect;
-        public SpellComponent spellComponent;
+        public Effect effect { get; set; }
+        public SpellComponent spellComponent { get; set; }
 
         /* list condition */
         /* Following effect need one of these condition */
-        public Effect conditionEffect;
-        public int level;
+        public Effect conditionEffect { get; set; }
+        public int level { get; set; }
+        public string nameSpellWithCondition { get; set; }
     }
 }

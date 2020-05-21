@@ -5,6 +5,7 @@ using System.Reflection;
 using FullSerializer;
 using Games.Global;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -157,6 +158,18 @@ namespace SpellEditor
             ParsePropertyInfo(spellComponent, spellComponent.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance));
         }
 
+        private void ParseSpellWithCondition(SpellWithCondition spellWithCondition)
+        {
+            if (spellWithCondition == null || ListCreatedElement.SpellWithCondition.ContainsKey(spellWithCondition.nameSpellWithCondition))
+            {
+                return;
+            }
+
+            ListCreatedElement.SpellWithCondition.Add(spellWithCondition.nameSpellWithCondition, spellWithCondition);
+
+            ParsePropertyInfo(spellWithCondition, spellWithCondition.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance));
+        }
+
         private void ParsePropertyInfo(object origin, PropertyInfo[] propertyInfos)
         {
             foreach (PropertyInfo prop in propertyInfos)
@@ -166,8 +179,19 @@ namespace SpellEditor
                     if (prop.PropertyType == typeof(List<Effect>))
                     {
                         List<Effect> effectsProp = (List<Effect>) prop.GetValue(origin);
+
+                        if (effectsProp == null)
+                        {
+                            continue;
+                        }
+
                         foreach (Effect effect in effectsProp)
                         {
+                            if (effect.nameEffect == null)
+                            {
+                                continue;
+                            }
+
                             if (!ListCreatedElement.Effects.ContainsKey(effect.nameEffect))
                             {
                                 ListCreatedElement.Effects.Add(effect.nameEffect, effect);
@@ -177,6 +201,10 @@ namespace SpellEditor
                     else
                     {
                         Effect effectProp = (Effect) prop.GetValue(origin);
+                        if (effectProp == null || effectProp.nameEffect == null)
+                        {
+                            continue;
+                        }
 
                         if (!ListCreatedElement.Effects.ContainsKey(effectProp.nameEffect))
                         {
@@ -212,6 +240,22 @@ namespace SpellEditor
                     {
                         SpellComponent spellComponentProp = (SpellComponent) prop.GetValue(origin);
                         ParseSpellComponent(spellComponentProp);
+                    }
+                } else if (prop.PropertyType == typeof(SpellWithCondition) ||
+                           prop.PropertyType == typeof(List<SpellWithCondition>))
+                {
+                    if (prop.PropertyType == typeof(List<SpellWithCondition>))
+                    {
+                        List<SpellWithCondition> spellWithConditionsProp = (List<SpellWithCondition>) prop.GetValue(origin);
+                        foreach (SpellWithCondition spellWithConditionIn in spellWithConditionsProp)
+                        {
+                            ParseSpellWithCondition(spellWithConditionIn);
+                        }
+                    }
+                    else
+                    {
+                        SpellWithCondition spellWithConditionsProp = (SpellWithCondition) prop.GetValue(origin);
+                        ParseSpellWithCondition(spellWithConditionsProp);
                     }
                 }
             }

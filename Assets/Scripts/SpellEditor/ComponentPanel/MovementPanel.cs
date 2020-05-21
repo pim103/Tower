@@ -61,5 +61,15 @@ namespace SpellEditor.ComponentPanel
             linkedSpellAtTheStart.value = 0;
             linkedSpellAtTheEnd.value = 0;
         }
+
+        public void FillCurrentPanel(MovementSpell movementSpell)
+        {
+            duration.text = movementSpell.duration.ToString();
+            speed.text = movementSpell.speed.ToString();
+            isFollowingMouse.isOn = movementSpell.isFollowingMouse;
+            typeMovement.value = (int) movementSpell.movementSpellType;
+            linkedSpellAtTheStart.value = movementSpell.linkedSpellAtTheStart != null ? linkedSpellAtTheStart.options.FindIndex(option => option.text == movementSpell.linkedSpellAtTheStart.nameSpellComponent) : 0;
+            linkedSpellAtTheEnd.value = movementSpell.linkedSpellAtTheEnd != null ? linkedSpellAtTheEnd.options.FindIndex(option => option.text == movementSpell.linkedSpellAtTheEnd.nameSpellComponent) : 0;
+        }
     }
 }

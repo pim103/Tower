@@ -87,6 +87,11 @@ namespace SpellEditor
             }
             else
             {
+                if (ListCreatedElement.Effects.ContainsKey(nameEffect.text))
+                {
+                    Debug.Log("!!!!!!!! TRY TO CREATE EFFECT WITH SAME NAME - PLEASE CHOOSE ANOTHER NAME OR SELECT EFFECT !!!!!!!!");
+                    return;
+                }
                 ListCreatedElement.Effects.Add(nameEffect.text, newEffect);
             }
 

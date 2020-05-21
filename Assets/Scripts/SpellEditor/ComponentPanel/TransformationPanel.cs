@@ -53,5 +53,12 @@ namespace SpellEditor.ComponentPanel
             duration.text = "";
             idPoolObject.text = "";
         }
+        
+        public void FillCurrentPanel(TransformationSpell transformationSpell)
+        {
+            duration.text = transformationSpell.duration.ToString();
+            idPoolObject.text = transformationSpell.idPoolPrefab.ToString();
+            newSpellList.InitDropdownWithValue(transformationSpell.newSpells);
+        }
     }
 }

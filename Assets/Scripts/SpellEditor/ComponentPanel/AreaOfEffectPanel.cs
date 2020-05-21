@@ -172,5 +172,35 @@ namespace SpellEditor.ComponentPanel
             ResetCurrentPanel();
             return newAreaOfEffectSpell;
         }
+        
+        public void FillCurrentPanel(AreaOfEffectSpell areaOfEffectSpell)
+        {
+            interval.text = areaOfEffectSpell.interval.ToString();
+            duration.text = areaOfEffectSpell.duration.ToString();
+            scaleX.text = areaOfEffectSpell.scale.x.ToString();
+            scaleY.text = areaOfEffectSpell.scale.y.ToString();
+            scaleZ.text = areaOfEffectSpell.scale.z.ToString();
+            damagesOnEnemiesOnInterval.text = areaOfEffectSpell.damagesOnEnemiesOnInterval.ToString();
+            damagesOnAlliesOnInterval.text = areaOfEffectSpell.damagesOnAlliesOnInterval.ToString();
+            
+            geometry.value = (int) areaOfEffectSpell.geometry;
+            linkedSpellOnInterval.value = areaOfEffectSpell.linkedSpellOnInterval != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnInterval.nameSpellComponent) : 0;
+            effectOnHitOnStart.value = areaOfEffectSpell.effectOnHitOnStart != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.effectOnHitOnStart.nameEffect) : 0;
+            linkedSpellOnEnd.value = areaOfEffectSpell.linkedSpellOnEnd != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnEnd.nameSpellComponent) : 0;
+
+            effectsOnEnemiesOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnEnemiesOnInterval);
+            effectsOnPlayerOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnPlayerOnInterval);
+            effectsOnAlliesOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnAlliesOnInterval);
+            deleteEffectsOnPlayerOnInterval.InitDropdownWithValueFromEnum(areaOfEffectSpell.deleteEffectsOnPlayerOnInterval);
+            deleteEffectsOnEnemiesOnInterval.InitDropdownWithValueFromEnum(areaOfEffectSpell.deleteEffectsOnEnemiesOnInterval);
+            spellWithConditions.InitDropdownWithValue(areaOfEffectSpell.spellWithConditions);
+            
+            wantToFollow.isOn = areaOfEffectSpell.wantToFollow;
+            canStopProjectile.isOn = areaOfEffectSpell.canStopProjectile;
+            randomTargetHit.isOn = areaOfEffectSpell.randomTargetHit;
+            randomPosition.isOn = areaOfEffectSpell.randomPosition;
+            onePlay.isOn = areaOfEffectSpell.onePlay;
+            appliesPlayerOnHitEffect.isOn = areaOfEffectSpell.appliesPlayerOnHitEffect;
+        }
     }
 }
