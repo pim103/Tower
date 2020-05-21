@@ -15,7 +15,8 @@ namespace SpellEditor
     {
         Effect,
         Spell,
-        SpellComponent
+        SpellComponent,
+        SpellWithCondition
     }
     
     public class NavBar : MonoBehaviour
@@ -29,10 +30,13 @@ namespace SpellEditor
         [SerializeField] private Button createSpellButton;
         [SerializeField] private Button createSpellComponentButton;
         [SerializeField] private Button createSpellEffectButton;
+        [SerializeField] private Button createSpellWithConditionButton;
 
         [SerializeField] private GameObject spellPanel;
         [SerializeField] private GameObject spellComponentPanel;
         [SerializeField] private GameObject effectPanel;
+        [SerializeField] private GameObject spellWithConditionPanel;
+        [SerializeField] private SpellWithConditionPanel spellWithConditionPanelScript;
 
         private void Start()
         {
@@ -43,6 +47,7 @@ namespace SpellEditor
             createSpellButton.onClick.AddListener(delegate { SwitchPanel(Panel.Spell); });
             createSpellComponentButton.onClick.AddListener(delegate { SwitchPanel(Panel.SpellComponent); });
             createSpellEffectButton.onClick.AddListener(delegate { SwitchPanel(Panel.Effect); });
+            createSpellWithConditionButton.onClick.AddListener(delegate { SwitchPanel(Panel.SpellWithCondition); });
             
             exportSpells.onClick.AddListener(ExportSpells);
             importSpell.onClick.AddListener(ChooseSpellToImport);
@@ -66,6 +71,7 @@ namespace SpellEditor
             spellPanel.SetActive(false);
             spellComponentPanel.SetActive(false);
             effectPanel.SetActive(false);
+            spellWithConditionPanel.SetActive(false);
 
             switch (newPanel)
             {
@@ -80,6 +86,10 @@ namespace SpellEditor
                 case Panel.SpellComponent:
                     spellComponentPanelScript.InitSpellComponentPanel();
                     spellComponentPanel.SetActive(true);
+                    break;
+                case Panel.SpellWithCondition:
+                    spellWithConditionPanelScript.InitSpellWithCondition();
+                    spellWithConditionPanel.SetActive(true);
                     break;
             }
         }

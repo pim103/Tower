@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using SpellEditor.PanelUtils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace SpellEditor.ComponentPanel
         [SerializeField] private DropdownMultiSelector effectsOnAlliesOnInterval;
         [SerializeField] private DropdownMultiSelector deleteEffectsOnPlayerOnInterval;
         [SerializeField] private DropdownMultiSelector deleteEffectsOnEnemiesOnInterval;
+        [SerializeField] private DropdownMultiSelector spellWithConditions;
         
         [SerializeField] private Toggle wantToFollow;
         [SerializeField] private Toggle canStopProjectile;
@@ -60,12 +62,13 @@ namespace SpellEditor.ComponentPanel
             }
             effectOnHitOnStart.ClearOptions();
             effectOnHitOnStart.AddOptions(nameList);
-            
+
             effectsOnEnemiesOnInterval.InitDropdownMultiSelect();
             effectsOnPlayerOnInterval.InitDropdownMultiSelect();
             effectsOnAlliesOnInterval.InitDropdownMultiSelect();
             deleteEffectsOnEnemiesOnInterval.InitDropdownMultiSelect();
             deleteEffectsOnPlayerOnInterval.InitDropdownMultiSelect();
+            spellWithConditions.InitDropdownMultiSelect();
         }
 
         public void ResetCurrentPanel()
@@ -120,6 +123,16 @@ namespace SpellEditor.ComponentPanel
                     effectsOnPlayerOnIntervalList.Add(effect.Value);
                 }
             }
+            
+            List<SpellWithCondition> spellWithConditionsList = new List<SpellWithCondition>();
+            foreach (var spellWithCondition in ListCreatedElement.SpellWithCondition)
+            {
+                if (spellWithConditions.selectedIndex.Contains(spellWithCondition.Key))
+                {
+                    spellWithConditionsList.Add(spellWithCondition.Value);
+                }
+            }
+            
             List<TypeEffect> deleteEffectsOnEnemiesOnIntervalList = new List<TypeEffect>();
             List<TypeEffect> deleteEffectsOnPlayerOnIntervalList = new List<TypeEffect>();
             
@@ -147,6 +160,7 @@ namespace SpellEditor.ComponentPanel
             newAreaOfEffectSpell.effectsOnPlayerOnInterval = effectsOnPlayerOnIntervalList;
             newAreaOfEffectSpell.deleteEffectsOnEnemiesOnInterval = deleteEffectsOnEnemiesOnIntervalList;
             newAreaOfEffectSpell.deleteEffectsOnPlayerOnInterval = deleteEffectsOnPlayerOnIntervalList;
+            newAreaOfEffectSpell.spellWithConditions = spellWithConditionsList;
 
             newAreaOfEffectSpell.wantToFollow = wantToFollow.isOn;
             newAreaOfEffectSpell.canStopProjectile = canStopProjectile.isOn;

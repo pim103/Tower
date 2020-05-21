@@ -95,6 +95,7 @@ namespace SpellEditor.PanelUtils
                     listNames.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
                     break;
                 case SelectedObject.SpellWithCondition:
+                    listNames.AddRange(ListCreatedElement.SpellWithCondition.Keys.ToList());
                     break;
                 case SelectedObject.TypeEffects:
                     string[] enumNames = Enum.GetNames(typeof(TypeEffect));

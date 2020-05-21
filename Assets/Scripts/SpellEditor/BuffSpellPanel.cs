@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Games.Global;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using SpellEditor.PanelUtils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,7 @@ namespace SpellEditor
         [SerializeField] private DropdownMultiSelector effectsOnSelf;
         [SerializeField] private DropdownMultiSelector effectsOnDamageReceived;
         [SerializeField] private DropdownMultiSelector effectOnTargetOnHit;
+        [SerializeField] private DropdownMultiSelector spellWithCondition;
 
         private List<Effect> effectsOnSelfList;
         private List<Effect> effectsOnSelfOnDamageReceived;
@@ -86,6 +88,7 @@ namespace SpellEditor
             effectsOnSelf.InitDropdownMultiSelect();
             effectsOnDamageReceived.InitDropdownMultiSelect();
             effectOnTargetOnHit.InitDropdownMultiSelect();
+            spellWithCondition.InitDropdownMultiSelect();
             
             enumNames = Enum.GetNames(typeof(BehaviorType));
             listNames = new List<string>(enumNames);
@@ -136,6 +139,15 @@ namespace SpellEditor
                     effectsOnTargetOnHit.Add(effect.Value);
                 }
             }
+            
+            List<SpellWithCondition> spellWithConditionList = new List<SpellWithCondition>();
+            foreach (var selectedSpellWithCondition in ListCreatedElement.SpellWithCondition)
+            {
+                if (spellWithCondition.selectedIndex.Contains(selectedSpellWithCondition.Key))
+                { 
+                    spellWithConditionList.Add(selectedSpellWithCondition.Value);   
+                }
+            }
             //needs spellwithcondition
             if ((duration.text != "" && interval.text == "") || (duration.text == "" && stack.text == "") /*|| (linkedSpellOnDamageReceived.value == 0 && linkedSpellOnAttack.value == 0 && linkedSpellOnHit.value == 0 && linkedSpellOnInterval.value == 0)*/)
             {
@@ -171,6 +183,7 @@ namespace SpellEditor
             newBuffSpell.effectOnSelf = effectsOnSelfList;
             newBuffSpell.effectOnSelfOnDamageReceived = effectsOnSelfOnDamageReceived;
             newBuffSpell.effectOnTargetOnHit = effectsOnTargetOnHit;
+            newBuffSpell.spellWithCondition = spellWithConditionList;
             ResetCurrentPanel();
             
             return newBuffSpell;
