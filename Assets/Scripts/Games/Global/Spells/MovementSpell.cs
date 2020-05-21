@@ -10,7 +10,7 @@ namespace Games.Global.Spells
         Tp,
         TpWithTarget
     }
-    
+
     [Serializable]
     public class MovementSpell : SpellComponent
     {
@@ -19,16 +19,16 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Movement;
         }
 
-        public float duration;
-        public float speed;
-        public bool isFollowingMouse;
+        public float duration { get; set; }
+        public float speed { get; set; }
+        public bool isFollowingMouse { get; set; }
 
-        public MovementSpellType movementSpellType;
-        public Entity target;
+        public MovementSpellType movementSpellType { get; set; }
+        public Entity target { get; set; }
 
-        public Vector3 tpPosition;
+        public Vector3 tpPosition { get; set; }
 
-        public SpellComponent linkedSpellAtTheStart;
-        public SpellComponent linkedSpellAtTheEnd;
+        public SpellComponent linkedSpellAtTheStart { get; set; }
+        public SpellComponent linkedSpellAtTheEnd { get; set; }
     }
 }

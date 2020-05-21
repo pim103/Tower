@@ -12,16 +12,16 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Wave;
         }
 
-        public Geometry geometryPropagation;
-        public int initialWidth;
-        public float duration;
-        public float damages;
+        public Geometry geometryPropagation { get; set; }
+        public int initialWidth { get; set; }
+        public float duration { get; set; }
+        public float damages { get; set; }
 
-        public List<Effect> effectsOnHit;
-        public float incrementAmplitudeByTime;
-        public float speedPropagation;
-        
+        public List<Effect> effectsOnHit { get; set; }
+        public float incrementAmplitudeByTime { get; set; }
+        public float speedPropagation { get; set; }
+
         /* Useless for instantiation of spell */
-        public GameObject objectPooled;
+        public GameObject objectPooled { get; set; }
     }
 }

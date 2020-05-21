@@ -55,6 +55,7 @@ namespace SpellEditor
 
             Effect newEffect = new Effect
             {
+                nameEffect = nameEffect.text,
                 typeEffect = (TypeEffect) typeEffectDropdown.value,
                 originExpulsion = (OriginExpulsion) originDropdown.value,
                 directionExpul = (DirectionExpulsion) directionDropdown.value,
@@ -66,7 +67,7 @@ namespace SpellEditor
 
             ResetCurrentEffect();
         }
-
+    
         public void ResetCurrentEffect()
         {
             typeEffectDropdown.value = 0;

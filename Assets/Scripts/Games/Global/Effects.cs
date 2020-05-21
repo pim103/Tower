@@ -85,6 +85,8 @@ namespace Games.Global
     [Serializable]
     public struct Effect
     {
+        public string nameEffect;
+
         public TypeEffect typeEffect;
         public int level;
         public float durationInSeconds;

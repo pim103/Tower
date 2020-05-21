@@ -79,6 +79,7 @@ namespace SpellEditor
 
             Spell spell = new Spell
             {
+                nameSpell = nameSpell.text,
                 cooldown = Int32.Parse(cooldown.text),
                 cost = Int32.Parse(cost.text),
                 castTime = Int32.Parse(castTime.text),

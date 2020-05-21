@@ -164,6 +164,7 @@ namespace SpellEditor
                 return;
             }
 
+            spellComponentToSave.nameSpellComponent = nameSpellComponent.text;
             spellComponentToSave.damageType = (DamageType) typeDamage.value;
             spellComponentToSave.typeSpell = (TypeSpell) typeSpell.value;
             spellComponentToSave.OriginalDirection = (OriginalDirection) direction.value;

@@ -12,8 +12,8 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Transformation;
         }
 
-        public int idPoolPrefab;
-        public List<Spell> newSpells;
-        public float duration;
+        public int idPoolPrefab { get; set; }
+        public List<Spell> newSpells { get; set; }
+        public float duration { get; set; }
     }
 }
