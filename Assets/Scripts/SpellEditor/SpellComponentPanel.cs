@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using Games.Global;
+using System.Linq;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using SpellEditor.ComponentPanel;
@@ -13,8 +12,9 @@ namespace SpellEditor
     public class SpellComponentPanel : MonoBehaviour
     {
         [SerializeField] private InputField nameSpellComponent;
+        [SerializeField] private Dropdown spellComponentSelector;
         [SerializeField] private Button save;
-        
+
         [SerializeField] private Dropdown typeSpell;
         [SerializeField] private Dropdown typeDamage;
         [SerializeField] private Dropdown position;
@@ -33,15 +33,15 @@ namespace SpellEditor
         [SerializeField] private PassivePanel passivePanel;
 
         [SerializeField] private BuffSpellPanel buffSpellPanel;
-        
+
         [SerializeField] private WavePanel wavePanel;
 
         [SerializeField] private TransformationPanel transformationPanel;
 
         [SerializeField] private MovementPanel movementPanel;
-        
+
         [SerializeField] private SummonPanel summonPanel;
-        
+
         [SerializeField] private AreaOfEffectPanel areaOfEffectPanel;
 
         // Start is called before the first frame update
@@ -54,7 +54,7 @@ namespace SpellEditor
             {
                 panels.Add(go.name, go);
             }
-            
+
             string[] enumNames = Enum.GetNames(typeof(TypeSpell));
             List<string> listNames = new List<string>(enumNames);
             typeSpell.AddOptions(listNames);
@@ -66,13 +66,25 @@ namespace SpellEditor
             enumNames = Enum.GetNames(typeof(OriginalPosition));
             listNames = new List<string>(enumNames);
             position.AddOptions(listNames);
-            
+
             enumNames = Enum.GetNames(typeof(OriginalDirection));
             listNames = new List<string>(enumNames);
             direction.AddOptions(listNames);
-            
+
             typeSpell.onValueChanged.AddListener(ChangeTypeSpell);
             ChangeTypeSpell(typeSpell.value);
+
+            spellComponentSelector.onValueChanged.AddListener(EditSpellComponentAfterSelectorChoice);
+        }
+
+        public void InitSpellComponentPanel()
+        {
+            List<string> listNames = new List<string>();
+            listNames.Add("Nouvel Spell Component");
+            listNames.AddRange(ListCreatedElement.SpellComponents.Keys.ToList());
+
+            spellComponentSelector.options.Clear();
+            spellComponentSelector.AddOptions(listNames);
         }
 
         private void DeactivateAllPanel()
@@ -194,6 +206,33 @@ namespace SpellEditor
             isBasicAttack.isOn = false;
             positionMidEntity.isOn = false;
             castByPassive.isOn = false;
+        }
+
+        private void EditSpellComponentAfterSelectorChoice(int newIndex)
+        {
+            if (newIndex == 0)
+            {
+                return;
+            }
+
+            string spellComponentChoose = spellComponentSelector.options[newIndex].text;
+
+            if (!ListCreatedElement.SpellComponents.ContainsKey(spellComponentChoose))
+            {
+                return;
+            }
+
+            SpellComponent spellComponentSelected = ListCreatedElement.SpellComponents[spellComponentChoose];
+
+            nameSpellComponent.text = spellComponentSelected.nameSpellComponent;
+            typeDamage.value = (int) spellComponentSelected.damageType;
+            typeSpell.value = (int) spellComponentSelected.typeSpell;
+            position.value = (int) spellComponentSelected.OriginalPosition;
+            direction.value = (int) spellComponentSelected.OriginalDirection;
+
+            isBasicAttack.isOn = spellComponentSelected.isBasicAttack;
+            positionMidEntity.isOn = spellComponentSelected.needPositionToMidToEntity;
+            castByPassive.isOn = spellComponentSelected.castByPassive;
         }
     }
 }

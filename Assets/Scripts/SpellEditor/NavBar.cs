@@ -22,6 +22,7 @@ namespace SpellEditor
     {
         [SerializeField] private SpellPanel spellPanelScript;
         [SerializeField] private EffectPanel effectPanelScript;
+        [SerializeField] private SpellComponentPanel spellComponentPanelScript;
         [SerializeField] private Button exportSpells;
         [SerializeField] private Button importSpell;
         
@@ -77,6 +78,7 @@ namespace SpellEditor
                     spellPanel.SetActive(true);
                     break;
                 case Panel.SpellComponent:
+                    spellComponentPanelScript.InitSpellComponentPanel();
                     spellComponentPanel.SetActive(true);
                     break;
             }
