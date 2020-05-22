@@ -20,6 +20,8 @@ namespace TestC
     {
         [SerializeField] private PlayerPrefab player;
         [SerializeField] private Image[] extraSpellText;
+
+        [SerializeField] private GameObject escapeCanvas;
         [SerializeField] private Button backToEditor;
         
         // Start is called before the first frame update
@@ -97,7 +99,8 @@ namespace TestC
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Cursor.visible = !Cursor.visible;
+                escapeCanvas.SetActive(Cursor.visible);
+
                 if (Cursor.visible)
                 {
                     Cursor.lockState = CursorLockMode.None;
