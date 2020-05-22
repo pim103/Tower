@@ -12,6 +12,7 @@ using Games.Players;
 using Games.Transitions;
 using SpellEditor;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 namespace TestC
 {
@@ -38,6 +39,59 @@ namespace TestC
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;
 
             StartCoroutine(Waiting());
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Keypad0))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[3], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad1))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[4], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad2))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[5], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad3))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[6], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad4))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[7], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad5))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[8], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad6))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[9], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad7))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[10], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad8))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[11], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad9))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[12], player.transform.position, player.target);
+            }
         }
 
         private IEnumerator Waiting()
