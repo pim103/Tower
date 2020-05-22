@@ -570,7 +570,7 @@ namespace Games.Global
                         {
                             Effect stunEffect = new Effect
                                 {typeEffect = TypeEffect.Stun, level = 1, durationInSeconds = 1, launcher = entity};
-                            EffectController.ApplyEffect(entity, stunEffect);
+                            EffectController.ApplyEffect(entity, stunEffect, entity, Vector3.zero);
                             EffectController.StopCurrentEffect(entity, this);
                         }
                     }

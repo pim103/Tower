@@ -137,9 +137,7 @@ namespace Games.Global.Spells.SpellsController
                 .ToList();
             foreach (Effect effect in effects)
             {
-                Effect copy = effect;
-                copy.positionSrcDamage = entity.entityPrefab.transform.position;
-                EffectController.ApplyEffect(enemy, copy);
+                EffectController.ApplyEffect(enemy, effect, entity, projectileSpell.prefabPooled.transform.position);
             }
 
             BuffController.EntityDealDamage(entity, enemy);
@@ -188,7 +186,7 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in projectileSpell.effectsOnHit)
                     {
-                        EffectController.ApplyEffect(entityEnter, effect);
+                        EffectController.ApplyEffect(entityEnter, effect, origin, projectileSpell.prefabPooled.transform.position);
                     }
                 }
 

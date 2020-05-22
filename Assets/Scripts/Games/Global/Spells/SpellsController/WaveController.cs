@@ -119,7 +119,7 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in waveSpell.effectsOnHit)
                     {
-                        EffectController.ApplyEffect(entityEnter, effect);
+                        EffectController.ApplyEffect(entityEnter, effect, origin, waveSpell.objectPooled.transform.position);
                     }
                 }
             }

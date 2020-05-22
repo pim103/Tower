@@ -8,6 +8,7 @@ using Games.Global.Spells;
 using Games.Global.Spells.SpellParameter;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace SpellEditor
@@ -39,6 +40,8 @@ namespace SpellEditor
         [SerializeField] private GameObject spellWithConditionPanel;
         [SerializeField] private SpellWithConditionPanel spellWithConditionPanelScript;
 
+        [SerializeField] private Button TestSpellButton;
+
         private void Start()
         {
             spellPanel.SetActive(false);
@@ -52,6 +55,8 @@ namespace SpellEditor
             
             exportSpells.onClick.AddListener(ExportSpells);
             importSpell.onClick.AddListener(ChooseSpellToImport);
+            
+            TestSpellButton.onClick.AddListener(SwitchToTestSpellScene);
         }
 
         public static void ModifyExistingComponent(object component, object newComponent)
@@ -259,6 +264,11 @@ namespace SpellEditor
                     }
                 }
             }
+        }
+
+        public void SwitchToTestSpellScene()
+        {
+            SceneManager.LoadScene("TestSpell");
         }
     }
 }

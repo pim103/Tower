@@ -170,6 +170,7 @@ namespace Games.Global
             damageReceiveExtraEffect = new List<Effect>();
             entityInRange = new List<Entity>();
             currentBuff = new List<BuffSpell>();
+            spells = new List<Spell>();
         }
 
         // Take true damage is usefull with effect pierce
@@ -254,7 +255,7 @@ namespace Games.Global
             List<Effect> effects = damageReceiveExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
             foreach (Effect effect in effects)
             {
-                EffectController.ApplyEffect(this, effect);
+                EffectController.ApplyEffect(this, effect, originDamage, originDamage.entityPrefab.transform.position);
             }
 
             if (isSleep)

@@ -20,26 +20,15 @@ namespace Games.Global.Weapons
 
             AreaOfEffectSpell area = new AreaOfEffectSpell
             {
-                scale = Vector3.one * 20,
+                damageType = DamageType.Physical,
+                geometry = Geometry.Cone,
+                scale = Vector3.one + Vector3.forward,
                 onePlay = true,
-                damagesOnEnemiesOnInterval = 30.0f,
-                geometry = Geometry.Sphere,
-                OriginalDirection = OriginalDirection.None,
+                isBasicAttack = true,
                 OriginalPosition = OriginalPosition.Caster,
-                damageType = DamageType.Physical
+                OriginalDirection = OriginalDirection.Forward,
+                needPositionToMidToEntity = true
             };
-            
-//            AreaOfEffectSpell area = new AreaOfEffectSpell
-//            {
-//                damageType = DamageType.Physical,
-//                geometry = Geometry.Cone,
-//                scale = Vector3.one + Vector3.forward,
-//                onePlay = true,
-//                isBasicAttack = true,
-//                OriginalPosition = OriginalPosition.Caster,
-//                OriginalDirection = OriginalDirection.Forward,
-//                needPositionToMidToEntity = true
-//            };
 
             basicAttack = new Spell
             {
