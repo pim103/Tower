@@ -27,13 +27,14 @@ namespace Games.Global.Weapons
                 isBasicAttack = true,
                 OriginalPosition = OriginalPosition.Caster,
                 OriginalDirection = OriginalDirection.Forward,
-                needPositionToMidToEntity = true
+                needPositionToMidToEntity = true,
+                damagesOnEnemiesOnInterval = 50
             };
 
             basicAttack = new Spell
             {
                 cost = 0,
-                cooldown = 0.1f,
+                cooldown = 1f,
                 castTime = 0,
                 activeSpellComponent = area
             };

@@ -128,6 +128,11 @@ namespace Games.Global.Spells.SpellsController
         
         private void InitialArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
+            if (areaOfEffectSpell.effectOnHitOnStart == null)
+            {
+                return;
+            }
+
             foreach (Entity enemy in areaOfEffectSpell.enemiesInZone)
             {
                 EffectController.ApplyEffect(enemy, areaOfEffectSpell.effectOnHitOnStart, entity, areaOfEffectSpell.startPosition);
@@ -150,6 +155,10 @@ namespace Games.Global.Spells.SpellsController
                         {
                             if (spell.instructionTargeting == InstructionTargeting.ApplyOnTarget)
                             {
+                                if (spell.effect == null)
+                                {
+                                    continue;
+                                }
                                 EffectController.ApplyEffect(enemy, spell.effect, entity, areaOfEffectSpell.startPosition);
                             }
                         }
@@ -160,6 +169,10 @@ namespace Games.Global.Spells.SpellsController
                             switch (spell.instructionTargeting)
                             {
                                 case InstructionTargeting.ApplyOnTarget:
+                                    if (spell.effect == null)
+                                    {
+                                        continue;
+                                    }
                                     EffectController.ApplyEffect(enemy, spell.effect, entity, areaOfEffectSpell.startPosition);
                                     break;
                                 case InstructionTargeting.DeleteOnTarget:
@@ -210,6 +223,10 @@ namespace Games.Global.Spells.SpellsController
                 .ToList();
             foreach (Effect effect in effects)
             {
+                if (effect == null)
+                {
+                    continue;
+                }
                 EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.startPosition);
             }
 
@@ -263,7 +280,7 @@ namespace Games.Global.Spells.SpellsController
                     {
                         if (enemy.hp - areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage < 0)
                         {
-                            EffectController.ApplyEffect(entity, conditionSpell.effect, entity, areaOfEffectSpell.startPosition);
+                            EffectController.ApplyEffect(entity, conditionSpell.effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                         }
                     }
                 }
@@ -282,9 +299,7 @@ namespace Games.Global.Spells.SpellsController
                             .ToList();
                         foreach (Effect effect in effects)
                         {
-                            Effect copy = effect;
-                            copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                            EffectController.ApplyEffect(enemy, copy, entity, areaOfEffectSpell.startPosition);
+                            EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                         }
                     }
                 }
@@ -293,9 +308,7 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in areaOfEffectSpell.effectsOnEnemiesOnInterval)
                     {
-                        Effect copy = effect;
-                        copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                        EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.startPosition);
+                        EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                     }
                 }
 
@@ -326,6 +339,10 @@ namespace Games.Global.Spells.SpellsController
                     {
                         foreach (Effect effect in areaOfEffectSpell.effectsOnPlayerOnInterval)
                         {
+                            if (effect == null)
+                            {
+                                continue;
+                            }
                             EffectController.ApplyEffect(ally, effect, entity, areaOfEffectSpell.startPosition);
                         }
                     }
@@ -350,6 +367,10 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in areaOfEffectSpell.effectsOnAlliesOnInterval)
                     {
+                        if (effect == null)
+                        {
+                            continue;
+                        }
                         EffectController.ApplyEffect(ally, effect, entity, areaOfEffectSpell.startPosition);
                     }
                 }

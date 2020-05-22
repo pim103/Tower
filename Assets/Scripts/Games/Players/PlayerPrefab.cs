@@ -32,6 +32,10 @@ namespace Games.Players
         
         private Material[] materialBackUpForSkin;
 
+        [SerializeField] public Text spell1;
+        [SerializeField] public Text spell2;
+        [SerializeField] public Text spell3;
+
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
 

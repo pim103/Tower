@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using FullSerializer;
 using Games;
 using Games.Global;
 using Games.Global.Spells;
@@ -11,16 +9,18 @@ using Games.Global.Weapons;
 using Games.Players;
 using Games.Transitions;
 using SpellEditor;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace TestC
 {
     public class SpellTestScene : MonoBehaviour
     {
         [SerializeField] private PlayerPrefab player;
-
-        [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private Image[] extraSpellText;
+        [SerializeField] private Button backToEditor;
         
         // Start is called before the first frame update
         void Awake()
@@ -39,6 +39,8 @@ namespace TestC
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;
 
             StartCoroutine(Waiting());
+            
+            backToEditor.onClick.AddListener(BackToEditorAction);
         }
 
         private void Update()
@@ -92,15 +94,52 @@ namespace TestC
             {
                 SpellController.CastSpell(player.entity, player.entity.spells[12], player.transform.position, player.target);
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Cursor.visible = !Cursor.visible;
+                if (Cursor.visible)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+        }
+
+        public void BackToEditorAction()
+        {
+            SceneManager.LoadScene("SpellEditor");
         }
 
         private IEnumerator Waiting()
         {
             yield return new WaitForSeconds(0.1f);
 
+            int countSpells = 0;
             foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
             {
                 player.entity.spells.Add(pair.Value);
+
+                if (countSpells == 0)
+                {
+                    player.spell1.text = pair.Value.nameSpell;
+                } else if (countSpells == 1)
+                {
+                    player.spell2.text = pair.Value.nameSpell;
+                } else if (countSpells == 2)
+                {
+                    player.spell3.text = pair.Value.nameSpell;
+                }
+                else
+                {
+                    extraSpellText[countSpells].gameObject.SetActive(true);
+                    extraSpellText[countSpells].transform.GetChild(0).GetComponent<Text>().text = pair.Value.nameSpell;
+                }
+                
+                countSpells++;
             }
         }
         

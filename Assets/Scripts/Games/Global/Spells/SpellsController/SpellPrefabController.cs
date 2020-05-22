@@ -11,6 +11,10 @@ namespace Games.Global.Spells.SpellsController
         [SerializeField] public MeshCollider meshCollider;
         [SerializeField] public Rigidbody rigidbody;
 
+        [SerializeField] public GameObject sphere;
+        [SerializeField] public GameObject cone;
+        [SerializeField] public GameObject square;
+
         public SpellComponent spellComponent;
         public Entity originOfSpell;
 
@@ -22,16 +26,23 @@ namespace Games.Global.Spells.SpellsController
 
         public void ActiveCollider(Geometry geometry)
         {
+            square.SetActive(false);
+            sphere.SetActive(false);
+            cone.SetActive(false);
+            
             switch (geometry)
             {
                 case Geometry.Cone:
                     meshCollider.enabled = true;
+                    cone.SetActive(true);
                     break;
                 case Geometry.Sphere:
                     sphereCollider.enabled = true;
+                    sphere.SetActive(true);
                     break;
                 case Geometry.Square:
                     boxCollider.enabled = true;
+                    square.SetActive(true);
                     break;
             }
         }

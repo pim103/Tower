@@ -44,7 +44,7 @@ namespace Games.Global
         
         public static void ApplyEffect(Entity entityAffected, Effect effect, Entity origin, Vector3 srcDamage, List<Entity> affectedEntity = null)
         {
-            if (entityAffected.hasWill && ControlEffect.Contains(effect.typeEffect))
+            if (effect == null || entityAffected.hasWill && ControlEffect.Contains(effect.typeEffect))
             {
                 return;
             }
