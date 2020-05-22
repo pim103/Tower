@@ -11,6 +11,12 @@ namespace Games.Global.Spells
         Cone,
     }
 
+    public enum OriginArea
+    {
+        From,
+        Center
+    }
+
     public enum TypeSpell
     {
         Movement,

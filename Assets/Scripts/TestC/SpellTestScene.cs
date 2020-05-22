@@ -29,8 +29,12 @@ namespace TestC
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            DataObject.playerInScene.Add(GameController.PlayerIndex, player);
 
+            if (!DataObject.playerInScene.ContainsKey(GameController.PlayerIndex))
+            {
+                DataObject.playerInScene.Add(GameController.PlayerIndex, player);
+            }
+            
             Identity classe = new Identity();
             classe.classe = Classes.Warrior;
 
@@ -121,6 +125,8 @@ namespace TestC
         {
             yield return new WaitForSeconds(0.1f);
 
+            player.entity.spells.Clear();
+            
             int countSpells = 0;
             foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
             {
