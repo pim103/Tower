@@ -13,8 +13,8 @@ namespace Games.Global.Spells
 
     public enum OriginArea
     {
-        From,
-        Center
+        Center,
+        From
     }
 
     public enum TypeSpell
