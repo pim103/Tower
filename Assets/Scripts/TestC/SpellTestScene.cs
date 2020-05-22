@@ -30,11 +30,9 @@ namespace TestC
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            if (!DataObject.playerInScene.ContainsKey(GameController.PlayerIndex))
-            {
-                DataObject.playerInScene.Add(GameController.PlayerIndex, player);
-            }
-            
+            DataObject.playerInScene.Clear();
+            DataObject.playerInScene.Add(GameController.PlayerIndex, player);
+
             Identity classe = new Identity();
             classe.classe = Classes.Warrior;
 
@@ -45,7 +43,7 @@ namespace TestC
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;
 
             StartCoroutine(Waiting());
-            
+
             backToEditor.onClick.AddListener(BackToEditorAction);
         }
 

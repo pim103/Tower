@@ -172,8 +172,8 @@ namespace Games.Players
         {
             Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
 
-            weapon.InitPlayerSkill(mainClass);
             playerPrefab.AddItemInHand(weapon);
+            weapon.InitPlayerSkill(mainClass);
             // TODO : Add init weapon => change basic attack spell
 
             weapons.Add(weapon);

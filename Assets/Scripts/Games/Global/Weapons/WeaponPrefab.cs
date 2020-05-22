@@ -71,7 +71,7 @@ namespace Games.Global.Weapons
 
         public void SetWielder(Entity entity)
         {
-            this.wielder = entity;
+            wielder = entity;
         }
 
         public Entity GetWielder()
