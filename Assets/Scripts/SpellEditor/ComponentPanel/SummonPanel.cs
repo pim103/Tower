@@ -10,6 +10,7 @@ namespace SpellEditor.ComponentPanel
 {
     public class SummonPanel : MonoBehaviour
     {
+        [SerializeField] private InputField idPoolObject;
         [SerializeField] private InputField hp;
         [SerializeField] private InputField duration;
         [SerializeField] private InputField attackDamage;
@@ -70,6 +71,7 @@ namespace SpellEditor.ComponentPanel
 
         public void ResetCurrentPanel()
         {
+            idPoolObject.text = "";
             hp.text = "";
             duration.text = "";
             attackDamage.text = "";
@@ -93,12 +95,13 @@ namespace SpellEditor.ComponentPanel
         public SummonSpell SaveCurrentPanel()
         {
             if (linkedSpellOnEnable.value == 0 && linkedSpellOnDisappear.value == 0 && basicAttack.value == 0 &&
-                spellWhenPlayerCall.value == 0 && linkedSpellOnEnable.value == 0 && spells.selectedIndex.Count == 0)
+                spellWhenPlayerCall.value == 0 && linkedSpellOnEnable.value == 0 && spells.selectedIndex.Count == 0 || idPoolObject.text == "")
             {
                 return null;
             }
 
             SummonSpell newSummonSpell = new SummonSpell();
+            newSummonSpell.idPoolObject = Int32.Parse(idPoolObject.text);
             newSummonSpell.hp = hp.text != "" ? float.Parse(hp.text) : 1;
             newSummonSpell.duration = duration.text != "" ? float.Parse(duration.text) : 1;
             newSummonSpell.attackDamage = attackDamage.text != "" ? float.Parse(attackDamage.text) : 0;
@@ -143,6 +146,7 @@ namespace SpellEditor.ComponentPanel
 
         public void FillCurrentPanel(SummonSpell summonSpell)
         {
+            idPoolObject.text = summonSpell.idPoolObject.ToString();
             hp.text = summonSpell.hp.ToString();
             duration.text = summonSpell.duration.ToString();
             attackDamage.text = summonSpell.attackDamage.ToString();
