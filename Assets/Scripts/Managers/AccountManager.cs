@@ -104,7 +104,24 @@ public class AccountManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Add an item to the account
+    /// Add a resource on the account
+    /// </summary>
+    public void AddResource(string resourceID)
+    {
+        for (int i = 0; i < AccountResources.Count; i++)
+        {
+            Resource resource = AccountResources[i].Resource;
+            if (resource != null && resource.ID == resourceID)
+            {
+                AccountResource tempResource = AccountResources[i];
+                tempResource.Amount++;
+                AccountResources[i] = tempResource;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Add an item on the account
     /// </summary>
     public void AddItem()
     {
