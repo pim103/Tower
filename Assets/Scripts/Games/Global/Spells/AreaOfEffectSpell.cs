@@ -12,43 +12,43 @@ namespace Games.Global.Spells
         {
             typeSpell = TypeSpell.AreaOfEffect;
         }
-        
-        public float interval;
-        public float duration;
-        public Transform transformToFollow;
 
-        public Geometry geometry;
-        public Vector3 scale;
+        public float interval { get; set; }
+        public float duration { get; set; }
 
-        public float damagesOnEnemiesOnInterval;
-        public float damagesOnAlliesOnInterval;
+        public Geometry geometry { get; set; }
+        public Vector3 scale { get; set; }
+        public OriginArea originArea { get; set; }
 
-        public List<Effect> effectsOnEnemiesOnInterval;
-        public List<Effect> effectsOnPlayerOnInterval;
-        public List<Effect> effectsOnAlliesOnInterval;
+        public float damagesOnEnemiesOnInterval { get; set; }
+        public float damagesOnAlliesOnInterval { get; set; }
 
-        public List<TypeEffect> deleteEffectsOnPlayerOnInterval;
-        public List<TypeEffect> deleteEffectsOnEnemiesOnInterval;
+        public List<Effect> effectsOnEnemiesOnInterval { get; set; }
+        public List<Effect> effectsOnPlayerOnInterval { get; set; }
+        public List<Effect> effectsOnAlliesOnInterval { get; set; }
 
-        public bool wantToFollow;
-        public bool canStopProjectile;
-        public bool randomTargetHit;
-        public bool randomPosition;
-        public bool onePlay;
+        public List<TypeEffect> deleteEffectsOnPlayerOnInterval { get; set; }
+        public List<TypeEffect> deleteEffectsOnEnemiesOnInterval { get; set; }
+
+        public bool wantToFollow { get; set; }
+        public bool canStopProjectile { get; set; }
+        public bool randomTargetHit { get; set; }
+        public bool randomPosition { get; set; }
+        public bool onePlay { get; set; }
 
         /* Area applies player extraEffectOnDamageDeal */
-        public bool appliesPlayerOnHitEffect;
-        
-        public SpellComponent linkedSpellOnInterval;
+        public bool appliesPlayerOnHitEffect { get; set; }
 
-        public Effect effectOnHitOnStart;
-        public SpellComponent linkedSpellOnEnd;
+        public SpellComponent linkedSpellOnInterval { get; set; }
 
-        public List<SpellWithCondition> spellWithConditions;
-        
+        public Effect effectOnHitOnStart { get; set; }
+        public SpellComponent linkedSpellOnEnd { get; set; }
+
+        public List<SpellWithCondition> spellWithConditions { get; set; }
+
         /* Useless for initialisation of spell */
-        public List<Entity> enemiesInZone;
-        public List<Entity> alliesInZone;
-        public GameObject objectPooled;
+        public List<Entity> enemiesInZone { get; set; }
+        public List<Entity> alliesInZone { get; set; }
+        public GameObject objectPooled { get; set; }
     }
 }

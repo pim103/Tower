@@ -10,10 +10,10 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Passive;
         }
 
-        public float interval;
-        public SpellComponent linkedEffectOnInterval;
+        public float interval { get; set; }
+        public SpellComponent linkedEffectOnInterval { get; set; }
 
-        public SpellComponent permanentLinkedEffect;
-        public Spell newDefensiveSpell;
+        public SpellComponent permanentLinkedEffect { get; set; }
+        public Spell newDefensiveSpell { get; set; }
     }
 }

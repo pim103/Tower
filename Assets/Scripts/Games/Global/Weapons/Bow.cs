@@ -13,27 +13,7 @@ namespace Games.Global.Weapons
         public Bow()
         {
            animationToPlay = "BowAttack";
-
-           ProjectileSpell projectile = new ProjectileSpell
-           {
-               damages = 0,
-               duration = 5,
-               speed = 15,
-               damageType = DamageType.Physical,
-               isBasicAttack = true,
-               idPoolObject = 0,
-               OriginalPosition = OriginalPosition.Caster,
-               OriginalDirection = OriginalDirection.Forward,
-               needPositionToMidToEntity = true
-           };
-
-           basicAttack = new Spell
-           {
-               cost = 0,
-               cooldown = 1,
-               castTime = 0,
-               activeSpellComponent = projectile
-           };
+           spellOfBasicAttack = "BowBasicAttack";
         }
 
         public override void FixAngleAttack(bool isFirstIteration, Entity wielder)

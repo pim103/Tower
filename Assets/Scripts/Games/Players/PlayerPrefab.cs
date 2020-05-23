@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using Games.Global;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
@@ -30,6 +31,10 @@ namespace Games.Players
         [SerializeField] private SkinnedMeshRenderer[] skins;
         
         private Material[] materialBackUpForSkin;
+
+        [SerializeField] public Text spell1;
+        [SerializeField] public Text spell2;
+        [SerializeField] public Text spell3;
 
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
@@ -277,14 +282,17 @@ namespace Games.Players
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
+                        SpellController.CastSpell(entity, entity.spells[0], transform.position, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
+                        SpellController.CastSpell(entity, entity.spells[1], transform.position, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
+                        SpellController.CastSpell(entity, entity.spells[2], transform.position, target);
                     }
                 }
             }

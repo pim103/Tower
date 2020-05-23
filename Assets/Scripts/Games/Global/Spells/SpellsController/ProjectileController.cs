@@ -105,20 +105,11 @@ namespace Games.Global.Spells.SpellsController
         {
             AbilityParameters paramaters = new AbilityParameters {origin = entity};
 
-            if ((enemy.isIntangible && projectileSpell.damageType == DamageType.Physical) ||
-                (enemy.hasAntiSpell && projectileSpell.damageType == DamageType.Magical) ||
-                entity.isBlind ||
-                enemy.isUntargeatable)
-            {
-                return;
-            }
-
-            BuffController.EntityReceivedDamage(enemy, entity);
-
-            if (entity.hasDivineShield)
-            {
-                return;
-            }
+            bool damageIsNull = (enemy.isIntangible && projectileSpell.damageType == DamageType.Physical) ||
+                                (enemy.hasAntiSpell && projectileSpell.damageType == DamageType.Magical) ||
+                                entity.isBlind ||
+                                enemy.isUntargeatable ||
+                                enemy.hasDivineShield;
 
             Weapon weapon = entity.weapons[0];
 
@@ -137,9 +128,7 @@ namespace Games.Global.Spells.SpellsController
                 .ToList();
             foreach (Effect effect in effects)
             {
-                Effect copy = effect;
-                copy.positionSrcDamage = entity.entityPrefab.transform.position;
-                EffectController.ApplyEffect(enemy, copy);
+                EffectController.ApplyEffect(enemy, effect, entity, projectileSpell.prefabPooled.transform.position);
             }
 
             BuffController.EntityDealDamage(entity, enemy);
@@ -149,6 +138,8 @@ namespace Games.Global.Spells.SpellsController
             {
                 damage /= 2;
             }
+
+            damage = damageIsNull ? 0 : damage;
 
             enemy.TakeDamage(damage, paramaters, projectileSpell.damageType, entity.canPierce);
         }
@@ -188,7 +179,7 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in projectileSpell.effectsOnHit)
                     {
-                        EffectController.ApplyEffect(entityEnter, effect);
+                        EffectController.ApplyEffect(entityEnter, effect, origin, projectileSpell.prefabPooled.transform.position);
                     }
                 }
 

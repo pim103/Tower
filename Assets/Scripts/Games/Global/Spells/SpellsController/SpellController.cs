@@ -42,8 +42,8 @@ namespace Games.Global.Spells.SpellsController
             Spell clone = new Spell
             {
                 cooldown = origin.cooldown,
-                cost = origin.cooldown,
-                castTime = origin.cooldown,
+                cost = origin.cost,
+                castTime = origin.castTime,
                 activeSpellComponent = origin.activeSpellComponent,
                 isOnCooldown = origin.isOnCooldown,
                 passiveSpellComponent = origin.passiveSpellComponent,

@@ -12,24 +12,24 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Projectile;
         }
 
-        public int idPoolObject;
+        public int idPoolObject { get; set; }
 
-        public float speed;
-        
-        public float damages;
-        public List<Effect> effectsOnHit;
+        public float speed { get; set; }
 
-        public float duration;
+        public float damages { get; set; }
+        public List<Effect> effectsOnHit { get; set; }
 
-        public bool passingThroughEntity;
+        public float duration { get; set; }
 
-        public float damageMultiplierOnDistance;
+        public bool passingThroughEntity { get; set; }
 
-        public SpellComponent linkedSpellOnEnable;
-        public SpellComponent linkedSpellOnDisable;
+        public float damageMultiplierOnDistance { get; set; }
+
+        public SpellComponent linkedSpellOnEnable { get; set; }
+        public SpellComponent linkedSpellOnDisable { get; set; }
 
         /* Useless for instantiation of spell */
-        public GameObject objectPooled;
-        public GameObject prefabPooled;
+        public GameObject objectPooled { get; set; }
+        public GameObject prefabPooled { get; set; }
     }
 }

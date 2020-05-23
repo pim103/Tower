@@ -42,7 +42,6 @@ namespace Games.Global.Spells.SpellsController
                 isBasicAttack = origin.isBasicAttack,
                 randomTargetHit = origin.randomTargetHit,
                 spellWithConditions = origin.spellWithConditions,
-                transformToFollow = origin.transformToFollow,
                 wantToFollow = origin.wantToFollow,
                 linkedSpellOnEnd = origin.linkedSpellOnEnd,
                 linkedSpellOnInterval = origin.linkedSpellOnInterval,
@@ -110,6 +109,11 @@ namespace Games.Global.Spells.SpellsController
             genericSpellPrefab.transform.position = areaOfEffectSpell.startPosition;
             genericSpellPrefab.transform.localEulerAngles = entity.entityPrefab.transform.localEulerAngles;
 
+            if (areaOfEffectSpell.originArea == OriginArea.From)
+            {
+                genericSpellPrefab.transform.position += genericSpellPrefab.transform.forward *(areaOfEffectSpell.scale.z / 2);
+            }
+
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
             spellPrefabController.ActiveCollider(areaOfEffectSpell.geometry);
             spellPrefabController.SetValues(entity, areaOfEffectSpell);
@@ -129,9 +133,14 @@ namespace Games.Global.Spells.SpellsController
         
         private void InitialArea(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
+            if (areaOfEffectSpell.effectOnHitOnStart == null)
+            {
+                return;
+            }
+
             foreach (Entity enemy in areaOfEffectSpell.enemiesInZone)
             {
-                EffectController.ApplyEffect(enemy, areaOfEffectSpell.effectOnHitOnStart);
+                EffectController.ApplyEffect(enemy, areaOfEffectSpell.effectOnHitOnStart, entity, areaOfEffectSpell.startPosition);
             }
         }
 
@@ -151,7 +160,11 @@ namespace Games.Global.Spells.SpellsController
                         {
                             if (spell.instructionTargeting == InstructionTargeting.ApplyOnTarget)
                             {
-                                EffectController.ApplyEffect(enemy, spell.effect);
+                                if (spell.effect == null)
+                                {
+                                    continue;
+                                }
+                                EffectController.ApplyEffect(enemy, spell.effect, entity, areaOfEffectSpell.startPosition);
                             }
                         }
                         break;
@@ -161,7 +174,11 @@ namespace Games.Global.Spells.SpellsController
                             switch (spell.instructionTargeting)
                             {
                                 case InstructionTargeting.ApplyOnTarget:
-                                    EffectController.ApplyEffect(enemy, spell.effect);
+                                    if (spell.effect == null)
+                                    {
+                                        continue;
+                                    }
+                                    EffectController.ApplyEffect(enemy, spell.effect, entity, areaOfEffectSpell.startPosition);
                                     break;
                                 case InstructionTargeting.DeleteOnTarget:
                                     if (enemy.underEffects.ContainsKey(spell.effect.typeEffect))
@@ -180,20 +197,11 @@ namespace Games.Global.Spells.SpellsController
         {
             AbilityParameters paramaters = new AbilityParameters { origin = entity };
 
-            if ((enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
-                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
-                entity.isBlind ||
-                enemy.isUntargeatable)
-            {
-                return;
-            }
-
-            BuffController.EntityReceivedDamage(enemy, entity);
-
-            if (entity.hasDivineShield)
-            {
-                return;
-            }
+            bool damageIsNull = (enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
+                                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
+                                entity.isBlind ||
+                                enemy.isUntargeatable ||
+                                entity.hasDivineShield;
 
             if (entity.weapons.Count > 0)
             {
@@ -211,9 +219,11 @@ namespace Games.Global.Spells.SpellsController
                 .ToList();
             foreach (Effect effect in effects)
             {
-                Effect copy = effect;
-                copy.positionSrcDamage = entity.entityPrefab.transform.position;
-                EffectController.ApplyEffect(enemy, copy);
+                if (effect == null)
+                {
+                    continue;
+                }
+                EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.startPosition);
             }
 
             BuffController.EntityDealDamage(entity, enemy);
@@ -223,6 +233,8 @@ namespace Games.Global.Spells.SpellsController
             {
                 damage /= 2;
             }
+
+            damage = damageIsNull ? 0 : damage;
 
             enemy.TakeDamage(damage, paramaters, areaOfEffectSpell.damageType ,entity.canPierce);
         }
@@ -266,7 +278,7 @@ namespace Games.Global.Spells.SpellsController
                     {
                         if (enemy.hp - areaOfEffectSpell.damagesOnEnemiesOnInterval + extraDamage < 0)
                         {
-                            EffectController.ApplyEffect(entity, conditionSpell.effect);
+                            EffectController.ApplyEffect(entity, conditionSpell.effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                         }
                     }
                 }
@@ -285,9 +297,7 @@ namespace Games.Global.Spells.SpellsController
                             .ToList();
                         foreach (Effect effect in effects)
                         {
-                            Effect copy = effect;
-                            copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                            EffectController.ApplyEffect(enemy, copy);
+                            EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                         }
                     }
                 }
@@ -296,9 +306,7 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in areaOfEffectSpell.effectsOnEnemiesOnInterval)
                     {
-                        Effect copy = effect;
-                        copy.positionSrcDamage = areaOfEffectSpell.objectPooled.transform.position;
-                        EffectController.ApplyEffect(enemy, effect);
+                        EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.objectPooled.transform.position);
                     }
                 }
 
@@ -329,7 +337,11 @@ namespace Games.Global.Spells.SpellsController
                     {
                         foreach (Effect effect in areaOfEffectSpell.effectsOnPlayerOnInterval)
                         {
-                            EffectController.ApplyEffect(ally, effect);
+                            if (effect == null)
+                            {
+                                continue;
+                            }
+                            EffectController.ApplyEffect(ally, effect, entity, areaOfEffectSpell.startPosition);
                         }
                     }
 
@@ -353,7 +365,11 @@ namespace Games.Global.Spells.SpellsController
                 {
                     foreach (Effect effect in areaOfEffectSpell.effectsOnAlliesOnInterval)
                     {
-                        EffectController.ApplyEffect(ally, effect);
+                        if (effect == null)
+                        {
+                            continue;
+                        }
+                        EffectController.ApplyEffect(ally, effect, entity, areaOfEffectSpell.startPosition);
                     }
                 }
             }

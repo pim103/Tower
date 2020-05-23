@@ -147,11 +147,12 @@ namespace Games.Global
 
             WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
             weapon.weaponPrefab = weaponPrefab;
+
             weaponPrefab.SetWielder(entity);
             weaponPrefab.SetWeapon(weapon);
             weaponPrefab.SetPositionToParent(position, angle);
 
-            entity.basicAttack = weapon.basicAttack;
+            weapon.InitWeapon();
         }
 
         public virtual void SetInvisibility()

@@ -25,72 +25,93 @@ namespace Games.Global
             EffectControllerInstance = this;
         }
 
-        public static void ApplyEffect(Entity entity, Effect effect, List<Entity> affectedEntity = null)
+        private static Effect CloneEffect(Effect origin, Entity originEffect, Vector3 srcDamage)
         {
-            if (entity.hasWill && ControlEffect.Contains(effect.typeEffect))
+            Effect clone = new Effect
+            {
+                launcher = originEffect,
+                level = origin.level,
+                directionExpul = origin.directionExpul,
+                originExpulsion = origin.originExpulsion,
+                ressourceCost = origin.ressourceCost,
+                typeEffect = origin.typeEffect,
+                durationInSeconds = origin.durationInSeconds,
+                positionSrcDamage = srcDamage
+            };
+
+            return clone;
+        }
+        
+        public static void ApplyEffect(Entity entityAffected, Effect effect, Entity origin, Vector3 srcDamage, List<Entity> affectedEntity = null)
+        {
+            if (effect == null || entityAffected.hasWill && ControlEffect.Contains(effect.typeEffect))
             {
                 return;
             }
 
-            if (entity.isLinked && !BuffEffect.Contains(effect.typeEffect))
+            if (entityAffected.isLinked && !BuffEffect.Contains(effect.typeEffect))
             {
                 if (affectedEntity == null)
                 {
                     affectedEntity = new List<Entity>();
                 }
 
-                affectedEntity.Add(entity);
-                foreach (Entity entityInRange in entity.entityInRange)
+                affectedEntity.Add(entityAffected);
+                foreach (Entity entityInRange in entityAffected.entityInRange)
                 {
                     if (!affectedEntity.Contains(entityInRange) && entityInRange.isLinked)
                     {
-                        ApplyEffect(entityInRange, effect, affectedEntity);
+                        ApplyEffect(entityInRange, effect, origin, srcDamage, affectedEntity);
                     }
                 }
             }
 
-            if (entity.underEffects.ContainsKey(effect.typeEffect))
+            if (entityAffected.underEffects.ContainsKey(effect.typeEffect))
             {
-                Effect effectInList = entity.underEffects[effect.typeEffect];
-                effectInList.UpdateEffect(entity, effect);
+                Effect effectInList = entityAffected.underEffects[effect.typeEffect];
+                effectInList.UpdateEffect(entityAffected, effect);
 
-                entity.underEffects[effect.typeEffect] = effectInList;
+                // Théoriquement inutile depuis que effect est une class et plus une struct
+//                entity.underEffects[effect.typeEffect] = effectInList;
                 return;
             }
 
-            if (effect.durationInSeconds <= -1.00001)
-            {
-                entity.underEffects.Add(effect.typeEffect, effect);
-                return;
-            }
+//            if (effect.durationInSeconds <= -0.9999)
+//            {
+//                entity.underEffects.Add(effect.typeEffect, effect);
+//                return;
+//            }
 
-            StartCoroutineEffect(entity, effect);
+            StartCoroutineEffect(entityAffected, effect, origin, srcDamage);
         }
 
-        public static void StartCoroutineEffect(Entity entity, Effect effect)
+        public static void StartCoroutineEffect(Entity entity, Effect effect, Entity origin, Vector3 srcDamage)
         {
-            entity.underEffects.Add(effect.typeEffect, effect);
-            Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, effect));
+            Effect cloneEffect = CloneEffect(effect, origin, srcDamage);
+            entity.underEffects.Add(effect.typeEffect, cloneEffect);
+            Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 
-            effect.currentCoroutine = currentCoroutine;
-            entity.underEffects[effect.typeEffect] = effect;
+            cloneEffect.currentCoroutine = currentCoroutine;
+            // Théoriquement inutile depuis que effect est une class et plus une struct
+//            entity.underEffects[effect.typeEffect] = effect;
         }
 
         public static IEnumerator PlayEffectOnTime(Entity entity, Effect effect)
         {
-            Effect effectInList = entity.underEffects[effect.typeEffect];
+            // Théoriquement inutile depuis que effect est une class et plus une struct
+//            Effect effectInList = entity.underEffects[effect.typeEffect];
 
-            effectInList.InitialTrigger(entity);
+            effect.InitialTrigger(entity);
 
             yield return new WaitForSeconds(0.05f);
 
-            if (effectInList.durationInSeconds == 0)
+            if (effect.durationInSeconds == 0)
             {
-                StopCurrentEffect(entity, effectInList);
+                StopCurrentEffect(entity, effect);
                 yield break;
             }
             
-            while (effectInList.durationInSeconds > 0)
+            while (effect.durationInSeconds > 0)
             {
                 yield return new WaitForSeconds(0.1f);
                 if (effect.launcher != null && effect.ressourceCost > 0)
@@ -104,11 +125,11 @@ namespace Games.Global
                     }
                 }
 
-                effectInList.TriggerEffectAtTime(entity);
+                effect.TriggerEffectAtTime(entity);
 
-                effectInList = entity.underEffects[effect.typeEffect];
-                effectInList.durationInSeconds -= 0.1f;
-                entity.underEffects[effect.typeEffect] = effectInList;
+//                effectInList = entity.underEffects[effect.typeEffect];
+                effect.durationInSeconds -= 0.1f;
+//                entity.underEffects[effect.typeEffect] = effectInList;
             }
 
             StopCurrentEffect(entity, effect);
@@ -122,7 +143,7 @@ namespace Games.Global
             }
 
             effect.EndEffect(entity);
-            
+
             entity.underEffects.Remove(effect.typeEffect);
         }
     }

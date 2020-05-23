@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Games.Global.Spells
-{   
+{
     [Serializable]
     public class SummonSpell : SpellComponent
     {
@@ -12,33 +12,33 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Summon;
         }
 
-        public int idPoolObject;
+        public int idPoolObject { get; set; }
 
-        public float hp;
-        public bool isTargetable;
-        public List<Vector3> positionPresets;
-        public float duration;
-        public float attackDamage;
-        public float moveSpeed;
-        public int summonNumber;
-        public float attackSpeed;
-        public int nbUseSpells;
+        public float hp { get; set; }
+        public bool isTargetable { get; set; }
+        public List<Vector3> positionPresets { get; set; }
+        public float duration { get; set; }
+        public float attackDamage { get; set; }
+        public float moveSpeed { get; set; }
+        public int summonNumber { get; set; }
+        public float attackSpeed { get; set; }
+        public int nbUseSpells { get; set; }
 
-        public BehaviorType BehaviorType;
-        public AttackBehaviorType AttackBehaviorType;
+        public BehaviorType BehaviorType { get; set; }
+        public AttackBehaviorType AttackBehaviorType { get; set; }
 
         // Destroy other invocation of same type
-        public bool isUnique;
-        public bool canMove;
+        public bool isUnique { get; set; }
+        public bool canMove { get; set; }
 
-        public SpellComponent linkedSpellOnEnable;
-        public SpellComponent linkedSpellOnDisapear;
+        public SpellComponent linkedSpellOnEnable { get; set; }
+        public SpellComponent linkedSpellOnDisapear { get; set; }
 
-        public List<Spell> spells;
-        public Spell basicAttack;
-        public SpellComponent spellWhenPlayerCall;
+        public List<Spell> spells { get; set; }
+        public Spell basicAttack { get; set; }
+        public SpellComponent spellWhenPlayerCall { get; set; }
 
         /* useless for initialisation of spell */
-        public List<GenericSummonSpell> prefabsSummon;
+        public List<GenericSummonSpell> prefabsSummon { get; set; }
     }
 }

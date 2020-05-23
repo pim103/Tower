@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
@@ -88,7 +89,7 @@ namespace Games.Global.Spells.SpellsController
             for (int nbSummon = 0; nbSummon < summonSpell.summonNumber; nbSummon++)
             {
                 GameObject summon = ObjectPooler.SharedInstance.GetPooledObject(summonSpell.idPoolObject);
-                summon.transform.position = summonSpell.startPosition + summonSpell.positionPresets[nbSummon];
+                summon.transform.position = summonSpell.startPosition + GroupsPosition.position[nbSummon];
 
                 GenericSummonSpell genericSummonSpell = summon.GetComponent<GenericSummonSpell>();
                 genericSummonSpell.SummonEntity(entity, summonSpell, summon);

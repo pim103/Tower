@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using FullSerializer;
 using Games;
 using Games.Global;
 using Games.Global.Spells;
@@ -10,21 +8,29 @@ using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
 using Games.Transitions;
+using SpellEditor;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace TestC
 {
     public class SpellTestScene : MonoBehaviour
     {
         [SerializeField] private PlayerPrefab player;
+        [SerializeField] private Image[] extraSpellText;
 
-        [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private GameObject escapeCanvas;
+        [SerializeField] private Button backToEditor;
         
         // Start is called before the first frame update
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            DataObject.playerInScene.Clear();
             DataObject.playerInScene.Add(GameController.PlayerIndex, player);
 
             Identity classe = new Identity();
@@ -37,99 +43,116 @@ namespace TestC
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;
 
             StartCoroutine(Waiting());
+
+            backToEditor.onClick.AddListener(BackToEditorAction);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Keypad0))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[3], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad1))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[4], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad2))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[5], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad3))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[6], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad4))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[7], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad5))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[8], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad6))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[9], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad7))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[10], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Keypad8))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[11], player.transform.position, player.target);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Keypad9))
+            {
+                SpellController.CastSpell(player.entity, player.entity.spells[12], player.transform.position, player.target);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                escapeCanvas.SetActive(Cursor.visible);
+
+                if (Cursor.visible)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+        }
+
+        public void BackToEditorAction()
+        {
+            SceneManager.LoadScene("SpellEditor");
         }
 
         private IEnumerator Waiting()
         {
             yield return new WaitForSeconds(0.1f);
-            SerializedSpell();
-//            TestSpell();
-//            
-//            yield return new WaitForSeconds(5f);
-//            OtherSpell();
-        }
 
-        [Serializable]
-        public class Example
-        {
-            public Example2 example;
-            public int zero;
-        }
+            player.entity.spells.Clear();
+            
+            int countSpells = 0;
+            foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
+            {
+                player.entity.spells.Add(pair.Value);
 
-        [Serializable]
-        public class Example2
-        {
-            public int ok;
-            public string nice;
-            public Example3 ex;
-        } 
-
-        [Serializable]
-        public class Example3
-        {
-            public int encore;
-            public string stringencore;
+                if (countSpells == 0)
+                {
+                    player.spell1.text = pair.Value.nameSpell;
+                } else if (countSpells == 1)
+                {
+                    player.spell2.text = pair.Value.nameSpell;
+                } else if (countSpells == 2)
+                {
+                    player.spell3.text = pair.Value.nameSpell;
+                }
+                else
+                {
+                    extraSpellText[countSpells].gameObject.SetActive(true);
+                    extraSpellText[countSpells].transform.GetChild(0).GetComponent<Text>().text = pair.Value.nameSpell;
+                }
+                
+                countSpells++;
+            }
         }
         
-        private void SerializedSpell()
-        {
-            SummonSpell summonSpell = new SummonSpell
-            {
-                duration = 50,
-                hp = 50,
-                attackDamage = 40,
-                attackSpeed = 1,
-                damageType = DamageType.Magical,
-                canMove = true,
-                isTargetable = true,
-                idPoolObject = 2,
-                moveSpeed = 10,
-                summonNumber = 2,
-                BehaviorType = BehaviorType.Distance,
-                isUnique = true,
-                nbUseSpells = 2,
-                AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst
-            };
-
-            Effect effect = new Effect
-            {
-                level = 2,
-                typeEffect = TypeEffect.Burn,
-                durationInSeconds = 10
-            };
-            
-            AreaOfEffectSpell area = new AreaOfEffectSpell
-            {
-                startPosition = Vector3.zero,
-                scale = Vector3.one * 20,
-                onePlay = true,
-                damagesOnEnemiesOnInterval = 30.0f,
-                geometry = Geometry.Sphere,
-                OriginalDirection = OriginalDirection.None,
-                OriginalPosition = OriginalPosition.Caster,
-                linkedSpellOnEnd = summonSpell,
-                effectOnHitOnStart = effect
-            };
-
-            Spell newSpell = new Spell
-            {
-                cost = 0,
-                cooldown = 2,
-                castTime = 0,
-                activeSpellComponent = area
-            };
-
-            fsSerializer serializer = new fsSerializer();
-            fsData data;
-            serializer.TrySerialize(newSpell.GetType(), newSpell, out data);
-            File.WriteAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json", fsJsonPrinter.CompressedJson(data));
-//            AreaOfEffectSpell newArea = JsonUtility.FromJson<AreaOfEffectSpell>(File.ReadAllText(Application.dataPath + "/Data/SpellsJson/NewSpellJson.json"));
-        }
-
         private void OtherSpell()
         {
             player.entity.att = 15;
-
 
             List<Vector3> positions = new List<Vector3>();
             positions.Add(Vector3.forward);
@@ -261,8 +284,7 @@ namespace TestC
                 effectsOnEnemiesOnInterval = effects,
                 wantToFollow = true,
                 OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward,
-                transformToFollow = player.transform
+                OriginalDirection = OriginalDirection.Forward
             };
             
             MovementSpell movementSpell = new MovementSpell

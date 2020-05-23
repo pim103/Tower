@@ -10,7 +10,13 @@ namespace Games.Global.Spells
         Sphere,
         Cone,
     }
-    
+
+    public enum OriginArea
+    {
+        Center,
+        From
+    }
+
     public enum TypeSpell
     {
         Movement,
@@ -22,7 +28,7 @@ namespace Games.Global.Spells
         Passive,
         Transformation
     }
-    
+
     public enum DamageType
     {
         Magical,
@@ -32,52 +38,54 @@ namespace Games.Global.Spells
     [Serializable]
     public class SpellComponent
     {
-        public TypeSpell typeSpell;
-        public DamageType damageType;
+        public string nameSpellComponent { get; set; }
+        public TypeSpell typeSpell { get; set; }
+        public DamageType damageType { get; set; }
 
-        public Coroutine currentCoroutine;
+        public Coroutine currentCoroutine { get; set; }
 
-        public OriginalPosition OriginalPosition;
-        public OriginalDirection OriginalDirection;
+        public OriginalPosition OriginalPosition { get; set; }
+        public OriginalDirection OriginalDirection { get; set; }
 
-        public Vector3 startPosition;
-        public Vector3 initialRotation;
-        public Vector3 trajectoryNormalized;
+        public Vector3 startPosition { get; set; }
+        public Vector3 initialRotation { get; set; }
+        public Vector3 trajectoryNormalized { get; set; }
 
-        public bool isBasicAttack;
-        public bool needPositionToMidToEntity;
-        public bool castByPassive;
+        public bool isBasicAttack { get; set; }
+        public bool needPositionToMidToEntity { get; set; }
+        public bool castByPassive { get; set; }
     }
 
     [Serializable]
     public class Spell
     {
-        public float initialCooldown;
-        public float cooldown;
-        public float cost;
-        public float castTime;
+        public string nameSpell { get; set; }
+        public float initialCooldown { get; set; }
+        public float cooldown { get; set; }
+        public float cost { get; set; }
+        public float castTime { get; set; }
 
-        public bool deactivatePassiveWhenActive;
-        public bool isOnCooldown;
+        public bool deactivatePassiveWhenActive { get; set; }
+        public bool isOnCooldown { get; set; }
 
-        public int nbUse = -1;
+        public int nbUse { get; set; } = -1;
 
-        public bool canCastDuringCast = false;
-        public bool wantToCastDuringCast = false;
+        public bool canCastDuringCast { get; set; } = false;
+        public bool wantToCastDuringCast { get; set; } = false;
 
         // Active:
-        public SpellComponent activeSpellComponent;
+        public SpellComponent activeSpellComponent { get; set; }
 
         // Passive:
-        public SpellComponent passiveSpellComponent;
+        public SpellComponent passiveSpellComponent { get; set; }
 
         // DuringCast:
-        public SpellComponent duringCastSpellComponent;
-        public bool interruptCurrentCast;
+        public SpellComponent duringCastSpellComponent { get; set; }
+        public bool interruptCurrentCast { get; set; }
 
         //Recast
-        public SpellComponent recastSpellComponent;
-        public bool canRecast;
-        public bool alreadyRecast;
+        public SpellComponent recastSpellComponent { get; set; }
+        public bool canRecast { get; set; }
+        public bool alreadyRecast { get; set; }
     }
 }
