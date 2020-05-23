@@ -185,7 +185,8 @@ namespace Games.Global
 
             if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || originDamage.isBlind)
             {
-                return;
+                initialDamage = 0;
+                damageReceived = 0;
             }
             
             if (isMagic)
@@ -262,6 +263,8 @@ namespace Games.Global
             {
                 EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Sleep]);
             }
+
+            BuffController.EntityReceivedDamage(this, originDamage);
 
             if (hasMirror && isMagic)
             {

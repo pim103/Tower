@@ -248,7 +248,8 @@ namespace Games.Global.Spells.SpellsController
 
         public static void EntityReceivedDamage(Entity entity, Entity entityOriginOfDamage)
         {
-            foreach (BuffSpell buffSpell in entity.currentBuff)
+            List<BuffSpell> entityCurrentBuff = new List<BuffSpell>(entity.currentBuff);
+            foreach (BuffSpell buffSpell in entityCurrentBuff)
             {
                 if (buffSpell.linkedSpellOnDamageReceived != null)
                 {
@@ -257,7 +258,7 @@ namespace Games.Global.Spells.SpellsController
                     {
                         position = entityOriginOfDamage.entityPrefab.transform.position;
                     }
-                    
+
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position, entity);
                 }
 

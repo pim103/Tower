@@ -197,20 +197,11 @@ namespace Games.Global.Spells.SpellsController
         {
             AbilityParameters paramaters = new AbilityParameters { origin = entity };
 
-            if ((enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
-                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
-                entity.isBlind ||
-                enemy.isUntargeatable)
-            {
-                return;
-            }
-
-            BuffController.EntityReceivedDamage(enemy, entity);
-
-            if (entity.hasDivineShield)
-            {
-                return;
-            }
+            bool damageIsNull = (enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
+                                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
+                                entity.isBlind ||
+                                enemy.isUntargeatable ||
+                                entity.hasDivineShield;
 
             if (entity.weapons.Count > 0)
             {
@@ -242,6 +233,8 @@ namespace Games.Global.Spells.SpellsController
             {
                 damage /= 2;
             }
+
+            damage = damageIsNull ? 0 : damage;
 
             enemy.TakeDamage(damage, paramaters, areaOfEffectSpell.damageType ,entity.canPierce);
         }

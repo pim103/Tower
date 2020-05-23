@@ -13,7 +13,7 @@ namespace Games.Global.Weapons
         public Bow()
         {
            animationToPlay = "BowAttack";
-//           spellOfBasicAttack = "ProjSpellSaigne";
+           spellOfBasicAttack = "BowBasicAttack";
         }
 
         public override void FixAngleAttack(bool isFirstIteration, Entity wielder)

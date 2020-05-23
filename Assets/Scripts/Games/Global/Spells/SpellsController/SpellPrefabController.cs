@@ -60,7 +60,7 @@ namespace Games.Global.Spells.SpellsController
             {
                 return;
             }
-
+            
             if (spellComponent == null)
             {
                 return;

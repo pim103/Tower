@@ -86,7 +86,6 @@ namespace Games.Global.Weapons
             string path = Application.dataPath + "/Data/SpellsJson/";
             string tempPath = "";
 
-            Debug.Log(weaponPrefab);
             Entity wielder = weaponPrefab.GetWielder();
             Spell spell;
 
