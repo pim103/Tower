@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Games.Transitions;
 using Networking;
@@ -32,6 +33,7 @@ namespace Menus
 
         private Dictionary<string, GameObject> listPlayerCase;
         private Dictionary<string, bool> listPlayerIsReady;
+        private CallbackMessages callbackHandlers;
         
         private IEnumerator WaitingForCanStart()
         {
@@ -54,10 +56,16 @@ namespace Menus
             TowersWebSocket.TowerSender("ALL", "GENERAL","null", "joinRoom", TowersWebSocket.FromDictToString(setSocket));
             TowersWebSocket.wsGame.OnMessage += (sender, args) =>
             {
-                if (args.Data == "{\"CanStartHandler\":[{\"message\":\"true\"}]}")
+                if (args.Data.Contains("callbackMessages"))
                 {
-                    Debug.Log("Done!");
-                    canStart = args.Data;
+                    callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
+                    foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
+                    {
+                        if (callback.Message == "MatchStart")
+                        {
+                            canStart = callback.Message;
+                        }
+                    }
                 }
             };
             StartCoroutine(WaitingForCanStart());

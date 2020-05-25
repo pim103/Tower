@@ -15,7 +15,7 @@ namespace Networking
         public static string WebSocketEndpointChat { get; set; }
         public static string HttpsEndpoint { get; set; }
         public static string PublicKey { get; set; }
-        
+
         public static readonly string GameToken = "-dx+L-oGb:EDJ,kGcP(7lVTe^0?9nv";
 
 

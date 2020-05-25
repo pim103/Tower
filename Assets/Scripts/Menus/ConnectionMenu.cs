@@ -61,6 +61,7 @@ namespace Menus
                 NetworkingController.AuthRole = httpResponse[2];
                 yield return new WaitForSeconds(0.5f);
                 TowersWebSocket.InitializeWebsocketEndpoint();
+                mc.menuWebsocketHandler.enabled = true;
                 TowersWebSocket.StartConnection();
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
             }

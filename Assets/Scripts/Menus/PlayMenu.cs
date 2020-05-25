@@ -44,7 +44,7 @@ namespace Menus
 
         public void CreateMatch()
         {
-            StartCoroutine(Room.CreateMatchRequest(mc));
+            StartCoroutine(CreateMatchRequest());
         }
 
         public void SearchMatch()
@@ -55,7 +55,7 @@ namespace Menus
         IEnumerator LoadRoomRequest()
         {
             WWWForm form = new WWWForm();
-            form.AddField("searchForRanked", 1);
+            form.AddField("searchForRanked", 0);
             form.AddField("gameToken", NetworkingController.GameToken);
             var www = UnityWebRequest.Post(NetworkingController.HttpsEndpoint + "/services/room/list.php", form);
             www.certificateHandler = new AcceptCertificate();
@@ -76,6 +76,38 @@ namespace Menus
                     NetworkingController.CurrentRoomToken = roomList.rooms[0].name;
                     mc.ActivateMenu(MenuController.Menu.ListingPlayer);
                 }
+            }
+            else
+            {
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+                Debug.Log("Serveur d'authentification indisponible.");
+            }
+        }
+        
+        public IEnumerator CreateMatchRequest()
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("name", "RANKED_" + UniqueKey.KeyGenerator.GetUniqueKey(50));
+            form.AddField("roomOwner", NetworkingController.AuthToken);
+            form.AddField("maxPlayer", 2);
+            form.AddField("mode", "1v1");
+            form.AddField("isRanked", 0);
+            form.AddField("isPublic", 1);
+            var www = UnityWebRequest.Post(NetworkingController.HttpsEndpoint + "/services/room/add.php", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 201)
+            {
+                yield return new WaitForSeconds(0.5f);
+                NetworkingController.CurrentRoomToken = www.downloadHandler.text;
+                yield return new WaitForSeconds(0.5f);
+                mc.ActivateMenu(MenuController.Menu.ListingPlayer);
+            }
+            else if (www.responseCode == 406)
+            {
+                Debug.Log("Impossible de créer la room");
             }
             else
             {

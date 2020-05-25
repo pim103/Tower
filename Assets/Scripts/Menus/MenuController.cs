@@ -11,6 +11,9 @@ namespace Menus
     {
         [SerializeField]
         private GameObject[] menus;
+        
+        [SerializeField] 
+        public MenuWebsocketHandler menuWebsocketHandler;
 
         [SerializeField] 
         private string environnement;
@@ -34,6 +37,7 @@ namespace Menus
             Settings,
             Shop
         };
+        
 
         private void Start()
         {

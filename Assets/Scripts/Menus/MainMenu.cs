@@ -31,23 +31,6 @@ namespace Menus
         [SerializeField]
         private Button quitButton;
 
-        private CallbackMessages callbackHandlers;
-
-        private void Awake()
-        {
-            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
-            {
-                if (args.Data.Contains("callbackMessages"))
-                {
-                    callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
-                    foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
-                    {
-                        Debug.Log(callback.Message);
-                    }
-                }
-            };
-        }
-
         private void Start()
         {
             playButton.onClick.AddListener(delegate {
