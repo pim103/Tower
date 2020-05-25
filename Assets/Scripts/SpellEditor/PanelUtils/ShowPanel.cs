@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
@@ -29,3 +30,4 @@ namespace SpellEditor.PanelUtils
         }
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -10,6 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 
 namespace SpellEditor
 {
@@ -272,3 +274,4 @@ namespace SpellEditor
         }
     }
 }
+#endif

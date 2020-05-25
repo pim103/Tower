@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Games.Global;
@@ -80,3 +81,4 @@ public class WavePanel : MonoBehaviour
         effectsOnHit.InitDropdownWithValue(waveSpell.effectsOnHit);
     }
 }
+#endif

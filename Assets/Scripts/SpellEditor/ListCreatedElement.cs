@@ -1,10 +1,10 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellParameter;
 using UnityEngine;
-
 namespace SpellEditor
 {
     public static class ListCreatedElement
@@ -15,3 +15,4 @@ namespace SpellEditor
         public static Dictionary<string, SpellWithCondition> SpellWithCondition = new Dictionary<string, SpellWithCondition>();
     }
 }
+#endif
