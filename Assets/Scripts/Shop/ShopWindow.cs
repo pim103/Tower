@@ -9,9 +9,15 @@ using UnityEngine.UI;
 public class ShopWindow : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private ShopButton[] shopButtons;
-    [SerializeField] private Text pageNumber;
     [SerializeField] private ShopManager shopManager;
+    [SerializeField] private Text pageNumber;
+    public GameObject ConfirmePurchasePanel;
+    public GameObject ConfirmationPurchasePanel;
+    public GameObject ErrorPurchasePanel;
+    public Text PurchaseDescription;
+
+    [Header("Shop Buttons List")]
+    [SerializeField] private ShopButton[] shopButtons;
 
     private List<List<ShopItem>> pages = new List<List<ShopItem>>();
     private int pageIndex;
@@ -31,7 +37,7 @@ public class ShopWindow : MonoBehaviour
         {
             page.Add(items[i]);
 
-            if (page.Count == 12 || i == items.Length - 1)
+            if (page.Count == 8 || i == items.Length - 1)
             {
                 pages.Add(page);
                 page = new List<ShopItem>();

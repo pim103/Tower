@@ -10,15 +10,11 @@ using UnityEngine.UI;
 public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("References")]
+    [SerializeField] private ShopWindow shopWindow;
     [SerializeField] private Image icon;
     [SerializeField] private Text ressourceName;
     [SerializeField] private Text amount;
     [SerializeField] private Text price;
-
-    public GameObject ConfirmePurchasePanel;
-    public GameObject ConfirmationPurchasePanel;
-    public GameObject ErrorPurchasePanel;
-    public Text PurchaseDescription;
 
     private ShopItem shopItem;
     private static ShopItem currentShopItem;
@@ -47,28 +43,7 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Check if user have the money
-        if (AccountManager.MyInstance.AccountMoney  >= shopItem.Price)
-        {
-            currentShopItem = shopItem;
-            foreach (var item in currentShopItem.GetType().GetFields())
-            {
-                Debug.Log(item + " : " + item.GetValue(currentShopItem));
-            }
-
-            if (ConfirmePurchasePanel != null)
-            {
-                ConfirmePurchasePanel.SetActive(true);
-                PurchaseDescription.text = currentShopItem.Amount.ToString() + " " + currentShopItem.Resource.ResourceName + " pour " + currentShopItem.Price.ToString() + "€";
-            }
-        }
-        else
-        {
-            if (ErrorPurchasePanel != null)
-            {
-                ErrorPurchasePanel.SetActive(true);
-            }
-        }
+        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -82,6 +57,35 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
     /// <summary>
+    /// User want to buy something
+    /// </summary>
+    public void UserWantToBuy()
+    {
+        // Check if user have the money
+        if (AccountManager.MyInstance.AccountMoney >= shopItem.Price)
+        {
+            currentShopItem = shopItem;
+            foreach (var item in currentShopItem.GetType().GetFields())
+            {
+                Debug.Log(item + " : " + item.GetValue(currentShopItem));
+            }
+
+            if (shopWindow.ConfirmePurchasePanel != null)
+            {
+                shopWindow.ConfirmePurchasePanel.SetActive(true);
+                shopWindow.PurchaseDescription.text = currentShopItem.Amount.ToString() + " " + currentShopItem.Resource.ResourceName + " pour " + currentShopItem.Price.ToString() + "€";
+            }
+        }
+        else
+        {
+            if (shopWindow.ErrorPurchasePanel != null)
+            {
+                shopWindow.ErrorPurchasePanel.SetActive(true);
+            }
+        }
+    }
+
+    /// <summary>
     /// User buy something
     /// </summary>
     public void Buy()
@@ -89,9 +93,9 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // Remove the money from the user account
         AccountManager.MyInstance.AccountMoney -= currentShopItem.Price;
 
-        if (ConfirmationPurchasePanel != null)
+        if (shopWindow.ConfirmationPurchasePanel != null)
         {
-            ConfirmationPurchasePanel.SetActive(true);
+            shopWindow.ConfirmationPurchasePanel.SetActive(true);
         }
 
         // Add the item to the user account
