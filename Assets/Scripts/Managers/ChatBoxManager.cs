@@ -15,9 +15,9 @@ public class ChatBoxManager : MonoBehaviour
     public int maxMessages = 25;
 
     [Header("References")]
-    public GameObject chatPanel;
-    public GameObject textObject;
-    public InputField chatBox;
+    private GameObject chatPanel;
+    private GameObject textObject;
+    private InputField chatBox;
 
     [Header("Message type color")]
     public Color server;
@@ -30,6 +30,10 @@ public class ChatBoxManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        chatPanel = UIManager.MyInstance.chatPanel;
+        textObject = UIManager.MyInstance.textObject;
+        chatBox = UIManager.MyInstance.chatBox;
+
         // Welcome message
         SendMessageToChat("Bienvenue dans Tower", Message.MessageType.server);
     }

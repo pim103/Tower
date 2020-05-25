@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class KeyBindManager : MonoBehaviour
 {
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
-    public Text up, left, down, right, action_1, action_2, spell_1, spell_2, spell_3;
+    //public Text up, left, down, right, action_1, action_2, spell_1, spell_2, spell_3;
     private GameObject currentKey;
     private Color32 normal = new Color32(255, 255, 255, 255);
     private Color32 selected = new Color32(239, 116, 36, 255);
@@ -29,17 +29,17 @@ public class KeyBindManager : MonoBehaviour
         keys.Add("Spell 2", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Spell 2", "E")));
         keys.Add("Spell 3", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Spell 3", "R")));
 
-        up.text = keys["Up"].ToString();
-        down.text = keys["Down"].ToString();
-        left.text = keys["Left"].ToString();
-        right.text = keys["Right"].ToString();
+        UIManager.MyInstance.up.text = keys["Up"].ToString();
+        UIManager.MyInstance.down.text = keys["Down"].ToString();
+        UIManager.MyInstance.left.text = keys["Left"].ToString();
+        UIManager.MyInstance.right.text = keys["Right"].ToString();
 
-        action_1.text = keys["Action 1"].ToString();
-        action_2.text = keys["Action 2"].ToString();
+        UIManager.MyInstance.action_1.text = keys["Action 1"].ToString();
+        UIManager.MyInstance.action_2.text = keys["Action 2"].ToString();
 
-        spell_1.text = keys["Spell 1"].ToString();
-        spell_2.text = keys["Spell 2"].ToString();
-        spell_3.text = keys["Spell 3"].ToString();
+        UIManager.MyInstance.spell_1.text = keys["Spell 1"].ToString();
+        UIManager.MyInstance.spell_2.text = keys["Spell 2"].ToString();
+        UIManager.MyInstance.spell_3.text = keys["Spell 3"].ToString();
     }
 
     // Update is called once per frame

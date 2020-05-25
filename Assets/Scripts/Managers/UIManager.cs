@@ -28,9 +28,55 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform tooltipRect;
     private Text tooltipText;
 
+    [Header("Account Management")]
+    // Display text of the quantity of resources in the main menu
+    [SerializeField] private Text goldBarAmountText;
+    [SerializeField] private Text goldNuggetAmountText;
+    [SerializeField] private Text stoneOreAmountText;
+    // Display text of the amount of money
+    [SerializeField] private Text moneyAmountText;
+
+    [Header("Game Settings Management")]
+    public Dropdown resolutionDropdown;
+    public Dropdown graphicQualityLevelDropdown;
+    public Toggle fullScreenToggle;
+    public Slider volumeSlider;
+
+    [Header("Key Bind Management")]
+    public Text up;
+    public Text left;
+    public Text down;
+    public Text right;
+    public Text action_1;
+    public Text action_2;
+    public Text spell_1;
+    public Text spell_2;
+    public Text spell_3;
+
+    [Header("Chat Box Management")]
+    public GameObject chatPanel;
+    public GameObject textObject;
+    public InputField chatBox;
+
+    [Header("Social Management")]
+    public GameObject SocialPanel;
+    public GameObject SocialBoxContent;
+    public GameObject usernameObject;
+    public GameObject AddSocialPanel;
+    public InputField AddSocialPanelInput;
+
     private void Awake()
     {
         tooltipText = tooltip.GetComponentInChildren<Text>();
+    }
+
+    void Update()
+    {
+        // Account Management
+        goldBarAmountText.text = AccountManager.MyInstance.AccountResources[0].Amount.ToString();
+        goldNuggetAmountText.text = AccountManager.MyInstance.AccountResources[1].Amount.ToString();
+        stoneOreAmountText.text = AccountManager.MyInstance.AccountResources[2].Amount.ToString();
+        moneyAmountText.text = AccountManager.MyInstance.AccountMoney.ToString();
     }
 
     /// <summary>

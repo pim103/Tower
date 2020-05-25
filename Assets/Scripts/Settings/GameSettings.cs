@@ -10,10 +10,10 @@ public class GameSettings : MonoBehaviour
 {
     [Header("References")]
     public AudioMixer audioMixer;
-    public Dropdown resolutionDropdown;
-    public Dropdown graphicQualityLevelDropdown;
-    public Toggle fullScreenToggle;
-    public Slider volumeSlider;
+    //public Dropdown resolutionDropdown;
+    //public Dropdown graphicQualityLevelDropdown;
+    //public Toggle fullScreenToggle;
+    //public Slider volumeSlider;
 
     // Screen resolutions
     Resolution[] resolutions;
@@ -27,23 +27,23 @@ public class GameSettings : MonoBehaviour
         getFullScreenInt = PlayerPrefs.GetInt("GameFullScreen", 1);
         if (getFullScreenInt == 1)
         {
-            fullScreenToggle.isOn = true;
+            UIManager.MyInstance.fullScreenToggle.isOn = true;
         }
         else
         {
-            fullScreenToggle.isOn = false;
+            UIManager.MyInstance.fullScreenToggle.isOn = false;
         }
     }
 
     private void Start()
     {
         // Get volume state
-        volumeSlider.value = PlayerPrefs.GetFloat("GameVolume", 0f);
+        UIManager.MyInstance.volumeSlider.value = PlayerPrefs.GetFloat("GameVolume", 0f);
         audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("GameVolume", 0f));
 
         resolutions = Screen.resolutions;
 
-        resolutionDropdown.ClearOptions();
+        UIManager.MyInstance.resolutionDropdown.ClearOptions();
 
         List<string> options = new List<string>();
 
@@ -67,12 +67,12 @@ public class GameSettings : MonoBehaviour
             }*/
         }
 
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = PlayerPrefs.GetInt("GameResolution", currentResolutionIndex);
-        resolutionDropdown.RefreshShownValue();
+        UIManager.MyInstance.resolutionDropdown.AddOptions(options);
+        UIManager.MyInstance.resolutionDropdown.value = PlayerPrefs.GetInt("GameResolution", currentResolutionIndex);
+        UIManager.MyInstance.resolutionDropdown.RefreshShownValue();
 
         // Get graphic quality level
-        graphicQualityLevelDropdown.value = PlayerPrefs.GetInt("GameQualityLevel", QualitySettings.GetQualityLevel());
+        UIManager.MyInstance.graphicQualityLevelDropdown.value = PlayerPrefs.GetInt("GameQualityLevel", QualitySettings.GetQualityLevel());
     }
 
     /// <summary>
