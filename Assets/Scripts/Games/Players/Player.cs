@@ -2,6 +2,7 @@
 using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Armors;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
 using Networking.Client;
@@ -29,12 +30,6 @@ namespace Games.Players
         private PlayerPrefab playerPrefab;
 
         public Classes mainClass;
-        
-        /*
-         * Specific Warrior
-         */
-        public int nbShieldBlock = 0;
-        public bool isBlocking = false;
 
         public void SetPlayerPrefab(PlayerPrefab playerPrefab)
         {
@@ -43,61 +38,65 @@ namespace Games.Players
 
         public override void BasicAttack()
         {
-            playerPrefab.PlayBasicAttack(weapons[0].weaponPrefab);
+            playerPrefab.PlayBasicAttack();
         }
-        
+
         public override void BasicDefense()
         {
+            Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
+            Effect invisible = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
+            
             switch (mainClass)
             {
-                case Classes.Mage:
-                    ApplyNewEffect(TypeEffect.Regen, 5f, 1, this, 1);
-                    break;
-                case Classes.Rogue:
-                    ApplyNewEffect(TypeEffect.Invisibility, 5f, 1, this, 1);
-                    break;
-                case Classes.Ranger:
-                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
-                    {
-                        ressource1 -= 10;
-                        
-                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
-                        BasicAttack();
-                        
-                        ApplyNewEffect(TypeEffect.MadeADash, 0.2f);
-                    }
-                    break;
-                case Classes.Warrior:
-                    isBlocking = true;
-                    break;
+//                case Classes.Mage:
+//                    EffectController.ApplyEffect(this, regen);
+//                    break;
+//                case Classes.Rogue:
+//                    EffectController.ApplyEffect(this, invisible);
+//                    break;
+//                case Classes.Ranger:
+//                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
+//                    {
+//                        ressource1 -= 10;
+//
+//                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
+//                        BasicAttack();
+//
+//                        EffectController.ApplyNewEffectToEntity(this, TypeEffect.MadeADash, 0.2f);
+//                    }
+//                    break;
+//                case Classes.Warrior:
+//                    isBlocking = true;
+//                    break;
             }
         }
 
         public override void DesactiveBasicDefense()
         {
-            switch (mainClass)
-            {
-                case Classes.Mage:
-                    RemoveEffect(TypeEffect.Regen);
-                    break;
-                case Classes.Rogue:
-                    RemoveEffect(TypeEffect.Invisibility);
-                    break;
-                case Classes.Ranger:
-                    break;
-                case Classes.Warrior:
-                    nbShieldBlock = 0;
-                    isBlocking = false;
-                    break;
-            }
+//            switch (mainClass)
+//            {
+//                case Classes.Mage:
+//                    EffectController.RemoveEffect(this, TypeEffect.Regen);
+//                    break;
+//                case Classes.Rogue:
+//                    EffectController.RemoveEffect(this, TypeEffect.Invisibility);
+//                    break;
+//                case Classes.Ranger:
+//                    break;
+//                case Classes.Warrior:
+//                    nbShieldBlock = 0;
+//                    isBlocking = false;
+//                    break;
+//            }
         }
 
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;
-            typeEntity = TypeEntity.PLAYER;
+            typeEntity = TypeEntity.ALLIES;
 
             IdEntity = GameController.PlayerIndex;
+            isPlayer = true;
 
             switch(classe)
             {
@@ -143,9 +142,11 @@ namespace Games.Players
             initialRessource1 = ressource1;
             initialRessource2 = ressource2;
 
-            InitEquipementArray();
+            InitEntityList();
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
+
+            SpellController.CastPassiveSpell(this);
         }
 
         private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
@@ -173,38 +174,9 @@ namespace Games.Players
 
             playerPrefab.AddItemInHand(weapon);
             weapon.InitPlayerSkill(mainClass);
+            // TODO : Add init weapon => change basic attack spell
 
             weapons.Add(weapon);
-        }
-
-        public override void TakeDamage(float initialDamage, AbilityParameters abilityParameters)
-        {
-            if (isBlocking)
-            {
-                nbShieldBlock++;
-                if (nbShieldBlock > 4)
-                {
-                    ApplyNewEffect(TypeEffect.Stun, 3, 1);
-                    DesactiveBasicDefense();
-                }
-
-                return;
-            }
-
-            base.TakeDamage(initialDamage, abilityParameters);
-        }
-        
-        public override void ApplyDamage(float directDamage)
-        {
-            base.ApplyDamage(directDamage);
-
-            if (hp <= 0)
-            {
-                TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
-                Debug.Log("Vous êtes mort");
-                Cursor.lockState = CursorLockMode.None;
-                SceneManager.LoadScene("MenuScene");
-            }
         }
     }
 }

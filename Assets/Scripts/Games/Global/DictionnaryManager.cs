@@ -3,6 +3,7 @@ using System.IO;
 using DeckBuilding;
 using Games.Global.Abilities;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Games.Global
         [SerializeField] private GameObject[] monsterGameObjects;
         [SerializeField] private GameObject[] weaponsGameObject;
 
-        public void Start()
+        public void Awake()
         {
             AbilityManager.InitAbilities();
             GroupsPosition.InitPosition();
@@ -24,7 +25,7 @@ namespace Games.Global
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
         }
-        
+
         private void FetchCollection()
         {
             List<CollectionJsonObject> dJsonObjects = new List<CollectionJsonObject>();
@@ -51,6 +52,7 @@ namespace Games.Global
 
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
+        public static List<Entity> invocationsInScene = new List<Entity>();
 
         public static List<GameObject> objectInScene = new List<GameObject>();
         

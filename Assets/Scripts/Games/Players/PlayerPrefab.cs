@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Diagnostics;
 using Games.Global;
-using Games.Global.Abilities.SpecialSpellPrefab;
-//using Games.Global.Patterns;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
-    public class PlayerPrefab : PlayerIntent, EffectInterface
+    public class PlayerPrefab : PlayerIntent
     {
         private const int PLAYER_SPEED = 10;
 
@@ -28,19 +28,25 @@ namespace Games.Players
         [SerializeField] public Camera camera;
         [SerializeField] public GameObject cameraGameObject;
         [SerializeField] private GameObject originalCameraPosition;
+        [SerializeField] private SkinnedMeshRenderer[] skins;
+        
+        private Material[] materialBackUpForSkin;
+
+        [SerializeField] public Text spell1;
+        [SerializeField] public Text spell2;
+        [SerializeField] public Text spell3;
 
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
 
         public int playerIndex;
-        public bool canMove;
-
-        private Vector3 positionPointed;
 
         public bool grounded;
         public bool ejected;
 
-        private void Awake()
+        public bool wasConfusing = false;
+
+        private void Start()
         {
             if (isFakePlayer)
             {
@@ -54,7 +60,6 @@ namespace Games.Players
 
             player.SetPlayerPrefab(this);
             player.InitPlayerStats(ChooseDeckAndClasse.currentRoleIdentity.classe);
-            player.effectInterface = this;
 
             wantToGoBack = false;
             wantToGoForward = false;
@@ -63,10 +68,6 @@ namespace Games.Players
             pressDefenseButton = false;
 
             StartCoroutine(NaturalRegen());
-
-            CheckPassiveSpell(entity.weapons[0].skill1);
-            CheckPassiveSpell(entity.weapons[0].skill2);
-            CheckPassiveSpell(entity.weapons[0].skill3);
         }
 
         private IEnumerator NaturalRegen()
@@ -105,15 +106,8 @@ namespace Games.Players
                 return;
             }
 
-            if (!entity.underEffects.ContainsKey(TypeEffect.MadeADash) && !movementBlocked)
-            {
-                Movement();
-            }
-
-            if (!cameraBlocked)
-            {
-                CameraRotation();
-            }
+            Movement();
+            CameraRotation();
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.up * -1), 0.1f,
                 LayerMask.GetMask("Ground")))
@@ -133,7 +127,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (entity.underEffects.ContainsKey(TypeEffect.Stun) || entity.underEffects.ContainsKey(TypeEffect.Sleep))
+            if (!canDoSomething || entity.isFeared || entity.isCharmed)
             {
                 wantToGoBack = false;
                 wantToGoForward = false;
@@ -142,45 +136,122 @@ namespace Games.Players
                 return;
             }
 
+            if (wasConfusing != entity.isConfuse)
+            {
+                bool tempIntent = wantToGoBack;
+                wantToGoBack = wantToGoForward;
+                wantToGoForward = tempIntent;
+
+                tempIntent = wantToGoLeft;
+                wantToGoLeft = wantToGoRight;
+                wantToGoRight = tempIntent;
+
+                wasConfusing = entity.isConfuse;
+            }
+
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                wantToGoForward = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoBack = true;
+                }
+                else
+                {
+                    wantToGoForward = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                wantToGoBack = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoForward = true;
+                }
+                else
+                {
+                    wantToGoBack = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                wantToGoLeft = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoRight = true;
+                }
+                else
+                {
+                    wantToGoLeft = true;   
+                }
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                wantToGoRight = true;
+                if (entity.isConfuse)
+                {
+                    wantToGoLeft = true;
+                }
+                else
+                {
+                    wantToGoRight = true;   
+                }
             }
 
             if (Input.GetKeyUp(KeyCode.Z))
             {
-                wantToGoForward = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoBack = false;
+                }
+                else
+                {
+                    wantToGoForward = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.S))
             {
-                wantToGoBack = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoForward = false;
+                }
+                else
+                {
+                    wantToGoBack = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                wantToGoLeft = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoRight = false;
+                }
+                else
+                {
+                    wantToGoLeft = false;   
+                }
             }
             if (Input.GetKeyUp(KeyCode.D))
             {
-                wantToGoRight = false;
+                if (entity.isConfuse)
+                {
+                    wantToGoLeft = false;
+                }
+                else
+                {
+                    wantToGoRight = false;   
+                }
             }
 
+            if (!canMove)
+            {
+                wantToGoBack = false;
+                wantToGoForward = false;
+                wantToGoLeft = false;
+                wantToGoRight = false;
+            }
+            
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
 
             if (!intentBlocked)
             {
-                if(Input.GetMouseButton(0))
+                if(Input.GetMouseButton(0) && entity.canBasicAttack)
                 {
                     entity.BasicAttack();
                 }
@@ -195,224 +266,38 @@ namespace Games.Players
                     pressDefenseButton = false;
                 }
 
-                if (!entity.doingSkill)
+                if (!entity.doingSkill && !entity.isSilence)
                 {
                     if (Input.GetKey(KeyCode.Alpha1))
                     {
-                        TryCastSpell(entity.weapons[0].skill1, true);
                     }
 
                     if (Input.GetKey(KeyCode.Alpha2))
                     {
-                        TryCastSpell(entity.weapons[0].skill2, true);
                     }
 
                     if (Input.GetKey(KeyCode.Alpha3))
                     {
-                        TryCastSpell(entity.weapons[0].skill3, true);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        TryCastSpell(entity.weapons[0].skill1);
+                        SpellController.CastSpell(entity, entity.spells[0], transform.position, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
-                        TryCastSpell(entity.weapons[0].skill2);
+                        SpellController.CastSpell(entity, entity.spells[1], transform.position, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
-                        TryCastSpell(entity.weapons[0].skill3);
+                        SpellController.CastSpell(entity, entity.spells[2], transform.position, target);
                     }
                 }
             }
 
             mousePosition = Input.mousePosition;
-        }
-
-        private void TryCastSpell(Spell spell, bool isPreview = false)
-        {
-            if (spell.typeSpell == TypeSpell.Active ||
-                spell.typeSpell == TypeSpell.Toggle ||
-                spell.typeSpell == TypeSpell.ActiveWithPassive ||
-                spell.typeSpell == TypeSpell.ToggleWithPassive
-            )
-            {
-                if (spell.cost < entity.ressource1 && spell.canLaunch)
-                {
-                    if (isPreview)
-                    {
-                        ActivePreviewSpell(spell);
-                    }
-                    else
-                    {
-                        StartCoroutine(Cooldown(spell));
-                        StartCoroutine(CastSpell(spell));   
-                    }
-                }
-            }
-        }
-
-        private void CheckPassiveSpell(Spell spell)
-        {
-            if (spell == null)
-            {
-                return;
-            }
-
-            if (spell.typeSpell == TypeSpell.Passive || spell.typeSpell == TypeSpell.ActiveWithPassive)
-            {
-                foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-                {
-                    if ((spell.typeSpell == TypeSpell.ActiveWithPassive &&
-                        spellInstruction.specificTypeSpell == TypeSpell.Passive) || spell.typeSpell == TypeSpell.Passive)
-                    {
-                        switch (spellInstruction.TypeSpellInstruction)
-                        {
-                            case TypeSpellInstruction.SelfEffect:
-                                entity.ApplyEffect(spellInstruction.effect);
-                                break;
-                            case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
-                                entity.damageDealExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
-                                break;
-                            case TypeSpellInstruction.SelfEffectOnDamageReceive:
-                                entity.damageReceiveExtraEffect.Add(spellInstruction.effect.typeEffect, spellInstruction.effect);
-                                break;;
-                            case TypeSpellInstruction.ChangeBasicAttack:
-                                Debug.Log("Change weapon");
-                                entity.weapons[0].idPoolProjectile = spellInstruction.idPoolObject;
-                                entity.weapons[0].type = spellInstruction.weaponNewStats.typeWeapon;
-                                entity.weapons[0].damage *= spellInstruction.weaponNewStats.damageModifier;
-                                entity.weapons[0].attSpeed *= spellInstruction.weaponNewStats.attSpeedModifier;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ActivePreviewSpell(Spell spell)
-        {
-            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-            {
-                if (spellInstruction.TypeSpellInstruction == TypeSpellInstruction.InstantiateSomething)
-                {
-                    if (spellInstruction.typeSpellObject == TypeSpellObject.GroundArea)
-                    {
-                        GameObject areaSpell = spell.spellInstantiate;
-                        if (areaSpell == null)
-                        {
-                            areaSpell = ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-                            spell.spellInstantiate = areaSpell;
-                        }
-
-                        if (positionPointed != Vector3.zero && areaSpell != null)
-                        {
-                            AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
-                            areaSpellScript.origin = entity;
-
-                            areaSpellScript.SetPreviewLocation(positionPointed);
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        private IEnumerator Cooldown(Spell spell)
-        {
-            spell.canLaunch = false;
-            yield return new WaitForSeconds(spell.cooldown);
-            spell.canLaunch = true;
-
-            Debug.Log("Peux relancer le spell");
-        }
-        
-        private IEnumerator CastSpell(Spell spell)
-        {
-            // TODO : make anim
-            entity.ressource1 -= spell.cost;
-
-            if (spell.castTime > 0)
-            {
-                movementBlocked = true;
-                intentBlocked = true;
-            }
-            
-            yield return new WaitForSeconds(spell.castTime);
-
-            movementBlocked = false;
-            intentBlocked = false;
-            
-            foreach (SpellInstruction spellInstruction in spell.spellInstructions)
-            {
-                switch (spellInstruction.TypeSpellInstruction)
-                {
-                    case TypeSpellInstruction.InstantiateSomething:
-                        ActiveSpellObject(spell, spellInstruction);
-                        break;
-                    case TypeSpellInstruction.SelfEffect:
-                        entity.ApplyEffect(spellInstruction.effect);
-                        break;
-                    case TypeSpellInstruction.EffectOnTargetWhenDamageDeal:
-                        StartCoroutine(AddDamageDealExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
-                        break;
-                    case TypeSpellInstruction.SelfEffectOnDamageReceive:
-                        StartCoroutine(AddDamageReceiveExtraEffect(spellInstruction.effect, spellInstruction.durationInstruction));
-                        break;
-                    case TypeSpellInstruction.SpecialMovement:
-                        PlaySpecialMovement(spellInstruction.specialMovement, spellInstruction.durationInstruction);
-                        break;
-                }
-            }
-        }
-
-        private void ActiveSpellObject(Spell spell, SpellInstruction spellInstruction)
-        {
-            switch (spellInstruction.typeSpellObject)
-            {
-                case TypeSpellObject.Projectile:
-                    GameObject projectileSpell =
-                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-
-                    Vector3 pos = transform.position;
-                    pos.y += 0.5f;
-                    projectileSpell.transform.position = pos;
-                    
-                    float rotX = projectileSpell.transform.localEulerAngles.x;
-                    projectileSpell.transform.eulerAngles = camera.transform.eulerAngles + (Vector3.right * rotX);
-                    projectileSpell.transform.forward *= 1.5f;
-
-                    projectileSpell.SetActive(true);
-
-                    ProjectilesPrefab projectilesPrefab = projectileSpell.GetComponent<ProjectilesPrefab>();
-                    projectilesPrefab.rigidbody.AddForce(transform.forward * 1000, ForceMode.Acceleration);
-                    projectilesPrefab.origin = entity;
-                    break;
-                case TypeSpellObject.GroundArea:
-                    GameObject areaSpell = spell.spellInstantiate;
-
-                    if (positionPointed != Vector3.zero && areaSpell != null)
-                    {
-                        AreaSpell areaSpellScript = areaSpell.GetComponent<AreaSpell>();
-                        areaSpellScript.origin = entity;
-                            
-                        areaSpell.transform.position = positionPointed;
-                        areaSpell.SetActive(true);
-                        areaSpellScript.EnableAreaEffect();
-                    }
-                    break;
-                case TypeSpellObject.OnHimself:
-                    GameObject objectPooled =
-                        ObjectPooler.SharedInstance.GetPooledObject(spellInstruction.idPoolObject);
-
-                    objectPooled.transform.localEulerAngles = transform.localEulerAngles;
-                    objectPooled.transform.position = transform.position;
-                    objectPooled.SetActive(true);
-                    break;
-            }
         }
 
         public void Movement()
@@ -446,13 +331,17 @@ namespace Games.Players
                 currentSpeed = entity.speed;
             }
 
-            Vector3 locVel = transform.InverseTransformDirection(rigidbody.velocity);
-            locVel.x = horizontalMove * currentSpeed;
-            locVel.z = verticalMove * currentSpeed;
-
-            if (entity != null && entity.underEffects.ContainsKey(TypeEffect.Slow))
+            Vector3 locVel;
+            if ( (entity.isFeared || entity.isCharmed) && canDoSomething)
             {
-                locVel /= 2;
+                locVel = transform.InverseTransformDirection(forcedDirection);
+                locVel *= currentSpeed;
+            }
+            else
+            {
+                locVel = transform.InverseTransformDirection(rigidbody.velocity);
+                locVel.x = horizontalMove * currentSpeed;
+                locVel.z = verticalMove * currentSpeed;
             }
 
             if (grounded && !ejected)
@@ -463,7 +352,38 @@ namespace Games.Players
 
         private void CameraRotation()
         {
-            int rotationSpeed = 5;
+            if (entity.isFeared)
+            {
+                Entity launcher = entity.underEffects[TypeEffect.Fear].launcher;
+                transform.LookAt(launcher.entityPrefab.transform);
+                transform.Rotate(Vector3.up * 180);
+                return;
+            }
+            
+            if(entity.isCharmed)
+            {
+                Entity launcher = entity.underEffects[TypeEffect.Charm].launcher;
+                transform.LookAt(launcher.entityPrefab.transform);
+                return;
+            }
+
+            if (cameraBlocked)
+            {
+                return;
+            }
+
+            Vector3 eulerAngles = transform.localEulerAngles;
+            eulerAngles.x = 0;
+            eulerAngles.z = 0;
+            transform.localEulerAngles = eulerAngles;
+
+            float rotationSpeed = 5;
+            
+            
+            if (isCharging)
+            {
+                rotationSpeed = 0.1f;
+            }
             
             float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
             float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
@@ -472,22 +392,39 @@ namespace Games.Players
 
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
-//            virtualHand.transform.eulerAngles = camera.transform.eulerAngles;
+            
+            Quaternion q = cameraPoint.transform.localRotation;
+            
+            q.x /= q.w;
+            q.y /= q.w;
+            q.z /= q.w;
+            q.w = 1.0f;
+
+            float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.x);
+
+            angleX = Mathf.Clamp (angleX, -25, 30);
+            q.x = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleX);
+
+            cameraPoint.transform.localRotation = q;
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Explosion")))
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Spell")))
             {
                 positionPointed = hit.point;
 
-//                if (entity.weapons[0].type != TypeWeapon.Cac)
-//                {
-//                    virtualHand.transform.LookAt(positionPointed);
-//                }
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+                {
+                    EntityPrefab entityPrefab = hit.collider.GetComponent<EntityPrefab>();
+                    if (entityPrefab.entity.typeEntity == TypeEntity.MOB)
+                    {
+                        target = entityPrefab.entity;
+                    }
+                }
             }
             else
             {
-                positionPointed = Vector3.zero;
+                positionPointed = Vector3.positiveInfinity;
             }
 
             if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))
@@ -498,6 +435,31 @@ namespace Games.Players
             else
             {
                 camera.transform.position = originalCameraPosition.transform.position;
+            }
+        }
+
+        public override void SetInvisibility()
+        {
+            int count = 0;
+
+            if (materialBackUpForSkin == null)
+            {
+                materialBackUpForSkin = new Material[skins.Length];
+            }
+            
+            foreach (SkinnedMeshRenderer skin in skins)
+            {
+                if (entity.isInvisible)
+                {
+                    materialBackUpForSkin[count] = skin.material;
+                    skin.material = StaticMaterials.invisibleMaterial;
+                }
+                else
+                {
+                    skin.material = materialBackUpForSkin[count];
+                }
+
+                count++;
             }
         }
     }

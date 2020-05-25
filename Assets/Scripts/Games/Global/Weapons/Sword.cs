@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Players;
+using UnityEngine;
+
 //using PA_INST = Games.Global.Patterns.PatternInstructions;
 
 namespace Games.Global.Weapons
@@ -9,76 +14,70 @@ namespace Games.Global.Weapons
     [Serializable]
     public class Sword : Weapon
     {
-        
-        
         public Sword()
         {
             animationToPlay = "ShortSwordAttack";
+            spellOfBasicAttack = "ShortSwordBasicAttack";
+            
+            warriorSpells = new List<string>();
+            warriorSpells.Add("");
+            warriorSpells.Add("");
+            warriorSpells.Add("");
+
+            mageSpells = new List<string>();
+            mageSpells.Add("");
+            mageSpells.Add("");
+            mageSpells.Add("");
+
+            rangerSpells = new List<string>();
+            rangerSpells.Add("");
+            rangerSpells.Add("");
+            rangerSpells.Add("");
+
+            rogueSpells = new List<string>();
+            rogueSpells.Add("");
+            rogueSpells.Add("");
+            rogueSpells.Add("");
+
+//            AreaOfEffectSpell area = new AreaOfEffectSpell
+//            {
+//                damageType = DamageType.Physical,
+//                geometry = Geometry.Cone,
+//                scale = Vector3.one + Vector3.forward,
+//                onePlay = true,
+//                isBasicAttack = true,
+//                OriginalPosition = OriginalPosition.Caster,
+//                OriginalDirection = OriginalDirection.Forward,
+//                needPositionToMidToEntity = true,
+//                damagesOnEnemiesOnInterval = 50
+//            };
+//
+//            basicAttack = new Spell
+//            {
+//                cost = 0,
+//                cooldown = 1f,
+//                castTime = 0,
+//                activeSpellComponent = area
+//            };
         }
 
         public override void InitPlayerSkill(Classes classe)
         {
-            base.InitPlayerSkill(classe);
-
             switch (classe)
             {
+                case Classes.Warrior:
+                    InitWeaponSpellWithJson(warriorSpells);
+                    break;
                 case Classes.Mage:
+                    InitWeaponSpellWithJson(mageSpells);
                     break;
                 case Classes.Rogue:
+                    InitWeaponSpellWithJson(rogueSpells);
                     break;
                 case Classes.Ranger:
-                    break;
-                case Classes.Warrior:
-                    InitWarriorSpell();
+                    InitWeaponSpellWithJson(rangerSpells);
                     break;
             }
-        }
-
-        private void InitWarriorSpell()
-        {   
-            SpellInstruction spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
-                specialMovement = SpecialMovement.Charge,
-                timeWait = 0,
-                durationInstruction = 3
-            };
-
-            Spell spell1 = new Spell {typeSpell = TypeSpell.Active, cooldown = 1, castTime = 0, cost = 1};
-            spell1.spellInstructions.Add(spellInstruction);
-
-            /* Spell 2 */
-
-            Effect effect = new Effect { typeEffect = TypeEffect.DefeneseUp, level = 2 };
-            
-            spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SelfEffect,
-                effect = effect,
-                timeWait = 0,
-                durationInstruction = 5
-            };
-
-            Spell spell2 = new Spell { typeSpell = TypeSpell.Active, cooldown = 10, cost = 10 };
-            spell2.spellInstructions.Add(spellInstruction);
-
-            /* Spell 3 */
-
-            spellInstruction = new SpellInstruction
-            {
-                TypeSpellInstruction = TypeSpellInstruction.SpecialMovement,
-                timeWait = 0,
-                specialMovement = SpecialMovement.HeavyBasicAttack
-            };
-
-            Spell spell3 = new Spell { typeSpell = TypeSpell.Active, cooldown = 1, cost = 1, castTime = 2};
-            spell3.spellInstructions.Add(spellInstruction);
-
-            /* Setting Spell */
-
-            skill1 = spell1;
-            skill2 = spell2;
-            skill3 = spell3;
         }
     }
 }

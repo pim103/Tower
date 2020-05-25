@@ -42,17 +42,20 @@ namespace Games.Global.Entities
 
             clone.family = orig.family;
             clone.id = orig.id;
-            clone.skills = orig.skills;
             clone.mobName = orig.mobName;
             clone.nbWeapon = orig.nbWeapon;
             clone.OnDamageDealt = orig.OnDamageDealt;
             clone.OnDamageReceive = orig.OnDamageReceive;
             clone.att = orig.att;
             clone.def = orig.def;
+            clone.magicalDef = orig.magicalDef;
+            clone.physicalDef = orig.physicalDef;
             clone.hp = orig.hp;
             clone.speed = orig.speed;
             clone.initialAtt = orig.att;
             clone.initialDef = orig.def;
+            clone.initialMagicalDef = orig.magicalDef;
+            clone.initialPhysicalDef = orig.physicalDef;
             clone.initialHp = orig.hp;
             clone.initialSpeed = orig.speed;
             clone.modelName = orig.modelName;
@@ -62,7 +65,7 @@ namespace Games.Global.Entities
 
             clone.typeEntity = TypeEntity.MOB;
 
-            clone.InitEquipementArray(orig.nbWeapon);
+            clone.InitEntityList(orig.nbWeapon);
             
             return clone;
         }

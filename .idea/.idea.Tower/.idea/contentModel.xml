@@ -4,8 +4,81 @@
     <e p="C:\Users\pim10\.Rider2019.2\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\pim10\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_Tower.-297201169.00" t="ExcludeRecursive" />
     <e p="D:\OneDrive\Documents\JeuxPersos\Tower\Tower" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="External" t="Include">
+          <e p="Source" t="Include">
+            <e p="Aot" t="Include">
+              <e p="Editor" t="Include">
+                <e p="fsAotConfigurationEditor.cs" t="Include" />
+              </e>
+              <e p="fsAotCompilationManager.cs" t="Include" />
+              <e p="fsAotConfiguration.cs" t="Include" />
+              <e p="fsAotVersionInfo.cs" t="Include" />
+              <e p="fsIAotConverter.cs" t="Include" />
+            </e>
+            <e p="Converters" t="Include">
+              <e p="fsArrayConverter.cs" t="Include" />
+              <e p="fsDateConverter.cs" t="Include" />
+              <e p="fsDictionaryConverter.cs" t="Include" />
+              <e p="fsEnumConverter.cs" t="Include" />
+              <e p="fsForwardConverter.cs" t="Include" />
+              <e p="fsGuidConverter.cs" t="Include" />
+              <e p="fsIEnumerableConverter.cs" t="Include" />
+              <e p="fsKeyValuePairConverter.cs" t="Include" />
+              <e p="fsNullableConverter.cs" t="Include" />
+              <e p="fsPrimitiveConverter.cs" t="Include" />
+              <e p="fsReflectedConverter.cs" t="Include" />
+              <e p="fsTypeConverter.cs" t="Include" />
+              <e p="fsWeakReferenceConverter.cs" t="Include" />
+              <e p="Unity" t="Include">
+                <e p="AnimationCurve_DirectConverter.cs" t="Include" />
+                <e p="Bounds_DirectConverter.cs" t="Include" />
+                <e p="Gradient_DirectConverter.cs" t="Include" />
+                <e p="GUIStyle_DirectConverter.cs" t="Include" />
+                <e p="GUIStyleState_DirectConverter.cs" t="Include" />
+                <e p="Keyframe_DirectConverter.cs" t="Include" />
+                <e p="LayerMask_DirectConverter.cs" t="Include" />
+                <e p="Rect_DirectConverter.cs" t="Include" />
+                <e p="RectOffset_DirectConverter.cs" t="Include" />
+                <e p="UnityEvent_Converter.cs" t="Include" />
+              </e>
+            </e>
+            <e p="fsBaseConverter.cs" t="Include" />
+            <e p="fsConfig.cs" t="Include" />
+            <e p="fsContext.cs" t="Include" />
+            <e p="fsConverter.cs" t="Include" />
+            <e p="fsConverterRegistrar.cs" t="Include" />
+            <e p="fsData.cs" t="Include" />
+            <e p="fsDirectConverter.cs" t="Include" />
+            <e p="fsExceptions.cs" t="Include" />
+            <e p="fsIgnoreAttribute.cs" t="Include" />
+            <e p="fsISerializationCallbacks.cs" t="Include" />
+            <e p="fsJsonParser.cs" t="Include" />
+            <e p="fsJsonPrinter.cs" t="Include" />
+            <e p="fsMemberSerialization.cs" t="Include" />
+            <e p="fsObjectAttribute.cs" t="Include" />
+            <e p="fsObjectProcessor.cs" t="Include" />
+            <e p="fsPropertyAttribute.cs" t="Include" />
+            <e p="fsResult.cs" t="Include" />
+            <e p="fsSerializer.cs" t="Include" />
+            <e p="Internal" t="Include">
+              <e p="fsCyclicReferenceManager.cs" t="Include" />
+              <e p="fsOption.cs" t="Include" />
+              <e p="fsPortableReflection.cs" t="Include" />
+              <e p="fsTypeExtensions.cs" t="Include" />
+              <e p="fsVersionedType.cs" t="Include" />
+              <e p="fsVersionManager.cs" t="Include" />
+            </e>
+            <e p="Reflection" t="Include">
+              <e p="fsMetaProperty.cs" t="Include" />
+              <e p="fsMetaType.cs" t="Include" />
+              <e p="fsReflectionUtility.cs" t="Include" />
+              <e p="fsTypeCache.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="NavMeshComponents" t="Include">
           <e p="Editor" t="Include">
             <e p="NavMeshAssetManager.cs" t="Include" />
@@ -61,7 +134,17 @@
               <e p="InitDefense.cs" t="Include" />
               <e p="MapStats.cs" t="Include" />
               <e p="PlanningTest.cs" t="Include" />
-              <e p="TrapBehavior.cs" t="Include" />
+              <e p="Traps" t="Include">
+                <e p="ArrowTrapBehavior.cs" t="Include" />
+                <e p="BearTrapBehavior.cs" t="Include" />
+                <e p="BladeColliderBehavior.cs" t="Include" />
+                <e p="EjectionPlateBehavior.cs" t="Include" />
+                <e p="FanBehavior.cs" t="Include" />
+                <e p="MineBehavior.cs" t="Include" />
+                <e p="SpikesBehavior.cs" t="Include" />
+                <e p="SpinningPoleBehavior.cs" t="Include" />
+                <e p="TrapBehavior.cs" t="Include" />
+              </e>
             </e>
             <e p="GameController.cs" t="Include" />
             <e p="Global" t="Include">
@@ -69,23 +152,6 @@
                 <e p="AbilityManager.cs" t="Include" />
                 <e p="MobAbilities" t="Include">
                   <e p="DemonSkill.cs" t="Include" />
-                </e>
-                <e p="SpecialSpellPrefab" t="Include">
-                  <e p="AreaSpell.cs" t="Include" />
-                  <e p="Bow" t="Include">
-                    <e p="AreaSpellArrow3.cs" t="Include" />
-                    <e p="ExtraArrow.cs" t="Include" />
-                    <e p="MageArrow2.cs" t="Include" />
-                    <e p="StunAreaSpell.cs" t="Include" />
-                    <e p="WarriorAreaSpell.cs" t="Include" />
-                    <e p="WarriorBigSpear.cs" t="Include" />
-                  </e>
-                  <e p="Dagger" t="Include">
-                    <e p="RogueArea.cs" t="Include" />
-                    <e p="RogueClone.cs" t="Include" />
-                  </e>
-                  <e p="ObjectPooler.cs" t="Include" />
-                  <e p="SpellScript.cs" t="Include" />
                 </e>
                 <e p="WeaponsAbilities" t="Include">
                   <e p="ShortSwordAbiltiy.cs" t="Include" />
@@ -99,12 +165,13 @@
                 <e p="LeggingsArmor.cs" t="Include" />
               </e>
               <e p="DictionnaryManager.cs" t="Include" />
-              <e p="EffectInterface.cs" t="Include" />
+              <e p="EffectController.cs" t="Include" />
               <e p="Effects.cs" t="Include" />
               <e p="Entities" t="Include">
                 <e p="GroupsMonster.cs" t="Include" />
                 <e p="Monster.cs" t="Include" />
                 <e p="MonsterBack.cs" t="Include" />
+                <e p="MonsterInRange.cs" t="Include" />
                 <e p="MonsterList.cs" t="Include" />
                 <e p="MonsterPrefab.cs" t="Include" />
               </e>
@@ -120,7 +187,34 @@
                 <e p="MovementPatternController.cs" t="Include" />
                 <e p="Pattern.cs" t="Include" />
               </e>
-              <e p="Spell.cs" t="Include" />
+              <e p="Spells" t="Include">
+                <e p="AreaOfEffectSpell.cs" t="Include" />
+                <e p="BuffSpell.cs" t="Include" />
+                <e p="GenericSummonSpell.cs" t="Include" />
+                <e p="MovementSpell.cs" t="Include" />
+                <e p="PassiveSpell.cs" t="Include" />
+                <e p="ProjectileSpell.cs" t="Include" />
+                <e p="Spell.cs" t="Include" />
+                <e p="SpellParameter" t="Include">
+                  <e p="SpellWithCondition.cs" t="Include" />
+                </e>
+                <e p="SpellsController" t="Include">
+                  <e p="AreaOfEffectController.cs" t="Include" />
+                  <e p="BuffController.cs" t="Include" />
+                  <e p="ISpellController.cs" t="Include" />
+                  <e p="MovementController.cs" t="Include" />
+                  <e p="PassiveController.cs" t="Include" />
+                  <e p="ProjectileController.cs" t="Include" />
+                  <e p="SpellController.cs" t="Include" />
+                  <e p="SpellPrefabController.cs" t="Include" />
+                  <e p="SummonController.cs" t="Include" />
+                  <e p="TransformationController.cs" t="Include" />
+                  <e p="WaveController.cs" t="Include" />
+                </e>
+                <e p="SummonSpell.cs" t="Include" />
+                <e p="TransformationSpell.cs" t="Include" />
+                <e p="WaveSpell.cs" t="Include" />
+              </e>
               <e p="Weapons" t="Include">
                 <e p="Axe.cs" t="Include" />
                 <e p="Bow.cs" t="Include" />
@@ -131,7 +225,6 @@
                 <e p="Handgun.cs" t="Include" />
                 <e p="LongSword.cs" t="Include" />
                 <e p="Mace.cs" t="Include" />
-                <e p="ProjectilesPrefab.cs" t="Include" />
                 <e p="Rifle.cs" t="Include" />
                 <e p="Sling.cs" t="Include" />
                 <e p="Spear.cs" t="Include" />
@@ -168,6 +261,8 @@
             <e p="AccountManager.cs" t="Include" />
             <e p="ChatBoxManager.cs" t="Include" />
             <e p="KeyBindManager.cs" t="Include" />
+            <e p="Managers.cs" t="Include" />
+            <e p="SocialManager.cs" t="Include" />
             <e p="UIManager.cs" t="Include" />
           </e>
           <e p="Menus" t="Include">
@@ -212,6 +307,32 @@
             <e p="TabButton.cs" t="Include" />
             <e p="TabGroup.cs" t="Include" />
           </e>
+          <e p="SpellEditor" t="Include">
+            <e p="BuffSpellPanel.cs" t="Include" />
+            <e p="ComponentPanel" t="Include">
+              <e p="AreaOfEffectPanel.cs" t="Include" />
+              <e p="MovementPanel.cs" t="Include" />
+              <e p="PassivePanel.cs" t="Include" />
+              <e p="ProjectilePanel.cs" t="Include" />
+              <e p="SummonPanel.cs" t="Include" />
+              <e p="TransformationPanel.cs" t="Include" />
+            </e>
+            <e p="EffectPanel.cs" t="Include" />
+            <e p="ListCreatedElement.cs" t="Include" />
+            <e p="NavBar.cs" t="Include" />
+            <e p="PanelUtils" t="Include">
+              <e p="DropdownMultiSelector.cs" t="Include" />
+              <e p="ShowPanel.cs" t="Include" />
+            </e>
+            <e p="SpellComponentPanel.cs" t="Include" />
+            <e p="SpellPanel.cs" t="Include" />
+            <e p="SpellWithConditionPanel.cs" t="Include" />
+            <e p="WavePanel.cs" t="Include" />
+          </e>
+          <e p="TestC" t="Include">
+            <e p="SpellTestScene.cs" t="Include" />
+            <e p="TestReference.cs" t="Include" />
+          </e>
           <e p="Utils" t="Include">
             <e p="GroupsPosition.cs" t="Include" />
             <e p="JsonHelper.cs" t="Include" />
@@ -220,6 +341,7 @@
             <e p="ObjectParsed.cs" t="Include" />
             <e p="ObjectPooler.cs" t="Include" />
             <e p="ParserJson.cs" t="Include" />
+            <e p="Tools.cs" t="Include" />
             <e p="UniqueKey.cs" t="Include" />
             <e p="WeaponJsonObject.cs" t="Include" />
           </e>
