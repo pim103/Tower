@@ -13,7 +13,7 @@ namespace Menus
         private GameObject[] menus;
         
         [SerializeField] 
-        public MenuWebsocketHandler menuWebsocketHandler;
+        public WebsocketHandler menuWebsocketHandler;
 
         [SerializeField] 
         private string environnement;
