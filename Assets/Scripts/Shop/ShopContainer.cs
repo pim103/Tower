@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
 /// This is the ShopButton script, it contains functionality that is specific to the shop button
 /// </summary>
-public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ShopContainer : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ShopWindow shopWindow;
@@ -16,7 +15,8 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Text amount;
     [SerializeField] private Text price;
 
-    private ShopItem shopItem;
+    [HideInInspector]
+    public ShopItem shopItem;
     private static ShopItem currentShopItem;
 
     public void AddItem(ShopItem shopItem)
@@ -39,21 +39,6 @@ public class ShopButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
         gameObject.SetActive(true);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        UIManager.MyInstance.ShowTooltip(shopItem.Resource, transform.position);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        UIManager.MyInstance.HideTooltip();
     }
 
     /// <summary>

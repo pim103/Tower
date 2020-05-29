@@ -15,16 +15,25 @@ public class ShopWindow : MonoBehaviour
     public GameObject ConfirmationPurchasePanel;
     public GameObject ErrorPurchasePanel;
     public Text PurchaseDescription;
+    [SerializeField] private bool newShopPage;
+    [SerializeField] private bool topShopPage;
 
-    [Header("Shop Buttons List")]
-    [SerializeField] private ShopButton[] shopButtons;
+    [Header("Shop Containers List")]
+    [SerializeField] private ShopContainer[] shopContainers;
 
     private List<List<ShopItem>> pages = new List<List<ShopItem>>();
     private int pageIndex;
 
     void Start()
     {
-        CreatePages(shopManager.MyItems);
+        if (newShopPage)
+        {
+            CreatePages(shopManager.MyItems);
+        }
+        else if (topShopPage)
+        {
+            CreatePages(shopManager.MyTopItems);
+        }     
     }
 
     public void CreatePages(ShopItem[] items)
@@ -57,7 +66,7 @@ public class ShopWindow : MonoBehaviour
             {
                 if (pages[pageIndex][i] != null)
                 {
-                    shopButtons[i].AddItem(pages[pageIndex][i]);
+                    shopContainers[i].AddItem(pages[pageIndex][i]);
                 }
             }
         }
@@ -85,7 +94,7 @@ public class ShopWindow : MonoBehaviour
 
     public void ClearButtons()
     {
-        foreach (ShopButton btn in shopButtons)
+        foreach (ShopContainer btn in shopContainers)
         {
             btn.gameObject.SetActive(false);
         }
