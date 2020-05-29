@@ -50,10 +50,10 @@ public class ShopContainer : MonoBehaviour
         if (AccountManager.MyInstance.AccountMoney >= shopItem.Price)
         {
             currentShopItem = shopItem;
-            foreach (var item in currentShopItem.GetType().GetFields())
-            {
-                Debug.Log(item + " : " + item.GetValue(currentShopItem));
-            }
+            //foreach (var item in currentShopItem.GetType().GetFields())
+            //{
+            //    Debug.Log(item + " : " + item.GetValue(currentShopItem));
+            //}
 
             if (shopWindow.ConfirmePurchasePanel != null)
             {
@@ -84,9 +84,17 @@ public class ShopContainer : MonoBehaviour
         }
 
         // Add the item to the user account
-        for (int i = 0; i < currentShopItem.Amount; i++)
+        if (currentShopItem.Resource is Resource resource)
         {
-            AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);
+            Debug.Log("C'est une ressource.");
+            for (int i = 0; i < currentShopItem.Amount; i++)
+            {
+                AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);  
+            }
+        }
+        else
+        {
+            Debug.Log("Ce n'est pas une ressource.");
         }
     }
 }
