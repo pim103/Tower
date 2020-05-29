@@ -17,6 +17,7 @@ public class ShopWindow : MonoBehaviour
     public Text PurchaseDescription;
     [SerializeField] private bool newShopPage;
     [SerializeField] private bool topShopPage;
+    [SerializeField] private bool ressourceShopPage;
 
     [Header("Shop Containers List")]
     [SerializeField] private ShopContainer[] shopContainers;
@@ -28,12 +29,16 @@ public class ShopWindow : MonoBehaviour
     {
         if (newShopPage)
         {
-            CreatePages(shopManager.MyItems);
+            CreatePages(shopManager.MyNewItems);
         }
         else if (topShopPage)
         {
             CreatePages(shopManager.MyTopItems);
-        }     
+        }
+        else if (ressourceShopPage)
+        {
+            CreatePages(shopManager.MyRessourceItems);
+        }
     }
 
     public void CreatePages(ShopItem[] items)

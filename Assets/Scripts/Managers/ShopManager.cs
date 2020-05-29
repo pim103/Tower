@@ -9,17 +9,21 @@ public class ShopManager : MonoBehaviour
 {
     [Header("New Shop items list")]
     // List of items on the shop
-    [SerializeField] private ShopItem[] shopItems;
+    [SerializeField] private ShopItem[] newShopItems;
 
     [Header("Top Shop items list")]
     // List of items on the shop
     [SerializeField] private ShopItem[] topShopItems;
 
-    public ShopItem[] MyItems
+    [Header("Ressource Shop items list")]
+    // List of items on the shop
+    [SerializeField] private ShopItem[] ressourceShopItems;
+
+    public ShopItem[] MyNewItems
     {
         get
         {
-            return shopItems;
+            return newShopItems;
         }
     }
 
@@ -28,6 +32,14 @@ public class ShopManager : MonoBehaviour
         get
         {
             return topShopItems;
+        }
+    }
+
+    public ShopItem[] MyRessourceItems
+    {
+        get
+        {
+            return ressourceShopItems;
         }
     }
 }
