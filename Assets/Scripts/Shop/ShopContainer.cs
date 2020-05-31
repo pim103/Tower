@@ -83,6 +83,13 @@ public class ShopContainer : MonoBehaviour
             shopWindow.ConfirmationPurchasePanel.SetActive(true);
         }
 
+        // Add achievment
+        if (AchievmentManager.Instance.initAchievment == true)
+        {
+            AchievmentManager.Instance.EarnAchievment("Premier achat");
+            AchievmentManager.Instance.EarnAchievment("Commerçant");
+        }
+
         // Add the item to the user account
         if (currentShopItem.Resource is Resource resource)
         {

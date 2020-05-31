@@ -65,6 +65,9 @@ public class UIManager : MonoBehaviour
     public GameObject AddSocialPanel;
     public InputField AddSocialPanelInput;
 
+    [Header("Achievment Management")]
+    public GameObject AchievmentPanel;
+
     private void Awake()
     {
         tooltipText = tooltip.GetComponentInChildren<Text>();

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8103287715246678105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8103287715246678104}
+  - component: {fileID: 8103287715246678107}
+  m_Layer: 0
+  m_Name: AchievmentManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8103287715246678104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103287715246678105}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8103287715246678107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103287715246678105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12af170b7e9c33409b5460aeaa8e550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AchievmentPrefab: {fileID: 4469335105401608360, guid: 2bfc393155d171f4b90636b8331d8903,
+    type: 3}
+  sprites:
+  - {fileID: 21300000, guid: 4d0c06c2540707541a82affdaedb4744, type: 3}
+  - {fileID: 21300000, guid: ec52b14b4bb495c4db9afecdcc6bae11, type: 3}
+  - {fileID: 21300000, guid: 80b6049b0b056234fbecf9dde0596ce6, type: 3}
+  scrollRect: {fileID: 0}
+  visualAchievment: {fileID: 5367780408102088017, guid: 0328ada3e2c706443a19c4cd240e9676,
+    type: 3}
+  UnlockedSprite: {fileID: 21300000, guid: 9eda1796d1b731144a0fc7eed91fdd77, type: 3}
+  textPoints: {fileID: 0}
