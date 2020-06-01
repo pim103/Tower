@@ -100,6 +100,7 @@ public class Achievment
         this.spriteIndex = spriteIndex;
         this.achievmentRef = achievmentRef;
         this.maxProgression = maxProgression;
+        this.currentProgression = PlayerPrefs.GetInt("Progression" + this.name);
 
         LoadAchievment();
     }

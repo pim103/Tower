@@ -44,8 +44,7 @@ public class AchievmentManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //PlayerPrefs.DeleteAll();
 
@@ -54,13 +53,28 @@ public class AchievmentManager : MonoBehaviour
         //PlayerPrefs.DeleteKey("ProgressionPremière fabrication");
 
         //PlayerPrefs.DeleteKey("Points");
+
+        InitAchievments();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.Find("ButtonGeneral") && initAchievment == false)
+
+    }
+
+    public void InitAchievments()
+    {
+        if (initAchievment == false)
         {
+            UIManager.MyInstance.AchievmentPanel.SetActive(true);
+
             activeButton = GameObject.Find("ButtonGeneral").GetComponent<AchievmentButton>();
 
             //CreateAchievment("General", "Première fabrication", "Commencer l'artisanat", 2, 1, 0);
@@ -87,6 +101,8 @@ public class AchievmentManager : MonoBehaviour
 
             activeButton.Click();
             initAchievment = true;
+
+            UIManager.MyInstance.AchievmentPanel.SetActive(false);
         }
     }
 
