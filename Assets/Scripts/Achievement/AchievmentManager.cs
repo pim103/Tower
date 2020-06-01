@@ -15,6 +15,9 @@ public class AchievmentManager : MonoBehaviour
     public Sprite UnlockedSprite;
     public Text textPoints;
 
+    [Header("AchievmentScriptableObjects List")]
+    public AchievmentScriptableObject[] achievmentScriptableObjects;
+
     [Header("Sprites List")]
     public Sprite[] sprites;
 
@@ -51,21 +54,6 @@ public class AchievmentManager : MonoBehaviour
         //PlayerPrefs.DeleteKey("ProgressionPremière fabrication");
 
         //PlayerPrefs.DeleteKey("Points");
-
-        //activeButton = GameObject.Find("ButtonGeneral").GetComponent<AchievmentButton>();
-
-        //CreateAchievment("General", "Première fabrication", "Commencer l'artisanat", 2, 1, 0);
-        //CreateAchievment("General", "Maître de l'artisanat", "Fabriquer 3 objets", 4, 0, 3);
-
-        //CreateAchievment("Other", "Premier achat", "Premier achat dans la boutique", 5, 3, 0);
-        //CreateAchievment("Other", "Commerçant", "Connaisseur des affaires", 10, 3, 0, new string[] { "Premier achat", "Maître de l'artisanat" });
-
-        //foreach (GameObject achievmentList in GameObject.FindGameObjectsWithTag("AchievmentList"))
-        //{
-        //    achievmentList.SetActive(false);
-        //}
-
-        //activeButton.Click();
     }
 
     // Update is called once per frame
@@ -75,17 +63,22 @@ public class AchievmentManager : MonoBehaviour
         {
             activeButton = GameObject.Find("ButtonGeneral").GetComponent<AchievmentButton>();
 
-            CreateAchievment("General", "Première fabrication", "Commencer l'artisanat", 2, 1, 0);
-            CreateAchievment("General", "Maître de l'artisanat", "Fabriquer 3 objets", 4, 0, 3);
+            //CreateAchievment("General", "Première fabrication", "Commencer l'artisanat", 2, 1, 0);
+            //CreateAchievment("General", "Maître de l'artisanat", "Fabriquer 3 objets", 4, 0, 3);
 
-            CreateAchievment("General", "Deckier", "Mon premier deck", 3, 4, 0);
-            CreateAchievment("General", "Aventurier", "Première partie", 4, 4, 0);
-            CreateAchievment("General", "Combattant", "Première victoire", 6, 4, 0);
-            CreateAchievment("General", "Gladiateur", "Avoir 10 victoires", 6, 4, 0);
-            CreateAchievment("General", "Et de 3", "Avoir une série de 3 victoires", 6, 4, 0);
+            //CreateAchievment("General", "Deckier", "Mon premier deck", 3, 4, 0);
+            //CreateAchievment("General", "Aventurier", "Première partie", 4, 4, 0);
+            //CreateAchievment("General", "Combattant", "Première victoire", 6, 4, 0);
+            //CreateAchievment("General", "Gladiateur", "Avoir 10 victoires", 6, 4, 0);
+            //CreateAchievment("General", "Et de 3", "Avoir une série de 3 victoires", 6, 4, 0);
 
-            CreateAchievment("Other", "Premier achat", "Premier achat dans la boutique", 5, 3, 0);
-            CreateAchievment("Other", "Commerçant", "Connaisseur des affaires", 10, 3, 0, new string[] { "Premier achat", "Maître de l'artisanat" });
+            //CreateAchievment("Other", "Premier achat", "Premier achat dans la boutique", 5, 3, 0);
+            //CreateAchievment("Other", "Commerçant", "Connaisseur des affaires", 10, 3, 0, new string[] { "Premier achat", "Maître de l'artisanat" });
+
+            foreach (AchievmentScriptableObject achievmentScriptableObject in achievmentScriptableObjects)
+            {
+                CreateAchievmentSO(achievmentScriptableObject.Category, achievmentScriptableObject.Title, achievmentScriptableObject.Description, achievmentScriptableObject.Points, achievmentScriptableObject.SpriteIndex, achievmentScriptableObject.Progress, achievmentScriptableObject.AchievmentDependencies);
+            }
 
             foreach (GameObject achievmentList in GameObject.FindGameObjectsWithTag("AchievmentList"))
             {
@@ -94,18 +87,6 @@ public class AchievmentManager : MonoBehaviour
 
             activeButton.Click();
             initAchievment = true;
-        }
-    }
-
-    /// <summary>
-    /// Toggle Achievment Panel
-    /// </summary>
-    public void ToggleAchievmentPanel()
-    {
-        if (UIManager.MyInstance.AchievmentPanel != null)
-        {
-            bool isActive = UIManager.MyInstance.AchievmentPanel.activeSelf;
-            UIManager.MyInstance.AchievmentPanel.SetActive(!isActive);
         }
     }
 
@@ -135,6 +116,27 @@ public class AchievmentManager : MonoBehaviour
             foreach (string achievmentTitle in dependencies)
             {
                 Achievment dependency = Achievments[achievmentTitle];
+                dependency.Child = title;
+                newAchievment.AddDependency(dependency);
+            }
+        }
+    }
+
+    public void CreateAchievmentSO(string parent, string title, string description, int points, int spriteIndex, int progress, AchievmentScriptableObject[] dependencies = null)
+    {
+        GameObject achievment = (GameObject)Instantiate(AchievmentPrefab);
+
+        Achievment newAchievment = new Achievment(title, description, points, spriteIndex, achievment, progress);
+
+        Achievments.Add(title, newAchievment);
+
+        SetAchievmentinfo(parent, achievment, title, progress);
+
+        if (dependencies != null)
+        {
+            foreach (AchievmentScriptableObject achievmentTitle in dependencies)
+            {
+                Achievment dependency = Achievments[achievmentTitle.Title];
                 dependency.Child = title;
                 newAchievment.AddDependency(dependency);
             }
@@ -198,5 +200,17 @@ public class AchievmentManager : MonoBehaviour
         }
 
         Destroy(achievment);
+    }
+
+    /// <summary>
+    /// Toggle Achievment Panel
+    /// </summary>
+    public void ToggleAchievmentPanel()
+    {
+        if (UIManager.MyInstance.AchievmentPanel != null)
+        {
+            bool isActive = UIManager.MyInstance.AchievmentPanel.activeSelf;
+            UIManager.MyInstance.AchievmentPanel.SetActive(!isActive);
+        }
     }
 }
