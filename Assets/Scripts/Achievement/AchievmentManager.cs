@@ -11,8 +11,8 @@ public class AchievmentManager : MonoBehaviour
     [Header("References")]
     public GameObject AchievmentPrefab;
     public GameObject visualAchievment;
-    public ScrollRect scrollRect;
     public Sprite UnlockedSprite;
+    public ScrollRect scrollRect;
     public Text textPoints;
 
     [Header("AchievmentScriptableObjects List")]
