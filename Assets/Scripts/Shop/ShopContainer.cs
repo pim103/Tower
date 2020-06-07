@@ -46,15 +46,15 @@ public class ShopContainer : MonoBehaviour
     /// </summary>
     public void UserWantToBuy()
     {
-        // Check if user have the money
-        if (AccountManager.MyInstance.AccountMoney >= shopItem.Price)
-        {
-            currentShopItem = shopItem;
-            //foreach (var item in currentShopItem.GetType().GetFields())
-            //{
-            //    Debug.Log(item + " : " + item.GetValue(currentShopItem));
-            //}
+        currentShopItem = shopItem;
+        //foreach (var item in currentShopItem.GetType().GetFields())
+        //{
+        //    Debug.Log(item + " : " + item.GetValue(currentShopItem));
+        //}
 
+        // Check if user have the money
+        if (AccountManager.MyInstance.AccountMoney >= currentShopItem.Price)
+        {
             if (shopWindow.ConfirmePurchasePanel != null)
             {
                 shopWindow.ConfirmePurchasePanel.SetActive(true);

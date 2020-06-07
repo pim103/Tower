@@ -82,28 +82,47 @@ public class UIManager : MonoBehaviour
         moneyAmountText.text = AccountManager.MyInstance.AccountMoney.ToString();
     }
 
+    Camera cam;
+    Vector3 min, max;
+    RectTransform rect;
+    float offset = 10f;
+
+    private void Start()
+    {
+        cam = Camera.main;
+        rect = tooltipRect;
+        min = new Vector3(0, 0, 0);
+        max = new Vector3(cam.pixelWidth, cam.pixelHeight, 0);
+    }
+
     /// <summary>
     /// Shows the tooltip
     /// </summary>
-    public void ShowTooltip(Resource resource, Vector3 position)
+    public void ShowTooltip(Resource resource, Vector3 old_position)
     {
-        tooltip.SetActive(true);
+        // get the tooltip position with offset
+        Vector3 position = new Vector3(Input.mousePosition.x + rect.rect.width, Input.mousePosition.y - (rect.rect.height / 2 + offset), 0f);
+
+        // clamp it to the screen size so it doesn't go outside
+        tooltipRect.transform.position = new Vector3(Mathf.Clamp(position.x, min.x + rect.rect.width / 2, max.x - rect.rect.width / 2), Mathf.Clamp(position.y, min.y + rect.rect.height / 2, max.y - rect.rect.height / 2), transform.position.z);
+        
         tooltipText.text = resource.ResourceName + "\n" + resource.GetDescription();
+        tooltip.SetActive(true);
 
-        Vector3 mousePosition = position;
-        Vector2 pivot = new Vector2(
-            mousePosition.x > Screen.width / 2.0f ? 1f : 0f,
-            mousePosition.y > Screen.height / 2.0f ? 1f : 0f);
-        tooltipRect.pivot = pivot;
+        //Vector3 mousePosition = position;
+        //Vector2 pivot = new Vector2(
+        //    mousePosition.x > Screen.width / 2.0f ? 1f : 0f,
+        //    mousePosition.y > Screen.height / 2.0f ? 1f : 0f);
+        //tooltipRect.pivot = pivot;
 
-        Vector2 sizeDelta = tooltipRect.sizeDelta;
-        tooltipRect.transform.position = new Vector2(
-            mousePosition.x > Screen.width / 2.0f
-                ? mousePosition.x - sizeDelta.x / 4
-                : mousePosition.x + sizeDelta.x / 4,
-            mousePosition.y > Screen.height / 2.0f
-                ? mousePosition.y - sizeDelta.y / 4
-                : mousePosition.y + sizeDelta.x / 4);
+        //Vector2 sizeDelta = tooltipRect.sizeDelta;
+        //tooltipRect.transform.position = new Vector2(
+        //    mousePosition.x > Screen.width / 2.0f
+        //        ? mousePosition.x - sizeDelta.x / 4
+        //        : mousePosition.x + sizeDelta.x / 4,
+        //    mousePosition.y > Screen.height / 2.0f
+        //        ? mousePosition.y - sizeDelta.y / 4
+        //        : mousePosition.y + sizeDelta.x / 4);
     }
 
     /// <summary>
