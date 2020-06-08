@@ -67,6 +67,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Achievment Management")]
     public GameObject AchievmentPanel;
+    public ScrollRect scrollRect;
+    public Text textPoints;
 
     Vector3 min, max;
 

@@ -12,7 +12,9 @@ public class AchievmentManager : MonoBehaviour
     public GameObject AchievmentPrefab;
     public GameObject visualAchievment;
     public Sprite UnlockedSprite;
+    [System.NonSerialized]
     public ScrollRect scrollRect;
+    [System.NonSerialized]
     public Text textPoints;
 
     [Header("AchievmentScriptableObjects List")]
@@ -53,6 +55,9 @@ public class AchievmentManager : MonoBehaviour
         //PlayerPrefs.DeleteKey("ProgressionPremière fabrication");
 
         //PlayerPrefs.DeleteKey("Points");
+
+        scrollRect = UIManager.MyInstance.scrollRect;
+        textPoints = UIManager.MyInstance.textPoints;
 
         InitAchievments();
     }
