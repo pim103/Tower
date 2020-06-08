@@ -13,7 +13,8 @@ public class ShopInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UIManager.MyInstance.ShowTooltip(shopContainer.shopItem.Resource, transform.position);
+        RectTransform container = (RectTransform)transform;
+        UIManager.MyInstance.ShowTooltip(shopContainer.shopItem.Resource, transform.position, container);
     }
 
     public void OnPointerExit(PointerEventData eventData)

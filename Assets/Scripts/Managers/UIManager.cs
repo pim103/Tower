@@ -68,6 +68,8 @@ public class UIManager : MonoBehaviour
     [Header("Achievment Management")]
     public GameObject AchievmentPanel;
 
+    Vector3 min, max;
+
     private void Awake()
     {
         tooltipText = tooltip.GetComponentInChildren<Text>();
@@ -82,47 +84,57 @@ public class UIManager : MonoBehaviour
         moneyAmountText.text = AccountManager.MyInstance.AccountMoney.ToString();
     }
 
-    Camera cam;
-    Vector3 min, max;
-    RectTransform rect;
-    float offset = 100f;
-
-    private void Start()
+    void Start()
     {
-        cam = Camera.main;
-        rect = tooltipRect;
         min = new Vector3(0, 0, 0);
-        max = new Vector3(cam.pixelWidth, cam.pixelHeight, 0);
+        max = new Vector3(Screen.width, Screen.height, 0);
     }
 
     /// <summary>
     /// Shows the tooltip
     /// </summary>
-    public void ShowTooltip(Resource resource, Vector3 old_position)
+    public void ShowTooltip(Resource resource, Vector3 position, RectTransform container = null)
     {
-        // get the tooltip position with offset
-        Vector3 position = new Vector3(Input.mousePosition.x + rect.rect.width, Input.mousePosition.y - (rect.rect.height / 2 + offset), 0f);
+        float offset_x = 150f;
+        float offset_y = 150f;
 
-        // clamp it to the screen size so it doesn't go outside
-        tooltipRect.transform.position = new Vector3(Mathf.Clamp(position.x, min.x + rect.rect.width / 2, max.x - rect.rect.width / 2), Mathf.Clamp(position.y, min.y + rect.rect.height / 2, max.y - rect.rect.height / 2), transform.position.z);
-        
+        if (container != null)
+        {
+            offset_x = container.rect.width + 50f;
+            offset_y = container.rect.height + 50f;
+        }
+
         tooltipText.text = resource.ResourceName + "\n" + resource.GetDescription();
-        tooltip.SetActive(true);
+
+        // get the tooltip position with offset
+        Vector3 mouse_position = new Vector3(position.x + (tooltipRect.rect.width / 2 + offset_x), position.y - (tooltipRect.rect.height / 2 + offset_y), 0f);
 
         //Vector3 mousePosition = position;
+
         //Vector2 pivot = new Vector2(
-        //    mousePosition.x > Screen.width / 2.0f ? 1f : 0f,
-        //    mousePosition.y > Screen.height / 2.0f ? 1f : 0f);
+        //    mouse_position.x > Screen.width / 2.0f ? 1f : 0f,
+        //    mouse_position.y > Screen.height / 2.0f ? 1f : 0f);
+
         //tooltipRect.pivot = pivot;
 
         //Vector2 sizeDelta = tooltipRect.sizeDelta;
-        //tooltipRect.transform.position = new Vector2(
+
+        // clamp it to the screen size so it doesn't go outside
+        tooltipRect.transform.position = new Vector3(
+            Mathf.Clamp(mouse_position.x, min.x + tooltipRect.rect.width / 2, max.x - tooltipRect.rect.width / 2),
+            Mathf.Clamp(mouse_position.y, min.y + tooltipRect.rect.height / 2, max.y - tooltipRect.rect.height / 2),
+            transform.position.z);
+
+        //tooltipRect.transform.position = new Vector3(
         //    mousePosition.x > Screen.width / 2.0f
         //        ? mousePosition.x - sizeDelta.x / 4
         //        : mousePosition.x + sizeDelta.x / 4,
         //    mousePosition.y > Screen.height / 2.0f
         //        ? mousePosition.y - sizeDelta.y / 4
-        //        : mousePosition.y + sizeDelta.x / 4);
+        //        : mousePosition.y + sizeDelta.x / 4,
+        //    transform.position.z);
+
+        tooltip.SetActive(true);
     }
 
     /// <summary>
