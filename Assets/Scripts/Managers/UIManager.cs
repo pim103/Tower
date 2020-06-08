@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour
     Camera cam;
     Vector3 min, max;
     RectTransform rect;
-    float offset = 10f;
+    float offset = 100f;
 
     private void Start()
     {
