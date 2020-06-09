@@ -12,6 +12,7 @@ public class AchievmentManager : MonoBehaviour
     public GameObject AchievmentPrefab;
     public GameObject visualAchievment;
     public Sprite UnlockedSprite;
+    public Color32 UnlockedColor = new Color32(0, 255, 249, 255);
     [System.NonSerialized]
     public ScrollRect scrollRect;
     [System.NonSerialized]

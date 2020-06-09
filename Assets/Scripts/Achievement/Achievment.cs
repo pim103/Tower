@@ -114,7 +114,7 @@ public class Achievment
     {
         if (!unlocked && !dependencies.Exists(x => x.unlocked == false) && CheckProgress())
         {
-            achievmentRef.GetComponent<Image>().sprite = AchievmentManager.Instance.UnlockedSprite;
+            achievmentRef.GetComponent<Image>().color = AchievmentManager.Instance.UnlockedColor;
             SaveAchievment(true);
 
             if (child != null)
@@ -151,7 +151,7 @@ public class Achievment
         {
             AchievmentManager.Instance.textPoints.text = "Points: " + PlayerPrefs.GetInt("Points");
             currentProgression = PlayerPrefs.GetInt("Progression" + Name);
-            achievmentRef.GetComponent<Image>().sprite = AchievmentManager.Instance.UnlockedSprite;
+            achievmentRef.GetComponent<Image>().color = AchievmentManager.Instance.UnlockedColor;
         }
     }
 
