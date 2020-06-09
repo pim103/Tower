@@ -94,7 +94,7 @@ namespace Menus
             }
             else if (www.responseCode == 406)
             {
-                Debug.Log("Erreur dans les informations de connextion");
+                Debug.Log("Erreur dans les informations de connection");
                 if (accountErrorPanel != null)
                 {
                     accountErrorPanel.SetActive(true);
