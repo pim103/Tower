@@ -31,7 +31,7 @@ public class ShopContainer : MonoBehaviour
 
         if (shopItem.Price > 0)
         {
-            price.text = "Prix : " + shopItem.Price.ToString() + "€";
+            price.text = "Prix : " + shopItem.Price.ToString() + " pièces";
         }
         else
         {
@@ -58,7 +58,7 @@ public class ShopContainer : MonoBehaviour
             if (shopWindow.ConfirmePurchasePanel != null)
             {
                 shopWindow.ConfirmePurchasePanel.SetActive(true);
-                shopWindow.PurchaseDescription.text = currentShopItem.Amount.ToString() + " " + currentShopItem.Resource.ResourceName + " pour " + currentShopItem.Price.ToString() + "€";
+                shopWindow.PurchaseDescription.text = "x" + currentShopItem.Amount.ToString() + " \"" + currentShopItem.Resource.ResourceName + "\" pour " + currentShopItem.Price.ToString() + " pièces";
             }
         }
         else
