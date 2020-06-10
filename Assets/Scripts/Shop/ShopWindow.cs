@@ -81,6 +81,7 @@ public class ShopWindow : MonoBehaviour
     {
         if (pageIndex < pages.Count - 1)
         {
+            pageIndex++;
             StartCoroutine(SlideRightAnimation());
         } 
     }
@@ -89,6 +90,7 @@ public class ShopWindow : MonoBehaviour
     {
         if (pageIndex > 0)
         {
+            pageIndex--;
             StartCoroutine(SlideLeftAnimation());
         }
     }
@@ -103,8 +105,8 @@ public class ShopWindow : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1);
+
         ClearButtons();
-        pageIndex--;
         AddItems();
 
         if (animator != null)
@@ -124,8 +126,8 @@ public class ShopWindow : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1);
-        ClearButtons();
-        pageIndex++;
+
+        ClearButtons(); 
         AddItems();
 
         if (animator != null)
