@@ -88,7 +88,7 @@ public class ShopWindow : MonoBehaviour
             pageIndex++;
             animationPlaying = true;
             StartCoroutine(SlideRightAnimation());
-        } 
+        }
     }
 
     public void PreviousPage()
@@ -135,7 +135,7 @@ public class ShopWindow : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        ClearButtons(); 
+        ClearButtons();
         AddItems();
 
         if (animator != null)

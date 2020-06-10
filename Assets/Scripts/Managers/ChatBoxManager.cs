@@ -145,7 +145,7 @@ public class ChatBoxManager : MonoBehaviour
                 {
                     // Send a warning message
                     SendMessageToChat("Le destinataire est introuvable.", Message.MessageType.server);
-                }        
+                }
             }
 
             else
@@ -195,12 +195,12 @@ public class ChatBoxManager : MonoBehaviour
 
         switch (messageType)
         {
-            case Message.MessageType.playerMessage:
-                color = playerMessage;
-                break;
-            case Message.MessageType.privateMessage:
-                color = privateMessage;
-                break;
+        case Message.MessageType.playerMessage:
+            color = playerMessage;
+            break;
+        case Message.MessageType.privateMessage:
+            color = privateMessage;
+            break;
         }
 
         return color;

@@ -96,7 +96,7 @@ public class ShopContainer : MonoBehaviour
             Debug.Log("C'est une ressource.");
             for (int i = 0; i < currentShopItem.Amount; i++)
             {
-                AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);  
+                AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);
             }
         }
         else

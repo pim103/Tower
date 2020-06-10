@@ -137,7 +137,7 @@ public class Achievment
             int tempPoints = PlayerPrefs.GetInt("Points");
             PlayerPrefs.SetInt("Points", tempPoints += points);
         }
-        
+
         PlayerPrefs.SetInt("Progression" + Name, currentProgression);
         PlayerPrefs.SetInt(name, value ? 1 : 0);
         PlayerPrefs.Save();
