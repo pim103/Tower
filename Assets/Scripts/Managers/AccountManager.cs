@@ -6,99 +6,81 @@ using System;
 
 // Resources on the account
 [Serializable]
-public struct AccountResource
-{
-    // The resource
-    public Resource Resource;
+public struct AccountResource {
+  // The resource
+  public Resource Resource;
 
-    // The amount of the resource
-    [Range(0, 999)]
-    public int Amount;
+  // The amount of the resource
+  [Range(0, 999)]
+  public int Amount;
 }
 
 /// <summary>
-/// This is the AccountManager script, it contains functionality that is specific to the account
+/// This is the AccountManager script, it contains functionality that is
+/// specific to the account
 /// </summary>
-public class AccountManager : MonoBehaviour
-{
-    private static AccountManager instance;
-    public static AccountManager MyInstance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<AccountManager>();
-            }
+public class AccountManager : MonoBehaviour {
+  private static AccountManager instance;
+  public static AccountManager MyInstance{
+      get{if(instance == null){instance = FindObjectOfType<AccountManager>();
+}
 
-            return instance;
-        }
-    }
+return instance;
+}
+}
 
-    [Header("Account")]
+[Header("Account")]
     // List of resources on the account
-    public List<AccountResource> AccountResources;
-    // Amount of money on the account
-    public int AccountMoney;
+    public List<AccountResource>AccountResources;
+// Amount of money on the account
+public int AccountMoney;
 
-    /// <summary>
-    /// Count the number of a resource on the account
-    /// </summary>
-    public int ResourceCount(string resourceID)
-    {
-        int number = 0;
+/// <summary>
+/// Count the number of a resource on the account
+/// </summary>
+public int ResourceCount(string resourceID) {
+  int number = 0;
 
-        for (int i = 0; i < AccountResources.Count; i++)
-        {
-            Resource resource = AccountResources[i].Resource;
-            if (resource != null && resource.ID == resourceID)
-            {
-                number += AccountResources[i].Amount;
-            }
-        }
-
-        return number;
+  for (int i = 0; i < AccountResources.Count; i++) {
+    Resource resource = AccountResources[i].Resource;
+    if (resource != null && resource.ID == resourceID) {
+      number += AccountResources[i].Amount;
     }
+  }
 
-    /// <summary>
-    /// Remove a resource on the account
-    /// </summary>
-    public void RemoveResource(string resourceID)
-    {
-        for (int i = 0; i < AccountResources.Count; i++)
-        {
-            Resource resource = AccountResources[i].Resource;
-            if (resource != null && resource.ID == resourceID)
-            {
-                AccountResource tempResource = AccountResources[i];
-                tempResource.Amount--;
-                AccountResources[i] = tempResource;
-            }
-        }
+  return number;
+}
+
+/// <summary>
+/// Remove a resource on the account
+/// </summary>
+public void RemoveResource(string resourceID) {
+  for (int i = 0; i < AccountResources.Count; i++) {
+    Resource resource = AccountResources[i].Resource;
+    if (resource != null && resource.ID == resourceID) {
+      AccountResource tempResource = AccountResources[i];
+      tempResource.Amount--;
+      AccountResources[i] = tempResource;
     }
+  }
+}
 
-    /// <summary>
-    /// Add a resource on the account
-    /// </summary>
-    public void AddResource(string resourceID)
-    {
-        for (int i = 0; i < AccountResources.Count; i++)
-        {
-            Resource resource = AccountResources[i].Resource;
-            if (resource != null && resource.ID == resourceID)
-            {
-                AccountResource tempResource = AccountResources[i];
-                tempResource.Amount++;
-                AccountResources[i] = tempResource;
-            }
-        }
+/// <summary>
+/// Add a resource on the account
+/// </summary>
+public void AddResource(string resourceID) {
+  for (int i = 0; i < AccountResources.Count; i++) {
+    Resource resource = AccountResources[i].Resource;
+    if (resource != null && resource.ID == resourceID) {
+      AccountResource tempResource = AccountResources[i];
+      tempResource.Amount++;
+      AccountResources[i] = tempResource;
     }
+  }
+}
 
-    /// <summary>
-    /// Add an item on the account
-    /// </summary>
-    public void AddItem()
-    {
-
-    }
+/// <summary>
+/// Add an item on the account
+/// </summary>
+public void AddItem() {}
 }

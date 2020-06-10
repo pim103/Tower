@@ -4,32 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This is the AchievmentButton script, it contains functionality that is specific to the Achievment
+/// This is the AchievmentButton script, it contains functionality that is
+/// specific to the Achievment
 /// </summary>
-public class AchievmentButton : MonoBehaviour
-{
-    public GameObject achievmentList;
-    public Sprite neutral;
-    public Sprite highlight;
+public class AchievmentButton : MonoBehaviour {
+  public GameObject achievmentList;
+  public Sprite neutral;
+  public Sprite highlight;
 
-    private Image sprite;
+  private Image sprite;
 
-    void Awake()
-    {
-        sprite = GetComponent<Image>();
+  void Awake() { sprite = GetComponent<Image>(); }
+
+  public void Click() {
+    if (sprite.sprite == neutral) {
+      sprite.sprite = highlight;
+      achievmentList.SetActive(true);
+    } else {
+      sprite.sprite = neutral;
+      achievmentList.SetActive(false);
     }
-
-    public void Click()
-    {
-        if (sprite.sprite == neutral)
-        {
-            sprite.sprite = highlight;
-            achievmentList.SetActive(true);
-        }
-        else
-        {
-            sprite.sprite = neutral;
-            achievmentList.SetActive(false);
-        }
-    }
+  }
 }

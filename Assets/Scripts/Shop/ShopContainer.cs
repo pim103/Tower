@@ -4,104 +4,95 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This is the ShopButton script, it contains functionality that is specific to the shop button
+/// This is the ShopButton script, it contains functionality that is specific to
+/// the shop button
 /// </summary>
-public class ShopContainer : MonoBehaviour
-{
-    [Header("References")]
-    [SerializeField] private ShopWindow shopWindow;
-    [SerializeField] private Image icon;
-    [SerializeField] private Text ressourceName;
-    [SerializeField] private Text amount;
-    [SerializeField] private Text price;
+public class ShopContainer : MonoBehaviour {
+  [Header("References")]
+  [SerializeField]
+  private ShopWindow shopWindow;
+  [SerializeField]
+  private Image icon;
+  [SerializeField]
+  private Text ressourceName;
+  [SerializeField]
+  private Text amount;
+  [SerializeField]
+  private Text price;
 
-    [HideInInspector]
-    public ShopItem shopItem;
-    private static ShopItem currentShopItem;
+  [HideInInspector]
+  public ShopItem shopItem;
+  private static ShopItem currentShopItem;
 
-    public void AddItem(ShopItem shopItem)
-    {
-        this.shopItem = shopItem;
+  public void AddItem(ShopItem shopItem) {
+    this.shopItem = shopItem;
 
-        icon.sprite = shopItem.Resource.Icon;
+    icon.sprite = shopItem.Resource.Icon;
 
-        ressourceName.text = shopItem.Resource.ResourceName;
+    ressourceName.text = shopItem.Resource.ResourceName;
 
-        amount.text = shopItem.Amount.ToString();
+    amount.text = shopItem.Amount.ToString();
 
-        if (shopItem.Price > 0)
-        {
-            price.text = "Prix : " + shopItem.Price.ToString() + " pièces";
-        }
-        else
-        {
-            price.text = string.Empty;
-        }
-
-        gameObject.SetActive(true);
+    if (shopItem.Price > 0) {
+      price.text = "Prix : " + shopItem.Price.ToString() + " pièces";
+    } else {
+      price.text = string.Empty;
     }
 
-    /// <summary>
-    /// User want to buy something
-    /// </summary>
-    public void UserWantToBuy()
-    {
-        currentShopItem = shopItem;
-        //foreach (var item in currentShopItem.GetType().GetFields())
-        //{
-        //    Debug.Log(item + " : " + item.GetValue(currentShopItem));
-        //}
+    gameObject.SetActive(true);
+  }
 
-        // Check if user have the money
-        if (AccountManager.MyInstance.AccountMoney >= currentShopItem.Price)
-        {
-            if (shopWindow.ConfirmePurchasePanel != null)
-            {
-                shopWindow.ConfirmePurchasePanel.SetActive(true);
-                shopWindow.PurchaseDescription.text = "x" + currentShopItem.Amount.ToString() + " \"" + currentShopItem.Resource.ResourceName + "\" pour " + currentShopItem.Price.ToString() + " pièces";
-            }
-        }
-        else
-        {
-            if (shopWindow.ErrorPurchasePanel != null)
-            {
-                shopWindow.ErrorPurchasePanel.SetActive(true);
-            }
-        }
+  /// <summary>
+  /// User want to buy something
+  /// </summary>
+  public void UserWantToBuy() {
+    currentShopItem = shopItem;
+    // foreach (var item in currentShopItem.GetType().GetFields())
+    //{
+    //    Debug.Log(item + " : " + item.GetValue(currentShopItem));
+    //}
+
+    // Check if user have the money
+    if (AccountManager.MyInstance.AccountMoney >= currentShopItem.Price) {
+      if (shopWindow.ConfirmePurchasePanel != null) {
+        shopWindow.ConfirmePurchasePanel.SetActive(true);
+        shopWindow.PurchaseDescription.text =
+            "x" + currentShopItem.Amount.ToString() + " \"" +
+            currentShopItem.Resource.ResourceName + "\" pour " +
+            currentShopItem.Price.ToString() + " pièces";
+      }
+    } else {
+      if (shopWindow.ErrorPurchasePanel != null) {
+        shopWindow.ErrorPurchasePanel.SetActive(true);
+      }
+    }
+  }
+
+  /// <summary>
+  /// User buy something
+  /// </summary>
+  public void Buy() {
+    // Remove the money from the user account
+    AccountManager.MyInstance.AccountMoney -= currentShopItem.Price;
+
+    if (shopWindow.ConfirmationPurchasePanel != null) {
+      shopWindow.ConfirmationPurchasePanel.SetActive(true);
     }
 
-    /// <summary>
-    /// User buy something
-    /// </summary>
-    public void Buy()
-    {
-        // Remove the money from the user account
-        AccountManager.MyInstance.AccountMoney -= currentShopItem.Price;
-
-        if (shopWindow.ConfirmationPurchasePanel != null)
-        {
-            shopWindow.ConfirmationPurchasePanel.SetActive(true);
-        }
-
-        // Add achievment
-        if (AchievmentManager.Instance.initAchievment == true)
-        {
-            AchievmentManager.Instance.EarnAchievment("Premier achat");
-            AchievmentManager.Instance.EarnAchievment("Commerçant");
-        }
-
-        // Add the item to the user account
-        if (currentShopItem.Resource is Resource resource)
-        {
-            Debug.Log("C'est une ressource.");
-            for (int i = 0; i < currentShopItem.Amount; i++)
-            {
-                AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);
-            }
-        }
-        else
-        {
-            Debug.Log("Ce n'est pas une ressource.");
-        }
+    // Add achievment
+    if (AchievmentManager.Instance.initAchievment == true) {
+      AchievmentManager.Instance.EarnAchievment("Premier achat");
+      AchievmentManager.Instance.EarnAchievment("Commerçant");
     }
+
+    // Add the item to the user account
+    if (currentShopItem.Resource is Resource resource) {
+      Debug.Log("C'est une ressource.");
+      for (int i = 0; i < currentShopItem.Amount; i++) {
+        AccountManager.MyInstance.AddResource(currentShopItem.Resource.ID);
+      }
+    } else {
+      Debug.Log("Ce n'est pas une ressource.");
+    }
+  }
 }
