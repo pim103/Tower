@@ -81,19 +81,57 @@ public class ShopWindow : MonoBehaviour
     {
         if (pageIndex < pages.Count - 1)
         {
-            ClearButtons();
-            pageIndex++;
-            AddItems();
-        }
+            StartCoroutine(SlideRightAnimation());
+        } 
     }
 
     public void PreviousPage()
     {
         if (pageIndex > 0)
         {
-            ClearButtons();
-            pageIndex--;
-            AddItems();
+            StartCoroutine(SlideLeftAnimation());
+        }
+    }
+
+    private IEnumerator SlideLeftAnimation()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideLeft");
+            animator.SetBool("slideLeft", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1);
+        ClearButtons();
+        pageIndex--;
+        AddItems();
+
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideLeft");
+            animator.SetBool("slideLeft", !isOpen);
+        }
+    }
+
+    private IEnumerator SlideRightAnimation()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideRight");
+            animator.SetBool("slideRight", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1);
+        ClearButtons();
+        pageIndex++;
+        AddItems();
+
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideRight");
+            animator.SetBool("slideRight", !isOpen);
         }
     }
 
