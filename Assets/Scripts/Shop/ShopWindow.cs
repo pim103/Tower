@@ -24,9 +24,13 @@ public class ShopWindow : MonoBehaviour
 
     private List<List<ShopItem>> pages = new List<List<ShopItem>>();
     private int pageIndex;
+    private Animator animator;
+    private bool animationPlaying = false;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
+
         if (newShopPage)
         {
             CreatePages(shopManager.MyNewItems);
@@ -79,25 +83,26 @@ public class ShopWindow : MonoBehaviour
 
     public void NextPage()
     {
-        if (pageIndex < pages.Count - 1)
+        if (pageIndex < pages.Count - 1 && !animationPlaying)
         {
             pageIndex++;
+            animationPlaying = true;
             StartCoroutine(SlideRightAnimation());
         } 
     }
 
     public void PreviousPage()
     {
-        if (pageIndex > 0)
+        if (pageIndex > 0 && !animationPlaying)
         {
             pageIndex--;
+            animationPlaying = true;
             StartCoroutine(SlideLeftAnimation());
         }
     }
 
     private IEnumerator SlideLeftAnimation()
     {
-        Animator animator = GetComponent<Animator>();
         if (animator != null)
         {
             bool isOpen = animator.GetBool("slideLeft");
@@ -114,11 +119,14 @@ public class ShopWindow : MonoBehaviour
             bool isOpen = animator.GetBool("slideLeft");
             animator.SetBool("slideLeft", !isOpen);
         }
+
+        yield return new WaitForSeconds(1.2f);
+
+        animationPlaying = false;
     }
 
     private IEnumerator SlideRightAnimation()
     {
-        Animator animator = GetComponent<Animator>();
         if (animator != null)
         {
             bool isOpen = animator.GetBool("slideRight");
@@ -135,6 +143,10 @@ public class ShopWindow : MonoBehaviour
             bool isOpen = animator.GetBool("slideRight");
             animator.SetBool("slideRight", !isOpen);
         }
+
+        yield return new WaitForSeconds(1.2f);
+
+        animationPlaying = false;
     }
 
     public void ClearButtons()
