@@ -54,6 +54,13 @@ public class CraftingRecipe : ScriptableObject
             // Add the recipe result to the account
             AddResults(accountManager);
 
+            // Add achievment
+            if (AchievmentManager.Instance.initAchievment == true)
+            {
+                AchievmentManager.Instance.EarnAchievment("Première fabrication");
+                AchievmentManager.Instance.EarnAchievment("Maître de l'artisanat");
+            }
+
             Debug.Log("Craft success");
         }
         else

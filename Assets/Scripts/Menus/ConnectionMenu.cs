@@ -2,6 +2,7 @@
 using Networking;
 using Networking.Client;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ namespace Menus
 {
     public class ConnectionMenu : MonoBehaviour, MenuInterface
     {
+        [SerializeField] private GameObject accountErrorPanel;
+
         [SerializeField]
         private MenuController mc;
 
@@ -37,7 +40,32 @@ namespace Menus
             connectButton.onClick.AddListener(CallLogin);
             quitButton.onClick.AddListener(mc.QuitGame);
         }
-        
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (EventSystem.current.currentSelectedGameObject != null)
+                    {
+                        Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+                        if (selectable != null)
+                            selectable.Select();
+                    }
+                }
+                else
+                {
+                    if (EventSystem.current.currentSelectedGameObject != null)
+                    {
+                        Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+                        if (selectable != null)
+                            selectable.Select();
+                    }
+                }
+            }
+        }
+
         private void CallLogin()
         {
             StartCoroutine(Login());
@@ -66,16 +94,23 @@ namespace Menus
             }
             else if (www.responseCode == 406)
             {
-                Debug.Log("Erreur dans les informations de connextion");
+                Debug.Log("Erreur dans les informations de connection");
+                if (accountErrorPanel != null)
+                {
+                    accountErrorPanel.SetActive(true);
+                }
             }
             else
             {
                 Debug.Log(www.responseCode);
                 Debug.Log(www.downloadHandler.text);
                 Debug.Log("Serveur d'authentification indisponible.");
+                if (accountErrorPanel != null)
+                {
+                    accountErrorPanel.SetActive(true);
+                }
             }
         }
-
 
         public void InitMenu()
         {

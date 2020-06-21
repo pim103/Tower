@@ -24,7 +24,8 @@ public class ResourceInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UIManager.MyInstance.ShowTooltip(resource, transform.position);
+        RectTransform container = (RectTransform)transform;
+        UIManager.MyInstance.ShowTooltip(resource, transform.position, container);
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -9,16 +9,40 @@ using UnityEngine.UI;
 public class ShopWindow : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private ShopButton[] shopButtons;
-    [SerializeField] private Text pageNumber;
     [SerializeField] private ShopManager shopManager;
+    [SerializeField] private Text pageNumber;
+    public GameObject ConfirmePurchasePanel;
+    public GameObject ConfirmationPurchasePanel;
+    public GameObject ErrorPurchasePanel;
+    public Text PurchaseDescription;
+    [SerializeField] private bool newShopPage;
+    [SerializeField] private bool topShopPage;
+    [SerializeField] private bool ressourceShopPage;
+
+    [Header("Shop Containers List")]
+    [SerializeField] private ShopContainer[] shopContainers;
 
     private List<List<ShopItem>> pages = new List<List<ShopItem>>();
     private int pageIndex;
+    private Animator animator;
+    private bool animationPlaying = false;
 
     void Start()
     {
-        CreatePages(shopManager.MyItems);
+        animator = GetComponent<Animator>();
+
+        if (newShopPage)
+        {
+            CreatePages(shopManager.MyNewItems);
+        }
+        else if (topShopPage)
+        {
+            CreatePages(shopManager.MyTopItems);
+        }
+        else if (ressourceShopPage)
+        {
+            CreatePages(shopManager.MyRessourceItems);
+        }
     }
 
     public void CreatePages(ShopItem[] items)
@@ -31,7 +55,7 @@ public class ShopWindow : MonoBehaviour
         {
             page.Add(items[i]);
 
-            if (page.Count == 12 || i == items.Length - 1)
+            if (page.Count == 8 || i == items.Length - 1)
             {
                 pages.Add(page);
                 page = new List<ShopItem>();
@@ -51,7 +75,7 @@ public class ShopWindow : MonoBehaviour
             {
                 if (pages[pageIndex][i] != null)
                 {
-                    shopButtons[i].AddItem(pages[pageIndex][i]);
+                    shopContainers[i].AddItem(pages[pageIndex][i]);
                 }
             }
         }
@@ -59,27 +83,75 @@ public class ShopWindow : MonoBehaviour
 
     public void NextPage()
     {
-        if (pageIndex < pages.Count - 1)
+        if (pageIndex < pages.Count - 1 && !animationPlaying)
         {
-            ClearButtons();
             pageIndex++;
-            AddItems();
-        }
+            animationPlaying = true;
+            StartCoroutine(SlideRightAnimation());
+        } 
     }
 
     public void PreviousPage()
     {
-        if (pageIndex > 0)
+        if (pageIndex > 0 && !animationPlaying)
         {
-            ClearButtons();
             pageIndex--;
-            AddItems();
+            animationPlaying = true;
+            StartCoroutine(SlideLeftAnimation());
         }
+    }
+
+    private IEnumerator SlideLeftAnimation()
+    {
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideLeft");
+            animator.SetBool("slideLeft", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        ClearButtons();
+        AddItems();
+
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideLeft");
+            animator.SetBool("slideLeft", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1.2f);
+
+        animationPlaying = false;
+    }
+
+    private IEnumerator SlideRightAnimation()
+    {
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideRight");
+            animator.SetBool("slideRight", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        ClearButtons(); 
+        AddItems();
+
+        if (animator != null)
+        {
+            bool isOpen = animator.GetBool("slideRight");
+            animator.SetBool("slideRight", !isOpen);
+        }
+
+        yield return new WaitForSeconds(1.2f);
+
+        animationPlaying = false;
     }
 
     public void ClearButtons()
     {
-        foreach (ShopButton btn in shopButtons)
+        foreach (ShopContainer btn in shopContainers)
         {
             btn.gameObject.SetActive(false);
         }

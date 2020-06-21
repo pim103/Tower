@@ -13,12 +13,12 @@ public class SocialManager : MonoBehaviour
     public string username;
 
     [Header("References")]
-    public GameObject SocialPanel;
-    public GameObject SocialBoxContent;
-    public GameObject usernameObject;
-    public GameObject AddSocialPanel;
-    public InputField AddSocialPanelInput;
     public ChatBoxManager chatBoxManager;
+    //public GameObject SocialPanel;
+    //public GameObject SocialBoxContent;
+    //public GameObject usernameObject;
+    //public GameObject AddSocialPanel;
+    //public InputField AddSocialPanelInput;
 
     [Header("Social list")]
     [SerializeField] List<Social> socialList = new List<Social>();
@@ -41,11 +41,11 @@ public class SocialManager : MonoBehaviour
     /// </summary>
     public void ToggleSocialPanel()
     {
-        if (SocialPanel != null)
+        if (UIManager.MyInstance.SocialPanel != null)
         {
-            bool isActive = SocialPanel.activeSelf;
+            bool isActive = UIManager.MyInstance.SocialPanel.activeSelf;
 
-            SocialPanel.SetActive(!isActive);
+            UIManager.MyInstance.SocialPanel.SetActive(!isActive);
         }
     }
 
@@ -58,7 +58,7 @@ public class SocialManager : MonoBehaviour
 
         newSocial.username = text;
 
-        GameObject newText = Instantiate(usernameObject, SocialBoxContent.transform);
+        GameObject newText = Instantiate(UIManager.MyInstance.usernameObject, UIManager.MyInstance.SocialBoxContent.transform);
 
         newSocial.usernameObject = newText.GetComponent<Text>();
 
@@ -72,11 +72,11 @@ public class SocialManager : MonoBehaviour
     /// </summary>
     public void ToggleAddSocialPanel()
     {
-        if (AddSocialPanel != null)
+        if (UIManager.MyInstance.AddSocialPanel != null)
         {
-            bool isActive = AddSocialPanel.activeSelf;
+            bool isActive = UIManager.MyInstance.AddSocialPanel.activeSelf;
 
-            AddSocialPanel.SetActive(!isActive);
+            UIManager.MyInstance.AddSocialPanel.SetActive(!isActive);
         }
     }
 
@@ -86,7 +86,7 @@ public class SocialManager : MonoBehaviour
     public void AddAFriend()
     {
         // Check if input isn't empty
-        if (!string.IsNullOrWhiteSpace(AddSocialPanelInput.text))
+        if (!string.IsNullOrWhiteSpace(UIManager.MyInstance.AddSocialPanelInput.text))
         {
             // Check if user exist
             if (true)
@@ -104,7 +104,7 @@ public class SocialManager : MonoBehaviour
             }
 
             // Clean the input field
-            AddSocialPanelInput.text = "";
+            UIManager.MyInstance.AddSocialPanelInput.text = "";
         }
     }
 }

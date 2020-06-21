@@ -7,15 +7,39 @@ using UnityEngine;
 /// </summary>
 public class ShopManager : MonoBehaviour
 {
-    [Header("Shop items list")]
+    [Header("New Shop items list")]
     // List of items on the shop
-    [SerializeField] private ShopItem[] shopItems;
+    [SerializeField] private ShopItem[] newShopItems;
 
-    public ShopItem[] MyItems
+    [Header("Top Shop items list")]
+    // List of items on the shop
+    [SerializeField] private ShopItem[] topShopItems;
+
+    [Header("Ressource Shop items list")]
+    // List of items on the shop
+    [SerializeField] private ShopItem[] ressourceShopItems;
+
+    public ShopItem[] MyNewItems
     {
         get
         {
-            return shopItems;
+            return newShopItems;
+        }
+    }
+
+    public ShopItem[] MyTopItems
+    {
+        get
+        {
+            return topShopItems;
+        }
+    }
+
+    public ShopItem[] MyRessourceItems
+    {
+        get
+        {
+            return ressourceShopItems;
         }
     }
 }
