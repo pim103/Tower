@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DeckBuilding;
 using Games.Global.Abilities;
 using Games.Global.Entities;
@@ -11,10 +12,11 @@ using Utils;
 
 namespace Games.Global
 {
-    public class DictionnaryManager: MonoBehaviour
+    public class DictionaryManager: MonoBehaviour
     {
         [SerializeField] private GameObject[] monsterGameObjects;
         [SerializeField] private GameObject[] weaponsGameObject;
+        [SerializeField] private Material[] effectMaterials;
 
         public void Awake()
         {
@@ -24,6 +26,8 @@ namespace Games.Global
             
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
+            DataObject.MaterialsList = new List<Material>();
+            DataObject.MaterialsList.AddRange(effectMaterials.ToList());
         }
 
         private void FetchCollection()
@@ -49,7 +53,8 @@ namespace Games.Global
     {
         public static MonsterList MonsterList;
         public static WeaponList WeaponList;
-
+        public static List<Material> MaterialsList;
+        
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
         public static List<Entity> invocationsInScene = new List<Entity>();

@@ -15,9 +15,12 @@ namespace SpellEditor.PanelUtils
         Spell,
         SpellComponent,
         SpellWithCondition,
-        TypeEffects
+        TypeEffects,
+        GeometryShader,
+        ParticleEffect,
+        AddedMesh
     }
-    
+
     public class DropdownMultiSelector : MonoBehaviour
     {
         [SerializeField] private Dropdown dropdown;
@@ -32,6 +35,7 @@ namespace SpellEditor.PanelUtils
         [SerializeField] private Button showSelected;
         [SerializeField] private GameObject panelSelected;
         [SerializeField] private ShowPanel showPanel;
+        [SerializeField] private SpellComponentPanel spellComponentPanel;
         
         private void Start()
         {   
@@ -103,6 +107,24 @@ namespace SpellEditor.PanelUtils
                     string[] enumNames = Enum.GetNames(typeof(TypeEffect));
                     listNames.AddRange(enumNames.ToList());
                     break;
+                case SelectedObject.GeometryShader:
+                    foreach (Material material in spellComponentPanel.geometryShaderMaterials)
+                    {
+                        listNames.Add(material.name);
+                    }
+                    break;
+                case SelectedObject.ParticleEffect:
+                    foreach (GameObject particleObject in spellComponentPanel.particleObjects)
+                    {
+                        listNames.Add(particleObject.name);
+                    }
+                    break;
+                case SelectedObject.AddedMesh:
+                    foreach (GameObject additionalMesh in spellComponentPanel.additionalMeshs)
+                    {
+                        listNames.Add(additionalMesh.name);
+                    }
+                    break;
             }
 
             dropdown.AddOptions(listNames);
@@ -140,6 +162,18 @@ namespace SpellEditor.PanelUtils
                         SpellWithCondition spellWithCondition = obj as SpellWithCondition;
                         selectedIndex.Add(spellWithCondition.nameSpellWithCondition);
                         break;
+                    case SelectedObject.GeometryShader:
+                        Material geometryMaterial = obj as Material;
+                        selectedIndex.Add(geometryMaterial.name);
+                        break;
+                    case SelectedObject.ParticleEffect:
+                        GameObject particleObject = obj as GameObject;
+                        selectedIndex.Add(particleObject.name);
+                        break;
+                    case SelectedObject.AddedMesh:
+                        GameObject addedMesh = obj as GameObject;
+                        selectedIndex.Add(addedMesh.name);
+                        break;
                 }
             }
         }
@@ -150,6 +184,17 @@ namespace SpellEditor.PanelUtils
             {
                 selectedIndex.Add(type.ToString());
             }
+        }
+
+        public List<int> NamesToIndex()
+        {
+            List<int> indexList = new List<int>();
+            foreach (var selectedString in selectedIndex)
+            {
+                indexList.Add(dropdown.options.FindIndex((i) => i.text.Equals(selectedString)));
+            }
+
+            return indexList;
         }
     }
 }
