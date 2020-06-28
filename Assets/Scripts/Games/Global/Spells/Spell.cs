@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellsController;
 using UnityEngine;
 
@@ -54,6 +55,12 @@ namespace Games.Global.Spells
         public bool isBasicAttack { get; set; }
         public bool needPositionToMidToEntity { get; set; }
         public bool castByPassive { get; set; }
+
+        public int[] geometryShaders;
+        public int[] particleEffects;
+        public int[] AddedMeshs;
+
+        //public List<>
     }
 
     [Serializable]

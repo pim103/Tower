@@ -127,6 +127,7 @@ namespace Games.Global
                     entity.entityPrefab.canMove = false;
                     break;
                 case TypeEffect.Thorn:
+                    entity.entityPrefab.thornSphere.SetActive(true);
                     entity.hasThorn = true;
                     break;
                 case TypeEffect.Mirror:
@@ -140,6 +141,7 @@ namespace Games.Global
                     entity.isIntangible = true;
                     break;
                 case TypeEffect.AntiSpell:
+                    entity.entityPrefab.distortionSphere.SetActive(true);
                     entity.hasAntiSpell = true;
                     break;
                 case TypeEffect.DivineShield:
@@ -282,6 +284,9 @@ namespace Games.Global
                         entity.spells[2].cooldown = level;
                     }
 
+                    break;
+                case TypeEffect.Burn:
+                    //entity.entityPrefab
                     break;
             }
         }
@@ -431,6 +436,7 @@ namespace Games.Global
                     entity.entityPrefab.canMove = true;
                     break;
                 case TypeEffect.Thorn:
+                    entity.entityPrefab.thornSphere.SetActive(false);
                     entity.hasThorn = false;
                     break;
                 case TypeEffect.Mirror:
@@ -440,6 +446,7 @@ namespace Games.Global
                     entity.isIntangible = false;
                     break;
                 case TypeEffect.AntiSpell:
+                    entity.entityPrefab.distortionSphere.SetActive(false);
                     entity.hasAntiSpell = false;
                     break;
                 case TypeEffect.DivineShield:
@@ -538,7 +545,6 @@ namespace Games.Global
                     {
                         entity.spells[2].cooldown = entity.spells[2].initialCooldown;
                     }
-
                     break;
             }
         }

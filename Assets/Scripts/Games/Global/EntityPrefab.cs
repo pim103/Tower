@@ -36,6 +36,10 @@ namespace Games.Global
         [SerializeField] public Transform angleWithOneLeft;
         [SerializeField] public NavMeshAgent navMeshAgent;
         
+        [SerializeField] public GameObject headCurve;
+        [SerializeField] public GameObject thornSphere;
+        [SerializeField] public GameObject distortionSphere;
+
         public Entity entity;
 
         public bool cameraBlocked = false;

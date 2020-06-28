@@ -4,6 +4,7 @@ using System.Linq;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using SpellEditor.ComponentPanel;
+using SpellEditor.PanelUtils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +45,14 @@ namespace SpellEditor
 
         [SerializeField] private AreaOfEffectPanel areaOfEffectPanel;
 
+        [SerializeField] public Material[] geometryShaderMaterials;
+        [SerializeField] public GameObject[] particleObjects;
+        [SerializeField] public GameObject[] additionalMeshs;
+
+        [SerializeField] private DropdownMultiSelector shadersOnGeometryDropdown;
+        [SerializeField] private DropdownMultiSelector particleDropdown;
+        [SerializeField] private DropdownMultiSelector addedMeshDropdown;
+        
         // Start is called before the first frame update
         void Start()
         {
@@ -75,6 +84,10 @@ namespace SpellEditor
             ChangeTypeSpell(typeSpell.value);
 
             spellComponentSelector.onValueChanged.AddListener(EditSpellComponentAfterSelectorChoice);
+            
+            shadersOnGeometryDropdown.InitDropdownMultiSelect();
+            particleDropdown.InitDropdownMultiSelect();
+            addedMeshDropdown.InitDropdownMultiSelect();
         }
 
         public void InitSpellComponentPanel()
@@ -189,6 +202,10 @@ namespace SpellEditor
             spellComponentToSave.isBasicAttack = isBasicAttack.isOn;
             spellComponentToSave.needPositionToMidToEntity = positionMidEntity.isOn;
             spellComponentToSave.castByPassive = castByPassive.isOn;
+            spellComponentToSave.geometryShaders = shadersOnGeometryDropdown.NamesToIndex().ToArray();
+            spellComponentToSave.particleEffects = particleDropdown.NamesToIndex().ToArray();
+            spellComponentToSave.AddedMeshs = addedMeshDropdown.NamesToIndex().ToArray();
+            
 
             if (spellComponentSelector.value != 0)
             {
