@@ -16,351 +16,351 @@ using Random = UnityEngine.Random;
 
 namespace Games.Global
 {
-    public class EntityPrefab : MonoBehaviour
+public class EntityPrefab : MonoBehaviour
+{
+    [SerializeField] public GameObject rightHand;
+    [SerializeField] public GameObject leftHand;
+
+    [SerializeField] private Rigidbody rigidbodyEntity;
+
+    [SerializeField] protected MeshRenderer meshRenderer;
+
+    [SerializeField] public Animator animator;
+
+    [SerializeField] public GameObject characterMesh;
+
+    [SerializeField] public Transform positionInRightHand;
+    [SerializeField] public Transform angleWithOneRight;
+
+    [SerializeField] public Transform positionInLeftHand;
+    [SerializeField] public Transform angleWithOneLeft;
+    [SerializeField] public NavMeshAgent navMeshAgent;
+
+    [SerializeField] public GameObject headCurve;
+    [SerializeField] public GameObject thornSphere;
+    [SerializeField] public GameObject distortionSphere;
+
+    public Entity entity;
+
+    public bool cameraBlocked = false;
+    public bool intentBlocked = false;
+
+    public bool isCharging = false;
+
+    public bool canDoSomething = true;
+    public bool canMove = true;
+
+    public Vector3 forcedDirection = Vector3.zero;
+
+    public Vector3 positionPointed;
+
+    public Entity target;
+
+    private void FixedUpdate()
     {
-        [SerializeField] public GameObject rightHand;
-        [SerializeField] public GameObject leftHand;
-
-        [SerializeField] private Rigidbody rigidbodyEntity;
-
-        [SerializeField] protected MeshRenderer meshRenderer;
-
-        [SerializeField] public Animator animator;
-
-        [SerializeField] public GameObject characterMesh;
-
-        [SerializeField] public Transform positionInRightHand;
-        [SerializeField] public Transform angleWithOneRight;
-
-        [SerializeField] public Transform positionInLeftHand;
-        [SerializeField] public Transform angleWithOneLeft;
-        [SerializeField] public NavMeshAgent navMeshAgent;
-        
-        [SerializeField] public GameObject headCurve;
-        [SerializeField] public GameObject thornSphere;
-        [SerializeField] public GameObject distortionSphere;
-
-        public Entity entity;
-
-        public bool cameraBlocked = false;
-        public bool intentBlocked = false;
-
-        public bool isCharging = false;
-
-        public bool canDoSomething = true;
-        public bool canMove = true;
-
-        public Vector3 forcedDirection = Vector3.zero;
-
-        public Vector3 positionPointed;
-
-        public Entity target;
-
-        private void FixedUpdate()
+        if (entity.BehaviorType == BehaviorType.Player)
         {
-            if (entity.BehaviorType == BehaviorType.Player)
-            {
-                return;
-            }
+            return;
+        }
 
-            if (!canDoSomething)
-            {
-                navMeshAgent.SetDestination(transform.position);
-                return;
-            }
+        if (!canDoSomething)
+        {
+            navMeshAgent.SetDestination(transform.position);
+            return;
+        }
 
-            FindTarget();
+        FindTarget();
 
-            if (canMove)
-            {
-                if (entity.BehaviorType == BehaviorType.Melee ||
+        if (canMove)
+        {
+            if (entity.BehaviorType == BehaviorType.Melee ||
                     entity.BehaviorType == BehaviorType.MoveOnTargetAndDie)
-                {
-                    MoveToTarget(1);
-                }
-                else if (entity.BehaviorType == BehaviorType.Distance)
-                {
-                    MoveToTarget(10);
-                }
-            }
-            else
             {
-                navMeshAgent.SetDestination(transform.position);
+                MoveToTarget(1);
             }
-
-            if (target != null)
+            else if (entity.BehaviorType == BehaviorType.Distance)
             {
-                AttackTarget();   
+                MoveToTarget(10);
             }
         }
-
-        public void WantToApplyForce(Vector3 direction, int level)
+        else
         {
-            StartCoroutine(ApplyForce(direction, level));
+            navMeshAgent.SetDestination(transform.position);
         }
 
-        public IEnumerator ApplyForce(Vector3 direction, int level)
+        if (target != null)
         {
-            if (navMeshAgent != null)
-            {
-                navMeshAgent.enabled = false;
-            }
+            AttackTarget();
+        }
+    }
 
-            rigidbodyEntity.isKinematic = false;
+    public void WantToApplyForce(Vector3 direction, int level)
+    {
+        StartCoroutine(ApplyForce(direction, level));
+    }
 
-            rigidbodyEntity.AddForce((direction * level * 5), ForceMode.Impulse);
-            yield return new WaitForSeconds(1);
-            rigidbodyEntity.isKinematic = true;
-            
-            if (navMeshAgent != null)
-            {
-                navMeshAgent.enabled = true;
-            }
+    public IEnumerator ApplyForce(Vector3 direction, int level)
+    {
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.enabled = false;
         }
 
-        public void PlayBasicAttack()
+        rigidbodyEntity.isKinematic = false;
+
+        rigidbodyEntity.AddForce((direction * level * 5), ForceMode.Impulse);
+        yield return new WaitForSeconds(1);
+        rigidbodyEntity.isKinematic = true;
+
+        if (navMeshAgent != null)
         {
-            BuffController.EntityAttack(entity, positionPointed);
+            navMeshAgent.enabled = true;
+        }
+    }
 
-            if (entity.weapons.Count > 0)
-            {
-                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
-                weaponPrefab.BasicAttack();    
-            }
+    public void PlayBasicAttack()
+    {
+        BuffController.EntityAttack(entity, positionPointed);
 
-            if (entity.basicAttack != null)
-            {
-                SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
-            }
+        if (entity.weapons.Count > 0)
+        {
+            WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+            weaponPrefab.BasicAttack();
         }
 
-        public void AddItemInHand(Weapon weapon)
+        if (entity.basicAttack != null)
         {
-            GameObject hand = rightHand;
-            Transform position = positionInRightHand;
-            Transform angle = angleWithOneRight;
+            SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
+        }
+    }
 
-            if (weapon.category == CategoryWeapon.BOW)
-            {
-                hand = leftHand;
-                position = positionInLeftHand;
-                angle = angleWithOneLeft;
-            }
+    public void AddItemInHand(Weapon weapon)
+    {
+        GameObject hand = rightHand;
+        Transform position = positionInRightHand;
+        Transform angle = angleWithOneRight;
 
-            GameObject weaponGameObject = Instantiate(weapon.model, hand.transform, true);
-
-            WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
-            weapon.weaponPrefab = weaponPrefab;
-
-            weaponPrefab.SetWielder(entity);
-            weaponPrefab.SetWeapon(weapon);
-            weaponPrefab.SetPositionToParent(position, angle);
-
-            weapon.InitWeapon();
+        if (weapon.category == CategoryWeapon.BOW)
+        {
+            hand = leftHand;
+            position = positionInLeftHand;
+            angle = angleWithOneLeft;
         }
 
-        public virtual void SetInvisibility()
+        GameObject weaponGameObject = Instantiate(weapon.model, hand.transform, true);
+
+        WeaponPrefab weaponPrefab = weaponGameObject.GetComponent<WeaponPrefab>();
+        weapon.weaponPrefab = weaponPrefab;
+
+        weaponPrefab.SetWielder(entity);
+        weaponPrefab.SetWeapon(weapon);
+        weaponPrefab.SetPositionToParent(position, angle);
+
+        weapon.InitWeapon();
+    }
+
+    public virtual void SetInvisibility()
+    {
+    }
+
+    public bool CastSpell()
+    {
+        if (entity.spells == null || entity.spells.Count == 0)
         {
-        }
-
-        public bool CastSpell()
-        {
-            if (entity.spells == null || entity.spells.Count == 0)
-            {
-                return false;
-            }
-            
-            switch (entity.AttackBehaviorType)
-            {
-                case AttackBehaviorType.AllSpellsIFirst:
-                    foreach (Spell spell in entity.spells)
-                    {
-                        if (SpellController.CastSpell(entity, spell, transform.position, target))
-                        {
-                            return true;
-                        }
-                    }
-                    break;
-                case AttackBehaviorType.Random:
-                    int rand = Random.Range(0, entity.spells.Count);
-                    SpellController.CastSpell(entity, entity.spells[rand], transform.position, target);
-
-                    return !entity.spells[rand].isOnCooldown;
-            }
-
             return false;
         }
 
-        public void AttackTarget()
+        switch (entity.AttackBehaviorType)
         {
-            transform.LookAt(target.entityPrefab.transform);
-            Vector3 localEulerAngles = transform.localEulerAngles;
-            localEulerAngles.x = 0;
-            localEulerAngles.z = 0;
-            transform.localEulerAngles = localEulerAngles;
-
-            if (!CastSpell())
+        case AttackBehaviorType.AllSpellsIFirst:
+            foreach (Spell spell in entity.spells)
             {
-                switch (entity.BehaviorType)
+                if (SpellController.CastSpell(entity, spell, transform.position, target))
                 {
-                    // TODO : adapt range of weapon for attack
-                    case BehaviorType.Distance:
-                        PlayBasicAttack();
-                        break;
-                    case BehaviorType.Melee:
-                    case BehaviorType.MoveOnTargetAndDie:
-                        if (navMeshAgent.remainingDistance <= 3)
-                        {
-                            PlayBasicAttack();
-                        }
-                        break;
+                    return true;
                 }
             }
+            break;
+        case AttackBehaviorType.Random:
+            int rand = Random.Range(0, entity.spells.Count);
+            SpellController.CastSpell(entity, entity.spells[rand], transform.position, target);
+
+            return !entity.spells[rand].isOnCooldown;
         }
 
-        public void MoveToTarget(float range)
+        return false;
+    }
+
+    public void AttackTarget()
+    {
+        transform.LookAt(target.entityPrefab.transform);
+        Vector3 localEulerAngles = transform.localEulerAngles;
+        localEulerAngles.x = 0;
+        localEulerAngles.z = 0;
+        transform.localEulerAngles = localEulerAngles;
+
+        if (!CastSpell())
         {
-            if (!navMeshAgent.enabled)
+            switch (entity.BehaviorType)
             {
-                return;
-            }
-
-            if (entity.isFeared || entity.isCharmed)
-            {
-                navMeshAgent.SetDestination(transform.position + forcedDirection);
-                return;
-            }
-
-            if (target != null)
-            {
-                navMeshAgent.SetDestination(target.entityPrefab.transform.position);
-
-                if (navMeshAgent.remainingDistance <= range && navMeshAgent.hasPath)
+            // TODO : adapt range of weapon for attack
+            case BehaviorType.Distance:
+                PlayBasicAttack();
+                break;
+            case BehaviorType.Melee:
+            case BehaviorType.MoveOnTargetAndDie:
+                if (navMeshAgent.remainingDistance <= 3)
                 {
-                    navMeshAgent.SetDestination(transform.position);
+                    PlayBasicAttack();
                 }
+                break;
             }
-        }
-
-        public void FindTarget()
-        {
-            Entity newTarget = null;
-            bool findEnemyWithTaunt = false;
-            float dist = 10000;
-            float minDistAggro = 100;
-
-            switch (entity.typeEntity)
-            {
-                case TypeEntity.MOB:
-                    foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
-                    {
-                        PlayerPrefab player = value.Value;
-                        float newDist = Vector3.Distance(transform.position, player.transform.position);
-
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = player.entity;
-                            }
-                        }
-
-                        if (player.entity.hasTaunt)
-                        {
-                            newTarget = player.entity;
-                            findEnemyWithTaunt = true;
-                            break;
-                        }
-                    }
-
-                    foreach (Entity summon in DataObject.invocationsInScene)
-                    {
-                        float newDist = Vector3.Distance(transform.position, summon.entityPrefab.transform.position);
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!summon.isInvisible && !summon.isUntargeatable && !summon.hasNoAggro && !findEnemyWithTaunt)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = summon;
-                            }
-                        }
-
-                        if (summon.hasTaunt)
-                        {
-                            newTarget = summon;
-                            break;
-                        }
-                    }
-
-                    break;
-                case TypeEntity.ALLIES:
-                    foreach (Monster monster in DataObject.monsterInScene)
-                    {
-                        float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!monster.isInvisible && !monster.isUntargeatable && !monster.hasNoAggro)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = monster;
-                            }
-                        }
-
-                        if (monster.hasTaunt)
-                        {
-                            newTarget = monster;
-                            break;
-                        }
-                    }
-
-                    break;
-            }
-
-            target = newTarget;
-        }
-        
-        public void EntityDie()
-        {
-            if (entity.typeEntity == TypeEntity.MOB)
-            {
-                if (!entity.isSummon)
-                {
-                    DataObject.monsterInScene.Remove((Monster) entity);
-                }
-                else
-                {
-                    DataObject.invocationsInScene.Remove(entity);
-                }
-            }
-            else if (entity.typeEntity == TypeEntity.ALLIES)
-            {
-                if (entity.isPlayer)
-                {
-                    DataObject.playerInScene.Remove(GameController.PlayerIndex);
-                }
-                else if (entity.isSummon)
-                {
-                    DataObject.invocationsInScene.Remove(entity);
-                }
-            }
-
-            gameObject.SetActive(false);
         }
     }
+
+    public void MoveToTarget(float range)
+    {
+        if (!navMeshAgent.enabled)
+        {
+            return;
+        }
+
+        if (entity.isFeared || entity.isCharmed)
+        {
+            navMeshAgent.SetDestination(transform.position + forcedDirection);
+            return;
+        }
+
+        if (target != null)
+        {
+            navMeshAgent.SetDestination(target.entityPrefab.transform.position);
+
+            if (navMeshAgent.remainingDistance <= range && navMeshAgent.hasPath)
+            {
+                navMeshAgent.SetDestination(transform.position);
+            }
+        }
+    }
+
+    public void FindTarget()
+    {
+        Entity newTarget = null;
+        bool findEnemyWithTaunt = false;
+        float dist = 10000;
+        float minDistAggro = 100;
+
+        switch (entity.typeEntity)
+        {
+        case TypeEntity.MOB:
+            foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
+            {
+                PlayerPrefab player = value.Value;
+                float newDist = Vector3.Distance(transform.position, player.transform.position);
+
+                if (newDist > minDistAggro)
+                {
+                    continue;
+                }
+
+                if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
+                {
+                    if ((dist > newDist))
+                    {
+                        dist = newDist;
+                        newTarget = player.entity;
+                    }
+                }
+
+                if (player.entity.hasTaunt)
+                {
+                    newTarget = player.entity;
+                    findEnemyWithTaunt = true;
+                    break;
+                }
+            }
+
+            foreach (Entity summon in DataObject.invocationsInScene)
+            {
+                float newDist = Vector3.Distance(transform.position, summon.entityPrefab.transform.position);
+                if (newDist > minDistAggro)
+                {
+                    continue;
+                }
+
+                if (!summon.isInvisible && !summon.isUntargeatable && !summon.hasNoAggro && !findEnemyWithTaunt)
+                {
+                    if ((dist > newDist))
+                    {
+                        dist = newDist;
+                        newTarget = summon;
+                    }
+                }
+
+                if (summon.hasTaunt)
+                {
+                    newTarget = summon;
+                    break;
+                }
+            }
+
+            break;
+        case TypeEntity.ALLIES:
+            foreach (Monster monster in DataObject.monsterInScene)
+            {
+                float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
+                if (newDist > minDistAggro)
+                {
+                    continue;
+                }
+
+                if (!monster.isInvisible && !monster.isUntargeatable && !monster.hasNoAggro)
+                {
+                    if ((dist > newDist))
+                    {
+                        dist = newDist;
+                        newTarget = monster;
+                    }
+                }
+
+                if (monster.hasTaunt)
+                {
+                    newTarget = monster;
+                    break;
+                }
+            }
+
+            break;
+        }
+
+        target = newTarget;
+    }
+
+    public void EntityDie()
+    {
+        if (entity.typeEntity == TypeEntity.MOB)
+        {
+            if (!entity.isSummon)
+            {
+                DataObject.monsterInScene.Remove((Monster) entity);
+            }
+            else
+            {
+                DataObject.invocationsInScene.Remove(entity);
+            }
+        }
+        else if (entity.typeEntity == TypeEntity.ALLIES)
+        {
+            if (entity.isPlayer)
+            {
+                DataObject.playerInScene.Remove(GameController.PlayerIndex);
+            }
+            else if (entity.isSummon)
+            {
+                DataObject.invocationsInScene.Remove(entity);
+            }
+        }
+
+        gameObject.SetActive(false);
+    }
+}
 }
