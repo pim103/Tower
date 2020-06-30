@@ -10,7 +10,7 @@ namespace Games
         public InitAttackPhase initAttackPhase;
 
         [SerializeField]
-        public DictionnaryManager dm;
+        public DictionaryManager dm;
 
         [SerializeField]
         public GameController gameController;
