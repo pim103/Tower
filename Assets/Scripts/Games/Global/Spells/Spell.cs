@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using Games.Global.Spells.SpellsController;
 using UnityEngine;
 
-namespace Games.Global.Spells
-{
-public enum Geometry
-{
+namespace Games.Global.Spells {
+  public enum Geometry {
     Square,
     Sphere,
     Cone,
-}
+  }
 
-public enum OriginArea
-{
-    Center,
-    From
-}
+  public enum OriginArea { Center, From }
 
-public enum TypeSpell
-{
+  public enum TypeSpell {
     Movement,
     Buff,
     AreaOfEffect,
@@ -28,158 +21,155 @@ public enum TypeSpell
     Summon,
     Passive,
     Transformation
-}
+  }
 
-public enum DamageType
-{
-    Magical,
-    Physical
-}
+  public enum DamageType { Magical, Physical }
 
-[Serializable]
-public class SpellComponent
-{
+  [Serializable]
+  public class SpellComponent {
     public string nameSpellComponent {
-        get;
-        set;
+      get;
+      set;
     }
     public TypeSpell typeSpell {
-        get;
-        set;
+      get;
+      set;
     }
     public DamageType damageType {
-        get;
-        set;
+      get;
+      set;
     }
 
     public Coroutine currentCoroutine {
-        get;
-        set;
+      get;
+      set;
     }
 
     public OriginalPosition OriginalPosition {
-        get;
-        set;
+      get;
+      set;
     }
     public OriginalDirection OriginalDirection {
-        get;
-        set;
+      get;
+      set;
     }
 
     public Vector3 startPosition {
-        get;
-        set;
+      get;
+      set;
     }
     public Vector3 initialRotation {
-        get;
-        set;
+      get;
+      set;
     }
     public Vector3 trajectoryNormalized {
-        get;
-        set;
+      get;
+      set;
     }
 
     public bool isBasicAttack {
-        get;
-        set;
+      get;
+      set;
     }
     public bool needPositionToMidToEntity {
-        get;
-        set;
+      get;
+      set;
     }
     public bool castByPassive {
-        get;
-        set;
+      get;
+      set;
     }
 
     public int[] geometryShaders;
     public int[] particleEffects;
     public int[] AddedMeshs;
 
-    //public List<>
-}
+    // public List<>
+  }
 
-[Serializable]
-public class Spell
-{
+  [Serializable]
+  public class Spell {
     public string nameSpell {
-        get;
-        set;
+      get;
+      set;
     }
     public float initialCooldown {
-        get;
-        set;
+      get;
+      set;
     }
     public float cooldown {
-        get;
-        set;
+      get;
+      set;
     }
     public float cost {
-        get;
-        set;
+      get;
+      set;
     }
     public float castTime {
-        get;
-        set;
+      get;
+      set;
     }
 
     public bool deactivatePassiveWhenActive {
-        get;
-        set;
+      get;
+      set;
     }
     public bool isOnCooldown {
-        get;
-        set;
+      get;
+      set;
     }
 
     public int nbUse {
-        get;
-        set;
-    } = -1;
+      get;
+      set;
+    }
+    = -1;
 
     public bool canCastDuringCast {
-        get;
-        set;
-    } = false;
+      get;
+      set;
+    }
+    = false;
     public bool wantToCastDuringCast {
-        get;
-        set;
-    } = false;
+      get;
+      set;
+    }
+    = false;
 
     // Active:
     public SpellComponent activeSpellComponent {
-        get;
-        set;
+      get;
+      set;
     }
 
     // Passive:
     public SpellComponent passiveSpellComponent {
-        get;
-        set;
+      get;
+      set;
     }
 
     // DuringCast:
     public SpellComponent duringCastSpellComponent {
-        get;
-        set;
+      get;
+      set;
     }
     public bool interruptCurrentCast {
-        get;
-        set;
+      get;
+      set;
     }
 
-    //Recast
+    // Recast
     public SpellComponent recastSpellComponent {
-        get;
-        set;
+      get;
+      set;
     }
     public bool canRecast {
-        get;
-        set;
+      get;
+      set;
     }
     public bool alreadyRecast {
-        get;
-        set;
+      get;
+      set;
     }
-}
+  }
 }

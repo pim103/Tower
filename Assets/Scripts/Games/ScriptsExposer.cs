@@ -2,17 +2,15 @@
 using Games.Global;
 using UnityEngine;
 
-namespace Games
-{
-public class ScriptsExposer : MonoBehaviour
-{
-    [SerializeField]
-    public InitAttackPhase initAttackPhase;
+namespace Games {
+public class ScriptsExposer : MonoBehaviour {
+  [SerializeField]
+  public InitAttackPhase initAttackPhase;
 
-    [SerializeField]
-    public DictionaryManager dm;
+  [SerializeField]
+  public DictionaryManager dm;
 
-    [SerializeField]
-    public GameController gameController;
+  [SerializeField]
+  public GameController gameController;
 }
 }
