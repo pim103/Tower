@@ -9,16 +9,16 @@ namespace Games.Global.Entities
 {
     public class Monster: Entity
     {
-        public int id;
-        public string mobName;
-        public int nbWeapon;
-        public string weaponOriginalName;
+        public int id { get; set; }
+        public string mobName { get; set; }
+        public int nbWeapon { get; set; }
+        public string weaponOriginalName { get; set; }
 
-        public Family family;
+        public Family family { get; set; }
 
-        public TypeWeapon constraint;
+        public TypeWeapon constraint { get; set; }
 
-        private MonsterPrefab monsterPrefab;
+        private MonsterPrefab monsterPrefab { get; set; }
 
         public override void BasicAttack()
         {

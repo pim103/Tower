@@ -18,54 +18,9 @@ namespace Games.Global.Spells.SpellsController
     {
         private static Transform parent;
 
-        public AreaOfEffectSpell Clone(SpellComponent spellComponent)
-        {
-            AreaOfEffectSpell origin = (AreaOfEffectSpell) spellComponent;
-
-            AreaOfEffectSpell cloneAreaOfEffectSpell = new AreaOfEffectSpell
-            {
-                duration = origin.duration,
-                damageType = origin.damageType,
-                damagesOnAlliesOnInterval = origin.damagesOnAlliesOnInterval,
-                geometry = origin.geometry,
-                interval = origin.interval,
-                scale = origin.scale,
-                currentCoroutine = origin.currentCoroutine,
-                objectPooled = origin.objectPooled,
-                onePlay = origin.onePlay,
-                randomPosition = origin.randomPosition,
-                startPosition = origin.startPosition,
-                typeSpell = origin.typeSpell,
-                alliesInZone = origin.alliesInZone,
-                canStopProjectile = origin.canStopProjectile,
-                enemiesInZone = origin.enemiesInZone,
-                isBasicAttack = origin.isBasicAttack,
-                randomTargetHit = origin.randomTargetHit,
-                spellWithConditions = origin.spellWithConditions,
-                wantToFollow = origin.wantToFollow,
-                linkedSpellOnEnd = origin.linkedSpellOnEnd,
-                linkedSpellOnInterval = origin.linkedSpellOnInterval,
-                appliesPlayerOnHitEffect = origin.appliesPlayerOnHitEffect,
-                damagesOnEnemiesOnInterval = origin.damagesOnEnemiesOnInterval,
-                effectOnHitOnStart = origin.effectOnHitOnStart,
-                effectsOnAlliesOnInterval = origin.effectsOnAlliesOnInterval,
-                effectsOnEnemiesOnInterval = origin.effectsOnEnemiesOnInterval,
-                effectsOnPlayerOnInterval = origin.effectsOnPlayerOnInterval,
-                deleteEffectsOnEnemiesOnInterval = origin.deleteEffectsOnEnemiesOnInterval,
-                deleteEffectsOnPlayerOnInterval = origin.deleteEffectsOnPlayerOnInterval,
-                OriginalPosition = OriginalPosition.Caster,
-                OriginalDirection = OriginalDirection.Forward,
-                initialRotation = origin.initialRotation,
-                trajectoryNormalized = origin.trajectoryNormalized,
-                originArea = origin.originArea
-            };
-
-            return cloneAreaOfEffectSpell;
-        }
-        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            AreaOfEffectSpell areaOfEffectSpell = Clone(spellComponent);
+            AreaOfEffectSpell areaOfEffectSpell = Tools.Clone((AreaOfEffectSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, areaOfEffectSpell));
             areaOfEffectSpell.currentCoroutine = currentCoroutine;
         }
@@ -460,8 +415,7 @@ namespace Games.Global.Spells.SpellsController
 
                 return;
             }
-            
-            Debug.Log(other.name);
+
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
             
             if ( (origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||

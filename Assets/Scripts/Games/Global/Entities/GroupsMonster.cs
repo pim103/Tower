@@ -25,16 +25,16 @@ namespace Games.Global.Entities
     {
         public const int DEFAULT_RADIUS = 1;
 
-        public int id;
-        public Family family;
-        public int cost;
-        public string name;
+        public int id { get; set; }
+        public Family family { get; set; }
+        public int cost { get; set; }
+        public string name { get; set; }
         public int radius = DEFAULT_RADIUS;
 
         // first int : idMonster - Second int : numberMonster
-        public Dictionary<int, int> monsterInGroups;
+        public Dictionary<int, int> monsterInGroups { get; set; }
 
-        private List<Monster> monsters;
+        private List<Monster> monsters { get; set; }
 
         public void InitSpecificEquipment(Monster monster, List<int> equipment)
         {

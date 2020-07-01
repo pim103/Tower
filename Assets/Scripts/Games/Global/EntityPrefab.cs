@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
-//using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
 using UnityEngine.AI;
-using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace Games.Global

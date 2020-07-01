@@ -44,14 +44,14 @@ namespace Games.Global
     // Class for mobs and players
     public class Entity: ItemModel
     {
-        public int IdEntity;
+        public int IdEntity { get; set; }
 
-        public bool isPlayer = false;
-        public bool isSummon = false;
+        public bool isPlayer { get; set; } = false;
+        public bool isSummon { get; set; } = false;
         
-        private ItemModel itemModel;
+        private ItemModel itemModel { get; set; }
         
-        private const float DEFAULT_HP = 100;
+        private const float DEFAULT_HP  = 100;
         private const int DEFAULT_DEF = 10;
         private const float DEFAULT_ATT = 0;
         private const float DEFAULT_SPEED = 10;
@@ -60,61 +60,61 @@ namespace Games.Global
         
         private const int DEFAULT_NB_WEAPONS = 1;
 
-        public float initialHp = DEFAULT_HP;
-        public int initialDef;
-        public int initialMagicalDef;
-        public int initialPhysicalDef;
-        public float initialAtt;
-        public float initialSpeed;
-        public float initialAttSpeed;
-        public float initialRessource1;
-        public float initialRessource2;
+        public float initialHp { get; set; } = DEFAULT_HP;
+        public int initialDef { get; set; }
+        public int initialMagicalDef { get; set; }
+        public int initialPhysicalDef { get; set; }
+        public float initialAtt { get; set; }
+        public float initialSpeed { get; set; }
+        public float initialAttSpeed { get; set; }
+        public float initialRessource1 { get; set; }
+        public float initialRessource2 { get; set; }
 
-        public float hp = DEFAULT_HP;
-        public int def = DEFAULT_DEF;
-        public float att = DEFAULT_ATT;
-        public float speed = DEFAULT_SPEED;
-        public float attSpeed = DEFAULT_ATT_SPEED;
-        public int magicalDef = 0;
-        public int physicalDef = 0;
+        public float hp { get; set; } = DEFAULT_HP;
+        public int def { get; set; } = DEFAULT_DEF;
+        public float att { get; set; } = DEFAULT_ATT;
+        public float speed { get; set; } = DEFAULT_SPEED;
+        public float attSpeed { get; set; } = DEFAULT_ATT_SPEED;
+        public int magicalDef { get; set; } = 0;
+        public int physicalDef { get; set; } = 0;
 
-        public float ressource1 = DEFAULT_RESSOURCE;
-        public float ressource2 = 0;
+        public float ressource1 { get; set; } = DEFAULT_RESSOURCE;
+        public float ressource2 { get; set; } = 0;
 
-        public Func<AbilityParameters, bool> OnDamageReceive;
+        public Func<AbilityParameters, bool> OnDamageReceive { get; set; }
 
-        public Func<AbilityParameters, bool> OnDamageDealt;
+        public Func<AbilityParameters, bool> OnDamageDealt { get; set; }
 
-        public List<int> playerInBack;
+        public List<int> playerInBack { get; set; }
         
         // If needed, create WeaponExposer to get all scripts of a weapon
-        public List<Weapon> weapons;
-        public List<Armor> armors;
+        public List<Weapon> weapons { get; set; }
+        public List<Armor> armors { get; set; }
 
-        public TypeEntity typeEntity;
+        public TypeEntity typeEntity { get; set; }
 
         // Suffered effect 
-        public Dictionary<TypeEffect, Effect> underEffects;
+        public Dictionary<TypeEffect, Effect> underEffects { get; set; }
 
         // Effect add to damage deal
-        public List<Effect> damageDealExtraEffect;
+        public List<Effect> damageDealExtraEffect { get; set; }
 
         // Effect add to damage receive
-        public List<Effect> damageReceiveExtraEffect;
+        public List<Effect> damageReceiveExtraEffect { get; set; }
 
-        public List<BuffSpell> currentBuff;
-        public List<Entity> entityInRange;
+        public List<BuffSpell> currentBuff { get; set; }
+        public List<Entity> entityInRange { get; set; }
 
-        public EntityPrefab entityPrefab;
+        public EntityPrefab entityPrefab { get; set; }
 
-        public Spell basicAttack;
-        public Spell basicDefense;
-        public List<Spell> spells;
+        public Spell basicAttack { get; set; }
+        public Spell basicDefense { get; set; }
+        public List<Spell> spells { get; set; }
 
-        public BehaviorType BehaviorType;
-        public AttackBehaviorType AttackBehaviorType;
+        public BehaviorType BehaviorType { get; set; }
+        public AttackBehaviorType AttackBehaviorType { get; set; }
 
-        public bool doingSkill = false;
+        public bool doingSkill { get; set; } = false;
 
         public virtual void BasicAttack()
         {
@@ -163,6 +163,7 @@ namespace Games.Global
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
+            Debug.Log("Init");
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();
@@ -176,8 +177,10 @@ namespace Games.Global
         // Take true damage is usefull with effect pierce
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
         {
+            Debug.Log(initialDamage);
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
+            Debug.Log(damageReceived);
             Entity originDamage = abilityParameters.origin;
 
             bool isMagic = damageType == DamageType.Magical;

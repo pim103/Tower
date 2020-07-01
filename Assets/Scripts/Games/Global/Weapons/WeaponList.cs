@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -98,12 +99,16 @@ namespace Games.Global.Weapons
 
         public Weapon GetWeaponWithName(string findName)
         {
-            return CloneWeapon(weapons.First(we => we.equipementName == findName));
+            Weapon findingWeapon = weapons.First(we => we.equipementName == findName);
+            Weapon cloneWeapon = Tools.Clone(findingWeapon);
+            return cloneWeapon;
         }
 
         public Weapon GetWeaponWithId(int id)
         {
-            return CloneWeapon(weapons.First(we => we.id == id));
+            Weapon findingWeapon = weapons.First(we => we.id == id);
+            Weapon cloneWeapon = Tools.Clone(findingWeapon);
+            return cloneWeapon;
         }
 
         public void PrintDictionnary()

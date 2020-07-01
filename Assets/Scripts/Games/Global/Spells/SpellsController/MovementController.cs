@@ -1,39 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
     public class MovementController : MonoBehaviour, ISpellController
-    {
-        private MovementSpell Clone(SpellComponent spellComponent)
-        {
-            MovementSpell origin = (MovementSpell) spellComponent;
-            MovementSpell clone = new MovementSpell
-            {
-                duration = origin.duration,
-                speed = origin.speed,
-                target = origin.target,
-                startPosition = origin.startPosition,
-                initialRotation = origin.initialRotation,
-                trajectoryNormalized = origin.trajectoryNormalized,
-                damageType = origin.damageType,
-                tpPosition = origin.tpPosition,
-                typeSpell = origin.typeSpell,
-                isBasicAttack = origin.isBasicAttack,
-                isFollowingMouse = origin.isFollowingMouse,
-                movementSpellType = origin.movementSpellType,
-                linkedSpellAtTheEnd = origin.linkedSpellAtTheEnd,
-                linkedSpellAtTheStart = origin.linkedSpellAtTheStart,
-                OriginalPosition = origin.OriginalPosition,
-                OriginalDirection = origin.OriginalDirection
-            };
-
-            return clone;
-        }
-        
+    {   
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            MovementSpell movementSpell = Clone(spellComponent);
+            MovementSpell movementSpell = Tools.Clone((MovementSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayMovementSpell(entity, movementSpell));
             movementSpell.currentCoroutine = currentCoroutine;
         }

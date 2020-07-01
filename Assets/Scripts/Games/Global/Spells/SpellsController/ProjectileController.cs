@@ -11,38 +11,9 @@ namespace Games.Global.Spells.SpellsController
 {
     public class ProjectileController : MonoBehaviour, ISpellController
     {
-        public ProjectileSpell Clone(SpellComponent spellComponent)
-        {
-            ProjectileSpell origin = (ProjectileSpell) spellComponent;
-
-            ProjectileSpell cloneProjectileSpell = new ProjectileSpell
-            {
-                damages = origin.damages,
-                duration = origin.duration,
-                speed = origin.speed,
-                trajectoryNormalized = origin.trajectoryNormalized,
-                damageType = origin.damageType,
-                initialRotation = origin.initialRotation,
-                startPosition = origin.startPosition,
-                typeSpell = origin.typeSpell,
-                effectsOnHit = origin.effectsOnHit,
-                idPoolObject = origin.idPoolObject,
-                isBasicAttack = origin.isBasicAttack,
-                passingThroughEntity = origin.passingThroughEntity,
-                damageMultiplierOnDistance = origin.damageMultiplierOnDistance,
-                linkedSpellOnDisable = origin.linkedSpellOnDisable,
-                linkedSpellOnEnable = origin.linkedSpellOnEnable,
-                OriginalDirection = origin.OriginalDirection,
-                OriginalPosition = origin.OriginalPosition,
-                needPositionToMidToEntity = origin.needPositionToMidToEntity
-            };
-
-            return cloneProjectileSpell;
-        }
-        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            ProjectileSpell newProjectileSpell = Clone(spellComponent);
+            ProjectileSpell newProjectileSpell = Tools.Clone((ProjectileSpell) spellComponent);
 
             Coroutine currentCoroutine =
                 SpellController.instance.StartCoroutine(PlayProjectileSpell(entity, newProjectileSpell));

@@ -37,25 +37,6 @@ namespace Games.Global.Spells.SpellsController
             instance = this;
         }
 
-        public static Spell Clone(Spell origin, int nbUse = -1)
-        {
-            Spell clone = new Spell
-            {
-                cooldown = origin.cooldown,
-                cost = origin.cost,
-                castTime = origin.castTime,
-                activeSpellComponent = origin.activeSpellComponent,
-                isOnCooldown = origin.isOnCooldown,
-                passiveSpellComponent = origin.passiveSpellComponent,
-                recastSpellComponent = origin.recastSpellComponent,
-                deactivatePassiveWhenActive = origin.deactivatePassiveWhenActive,
-                duringCastSpellComponent = origin.duringCastSpellComponent,
-                nbUse = nbUse
-            };
-
-            return clone;
-        }
-
         public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
         {
             if (spell == null)

@@ -23,13 +23,13 @@ namespace Games.Players
 
     public class Player : Entity
     {
-        public HelmetArmor helmetArmor;
-        public ChestplateArmor chestplateArmor;
-        public LeggingsArmor leggingsArmor;
+        public HelmetArmor helmetArmor { get; set; }
+        public ChestplateArmor chestplateArmor { get; set; }
+        public LeggingsArmor leggingsArmor { get; set; }
 
-        private PlayerPrefab playerPrefab;
+        private PlayerPrefab playerPrefab { get; set; }
 
-        public Classes mainClass;
+        public Classes mainClass { get; set; }
 
         public void SetPlayerPrefab(PlayerPrefab playerPrefab)
         {

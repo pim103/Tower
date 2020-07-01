@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Games;
 using Games.Global;
@@ -9,7 +8,6 @@ using Games.Global.Weapons;
 using Games.Players;
 using Games.Transitions;
 using SpellEditor;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

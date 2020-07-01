@@ -25,23 +25,6 @@ namespace Games.Global
             EffectControllerInstance = this;
         }
 
-        private static Effect CloneEffect(Effect origin, Entity originEffect, Vector3 srcDamage)
-        {
-            Effect clone = new Effect
-            {
-                launcher = originEffect,
-                level = origin.level,
-                directionExpul = origin.directionExpul,
-                originExpulsion = origin.originExpulsion,
-                ressourceCost = origin.ressourceCost,
-                typeEffect = origin.typeEffect,
-                durationInSeconds = origin.durationInSeconds,
-                positionSrcDamage = srcDamage
-            };
-
-            return clone;
-        }
-        
         public static void ApplyEffect(Entity entityAffected, Effect effect, Entity origin, Vector3 srcDamage, List<Entity> affectedEntity = null)
         {
             if (effect == null || entityAffected.hasWill && ControlEffect.Contains(effect.typeEffect))
@@ -87,7 +70,9 @@ namespace Games.Global
 
         public static void StartCoroutineEffect(Entity entity, Effect effect, Entity origin, Vector3 srcDamage)
         {
-            Effect cloneEffect = CloneEffect(effect, origin, srcDamage);
+            effect.launcher = origin;
+            effect.positionSrcDamage = srcDamage;
+            Effect cloneEffect = Tools.Clone(effect);
             entity.underEffects.Add(effect.typeEffect, cloneEffect);
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 

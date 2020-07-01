@@ -1,37 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
     public class TransformationController : MonoBehaviour, ISpellController
     {
-        private TransformationSpell Clone(SpellComponent spellComponent)
-        {
-            TransformationSpell origin = (TransformationSpell) spellComponent;
-            TransformationSpell clone = new TransformationSpell
-            {
-                damageType = origin.damageType,
-                initialRotation = origin.initialRotation,
-                startPosition = origin.startPosition,
-                trajectoryNormalized = origin.trajectoryNormalized,
-                typeSpell = origin.typeSpell,
-                isBasicAttack = origin.isBasicAttack,
-                OriginalDirection = origin.OriginalDirection,
-                OriginalPosition = origin.OriginalPosition,
-                needPositionToMidToEntity = origin.needPositionToMidToEntity,
-                duration = origin.duration,
-                idPoolPrefab = origin.idPoolPrefab,
-                newSpells = origin.newSpells,
-                castByPassive = origin.castByPassive
-            };
-
-            return clone;
-        }
-        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            TransformationSpell passiveSpell = Clone(spellComponent);
+            TransformationSpell passiveSpell = Tools.Clone((TransformationSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayTransformationSpell(entity, passiveSpell));
             passiveSpell.currentCoroutine = currentCoroutine;
         }

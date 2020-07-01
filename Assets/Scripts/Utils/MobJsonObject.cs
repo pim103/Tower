@@ -102,8 +102,7 @@ namespace Utils
                 Debug.Log("Apply : " + skill);
             }
         }
-        
-        // Don't forget to clone
+
         public Monster ConvertToMonster(Family family)
         {
             Monster monster = new Monster();
@@ -129,14 +128,6 @@ namespace Utils
             monster.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB);
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
             monster.modelName = modelName;
-
-            // TODO : Implement spell with new system
-//            foreach (string skill in skills)
-//            {
-//                Spell newSpell = new Spell();
-//                newSpell.skill = AbilityManager.GetAbility(skill, AbilityDico.MOB);
-//                monster.skills.Add(newSpell);
-//            }
 
             return monster;
         }

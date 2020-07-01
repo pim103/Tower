@@ -23,61 +23,17 @@ namespace Games.Global.Entities
             InitMonsterList();
         }
 
-        public GroupsMonster CloneGroups(GroupsMonster orig)
-        {
-            GroupsMonster groups = new GroupsMonster();
-            groups.family = orig.family;
-            groups.cost = orig.cost;
-            groups.id = orig.id;
-            groups.radius = orig.radius;
-            groups.name = orig.name;
-            groups.monsterInGroups = orig.monsterInGroups;
-
-            return groups;
-        }
-
-        public Monster CloneMonster(Monster orig)
-        {
-            Monster clone = new Monster();
-
-            clone.family = orig.family;
-            clone.id = orig.id;
-            clone.mobName = orig.mobName;
-            clone.nbWeapon = orig.nbWeapon;
-            clone.OnDamageDealt = orig.OnDamageDealt;
-            clone.OnDamageReceive = orig.OnDamageReceive;
-            clone.att = orig.att;
-            clone.def = orig.def;
-            clone.magicalDef = orig.magicalDef;
-            clone.physicalDef = orig.physicalDef;
-            clone.hp = orig.hp;
-            clone.speed = orig.speed;
-            clone.initialAtt = orig.att;
-            clone.initialDef = orig.def;
-            clone.initialMagicalDef = orig.magicalDef;
-            clone.initialPhysicalDef = orig.physicalDef;
-            clone.initialHp = orig.hp;
-            clone.initialSpeed = orig.speed;
-            clone.modelName = orig.modelName;
-            clone.model = orig.model;
-            clone.weaponOriginalName = orig.weaponOriginalName;
-            clone.constraint = orig.constraint;
-
-            clone.typeEntity = TypeEntity.MOB;
-
-            clone.InitEntityList(orig.nbWeapon);
-            
-            return clone;
-        }
-
         public GroupsMonster GetGroupsMonsterById(int id)
         {
-            return CloneGroups(groupsList.First(group => group.id == id));
+            return Tools.Clone(groupsList.First(group => group.id == id));
         }
 
         public Monster GetMonsterById(int id)
         {
-            return CloneMonster(monsterList.First(monster => monster.id == id));
+            Monster cloneMonster = Tools.Clone(monsterList.First(monster => monster.id == id));
+            cloneMonster.InitEntityList();
+            cloneMonster.typeEntity = TypeEntity.MOB;
+            return cloneMonster;
         }
 
         private void InitMonsterList()

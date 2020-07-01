@@ -1,36 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
     public class PassiveController : MonoBehaviour, ISpellController
     {
-        private PassiveSpell Clone(SpellComponent spellComponent)
-        {
-            PassiveSpell passiveSpell = (PassiveSpell) spellComponent;
-            PassiveSpell clone = new PassiveSpell
-            {
-                interval = passiveSpell.interval,
-                damageType = passiveSpell.damageType,
-                initialRotation = passiveSpell.initialRotation,
-                startPosition = passiveSpell.startPosition,
-                trajectoryNormalized = passiveSpell.trajectoryNormalized,
-                typeSpell = passiveSpell.typeSpell,
-                isBasicAttack = passiveSpell.isBasicAttack,
-                newDefensiveSpell = passiveSpell.newDefensiveSpell,
-                OriginalDirection = passiveSpell.OriginalDirection,
-                OriginalPosition = passiveSpell.OriginalPosition,
-                permanentLinkedEffect = passiveSpell.permanentLinkedEffect,
-                linkedEffectOnInterval = passiveSpell.linkedEffectOnInterval,
-                needPositionToMidToEntity = passiveSpell.needPositionToMidToEntity
-            };
-
-            return clone;
-        }
-        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            PassiveSpell passiveSpell = Clone(spellComponent);
+            PassiveSpell passiveSpell = Tools.Clone((PassiveSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayPassiveSpell(entity, passiveSpell));
             passiveSpell.currentCoroutine = currentCoroutine;
         }

@@ -4,54 +4,15 @@ using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
     public class BuffController : MonoBehaviour, ISpellController
     {
-        private BuffSpell Clone(SpellComponent spellComponent)
-        {
-            BuffSpell origin = (BuffSpell) spellComponent;
-            BuffSpell clone = new BuffSpell
-            {
-                duration = origin.duration,
-                interval = origin.interval,
-                stack = origin.stack,
-                damageType = origin.damageType,
-                replaceProjectile = origin.replaceProjectile,
-                typeSpell = origin.typeSpell,
-                conditionReduceCharge = origin.conditionReduceCharge,
-                damageOnSelf = origin.damageOnSelf,
-                effectOnSelf = origin.effectOnSelf,
-                isBasicAttack = origin.isBasicAttack,
-                newPlayerBehaviour = origin.newPlayerBehaviour,
-                spellWithCondition = origin.spellWithCondition,
-                disapearOnDamageReceived = origin.disapearOnDamageReceived,
-                linkedSpellOnAttack = origin.linkedSpellOnAttack,
-                linkedSpellOnHit = origin.linkedSpellOnHit,
-                linkedSpellOnInterval = origin.linkedSpellOnInterval,
-                effectOnTargetOnHit = origin.effectOnTargetOnHit,
-                linkedSpellOnDamageReceived = origin.linkedSpellOnDamageReceived,
-                needNewPositionOnAttack = origin.needNewPositionOnAttack,
-                needNewPositionOnHit = origin.needNewPositionOnHit,
-                needNewPositionOnInterval = origin.needNewPositionOnInterval,
-                effectOnSelfOnDamageReceived = origin.effectOnSelfOnDamageReceived,
-                effectOnSelfWhenNoCharge = origin.effectOnSelfWhenNoCharge,
-                needNewPositionOnDamageReceived = origin.needNewPositionOnDamageReceived,
-                OriginalDirection = origin.OriginalDirection,
-                OriginalPosition = origin.OriginalPosition,
-                startPosition = origin.startPosition,
-                initialRotation = origin.initialRotation,
-                trajectoryNormalized = origin.trajectoryNormalized,
-                castByPassive = origin.castByPassive
-            };
-
-            return clone;
-        }
-
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            BuffSpell buffSpell = Clone(spellComponent);
+            BuffSpell buffSpell = Tools.Clone((BuffSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayBuffSpell(entity, buffSpell));
             buffSpell.currentCoroutine = currentCoroutine;
         }

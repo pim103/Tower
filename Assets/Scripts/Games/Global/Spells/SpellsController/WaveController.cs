@@ -1,39 +1,15 @@
 ﻿using System.Collections;
 using Games.Global.Weapons;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Spells.SpellsController
 {
     public class WaveController : MonoBehaviour, ISpellController
     {
-        private WaveSpell Clone(SpellComponent spellComponent)
-        {
-            WaveSpell origin = (WaveSpell) spellComponent;
-            WaveSpell clone = new WaveSpell
-            {
-                damages = origin.damages,
-                duration = origin.duration,
-                damageType = origin.damageType,
-                geometryPropagation = origin.geometryPropagation,
-                initialRotation = origin.initialRotation,
-                initialWidth = origin.initialWidth,
-                speedPropagation = origin.speedPropagation,
-                startPosition = origin.startPosition,
-                typeSpell = origin.typeSpell,
-                effectsOnHit = origin.effectsOnHit,
-                isBasicAttack = origin.isBasicAttack,
-                incrementAmplitudeByTime = origin.incrementAmplitudeByTime,
-                OriginalDirection = origin.OriginalDirection,
-                OriginalPosition = origin.OriginalPosition,
-                trajectoryNormalized = origin.trajectoryNormalized,
-            };
-
-            return clone;
-        }
-        
         public void LaunchSpell(Entity entity, SpellComponent spellComponent)
         {
-            WaveSpell waveSpell = Clone(spellComponent);
+            WaveSpell waveSpell = Tools.Clone((WaveSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, waveSpell));
             waveSpell.currentCoroutine = currentCoroutine;
         }

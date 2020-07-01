@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Games.Global.Spells.SpellsController;
 using UnityEngine;
 using UnityEngine.AI;
+using Utils;
 
 namespace Games.Global.Spells
 {
@@ -34,7 +35,7 @@ namespace Games.Global.Spells
             {
                 foreach (Spell spellOrigin in summonSpell.spells)
                 {
-                    spellsClone.Add(SpellController.Clone(spellOrigin, summonSpell.nbUseSpells));
+                    spellsClone.Add(Tools.Clone(spellOrigin));
                 }
             }
 
@@ -50,7 +51,7 @@ namespace Games.Global.Spells
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
                 spells = spellsClone,
-                basicAttack = (summonSpell.basicAttack != null ? SpellController.Clone(summonSpell.basicAttack) : null),
+                basicAttack = (summonSpell.basicAttack != null ? Tools.Clone(summonSpell.basicAttack) : null),
                 BehaviorType = summonSpell.BehaviorType,
                 AttackBehaviorType = summonSpell.AttackBehaviorType,
                 isSummon = true

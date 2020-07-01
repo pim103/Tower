@@ -8,6 +8,7 @@ using Games.Global.Spells.SpellsController;
 using Games.Players;
 using UnityEditor.Animations;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Weapons
 {
@@ -37,25 +38,25 @@ namespace Games.Global.Weapons
         Cac
     }
 
-    public abstract class Weapon : Equipement
+    public class Weapon : Equipement
     {
-        public WeaponPrefab weaponPrefab;
+        public WeaponPrefab weaponPrefab { get; set; }
         
-        public string equipementName;
-        public CategoryWeapon category;
-        public TypeWeapon type;
-        public int damage;
-        public float attSpeed;
+        public string equipementName { get; set; }
+        public CategoryWeapon category { get; set; }
+        public TypeWeapon type { get; set; }
+        public int damage { get; set; }
+        public float attSpeed { get; set; }
 
-        public string animationToPlay;
-        public string spellOfBasicAttack;
+        public string animationToPlay { get; set; }
+        public string spellOfBasicAttack { get; set; }
 
-        public List<string> warriorSpells;
-        public List<string> mageSpells;
-        public List<string> rogueSpells;
-        public List<string> rangerSpells;
+        public List<string> warriorSpells { get; set; }
+        public List<string> mageSpells { get; set; }
+        public List<string> rogueSpells { get; set; }
+        public List<string> rangerSpells { get; set; }
 
-        public Spell basicAttack;
+        public Spell basicAttack { get; set; }
 
         public virtual void InitPlayerSkill(Classes classe)
         {
@@ -132,7 +133,7 @@ namespace Games.Global.Weapons
                 jsonSpell = File.ReadAllText(tempPath);
                 data = fsJsonParser.Parse(jsonSpell);
                 serializer.TryDeserialize(data, ref spell);
-                spell = SpellController.Clone(spell);
+                spell = Tools.Clone(spell);
             }
             catch (Exception e)
             {

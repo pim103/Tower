@@ -15,7 +15,7 @@ namespace Games.Global
     public class ItemModel
     {
         // Model Attribute
-        public string modelName = "";
-        public GameObject model = null;
+        public string modelName { get; set; } = "";
+        public GameObject model { get; set; } = null;
     }
 }

@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Games.Global.Entities;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Utils
 {
@@ -15,6 +19,19 @@ namespace Utils
                     yield return element;
                 }
             }
+        }
+
+        public static T Clone<T>(T origin) where T: new()
+        {
+            T clone = new T();
+            PropertyInfo[] propertyInfos = origin.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance);
+
+            foreach (PropertyInfo propertyInfo in propertyInfos)
+            {
+                propertyInfo.SetValue(clone, propertyInfo.GetValue(origin));
+            }
+
+            return clone;
         }
     }
 }
