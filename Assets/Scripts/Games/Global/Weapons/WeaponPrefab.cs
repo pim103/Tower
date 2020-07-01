@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,14 @@ namespace Games.Global.Weapons
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private Transform positionInHand;
 
-        public IEnumerator PlayAnimationAttack()
+        public IEnumerator PlayAnimationAttack(Spell basicAttack)
         {
             boxCollider.enabled = true;
 
             Animator animator = wielder.entityPrefab.animator;
             float initialSpeed = animator.speed;
 
-            animator.speed = weapon.attSpeed + wielder.attSpeed;
+            animator.speed /= (wielder.attSpeed + weapon.attSpeed);
             animator.Play(weapon.animationToPlay);
 
             weapon.FixAngleAttack(true, wielder);
@@ -50,13 +51,17 @@ namespace Games.Global.Weapons
             boxCollider.enabled = false;
         }
 
-        public void BasicAttack()
+        public bool BasicAttack(Spell basicAttack)
         {
+            bool attacking = isAttacking;
+            
             if (!isAttacking)
             {
                 isAttacking = true;
-                StartCoroutine(PlayAnimationAttack());
+                StartCoroutine(PlayAnimationAttack(basicAttack));
             }
+
+            return !attacking;
         }
 
         public void SetWeapon(Weapon weapon)

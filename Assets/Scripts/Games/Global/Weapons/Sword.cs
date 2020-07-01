@@ -20,14 +20,14 @@ namespace Games.Global.Weapons
             spellOfBasicAttack = "ShortSwordBasicAttack";
             
             warriorSpells = new List<string>();
-            warriorSpells.Add("");
-            warriorSpells.Add("");
-            warriorSpells.Add("");
+            warriorSpells.Add("bouledefeu");
+            warriorSpells.Add("ChargeSpell");
+            warriorSpells.Add("CoupChargeSpell");
 
             mageSpells = new List<string>();
-            mageSpells.Add("");
-            mageSpells.Add("");
-            mageSpells.Add("");
+            mageSpells.Add("MageWave");
+            mageSpells.Add("mageSpellShortSword2");
+            mageSpells.Add("MageSummonShortSword");
 
             rangerSpells = new List<string>();
             rangerSpells.Add("");
@@ -38,27 +38,6 @@ namespace Games.Global.Weapons
             rogueSpells.Add("");
             rogueSpells.Add("");
             rogueSpells.Add("");
-
-//            AreaOfEffectSpell area = new AreaOfEffectSpell
-//            {
-//                damageType = DamageType.Physical,
-//                geometry = Geometry.Cone,
-//                scale = Vector3.one + Vector3.forward,
-//                onePlay = true,
-//                isBasicAttack = true,
-//                OriginalPosition = OriginalPosition.Caster,
-//                OriginalDirection = OriginalDirection.Forward,
-//                needPositionToMidToEntity = true,
-//                damagesOnEnemiesOnInterval = 50
-//            };
-//
-//            basicAttack = new Spell
-//            {
-//                cost = 0,
-//                cooldown = 1f,
-//                castTime = 0,
-//                activeSpellComponent = area
-//            };
         }
 
         public override void InitPlayerSkill(Classes classe)

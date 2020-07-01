@@ -158,6 +158,7 @@ namespace Games.Transitions
 
             List<CategoryWeapon> categoryWeaponsMage = new List<CategoryWeapon>();
 
+            categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
             categoryWeaponsMage.Add(CategoryWeapon.BOW);
             categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
             categoryWeaponsMage.Add(CategoryWeapon.STAFF);
