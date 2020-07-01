@@ -209,7 +209,8 @@ namespace SpellEditor.ComponentPanel
             linkedSpellOnInterval.value = areaOfEffectSpell.linkedSpellOnInterval != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnInterval.nameSpellComponent) : 0;
             effectOnHitOnStart.value = areaOfEffectSpell.effectOnHitOnStart != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.effectOnHitOnStart.nameEffect) : 0;
             linkedSpellOnEnd.value = areaOfEffectSpell.linkedSpellOnEnd != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnEnd.nameSpellComponent) : 0;
-
+            originArea.value = (int) areaOfEffectSpell.originArea;
+            
             effectsOnEnemiesOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnEnemiesOnInterval);
             effectsOnPlayerOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnPlayerOnInterval);
             effectsOnAlliesOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnAlliesOnInterval);

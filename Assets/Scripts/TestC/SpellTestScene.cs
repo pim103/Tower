@@ -124,7 +124,7 @@ namespace TestC
             yield return new WaitForSeconds(0.1f);
 
             player.entity.spells.Clear();
-            
+
             int countSpells = 0;
             foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
             {

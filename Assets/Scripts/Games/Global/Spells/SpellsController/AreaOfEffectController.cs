@@ -56,7 +56,8 @@ namespace Games.Global.Spells.SpellsController
                 OriginalPosition = OriginalPosition.Caster,
                 OriginalDirection = OriginalDirection.Forward,
                 initialRotation = origin.initialRotation,
-                trajectoryNormalized = origin.trajectoryNormalized
+                trajectoryNormalized = origin.trajectoryNormalized,
+                originArea = origin.originArea
             };
 
             return cloneAreaOfEffectSpell;
@@ -460,6 +461,7 @@ namespace Games.Global.Spells.SpellsController
                 return;
             }
             
+            Debug.Log(other.name);
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
             
             if ( (origin.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||

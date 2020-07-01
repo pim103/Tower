@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1007,6 +1007,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: fc105d8c70e12d5448eae463b645c400, type: 2}
+    - target: {fileID: 6879353960672757004, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8930399325141559551, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1026,11 +1031,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1.8900146
-      objectReference: {fileID: 0}
-    - target: {fileID: 6879353960672757004, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c010c5899cffe4a81036732de267a8, type: 3}
@@ -1811,7 +1811,7 @@ GameObject:
   - component: {fileID: 884321580}
   - component: {fileID: 884321579}
   - component: {fileID: 884321578}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

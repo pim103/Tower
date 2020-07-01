@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using Games.Global;
+using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
