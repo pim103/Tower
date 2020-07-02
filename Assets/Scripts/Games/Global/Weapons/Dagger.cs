@@ -23,9 +23,5 @@ namespace Games.Global.Weapons
                 wielder.entityPrefab.characterMesh.transform.Rotate(Vector3.down * 70);
             }
         }
-
-        public override void InitPlayerSkill(Classes classe)
-        {
-        }
     }
 }

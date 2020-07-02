@@ -17,20 +17,5 @@ namespace Games.Global.Weapons
            //pattern[2] = //pattern(PA_INST.ROTATE_RIGHT, 90, 0.1f, 0.01f);
            //pattern[3] = //pattern(PA_INST.ROTATE_UP, 90, 0.1f, 0.01f);
         }
-
-        public override void InitPlayerSkill(Classes classe)
-        {
-            switch (classe)
-            {
-                case Classes.Mage:
-                    break;
-                case Classes.Rogue:
-                    break;
-                case Classes.Ranger:
-                    break;
-                case Classes.Warrior:
-                    break;
-            }
-        }
     }
 }

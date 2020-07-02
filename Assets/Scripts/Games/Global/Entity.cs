@@ -163,7 +163,6 @@ namespace Games.Global
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
-            Debug.Log("Init");
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new Dictionary<TypeEffect, Effect>();

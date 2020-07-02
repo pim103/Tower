@@ -20,14 +20,14 @@ namespace Games.Global.Weapons
             spellOfBasicAttack = "ShortSwordBasicAttack";
             
             warriorSpells = new List<string>();
-            warriorSpells.Add("bouledefeu");
-            warriorSpells.Add("ChargeSpell");
-            warriorSpells.Add("CoupChargeSpell");
+            warriorSpells.Add("WarriorShortSword1");
+            warriorSpells.Add("WarriorShortSword2");
+            warriorSpells.Add("WarriorShortSword3");
 
             mageSpells = new List<string>();
-            mageSpells.Add("MageWave");
-            mageSpells.Add("mageSpellShortSword2");
-            mageSpells.Add("MageSummonShortSword");
+            mageSpells.Add("MageShortSword1");
+            mageSpells.Add("MageShortSword2");
+            mageSpells.Add("MageShortSword3");
 
             rangerSpells = new List<string>();
             rangerSpells.Add("");
@@ -38,25 +38,6 @@ namespace Games.Global.Weapons
             rogueSpells.Add("");
             rogueSpells.Add("");
             rogueSpells.Add("");
-        }
-
-        public override void InitPlayerSkill(Classes classe)
-        {
-            switch (classe)
-            {
-                case Classes.Warrior:
-                    InitWeaponSpellWithJson(warriorSpells);
-                    break;
-                case Classes.Mage:
-                    InitWeaponSpellWithJson(mageSpells);
-                    break;
-                case Classes.Rogue:
-                    InitWeaponSpellWithJson(rogueSpells);
-                    break;
-                case Classes.Ranger:
-                    InitWeaponSpellWithJson(rangerSpells);
-                    break;
-            }
         }
     }
 }

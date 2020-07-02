@@ -58,8 +58,23 @@ namespace Games.Global.Weapons
 
         public Spell basicAttack { get; set; }
 
-        public virtual void InitPlayerSkill(Classes classe)
+        public void InitPlayerSkill(Classes classe)
         {
+            switch (classe)
+            {
+                case Classes.Warrior:
+                    InitWeaponSpellWithJson(warriorSpells);
+                    break;
+                case Classes.Mage:
+                    InitWeaponSpellWithJson(mageSpells);
+                    break;
+                case Classes.Rogue:
+                    InitWeaponSpellWithJson(rogueSpells);
+                    break;
+                case Classes.Ranger:
+                    InitWeaponSpellWithJson(rangerSpells);
+                    break;
+            }
         }
 
         public virtual void FixAngleAttack(bool isFirstIteration, Entity wielder)
@@ -100,22 +115,24 @@ namespace Games.Global.Weapons
 
                 if (spell == null)
                 {
+                    Debug.Log("Pas de spells");
                     continue;
                 }
 
+                Debug.Log("Find spell");
                 wielder.spells.Add(spell);
                 if (weaponPrefab.GetWielder().isPlayer)
                 {
                     PlayerPrefab playerPrefab = (PlayerPrefab) wielder.entityPrefab;
                     if (wielder.spells.Count == 1)
                     {
-                        playerPrefab.spell1.text = spellString;
+                        playerPrefab.spell1.text = spell.nameSpell;
                     } else if (wielder.spells.Count == 2)
                     {
-                        playerPrefab.spell1.text = spellString;
+                        playerPrefab.spell2.text = spell.nameSpell;
                     } else if (wielder.spells.Count == 3)
                     {
-                        playerPrefab.spell1.text = spellString;
+                        playerPrefab.spell3.text = spell.nameSpell;
                     }
                 }
             }
