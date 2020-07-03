@@ -204,11 +204,11 @@ namespace SpellEditor.ComponentPanel
             scaleZ.text = areaOfEffectSpell.scale.z.ToString();
             damagesOnEnemiesOnInterval.text = areaOfEffectSpell.damagesOnEnemiesOnInterval.ToString();
             damagesOnAlliesOnInterval.text = areaOfEffectSpell.damagesOnAlliesOnInterval.ToString();
-            
+
             geometry.value = (int) areaOfEffectSpell.geometry;
             linkedSpellOnInterval.value = areaOfEffectSpell.linkedSpellOnInterval != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnInterval.nameSpellComponent) : 0;
-            effectOnHitOnStart.value = areaOfEffectSpell.effectOnHitOnStart != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.effectOnHitOnStart.nameEffect) : 0;
-            linkedSpellOnEnd.value = areaOfEffectSpell.linkedSpellOnEnd != null ? linkedSpellOnInterval.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnEnd.nameSpellComponent) : 0;
+            effectOnHitOnStart.value = areaOfEffectSpell.effectOnHitOnStart != null ? effectOnHitOnStart.options.FindIndex(option => option.text == areaOfEffectSpell.effectOnHitOnStart.nameEffect) : 0;
+            linkedSpellOnEnd.value = areaOfEffectSpell.linkedSpellOnEnd != null ? linkedSpellOnEnd.options.FindIndex(option => option.text == areaOfEffectSpell.linkedSpellOnEnd.nameSpellComponent) : 0;
             originArea.value = (int) areaOfEffectSpell.originArea;
             
             effectsOnEnemiesOnInterval.InitDropdownWithValue(areaOfEffectSpell.effectsOnEnemiesOnInterval);

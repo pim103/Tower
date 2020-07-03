@@ -29,7 +29,7 @@ namespace Games.Global.Spells
 
             selfGameObject = newGameObject;
 
-            List<Spell> spellsClone = new List<Spell>();
+            List<Spell> spellsClone = new List<Spell>(); 
 
             if (summonSpell.spells != null)
             {
@@ -50,7 +50,6 @@ namespace Games.Global.Spells
                 speed = summonSpell.moveSpeed,
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
-                spells = spellsClone,
                 basicAttack = (summonSpell.basicAttack != null ? Tools.Clone(summonSpell.basicAttack) : null),
                 BehaviorType = summonSpell.BehaviorType,
                 AttackBehaviorType = summonSpell.AttackBehaviorType,
@@ -60,6 +59,7 @@ namespace Games.Global.Spells
             entity = summon;
             entity.InitEntityList();
             entity.entityPrefab = this;
+            entity.spells = spellsClone;
 
             if (linkedSpellOnEnable != null)
             {

@@ -170,7 +170,6 @@ namespace Games.Global.Spells.SpellsController
 
         public static void EndBuff(Entity entity, BuffSpell buffSpell, SpellComponent originalBasicAttackComponent = null)
         {
-            Debug.Log("End buff");
             entity.currentBuff.Remove(buffSpell);
 
             if (buffSpell.replaceProjectile != null)

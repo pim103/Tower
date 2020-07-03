@@ -362,7 +362,6 @@ namespace Games.Global
                     break;
                 case TypeEffect.AttackUp:
                     entity.att = entity.initialAtt + (1 * level);
-                    Debug.Log("new att : " + entity.initialAtt);
                     break;
                 case TypeEffect.AttackSpeedUp:
                     entity.attSpeed = entity.initialAttSpeed + (0.5f * level);

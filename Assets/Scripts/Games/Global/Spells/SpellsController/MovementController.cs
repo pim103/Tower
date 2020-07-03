@@ -53,7 +53,7 @@ namespace Games.Global.Spells.SpellsController
 
         private void DoTp(Entity entity, MovementSpell movementSpell)
         {
-            Vector3 newPosition = movementSpell.tpPosition;
+            Vector3 newPosition = movementSpell.startPosition;
             if (movementSpell.movementSpellType == MovementSpellType.TpWithTarget && movementSpell.target != null)
             {        
 //                entity.entityPrefab.transform.LookAt(movementSpell.target.entityPrefab.transform);

@@ -83,10 +83,17 @@ namespace Games.Global.Spells.SpellsController
                     }
                     break;
                 case OriginalPosition.Target:
-                    spellComponent.startPosition = target.entityPrefab.transform.position;
-                    if (spellComponent.needPositionToMidToEntity)
+                    if (target != null)
                     {
-                        spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
+                        spellComponent.startPosition = target.entityPrefab.transform.position;
+                        if (spellComponent.needPositionToMidToEntity)
+                        {
+                            spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
+                        }
+                    }
+                    else
+                    {
+                        spellComponent.startPosition = startPosition;
                     }
                     break;
                 case OriginalPosition.PositionInParameter:
@@ -137,6 +144,7 @@ namespace Games.Global.Spells.SpellsController
                     iSpellController = instance.areaOfEffectController;
                     break;
                 case TypeSpell.Movement:
+                    Debug.Log("In movement");
                     iSpellController = instance.movementController;
                     break;
                 case TypeSpell.Passive:
