@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 1946197402562123024}
   - component: {fileID: 8439853049035131011}
   - component: {fileID: 2118316670418814348}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EntityInRangeTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,15 +962,18 @@ MonoBehaviour:
   angleWithOneRight: {fileID: 3590441326526159950}
   positionInLeftHand: {fileID: 1897464822735068468}
   angleWithOneLeft: {fileID: 5161579070902402284}
+  navMeshAgent: {fileID: 6427951248319800584}
+  headCurve: {fileID: 0}
+  thornSphere: {fileID: 0}
+  distortionSphere: {fileID: 0}
   cameraBlocked: 0
   intentBlocked: 0
   isCharging: 0
   canDoSomething: 1
   canMove: 1
   forcedDirection: {x: 0, y: 0, z: 0}
+  positionPointed: {x: 0, y: 0, z: 0}
   hpBar: {fileID: 8442522903739256182}
-  navMeshAgent: {fileID: 6427951248319800584}
-  target: {fileID: 0}
 --- !u!136 &2871207911170149337
 CapsuleCollider:
   m_ObjectHideFlags: 0

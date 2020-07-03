@@ -174,15 +174,20 @@ namespace SpellEditor
             newBuffSpell.needNewPositionOnAttack = needNewPositionOnAttack.isOn;
             newBuffSpell.needNewPositionOnInterval = needNewPositionOnInterval.isOn;
             newBuffSpell.triggerInvocationCallOneTime = triggerInvocationCallOneTime.isOn;
+            
+            SpellComponent replaceProj = replaceProjectile.value != 0
+                ? ListCreatedElement.SpellComponents[
+                    replaceProjectile.options[replaceProjectile.value].text]
+                : null;
 
-            if (replaceProjectile.GetType() == typeof(ProjectileSpell))
+            if (replaceProj != null && replaceProj.GetType() == typeof(ProjectileSpell))
             {
-                newBuffSpell.replaceProjectile = replaceProjectile.value != 0
-                    ? (ProjectileSpell) ListCreatedElement.SpellComponents[
-                        replaceProjectile.options[replaceProjectile.value].text]
-                    : null;
+                newBuffSpell.replaceProjectile = replaceProj as ProjectileSpell;
             }
-
+            else
+            {
+                newBuffSpell.replaceProjectile = null;
+            }
 
             newBuffSpell.linkedSpellOnDamageReceived = linkedSpellOnDamageReceived.value != 0
                 ? ListCreatedElement.SpellComponents[

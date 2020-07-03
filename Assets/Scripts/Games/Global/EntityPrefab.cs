@@ -117,7 +117,7 @@ namespace Games.Global
         {
             BuffController.EntityAttack(entity, positionPointed);
             bool canAttack = false;
-            
+
             if (entity.basicAttack != null)
             {
                 if (entity.weapons.Count > 0)
@@ -126,7 +126,7 @@ namespace Games.Global
                     canAttack = weaponPrefab.BasicAttack(entity.basicAttack);    
                 }
 
-                if (canAttack)
+                if (canAttack || entity.weapons.Count == 0)
                 {
                     SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
                 }
@@ -306,6 +306,11 @@ namespace Games.Global
                 case TypeEntity.ALLIES:
                     foreach (Monster monster in DataObject.monsterInScene)
                     {
+                        if (!monster.entityPrefab)
+                        {
+                            continue;
+                        }
+
                         float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
                         if (newDist > minDistAggro)
                         {

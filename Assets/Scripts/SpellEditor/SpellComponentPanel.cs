@@ -270,6 +270,7 @@ namespace SpellEditor
             switch ((TypeSpell) typeSpell.value)
             {
                 case TypeSpell.Buff:
+                    Debug.Log(spellComponentSelected.GetType());
                     buffSpellPanel.FillCurrentPanel((BuffSpell) spellComponentSelected);
                     break;
                 case TypeSpell.Movement:
@@ -279,6 +280,7 @@ namespace SpellEditor
                     passivePanel.FillCurrentPanel((PassiveSpell) spellComponentSelected);
                     break;
                 case TypeSpell.Projectile:
+                    Debug.Log(spellComponentSelected.GetType());
                     projectilePanel.FillCurrentPanel((ProjectileSpell) spellComponentSelected);
                     break;
                 case TypeSpell.Summon:

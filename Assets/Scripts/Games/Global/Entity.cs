@@ -283,6 +283,7 @@ namespace Games.Global
 
         public virtual void ApplyDamage(float directDamage)
         {
+            Debug.Log("Damage applied = " + directDamage);
             hp -= directDamage;
             
             if (hp <= 0)

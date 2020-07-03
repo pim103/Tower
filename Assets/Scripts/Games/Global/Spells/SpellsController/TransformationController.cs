@@ -7,7 +7,7 @@ namespace Games.Global.Spells.SpellsController
 {
     public class TransformationController : MonoBehaviour, ISpellController
     {
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             TransformationSpell passiveSpell = Tools.Clone((TransformationSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayTransformationSpell(entity, passiveSpell));

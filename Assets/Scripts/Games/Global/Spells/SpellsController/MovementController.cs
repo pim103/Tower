@@ -6,7 +6,7 @@ namespace Games.Global.Spells.SpellsController
 {
     public class MovementController : MonoBehaviour, ISpellController
     {   
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             MovementSpell movementSpell = Tools.Clone((MovementSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayMovementSpell(entity, movementSpell));
@@ -17,7 +17,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (movementSpell.linkedSpellAtTheStart != null)
             {
-                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity);
+                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity, movementSpell);
             }
 
             if (movementSpell.movementSpellType == MovementSpellType.Tp || movementSpell.movementSpellType == MovementSpellType.TpWithTarget)
@@ -87,7 +87,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (movementSpell.linkedSpellAtTheEnd != null)
             {
-                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheEnd, entity.entityPrefab.transform.position);
+                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheEnd, entity.entityPrefab.transform.position, entity.entityPrefab.target, movementSpell);
             }
 
             if (movementSpell.currentCoroutine != null)

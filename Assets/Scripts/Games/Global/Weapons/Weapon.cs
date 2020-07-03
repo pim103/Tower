@@ -95,6 +95,7 @@ namespace Games.Global.Weapons
 
             if (spell != null)
             {
+                Debug.Log("init Basic Attack");
                 wielder.basicAttack = spell;
             }
         }

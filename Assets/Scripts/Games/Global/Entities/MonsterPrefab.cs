@@ -21,11 +21,13 @@ namespace Games.Global.Entities
             if (entity == null)
             {
                 monster = new Monster();
-
+                monster.def = 1;
+                
                 monster.SetMonsterPrefab(this);
                 monster.InitEntityList();
                 monster.weaponOriginalName = "Basic_Bow";
-                monster.BehaviorType = BehaviorType.Distance;
+                //TODO : change to monster
+                monster.BehaviorType = BehaviorType.Player;
                 monster.AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst;
                 
                 entity = monster;

@@ -54,16 +54,8 @@ namespace Games.Global
                 Effect effectInList = entityAffected.underEffects[effect.typeEffect];
                 effectInList.UpdateEffect(entityAffected, effect);
 
-                // Théoriquement inutile depuis que effect est une class et plus une struct
-//                entity.underEffects[effect.typeEffect] = effectInList;
                 return;
             }
-
-//            if (effect.durationInSeconds <= -0.9999)
-//            {
-//                entity.underEffects.Add(effect.typeEffect, effect);
-//                return;
-//            }
 
             StartCoroutineEffect(entityAffected, effect, origin, srcDamage);
         }
@@ -77,8 +69,6 @@ namespace Games.Global
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 
             cloneEffect.currentCoroutine = currentCoroutine;
-            // Théoriquement inutile depuis que effect est une class et plus une struct
-//            entity.underEffects[effect.typeEffect] = effect;
         }
 
         public static IEnumerator PlayEffectOnTime(Entity entity, Effect effect)

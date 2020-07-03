@@ -283,17 +283,17 @@ namespace Games.Players
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        SpellController.CastSpell(entity, entity.spells[0], transform.position, target);
+                        SpellController.CastSpell(entity, entity.spells[0], positionPointed, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
-                        SpellController.CastSpell(entity, entity.spells[1], transform.position, target);
+                        SpellController.CastSpell(entity, entity.spells[1], positionPointed, target);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
-                        SpellController.CastSpell(entity, entity.spells[2], transform.position, target);
+                        SpellController.CastSpell(entity, entity.spells[2], positionPointed, target);
                     }
                 }
             }
@@ -410,7 +410,7 @@ namespace Games.Players
 
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
-            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Spell")))
+            if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Player", "Spell", "Weapon")))
             {
                 positionPointed = hit.point;
 

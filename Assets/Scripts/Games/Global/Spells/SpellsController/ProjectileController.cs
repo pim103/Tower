@@ -11,7 +11,7 @@ namespace Games.Global.Spells.SpellsController
 {
     public class ProjectileController : MonoBehaviour, ISpellController
     {
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             ProjectileSpell newProjectileSpell = Tools.Clone((ProjectileSpell) spellComponent);
 
@@ -27,7 +27,7 @@ namespace Games.Global.Spells.SpellsController
             if (projectileSpell.linkedSpellOnEnable != null)
             {
                 SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnEnable,
-                    projectileSpell.startPosition, entity);
+                    projectileSpell.startPosition, entity, projectileSpell);
             }
 
             float duration = projectileSpell.duration;
@@ -166,7 +166,7 @@ namespace Games.Global.Spells.SpellsController
             if (projectileSpell.linkedSpellOnDisable != null)
             {
                 SpellController.CastSpellComponent(entity, projectileSpell.linkedSpellOnDisable,
-                    projectileSpell.objectPooled.transform.position, entity);
+                    projectileSpell.objectPooled.transform.position, entity, projectileSpell);
             }
 
             projectileSpell.objectPooled.transform.localScale = Vector3.one / 10;

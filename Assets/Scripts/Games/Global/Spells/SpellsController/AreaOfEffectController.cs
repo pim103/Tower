@@ -18,16 +18,16 @@ namespace Games.Global.Spells.SpellsController
     {
         private static Transform parent;
 
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             AreaOfEffectSpell areaOfEffectSpell = Tools.Clone((AreaOfEffectSpell) spellComponent);
-            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, areaOfEffectSpell));
+            Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayAreaSpell(entity, areaOfEffectSpell, origin));
             areaOfEffectSpell.currentCoroutine = currentCoroutine;
         }
 
-        private IEnumerator PlayAreaSpell(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
+        private IEnumerator PlayAreaSpell(Entity entity, AreaOfEffectSpell areaOfEffectSpell, SpellComponent origin = null)
         {
-            PoolAreaWithParameter(entity, areaOfEffectSpell);
+            PoolAreaWithParameter(entity, areaOfEffectSpell, origin);
 
             float duration = areaOfEffectSpell.duration;            
             yield return new WaitForSeconds(0.05f);
@@ -52,7 +52,7 @@ namespace Games.Global.Spells.SpellsController
             EndArea(entity, areaOfEffectSpell);
         }
 
-        private void PoolAreaWithParameter(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
+        private void PoolAreaWithParameter(Entity entity, AreaOfEffectSpell areaOfEffectSpell, SpellComponent origin = null)
         {
             areaOfEffectSpell.enemiesInZone = new List<Entity>();
             areaOfEffectSpell.alliesInZone = new List<Entity>();
@@ -81,6 +81,10 @@ namespace Games.Global.Spells.SpellsController
                 if (areaOfEffectSpell.OriginalPosition == OriginalPosition.Caster)
                 {
                     genericSpellPrefab.transform.parent = entity.entityPrefab.transform;
+                } else if (areaOfEffectSpell.OriginalPosition == OriginalPosition.PositionInParameter && origin != null && origin.GetType() == typeof(ProjectileSpell))
+                {
+                    ProjectileSpell proj = (ProjectileSpell) origin;
+                    genericSpellPrefab.transform.parent = proj.objectPooled.transform;
                 }
             }
 
@@ -372,7 +376,7 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
 
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position, enemy);
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnInterval, position, enemy, areaOfEffectSpell);
             }
 
             IntervalHitEnemies(entity, areaOfEffectSpell);
@@ -383,7 +387,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (areaOfEffectSpell.linkedSpellOnEnd != null)
             {
-                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition, entity);
+                SpellController.CastSpellComponent(entity, areaOfEffectSpell.linkedSpellOnEnd, areaOfEffectSpell.startPosition, entity, areaOfEffectSpell);
             }
 
             areaOfEffectSpell.objectPooled.transform.localScale = Vector3.one;

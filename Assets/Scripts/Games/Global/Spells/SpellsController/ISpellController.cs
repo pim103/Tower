@@ -2,6 +2,6 @@
 {
     public interface ISpellController
     {
-        void LaunchSpell(Entity entity, SpellComponent spellComponent);
+        void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null);
     }
 }

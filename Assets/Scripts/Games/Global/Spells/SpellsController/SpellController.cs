@@ -111,7 +111,7 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
-        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition, Entity target = null)
+        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition, Entity target = null, SpellComponent originSpell = null)
         {
             SetOriginalPosition(spellComponent, startPosition, entity, target);
 
@@ -139,6 +139,9 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Movement:
                     iSpellController = instance.movementController;
                     break;
+                case TypeSpell.Passive:
+                    iSpellController = instance.passiveController;
+                    break;
             }
 
             if (iSpellController == null)
@@ -146,7 +149,7 @@ namespace Games.Global.Spells.SpellsController
                 return;
             }
 
-            iSpellController.LaunchSpell(entity, spellComponent);
+            iSpellController.LaunchSpell(entity, spellComponent, originSpell);
         }
 
         public static IEnumerator StartCooldown(Entity entity, Spell spell)

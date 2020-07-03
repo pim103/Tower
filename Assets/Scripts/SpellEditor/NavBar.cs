@@ -159,7 +159,7 @@ namespace SpellEditor
             }
 
             ListCreatedElement.SpellComponents.Add(spellComponent.nameSpellComponent, spellComponent);
-
+            
             ParsePropertyInfo(spellComponent, spellComponent.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance));
         }
 
@@ -178,7 +178,7 @@ namespace SpellEditor
         private void ParsePropertyInfo(object origin, PropertyInfo[] propertyInfos)
         {
             foreach (PropertyInfo prop in propertyInfos)
-            {
+            {   
                 if (prop.PropertyType == typeof(Effect) || prop.PropertyType == typeof(List<Effect>))
                 {
                     if (prop.PropertyType == typeof(List<Effect>))

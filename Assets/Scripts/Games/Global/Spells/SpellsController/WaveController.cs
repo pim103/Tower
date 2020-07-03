@@ -7,7 +7,7 @@ namespace Games.Global.Spells.SpellsController
 {
     public class WaveController : MonoBehaviour, ISpellController
     {
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             WaveSpell waveSpell = Tools.Clone((WaveSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayWaveSpell(entity, waveSpell));

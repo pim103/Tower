@@ -10,7 +10,9 @@ namespace Games.Global.Spells.SpellsController
 {
     public class BuffController : MonoBehaviour, ISpellController
     {
-        public void LaunchSpell(Entity entity, SpellComponent spellComponent)
+        private SpellComponent originalBasicAttackComponent;
+        
+        public void LaunchSpell(Entity entity, SpellComponent spellComponent, SpellComponent origin = null)
         {
             BuffSpell buffSpell = Tools.Clone((BuffSpell) spellComponent);
             Coroutine currentCoroutine = SpellController.instance.StartCoroutine(PlayBuffSpell(entity, buffSpell));
@@ -24,8 +26,9 @@ namespace Games.Global.Spells.SpellsController
 
             while (duration > 0)
             {
-                if (entity.hasPassiveDeactivate && buffSpell.castByPassive)
+                if (!entity.hasPassiveDeactivate && buffSpell.castByPassive)
                 {
+                    yield return new WaitForSeconds(0.1f);
                     continue;
                 }
 
@@ -34,7 +37,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (buffSpell.linkedSpellOnInterval != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, entity.entityPrefab.transform.position, entity);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, entity.entityPrefab.transform.position, entity, buffSpell);
                 }
 
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
@@ -50,7 +53,7 @@ namespace Games.Global.Spells.SpellsController
                 EffectController.ApplyEffect(entity, buffSpell.effectOnSelfWhenNoCharge, entity, entity.entityPrefab.transform.position);
             }
 
-            EndBuff(entity, buffSpell);
+            EndBuff(entity, buffSpell, originalBasicAttackComponent);
         }
 
         private void CheckSpellWithCondition(Entity entity, List<SpellWithCondition> spellWithConditions)
@@ -89,6 +92,15 @@ namespace Games.Global.Spells.SpellsController
         private void InitialBuff(Entity entity, BuffSpell buffSpell)
         {
             entity.currentBuff.Add(buffSpell);
+
+            if (buffSpell.replaceProjectile != null)
+            {
+                originalBasicAttackComponent = entity.basicAttack.activeSpellComponent;
+                entity.basicAttack.activeSpellComponent = buffSpell.replaceProjectile;
+                
+                Debug.Log("Replace");
+                Debug.Log(buffSpell.replaceProjectile.nameSpellComponent);
+            }
 
             if (buffSpell.effectOnSelf != null)
             {
@@ -156,9 +168,15 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
-        public static void EndBuff(Entity entity, BuffSpell buffSpell)
+        public static void EndBuff(Entity entity, BuffSpell buffSpell, SpellComponent originalBasicAttackComponent = null)
         {
+            Debug.Log("End buff");
             entity.currentBuff.Remove(buffSpell);
+
+            if (buffSpell.replaceProjectile != null)
+            {
+                entity.basicAttack.activeSpellComponent = originalBasicAttackComponent;
+            }
 
             if (buffSpell.disapearOnDamageReceived && buffSpell.effectOnSelf != null)
             {
@@ -202,7 +220,7 @@ namespace Games.Global.Spells.SpellsController
                         position = entityTouch.entityPrefab.transform.position;
                     }
                     
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, position, entity);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, position, entity, buffSpell);
                 }
             }
         }
@@ -220,7 +238,7 @@ namespace Games.Global.Spells.SpellsController
                         position = entityOriginOfDamage.entityPrefab.transform.position;
                     }
 
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position, entity);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, position, entity, buffSpell);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
@@ -247,7 +265,7 @@ namespace Games.Global.Spells.SpellsController
                         position = positionPointed;
                     }
 
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, position, entity);
+                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, position, entity, buffSpell);
                 }
 
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnAttack)

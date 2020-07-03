@@ -26,7 +26,7 @@ namespace Games.Global.Spells
         public bool disapearOnDamageReceived { get; set; }
 
         public float damageOnSelf;
-        public ProjectileSpell replaceProjectile { get; set; }
+        public SpellComponent replaceProjectile { get; set; }
 
         public List<Effect> effectOnSelf { get; set; }
         public List<Effect> effectOnSelfOnDamageReceived { get; set; }
