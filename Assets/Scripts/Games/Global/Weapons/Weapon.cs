@@ -95,7 +95,6 @@ namespace Games.Global.Weapons
 
             if (spell != null)
             {
-                Debug.Log("init Basic Attack");
                 wielder.basicAttack = spell;
             }
         }
@@ -120,7 +119,6 @@ namespace Games.Global.Weapons
                     continue;
                 }
 
-                Debug.Log("Find spell");
                 wielder.spells.Add(spell);
                 if (weaponPrefab.GetWielder().isPlayer)
                 {

@@ -22,6 +22,7 @@ namespace Games.Global.Entities
             {
                 monster = new Monster();
                 monster.def = 1;
+                monster.initialDef = 1;
                 
                 monster.SetMonsterPrefab(this);
                 monster.InitEntityList();

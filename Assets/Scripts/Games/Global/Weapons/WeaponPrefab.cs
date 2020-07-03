@@ -31,7 +31,7 @@ namespace Games.Global.Weapons
             Animator animator = wielder.entityPrefab.animator;
             float initialSpeed = animator.speed;
 
-            animator.speed /= (wielder.attSpeed + weapon.attSpeed);
+            animator.speed *= (wielder.attSpeed + weapon.attSpeed);
             animator.Play(weapon.animationToPlay);
 
             weapon.FixAngleAttack(true, wielder);

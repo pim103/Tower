@@ -474,6 +474,7 @@ namespace Games.Global
                     entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp)
                         ? entity.physicalDef + entity.initialPhysicalDef
                         : entity.initialPhysicalDef;
+                    Debug.Log(entity.def);
                     break;
                 case TypeEffect.Confusion:
                     entity.isConfuse = false;

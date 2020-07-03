@@ -30,14 +30,14 @@ namespace Games.Global.Weapons
             mageSpells.Add("MageShortSword3");
 
             rangerSpells = new List<string>();
-            rangerSpells.Add("");
-            rangerSpells.Add("");
-            rangerSpells.Add("");
+            rangerSpells.Add("RangerShortSword1");
+            rangerSpells.Add("RangerShortSword2");
+            rangerSpells.Add("RangerShortSword3");
 
             rogueSpells = new List<string>();
-            rogueSpells.Add("");
-            rogueSpells.Add("");
-            rogueSpells.Add("");
+            rogueSpells.Add("RogueShortSword1");
+            rogueSpells.Add("RogueShortSword2");
+            rogueSpells.Add("RogueShortSword3");
         }
     }
 }
