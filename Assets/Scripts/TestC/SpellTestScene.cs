@@ -37,7 +37,7 @@ namespace TestC
             classe.classe = Classes.Warrior;
 
             Identity weapon = new Identity();
-            weapon.categoryWeapon = CategoryWeapon.SHORT_SWORD;
+            weapon.categoryWeapon = CategoryWeapon.STAFF;
 
             ChooseDeckAndClasse.currentRoleIdentity = classe;
             ChooseDeckAndClasse.currentWeaponIdentity = weapon;

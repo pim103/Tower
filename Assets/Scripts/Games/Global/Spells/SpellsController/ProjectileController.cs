@@ -81,8 +81,8 @@ namespace Games.Global.Spells.SpellsController
                                 entity.isBlind ||
                                 enemy.isUntargeatable ||
                                 enemy.hasDivineShield;
-
-            Weapon weapon = entity.weapons[0];
+            
+            Weapon weapon = entity.weapons != null && entity.weapons.Count > 0 ? entity.weapons[0] : null;
 
             if (weapon != null)
             {

@@ -176,10 +176,8 @@ namespace Games.Global
         // Take true damage is usefull with effect pierce
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
         {
-            Debug.Log(initialDamage);
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
-            Debug.Log(damageReceived);
             Entity originDamage = abilityParameters.origin;
 
             bool isMagic = damageType == DamageType.Magical;

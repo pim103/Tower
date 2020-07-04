@@ -75,6 +75,7 @@ namespace Games.Global
         {
             // Théoriquement inutile depuis que effect est une class et plus une struct
 //            Effect effectInList = entity.underEffects[effect.typeEffect];
+            Debug.Log("Start couroutine for " + entity.entityPrefab.name + " with type effect : " + effect.typeEffect);
 
             effect.InitialTrigger(entity);
 
@@ -112,6 +113,7 @@ namespace Games.Global
 
         public static void StopCurrentEffect(Entity entity, Effect effect)
         {
+            Debug.Log("Stop couroutine for " + entity.entityPrefab.name + " for type effect : " + effect.typeEffect);
             if (effect.currentCoroutine != null)
             {
                 EffectControllerInstance.StopCoroutine(effect.currentCoroutine);

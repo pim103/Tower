@@ -44,7 +44,7 @@ namespace Games.Global.Spells.SpellsController
                 return false;
             }
 
-            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack))
+            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack && entity.weapons.Count > 0))
             {
                 if (spell.nbUse > 0)
                 {
