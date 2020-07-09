@@ -32,12 +32,16 @@ namespace Menus
 
         private Dictionary<string, GameObject> listPlayerCase;
         private Dictionary<string, bool> listPlayerIsReady;
+        private CallbackMessages callbackHandlers;
         
         private IEnumerator WaitingForCanStart()
         {
             while (canStart == null)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(2f);
+                Debug.Log("Waiting");
+                TowersWebSocket.TowerSender("ONLY_ONE", NetworkingController.CurrentRoomToken,"null", "getRankedMatch", "null");
+                yield return new WaitForSeconds(5f);
             }
             transitionMenuGame.InitGame();
         }
@@ -50,8 +54,29 @@ namespace Menus
             var setSocket = new Dictionary<string, string>();
             setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
             setSocket.Add("room", NetworkingController.CurrentRoomToken);
-
-            TowersWebSocket.TowerSender("ALL", "GENERAL","null", "joinRoom", TowersWebSocket.FromDictToString(setSocket));
+            TowersWebSocket.TowerSender("SELF", "GENERAL","null", "joinWaitingRanked", TowersWebSocket.FromDictToString(setSocket));
+            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
+            {
+                if (args.Data.Contains("callbackMessages"))
+                {
+                    Debug.Log("Test");
+                    callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
+                    foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
+                    {
+                        if (callback.Message == "WaitingForRanked")
+                        {
+                            Debug.Log(callback.Message);
+                        }
+                        if (callback.Message == "MatchStart")
+                        {
+                            Debug.Log("Done!");
+                            canStart = args.Data;
+                        }
+                    }
+                }
+            };
+            /*
+            
             TowersWebSocket.wsGame.OnMessage += (sender, args) =>
             {
                 if (args.Data == "{\"CanStartHandler\":[{\"message\":\"true\"}]}")
@@ -59,7 +84,7 @@ namespace Menus
                     Debug.Log("Done!");
                     canStart = args.Data;
                 }
-            };
+            };*/
             StartCoroutine(WaitingForCanStart());
         }
 
