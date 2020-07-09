@@ -60,7 +60,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(ChooseDeckAndClasse.currentRoleIdentity.classe);
+            player.InitPlayerStats(ChooseDeckAndClass.currentRoleIdentity.classe);
 
             wantToGoBack = false;
             wantToGoForward = false;

@@ -39,8 +39,8 @@ namespace TestC
             Identity weapon = new Identity();
             weapon.categoryWeapon = CategoryWeapon.STAFF;
 
-            ChooseDeckAndClasse.currentRoleIdentity = classe;
-            ChooseDeckAndClasse.currentWeaponIdentity = weapon;
+            ChooseDeckAndClass.currentRoleIdentity = classe;
+            ChooseDeckAndClass.currentWeaponIdentity = weapon;
 
             StartCoroutine(Waiting());
 

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using DeckBuilding;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
+using Games.Transitions;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
+using Random = UnityEngine.Random;
 
 namespace Games.Defenses
 {
@@ -45,10 +49,12 @@ namespace Games.Defenses
         
         [SerializeField] 
         private GameObject[] equipementCardContainers;
+        private List<Card> cardsInMonsterDeck;
+        private List<Card> cardsInEquipmentDeck;
         private void Start()
         {
             wallButton.onClick.AddListener(PutWallInHand);
-
+            
             foreach (var button in trapButtons)
             {
                 button.transform.GetChild(0).GetComponent<Text>().text =
@@ -65,6 +71,16 @@ namespace Games.Defenses
             currentWallNumber = initDefense.currentMapStats.wallNumber;
             currentWallType = initDefense.currentMapStats.wallType;
             wallButtonText.text = "Mur x" + currentWallNumber;
+
+            if (cardsInMonsterDeck == null)
+            {
+                FetchMonsterDeckList(ChooseDeckAndClass.monsterDeckId);
+            }
+
+            if (cardsInEquipmentDeck == null)
+            {
+                FetchEquipmentDeckList(ChooseDeckAndClass.equipmentDeckId);
+            }
             
             DrawCards();
         }
@@ -118,26 +134,85 @@ namespace Games.Defenses
         {
             foreach (var cardContainer in mobCardContainers)
             {
-                if (cardContainer.transform.childCount == 0)
+                if (cardContainer.transform.childCount == 0 && cardsInMonsterDeck.Count>0)
                 {
-                    InitCard(cardContainer, 0);
+                    Card selectedCard = cardsInMonsterDeck[Random.Range(0, cardsInMonsterDeck.Count-1)];
+                    InitCard(cardContainer, 0, selectedCard);
+                    selectedCard.copies--;
+                    if (selectedCard.copies < 1)
+                    {
+                        cardsInMonsterDeck.Remove(selectedCard);
+                    }
                 }
             }
             foreach (var cardContainer in equipementCardContainers)
             {
-                if (cardContainer.transform.childCount == 0)
+                if (cardContainer.transform.childCount == 0 && cardsInEquipmentDeck.Count>0)
                 {
-                    InitCard(cardContainer, 1);
+                    Card selectedCard = cardsInEquipmentDeck[Random.Range(0, cardsInEquipmentDeck.Count-1)];
+                    InitCard(cardContainer, 1, selectedCard);
+                    selectedCard.copies--;
+                    if (selectedCard.copies < 1)
+                    {
+                        cardsInEquipmentDeck.Remove(selectedCard);
+                    }
                 }
             }
         }
 
-        private void InitCard(GameObject cardContainer, int type)
+        private void InitCard(GameObject cardContainer, int type, Card cardStats)
         {
             GameObject card = Instantiate(cardPrefab, cardContainer.transform, true);
             card.transform.localPosition = new Vector3(0,0,0);
             card.transform.localEulerAngles = new Vector3(0,0,0);
-            card.GetComponent<CardBehaviorInGame>().SetCard(type);
+            Debug.Log(cardStats.id);
+            card.GetComponent<CardBehaviorInGame>().SetCard(type,cardStats.id);
+        }
+        
+        private void FetchMonsterDeckList(int deckId)
+        {
+            cardsInMonsterDeck = new List<Card>();
+
+            List<DeckListJsonObject> dJsonObjects = new List<DeckListJsonObject>();
+
+            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckListJson"))
+            {
+                StreamReader reader = new StreamReader(filePath, true);
+        
+                dJsonObjects.AddRange(ParserJson<DeckListJsonObject>.Parse(reader, "cards"));
+            }
+
+            foreach (DeckListJsonObject deckJson in dJsonObjects)
+            {
+                Card loadedCard = deckJson.ConvertToCard();
+                if (loadedCard.deckId == deckId)
+                {
+                    cardsInMonsterDeck.Add(loadedCard);
+                }
+            }
+        }
+        
+        private void FetchEquipmentDeckList(int deckId)
+        {
+            cardsInEquipmentDeck = new List<Card>();
+
+            List<DeckListJsonObject> dJsonObjects = new List<DeckListJsonObject>();
+
+            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckListJson"))
+            {
+                StreamReader reader = new StreamReader(filePath, true);
+        
+                dJsonObjects.AddRange(ParserJson<DeckListJsonObject>.Parse(reader, "cards"));
+            }
+
+            foreach (DeckListJsonObject deckJson in dJsonObjects)
+            {
+                Card loadedCard = deckJson.ConvertToCard();
+                if (loadedCard.deckId == deckId)
+                {
+                    cardsInEquipmentDeck.Add(loadedCard);
+                }
+            }
         }
         
     }

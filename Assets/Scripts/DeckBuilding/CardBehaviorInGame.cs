@@ -57,13 +57,13 @@ namespace DeckBuilding
             //SetCard();
         }
 
-        public void SetCard(int type)
+        public void SetCard(int type, int id)
         {
             ownCardContainer = transform.parent;
             cardType = type;
             if (type == 0)
             {
-                group = DataObject.MonsterList.GetGroupsMonsterById(1);
+                group = DataObject.MonsterList.GetGroupsMonsterById(id);
                 nameText.text = group.name;
                 costText.text = group.cost + " RP";
                 effectText.text = "effet";
@@ -73,7 +73,7 @@ namespace DeckBuilding
             }
             else if(type == 1)
             {
-                equipement = DataObject.WeaponList.GetWeaponWithId(3);
+                equipement = DataObject.WeaponList.GetWeaponWithId(id);
                 nameText.text = equipement.modelName;
                 costText.text = equipement.cost+" RP";
                 effectText.text = "effet";

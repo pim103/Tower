@@ -87,6 +87,8 @@ namespace Menus
                         new Vector3(750, currentPosition.y - 15 * currentCount - 1, 0);
                     CardInDeckButtonExposer currentButtonExposer =
                         currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
+                    Debug.Log(card.id);
+                    Debug.Log(DataObject.MonsterList);
                     GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(card.id);
                     currentButtonExposer.name.text = group.name;
                     currentButtonExposer.copies.text = "X" + card.copies;

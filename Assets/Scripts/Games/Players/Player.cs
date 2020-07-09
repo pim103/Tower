@@ -143,7 +143,7 @@ namespace Games.Players
             initialRessource2 = ressource2;
 
             InitEntityList();
-            int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClasse.currentWeaponIdentity.categoryWeapon);
+            int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
             InitWeapon(idWeapon);
 
             SpellController.CastPassiveSpell(this);
