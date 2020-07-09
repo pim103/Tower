@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -185,11 +185,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MenuUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 63351540213862538, guid: 07e96533e067dbb4f8ca310ec0bb6fbf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 63351540213862536, guid: 07e96533e067dbb4f8ca310ec0bb6fbf,
         type: 3}
@@ -564,11 +559,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1759749552}
-    - target: {fileID: 8408910722702543922, guid: 07e96533e067dbb4f8ca310ec0bb6fbf,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4295832079098623668, guid: 07e96533e067dbb4f8ca310ec0bb6fbf,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -838,60 +828,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1759749552}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.data[1]
-      value: 
-      objectReference: {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.data[2]
-      value: 
-      objectReference: {fileID: 8521370539132226987, guid: 5ba9999810b233e4cba2d341be1aa941,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.data[3]
-      value: 
-      objectReference: {fileID: 8521370539132226987, guid: 54c068c21b1ae344da8ac746ebb00b59,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.data[4]
-      value: 
-      objectReference: {fileID: 8521370539132226987, guid: b3abb1d7114b17c41ab6326bd8358c37,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: monsterGameObjects.Array.data[0]
-      value: 
-      objectReference: {fileID: 8521370539132226987, guid: f9256e254adea044dbc66ef4b04350a8,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: weaponsGameObject.Array.data[0]
-      value: 
-      objectReference: {fileID: 119217643592156107, guid: e9ead973063a0f146a1404bec6f0278a,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: weaponsGameObject.Array.data[1]
-      value: 
-      objectReference: {fileID: 7020508739117811708, guid: fb4ac55509956024a90d5c4c4bd5d31b,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: weaponsGameObject.Array.data[2]
-      value: 
-      objectReference: {fileID: 8179942023738884125, guid: 7f3b9f80817e3bc4d94ef3e458f33696,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: weaponsGameObject.Array.data[3]
-      value: 
-      objectReference: {fileID: 9160184416435336024, guid: 00d328ec7d61dab47a4ec94623b2f078,
-        type: 3}
-    - target: {fileID: 2138162986, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
-      propertyPath: weaponsGameObject.Array.data[4]
-      value: 
-      objectReference: {fileID: 3304400958822842756, guid: 7051899b05b3db3478e31e60a2af352a,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07e96533e067dbb4f8ca310ec0bb6fbf, type: 3}
 --- !u!224 &441963733 stripped
