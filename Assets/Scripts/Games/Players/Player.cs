@@ -27,7 +27,7 @@ namespace Games.Players
         public ChestplateArmor chestplateArmor { get; set; }
         public LeggingsArmor leggingsArmor { get; set; }
 
-        private PlayerPrefab playerPrefab { get; set; }
+        private PlayerPrefab playerPrefab;
 
         public Classes mainClass { get; set; }
 

@@ -91,9 +91,9 @@ namespace SpellEditor
 
             SpellWithCondition newSpellWithCondition = new SpellWithCondition
             {
-                effect = effect.value != 0 ? ListCreatedElement.Effects[effect.options[effect.value].text] : new Effect(),
+                effect = effect.value != 0 ? ListCreatedElement.Effects[effect.options[effect.value].text] : null,
                 spellComponent = spellComponent.value != 0 ? ListCreatedElement.SpellComponents[spellComponent.options[spellComponent.value].text] : null,
-                conditionEffect = effectCondition.value != 0 ? ListCreatedElement.Effects[effectCondition.options[effectCondition.value].text] : new Effect(),
+                conditionEffect = effectCondition.value != 0 ? ListCreatedElement.Effects[effectCondition.options[effectCondition.value].text] : null,
                 instructionTargeting = (InstructionTargeting) instructionTargeting.value,
                 conditionType = (ConditionType) conditionType.value,
                 level = level.text == "" ? 0 : Int32.Parse(level.text),

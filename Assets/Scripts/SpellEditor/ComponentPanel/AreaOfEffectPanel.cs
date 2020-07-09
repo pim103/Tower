@@ -174,7 +174,7 @@ namespace SpellEditor.ComponentPanel
                     : null,
                 effectOnHitOnStart = effectOnHitOnStart.value != 0
                     ? ListCreatedElement.Effects[effectOnHitOnStart.options[effectOnHitOnStart.value].text]
-                    : new Effect(),
+                    : null,
                 effectsOnAlliesOnInterval = effectsOnAlliesOnIntervalList,
                 effectsOnEnemiesOnInterval = effectsOnEnemiesOnIntervalList,
                 effectsOnPlayerOnInterval = effectsOnPlayerOnIntervalList,

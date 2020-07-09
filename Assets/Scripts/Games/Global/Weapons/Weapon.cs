@@ -40,7 +40,7 @@ namespace Games.Global.Weapons
 
     public class Weapon : Equipement
     {
-        public WeaponPrefab weaponPrefab { get; set; }
+        public WeaponPrefab weaponPrefab;
         
         public string equipementName { get; set; }
         public CategoryWeapon category { get; set; }
@@ -66,6 +66,7 @@ namespace Games.Global.Weapons
                     InitWeaponSpellWithJson(warriorSpells);
                     break;
                 case Classes.Mage:
+                    Debug.Log("ok");
                     InitWeaponSpellWithJson(mageSpells);
                     break;
                 case Classes.Rogue:

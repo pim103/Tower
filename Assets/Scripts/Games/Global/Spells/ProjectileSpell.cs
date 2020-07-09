@@ -29,7 +29,7 @@ namespace Games.Global.Spells
         public SpellComponent linkedSpellOnDisable { get; set; }
 
         /* Useless for instantiation of spell */
-        public GameObject objectPooled { get; set; }
-        public GameObject prefabPooled { get; set; }
+        public GameObject objectPooled;
+        public GameObject prefabPooled;
     }
 }

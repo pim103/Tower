@@ -91,10 +91,10 @@ namespace Games.Global
         public int level { get; set; }
         public float durationInSeconds { get; set; }
 
-        public Entity launcher { get; set; }
+        public Entity launcher;
         public float ressourceCost { get; set; }
 
-        public Coroutine currentCoroutine { get; set; }
+        public Coroutine currentCoroutine;
 
         // direction use for effect expulsion
 //        public Vector3 direction;

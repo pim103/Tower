@@ -76,6 +76,7 @@ namespace SpellEditor
                 directionExpul = (DirectionExpulsion) directionDropdown.value,
                 level = Int32.Parse(level.text),
                 durationInSeconds = float.Parse(duration.text),
+                launcher = null,
             };
         
             if (effectSelector.value != 0)
@@ -83,7 +84,11 @@ namespace SpellEditor
                 Debug.Log("WARNING - ERASE DATA");
                 string effectChoose = effectSelector.options[effectSelector.value].text;
 
-                NavBar.ModifyExistingComponent(ListCreatedElement.Effects[effectChoose], newEffect);
+                // Launcher was init when testing spell - This case was fix but old spell contain data of launcher
+                // For time gain, we set to null the launcher of original spell here
+                Effect originalEffect = ListCreatedElement.Effects[effectChoose];
+                originalEffect.launcher = null;
+                NavBar.ModifyExistingComponent(originalEffect, newEffect);
             }
             else
             {

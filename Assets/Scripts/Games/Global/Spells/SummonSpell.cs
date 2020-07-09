@@ -39,6 +39,6 @@ namespace Games.Global.Spells
         public SpellComponent spellWhenPlayerCall { get; set; }
 
         /* useless for initialisation of spell */
-        public List<GenericSummonSpell> prefabsSummon { get; set; }
+        public List<GenericSummonSpell> prefabsSummon;
     }
 }

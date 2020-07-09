@@ -49,6 +49,6 @@ namespace Games.Global.Spells
         /* Useless for initialisation of spell */
         public List<Entity> enemiesInZone { get; set; }
         public List<Entity> alliesInZone { get; set; }
-        public GameObject objectPooled { get; set; }
+        public GameObject objectPooled;
     }
 }

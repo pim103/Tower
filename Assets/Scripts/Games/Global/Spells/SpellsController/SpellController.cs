@@ -144,7 +144,6 @@ namespace Games.Global.Spells.SpellsController
                     iSpellController = instance.areaOfEffectController;
                     break;
                 case TypeSpell.Movement:
-                    Debug.Log("In movement");
                     iSpellController = instance.movementController;
                     break;
                 case TypeSpell.Passive:

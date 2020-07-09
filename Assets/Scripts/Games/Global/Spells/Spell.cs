@@ -43,7 +43,7 @@ namespace Games.Global.Spells
         public TypeSpell typeSpell { get; set; }
         public DamageType damageType { get; set; }
 
-        public Coroutine currentCoroutine { get; set; }
+        public Coroutine currentCoroutine;
 
         public OriginalPosition OriginalPosition { get; set; }
         public OriginalDirection OriginalDirection { get; set; }

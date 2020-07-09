@@ -62,9 +62,9 @@ namespace Games.Global
 
         public static void StartCoroutineEffect(Entity entity, Effect effect, Entity origin, Vector3 srcDamage)
         {
-            effect.launcher = origin;
-            effect.positionSrcDamage = srcDamage;
             Effect cloneEffect = Tools.Clone(effect);
+            cloneEffect.launcher = origin;
+            cloneEffect.positionSrcDamage = srcDamage;
             entity.underEffects.Add(effect.typeEffect, cloneEffect);
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 

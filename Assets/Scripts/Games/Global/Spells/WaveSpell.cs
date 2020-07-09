@@ -22,6 +22,6 @@ namespace Games.Global.Spells
         public float speedPropagation { get; set; }
 
         /* Useless for instantiation of spell */
-        public GameObject objectPooled { get; set; }
+        public GameObject objectPooled;
     }
 }

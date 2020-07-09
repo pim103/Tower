@@ -18,7 +18,7 @@ namespace Games.Global.Entities
 
         public TypeWeapon constraint { get; set; }
 
-        private MonsterPrefab monsterPrefab { get; set; }
+        private MonsterPrefab monsterPrefab;
 
         public override void BasicAttack()
         {

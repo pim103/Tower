@@ -105,7 +105,7 @@ namespace Games.Global
         public List<BuffSpell> currentBuff { get; set; }
         public List<Entity> entityInRange { get; set; }
 
-        public EntityPrefab entityPrefab { get; set; }
+        public EntityPrefab entityPrefab;
 
         public Spell basicAttack { get; set; }
         public Spell basicDefense { get; set; }

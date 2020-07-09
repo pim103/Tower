@@ -205,7 +205,7 @@ namespace SpellEditor
             newBuffSpell.conditionReduceCharge = (ConditionReduceCharge) conditionReduceCharge.value;
             newBuffSpell.effectOnSelfWhenNoCharge = effectOnSelfWhenNoCharge.value != 0
                 ? ListCreatedElement.Effects[effectOnSelfWhenNoCharge.options[effectOnSelfWhenNoCharge.value].text]
-                : new Effect();
+                : null;
             newBuffSpell.newPlayerBehaviour = (BehaviorType) behaviorType.value;
             newBuffSpell.effectOnSelf = effectsOnSelfList;
             newBuffSpell.effectOnSelfOnDamageReceived = effectsOnSelfOnDamageReceived;

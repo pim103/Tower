@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -100,6 +101,29 @@ namespace SpellEditor
             }
         }
 
+        private IEnumerator FixSpell()
+        {
+            string path = Application.dataPath + "/Data/SpellsJson/";
+            string[] files = Directory.GetFiles(path);
+            int index = 0;
+
+            while (index < files.Length)
+            {
+                if (files[index].EndsWith(".meta"))
+                {
+                    index++;
+                    continue;
+                }
+
+                Debug.Log("Try import file " + files[index]);
+
+                yield return new WaitForSeconds(0.5f);
+
+                SpellFix.TryImportSpell(files[index]);
+                index++;
+            }
+        }
+
         private void ExportSpells()
         {
             foreach (KeyValuePair<string, Spell> valuePair in ListCreatedElement.Spell)
@@ -141,7 +165,7 @@ namespace SpellEditor
             {
                 if (spell != null)
                 {
-                    Debug.Log(spell.nameSpell + " already exist");
+                    Debug.Log(spell.nameSpell + " already exist (spell)");
                 }
                 return;
             }
@@ -155,6 +179,10 @@ namespace SpellEditor
         {
             if (spellComponent == null || ListCreatedElement.SpellComponents.ContainsKey(spellComponent.nameSpellComponent))
             {
+                if (spellComponent != null)
+                {
+                    Debug.Log(spellComponent.nameSpellComponent + " already exist (spellComponent)");
+                }
                 return;
             }
 
@@ -167,6 +195,10 @@ namespace SpellEditor
         {
             if (spellWithCondition == null || ListCreatedElement.SpellWithCondition.ContainsKey(spellWithCondition.nameSpellWithCondition))
             {
+                if (spellWithCondition != null)
+                {
+                    Debug.Log(spellWithCondition.nameSpellWithCondition + " already exist (Spell with condition)");
+                }
                 return;
             }
 
@@ -206,7 +238,7 @@ namespace SpellEditor
                     else
                     {
                         Effect effectProp = (Effect) prop.GetValue(origin);
-                        if (effectProp == null || effectProp.nameEffect == null)
+                        if (effectProp?.nameEffect == null)
                         {
                             continue;
                         }
@@ -214,6 +246,10 @@ namespace SpellEditor
                         if (!ListCreatedElement.Effects.ContainsKey(effectProp.nameEffect))
                         {
                             ListCreatedElement.Effects.Add(effectProp.nameEffect, effectProp);
+                        }
+                        else
+                        {
+                            Debug.Log(effectProp.nameEffect + " already exist (effect)");
                         }
                     }
                 } else if (prop.PropertyType == typeof(Spell) || prop.PropertyType == typeof(List<Spell>))
