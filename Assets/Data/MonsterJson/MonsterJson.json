@@ -5,25 +5,25 @@
 			"cost": 10,
 			"id": 1,
 			"radius": 2,
-			"groupName": "myFirstGroup",
+			"groupName": "Archer Squelette",
             "monster":{
 				"idMonster": 1,
 				"constraint": 0,
 				"name": "Basic Monster",
 				"number": 2,
-                "hp": 200,
+                "hp": 20,
 				"def": 2,
-				"att": 2,
+				"att": 3,
 				"speed": 1,
 				"nbWeapon": 1,
-				"att_speed": 0,
+				"att_speed": 1,
 				"skills": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
 				"on_damage_dealt": "Outch",
 				"on_damage_receive": "Aie",
-				"model": "SkeletonMonster",
+				"model": "SkeletonBow",
 				"weapon": "Basic_Bow"
             }
         },
@@ -32,25 +32,25 @@
 			"cost": 10,
 			"id": 2,
 			"radius": 2,
-			"groupName": "mySecondGroup",
+			"groupName": "Squelette Berserker",
             "monster":{
 				"idMonster": 1,
 				"constraint": 1,
 				"name": "Basic Monster",
-				"number": 4,
-                "hp": 20,
+				"number": 2,
+                "hp": 30,
 				"def": 2,
-				"att": 2,
+				"att": 5,
 				"speed": 1,
 				"nbWeapon": 1,
-				"att_speed": 1,
+				"att_speed": 2,
 				"skills": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
 				"on_damage_dealt": "Outch",
 				"on_damage_receive": "Aie",
-				"model": "SkeletonMonster",
+				"model": "SkeletonBerserker",
 				"weapon": "Basic_Sword"
             }
         },
@@ -59,15 +59,15 @@
 			"cost": 10,
 			"id": 3,
 			"radius": 2,
-			"groupName": "myThirdGroup",
+			"groupName": "Lancier Squelette",
             "monster":{
 				"idMonster": 1,
 				"constraint": 1,
 				"name": "Basic Monster",
 				"number": 4,
-                "hp": 20,
-				"def": 2,
-				"att": 2,
+                "hp": 40,
+				"def": 7,
+				"att": 3,
 				"speed": 1,
 				"nbWeapon": 1,
 				"att_speed": 1,
@@ -77,8 +77,8 @@
 				],
 				"on_damage_dealt": "Outch",
 				"on_damage_receive": "Aie",
-				"model": "SkeletonMonster",
-				"weapon": "Basic_Sword"
+				"model": "SkeletonSpear",
+				"weapon": "Basic_Spear"
             }
         },
 		{
@@ -86,15 +86,15 @@
 			"cost": 10,
 			"id": 4,
 			"radius": 2,
-			"groupName": "myFourthGroup",
+			"groupName": "Squelette Mage",
             "monster":{
 				"idMonster": 1,
 				"constraint": 1,
 				"name": "Basic Monster",
 				"number": 4,
-                "hp": 20,
-				"def": 2,
-				"att": 2,
+                "hp": 15,
+				"def": 1,
+				"att": 3,
 				"speed": 1,
 				"nbWeapon": 1,
 				"att_speed": 1,
@@ -104,8 +104,8 @@
 				],
 				"on_damage_dealt": "Outch",
 				"on_damage_receive": "Aie",
-				"model": "SkeletonMonster",
-				"weapon": "Basic_Sword"
+				"model": "SkeletonMage",
+				"weapon": "Basic_Staff"
             }
         },
 		{
@@ -113,26 +113,26 @@
 			"cost": 10,
 			"id": 5,
 			"radius": 2,
-			"groupName": "myFifthGroup",
+			"groupName": "Assassin Squelette",
             "monster":{
 				"idMonster": 1,
 				"constraint": 1,
 				"name": "Basic Monster",
-				"number": 4,
-                "hp": 20,
-				"def": 2,
-				"att": 2,
-				"speed": 1,
+				"number": 1,
+                "hp": 25,
+				"def": 1,
+				"att": 8,
+				"speed": 2,
 				"nbWeapon": 1,
-				"att_speed": 1,
+				"att_speed": 3,
 				"skills": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
 				"on_damage_dealt": "Outch",
 				"on_damage_receive": "Aie",
-				"model": "SkeletonMonster",
-				"weapon": "Basic_Sword"
+				"model": "SkeletonAssassin",
+				"weapon": "Basic_Dagger"
             }
         }
     ]
