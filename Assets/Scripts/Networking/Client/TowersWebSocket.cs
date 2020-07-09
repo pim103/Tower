@@ -89,6 +89,15 @@ namespace Networking.Client
             
             return fromDict.TrimEnd(',', ' ') + "}]";
         }
+        public static string FromDictToString(Dictionary<string, int> dict)
+        {
+            string fromDict = "[{";
+            foreach(KeyValuePair <string, int> keyValues in dict) {  
+                fromDict += "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";  
+            }
+            
+            return fromDict.TrimEnd(',', ' ') + "}]";
+        }
 
         public static void StartConnection()
         {
@@ -106,5 +115,7 @@ namespace Networking.Client
             Debug.Log("Websocket Close!");
             wsGame.Close();
         }
+
+        
     }
 }
