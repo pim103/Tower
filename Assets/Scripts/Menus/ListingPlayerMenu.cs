@@ -59,17 +59,17 @@ namespace Menus
             {
                 if (args.Data.Contains("callbackMessages"))
                 {
-                    Debug.Log("Test");
+                    //Debug.Log("Test");
                     callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
                     foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
                     {
                         if (callback.Message == "WaitingForRanked")
                         {
-                            Debug.Log(callback.Message);
+                            //Debug.Log(callback.Message);
                         }
                         if (callback.Message == "MatchStart")
                         {
-                            Debug.Log("Done!");
+                            //Debug.Log("Done!");
                             canStart = args.Data;
                         }
                     }
