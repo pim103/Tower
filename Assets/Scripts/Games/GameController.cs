@@ -31,6 +31,7 @@ namespace Games {
         private bool idAssigned = false;
 
         private bool otherPlayerDie = false;
+        private CallbackMessages callbackHandlers;
 
         /*
          * Flag to skip defensePhase
@@ -67,11 +68,22 @@ namespace Games {
             
             // TODO : change index
             PlayerIndex = 0;
-
             if (TowersWebSocket.wsGame != null)
             {
                 TowersWebSocket.wsGame.OnMessage += (sender, args) =>
                 {
+                    if (args.Data.Contains("callbackMessages"))
+                    {
+                        Debug.Log("callbackMessages_Debug");
+                        callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
+                        /*foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
+                        {
+                            if (callback.Identity != null)
+                            {
+                                Debug.Log(callback.Identity);
+                            }
+                        }*/
+                    }
                     if (args.Data.Contains("GRID"))
                     {
                         mapReceived = args.Data;

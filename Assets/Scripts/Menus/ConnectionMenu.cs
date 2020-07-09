@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using FullSerializer;
 using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Utils;
 
 namespace Menus
 {
@@ -30,6 +33,7 @@ namespace Menus
         [SerializeField]
         private Button quitButton;
         public string[] httpResponse;
+        private CallbackMessages callbackHandlers;
 
         private void Start()
         {
@@ -90,6 +94,7 @@ namespace Menus
                 yield return new WaitForSeconds(0.5f);
                 TowersWebSocket.InitializeWebsocketEndpoint();
                 TowersWebSocket.StartConnection();
+                
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
             }
             else if (www.responseCode == 406)

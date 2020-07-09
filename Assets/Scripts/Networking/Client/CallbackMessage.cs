@@ -1,65 +1,29 @@
 using System;
-using Games.Transitions;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Utils;
 
 namespace Networking.Client
 {
     [Serializable]
     public class CallbackMessages
     {
-        public CallbackMessage[] callbackMessages;
+        public CallbackMessage callbackMessages { get; set; }
     }
     
     [Serializable]
     public class CallbackMessage
     {
-        public string message;
-        public CallbackIdentity identity;
-
-        public CallbackMessage(string message)
-        {
-            this.message = message;
-        }
-        public CallbackMessage(CallbackIdentity identity)
-        {
-            this.identity = identity;
-        }
-        public string Message
-        {
-            get => message;
-            set => message = value;
-        }
+        public string message { get; set; } = null;
+        public CallbackIdentity identity { get; set; } = null;
+        public string room { get; set; } = null;
         
-        public CallbackIdentity Identity
-        {
-            get => identity;
-            set => identity = value;
-        }
     }
     
     [Serializable]
     public class CallbackIdentity
     {
-        public int classes;
-        public int weapon;
-        
-        public CallbackIdentity(int classes, int weapon)
-        {
-            this.classes = classes;
-            this.weapon = weapon;
-        }
+        public int classes { get; set; } = -1;
+        public int weapon { get; set; } = -1;
 
-        public int Classes
-        {
-            get => classes;
-            set => classes = value;
-        }
-
-        public int Weapon
-        {
-            get => weapon;
-            set => weapon = value;
-        }
     }
 }
