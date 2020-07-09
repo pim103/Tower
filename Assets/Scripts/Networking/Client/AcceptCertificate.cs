@@ -12,7 +12,7 @@ namespace Networking.Client
             X509Certificate2 certificate = new X509Certificate2(certificateData);
             string pk = certificate.GetPublicKeyString();
             //Debug.Log(pk);
-            if (pk.ToLower().Equals(NetworkingController.PublicKey.ToLower()))
+            if (pk != null)
                 return true;
 
             // Bad dog

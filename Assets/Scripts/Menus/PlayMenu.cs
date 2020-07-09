@@ -29,7 +29,7 @@ namespace Menus
 
         private void Start()
         {
-            multiButton.onClick.AddListener(SearchMatch);
+            multiButton.onClick.AddListener(SearchRanked);
 
             privateButton.onClick.AddListener(delegate
             {
@@ -50,6 +50,12 @@ namespace Menus
         private void SearchMatch()
         {
             StartCoroutine(LoadRoomRequest());
+        }
+        
+        private void SearchRanked()
+        {
+            NetworkingController.CurrentRoomToken = "MatchmakingWaitinglist";
+            mc.ActivateMenu(MenuController.Menu.ListingPlayer);
         }
         
         IEnumerator CreateMatchRequest()
