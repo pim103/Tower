@@ -11,225 +11,227 @@ using Utils;
 
 namespace Games.Transitions
 {
-    public class ChooseDeckAndClass : MonoBehaviour
+public class ChooseDeckAndClass : MonoBehaviour
+{
+    [SerializeField] private Button[] buttonsOfChoice;
+
+    [SerializeField] private Button validateChoices;
+
+    [SerializeField] private Button[] monsterDeckButtons;
+    [SerializeField] private Button[] equipmentDeckButtons;
+
+    public static Identity currentRoleIdentity;
+    public static Identity currentWeaponIdentity;
+
+    public static int monsterDeckId;
+    public static int equipmentDeckId;
+
+    private Image currentRoleImage;
+    private Image currentWeaponImage;
+
+    private Dictionary<Classes, List<CategoryWeapon>> avalaibleWeaponForClass;
+    private Dictionary<Button, Identity> IdentityOfButton;
+
+    private readonly float[] greyColor = {0.3962264f, 0.3962264f, 0.3962264f};
+    private readonly float[] greenColor = {0.1081821f, 0.5566038f, 0f};
+
+    public static bool isValidate;
+    private List<Deck> playerDecks;
+
+    private int activeMonsterButtonCount = 0;
+    private int activeEquipmentButtonCount = 0;
+
+    private void Start()
     {
-        [SerializeField] private Button[] buttonsOfChoice;
+        isValidate = false;
+        SetAvailableWeaponForClass();
+        IdentityOfButton = new Dictionary<Button, Identity>();
 
-        [SerializeField] private Button validateChoices;
+        Button activeButton = null;
 
-        [SerializeField] private Button[] monsterDeckButtons;
-        [SerializeField] private Button[] equipmentDeckButtons;
-
-        public static Identity currentRoleIdentity;
-        public static Identity currentWeaponIdentity;
-
-        public static int monsterDeckId; 
-        public static int equipmentDeckId; 
-
-        private Image currentRoleImage;
-        private Image currentWeaponImage;
-
-        private Dictionary<Classes, List<CategoryWeapon>> avalaibleWeaponForClass;
-        private Dictionary<Button, Identity> IdentityOfButton;
-
-        private readonly float[] greyColor = {0.3962264f, 0.3962264f, 0.3962264f};
-        private readonly float[] greenColor = {0.1081821f, 0.5566038f, 0f};
-
-        public static bool isValidate;
-        private List<Deck> playerDecks;
-
-        private int activeMonsterButtonCount = 0;
-        private int activeEquipmentButtonCount = 0;
-
-        private void Start()
+        foreach (Button button in buttonsOfChoice)
         {
-            isValidate = false;
-            SetAvailableWeaponForClass();
-            IdentityOfButton = new Dictionary<Button, Identity>();
+            Identity identity = button.GetComponent<Identity>();
+            button.onClick.AddListener(delegate {
+                GetIdentityOfButton(button);
+            });
 
-            Button activeButton = null;
-
-            foreach (Button button in buttonsOfChoice)
+            IdentityOfButton.Add(button, identity);
+            if (identity.identityType == IdentityType.Role && activeButton == null)
             {
-                Identity identity = button.GetComponent<Identity>();
-                button.onClick.AddListener(delegate { GetIdentityOfButton(button); });
-
-                IdentityOfButton.Add(button, identity);
-                if (identity.identityType == IdentityType.Role && activeButton == null)
-                {
-                    activeButton = button;
-                }
-                else if (identity.identityType == IdentityType.CategoryWeapon)
-                {
-                    button.interactable = false;
-                }
-            }
-
-            if (activeButton != null)
-            {
-                activeButton.onClick.Invoke();
-            }
-
-            validateChoices.onClick.AddListener(LaunchGame);
-            FetchDecks();
-        }
-
-        private void LaunchGame()
-        {
-            isValidate = true;
-        }
-
-        private void GetIdentityOfButton(Button button)
-        {
-            Identity identity = IdentityOfButton[button];
-            Image buttonImage = button.gameObject.GetComponent<Image>();
-
-            if (identity.identityType == IdentityType.Role)
-            {
-                if (currentRoleImage != null)
-                {
-                    currentRoleImage.color = new Color(greyColor[0], greyColor[1], greyColor[2]);
-                }
-
-                buttonImage.color = new Color(greenColor[0], greenColor[1], greenColor[2]);
-
-                currentRoleIdentity = identity;
-                currentRoleImage = buttonImage;
-                currentWeaponIdentity = null;
-                currentWeaponImage = null;
-
-                ActiveButtonForSpecificRole(identity.classe);
+                activeButton = button;
             }
             else if (identity.identityType == IdentityType.CategoryWeapon)
             {
-                if (currentWeaponImage != null)
-                {
-                    currentWeaponImage.color = new Color(greyColor[0], greyColor[1], greyColor[2]);
-                }
-
-                buttonImage.color = new Color(greenColor[0], greenColor[1], greenColor[2]);
-                currentWeaponIdentity = identity;
-                currentWeaponImage = buttonImage;
+                button.interactable = false;
             }
         }
 
-        private void ActiveButtonForSpecificRole(Classes classe)
+        if (activeButton != null)
         {
-            List<CategoryWeapon> weaponForClass = avalaibleWeaponForClass[classe];
-            Button weaponToChoose = null;
+            activeButton.onClick.Invoke();
+        }
 
-            foreach (KeyValuePair<Button, Identity> pair in IdentityOfButton)
+        validateChoices.onClick.AddListener(LaunchGame);
+        FetchDecks();
+    }
+
+    private void LaunchGame()
+    {
+        isValidate = true;
+    }
+
+    private void GetIdentityOfButton(Button button)
+    {
+        Identity identity = IdentityOfButton[button];
+        Image buttonImage = button.gameObject.GetComponent<Image>();
+
+        if (identity.identityType == IdentityType.Role)
+        {
+            if (currentRoleImage != null)
             {
-                if (pair.Value.identityType == IdentityType.CategoryWeapon)
-                {
-                    if (weaponForClass.Contains(pair.Value.categoryWeapon))
-                    {
-                        if (weaponToChoose == null)
-                        {
-                            weaponToChoose = pair.Key;
-                        }
+                currentRoleImage.color = new Color(greyColor[0], greyColor[1], greyColor[2]);
+            }
 
-                        pair.Key.interactable = true;
-                        pair.Key.gameObject.GetComponent<Image>().color =
-                            new Color(greyColor[0], greyColor[1], greyColor[2]);
+            buttonImage.color = new Color(greenColor[0], greenColor[1], greenColor[2]);
+
+            currentRoleIdentity = identity;
+            currentRoleImage = buttonImage;
+            currentWeaponIdentity = null;
+            currentWeaponImage = null;
+
+            ActiveButtonForSpecificRole(identity.classe);
+        }
+        else if (identity.identityType == IdentityType.CategoryWeapon)
+        {
+            if (currentWeaponImage != null)
+            {
+                currentWeaponImage.color = new Color(greyColor[0], greyColor[1], greyColor[2]);
+            }
+
+            buttonImage.color = new Color(greenColor[0], greenColor[1], greenColor[2]);
+            currentWeaponIdentity = identity;
+            currentWeaponImage = buttonImage;
+        }
+    }
+
+    private void ActiveButtonForSpecificRole(Classes classe)
+    {
+        List<CategoryWeapon> weaponForClass = avalaibleWeaponForClass[classe];
+        Button weaponToChoose = null;
+
+        foreach (KeyValuePair<Button, Identity> pair in IdentityOfButton)
+        {
+            if (pair.Value.identityType == IdentityType.CategoryWeapon)
+            {
+                if (weaponForClass.Contains(pair.Value.categoryWeapon))
+                {
+                    if (weaponToChoose == null)
+                    {
+                        weaponToChoose = pair.Key;
                     }
-                    else
-                    {
-                        pair.Key.interactable = false;
-                        pair.Key.gameObject.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
-                    }
-                }
-            }
 
-            if (weaponToChoose != null)
-            {
-                weaponToChoose.onClick.Invoke();
+                    pair.Key.interactable = true;
+                    pair.Key.gameObject.GetComponent<Image>().color =
+                        new Color(greyColor[0], greyColor[1], greyColor[2]);
+                }
+                else
+                {
+                    pair.Key.interactable = false;
+                    pair.Key.gameObject.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
+                }
             }
         }
 
-        private void SetAvailableWeaponForClass()
+        if (weaponToChoose != null)
         {
-            avalaibleWeaponForClass = new Dictionary<Classes, List<CategoryWeapon>>();
-
-            List<CategoryWeapon> categoryWeaponsWarrior = new List<CategoryWeapon>();
-            categoryWeaponsWarrior.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsWarrior.Add(CategoryWeapon.BOW);
-            categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsWarrior.Add(CategoryWeapon.STAFF);
-            categoryWeaponsWarrior.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Warrior, categoryWeaponsWarrior);
-
-            List<CategoryWeapon> categoryWeaponsRanger = new List<CategoryWeapon>();
-
-            categoryWeaponsRanger.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsRanger.Add(CategoryWeapon.BOW);
-            categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsRanger.Add(CategoryWeapon.STAFF);
-            categoryWeaponsRanger.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Ranger, categoryWeaponsRanger);
-
-            List<CategoryWeapon> categoryWeaponsMage = new List<CategoryWeapon>();
-
-            categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsMage.Add(CategoryWeapon.BOW);
-            categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsMage.Add(CategoryWeapon.STAFF);
-            categoryWeaponsMage.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Mage, categoryWeaponsMage);
-
-            List<CategoryWeapon> categoryWeaponsRogue = new List<CategoryWeapon>();
-
-            categoryWeaponsRogue.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsRogue.Add(CategoryWeapon.BOW);
-            categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
-
-            avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
+            weaponToChoose.onClick.Invoke();
         }
-        
-        private void FetchDecks()
-        {
-            playerDecks = new List<Deck>();
-            List<DeckJsonObject> dJsonObjects = new List<DeckJsonObject>();
+    }
 
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckJson"))
+    private void SetAvailableWeaponForClass()
+    {
+        avalaibleWeaponForClass = new Dictionary<Classes, List<CategoryWeapon>>();
+
+        List<CategoryWeapon> categoryWeaponsWarrior = new List<CategoryWeapon>();
+        categoryWeaponsWarrior.Add(CategoryWeapon.SHORT_SWORD);
+        categoryWeaponsWarrior.Add(CategoryWeapon.BOW);
+        categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
+        categoryWeaponsWarrior.Add(CategoryWeapon.STAFF);
+        categoryWeaponsWarrior.Add(CategoryWeapon.DAGGER);
+
+        avalaibleWeaponForClass.Add(Classes.Warrior, categoryWeaponsWarrior);
+
+        List<CategoryWeapon> categoryWeaponsRanger = new List<CategoryWeapon>();
+
+        categoryWeaponsRanger.Add(CategoryWeapon.SHORT_SWORD);
+        categoryWeaponsRanger.Add(CategoryWeapon.BOW);
+        categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
+        categoryWeaponsRanger.Add(CategoryWeapon.STAFF);
+        categoryWeaponsRanger.Add(CategoryWeapon.DAGGER);
+
+        avalaibleWeaponForClass.Add(Classes.Ranger, categoryWeaponsRanger);
+
+        List<CategoryWeapon> categoryWeaponsMage = new List<CategoryWeapon>();
+
+        categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
+        categoryWeaponsMage.Add(CategoryWeapon.BOW);
+        categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
+        categoryWeaponsMage.Add(CategoryWeapon.STAFF);
+        categoryWeaponsMage.Add(CategoryWeapon.DAGGER);
+
+        avalaibleWeaponForClass.Add(Classes.Mage, categoryWeaponsMage);
+
+        List<CategoryWeapon> categoryWeaponsRogue = new List<CategoryWeapon>();
+
+        categoryWeaponsRogue.Add(CategoryWeapon.SHORT_SWORD);
+        categoryWeaponsRogue.Add(CategoryWeapon.BOW);
+        categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
+        categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
+
+        avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
+    }
+
+    private void FetchDecks()
+    {
+        playerDecks = new List<Deck>();
+        List<DeckJsonObject> dJsonObjects = new List<DeckJsonObject>();
+
+        foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckJson"))
+        {
+            StreamReader reader = new StreamReader(filePath, true);
+
+            dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
+        }
+
+        foreach (DeckJsonObject deckJson in dJsonObjects)
+        {
+            Deck loadedDeck = deckJson.ConvertToDeck();
+            playerDecks.Add(loadedDeck);
+            if (loadedDeck.type == Deck.Decktype.Monsters)
             {
-                StreamReader reader = new StreamReader(filePath, true);
-        
-                dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
+                GameObject buttonGameObject = monsterDeckButtons[activeMonsterButtonCount].gameObject;
+                buttonGameObject.SetActive(true);
+                buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                monsterDeckButtons[activeMonsterButtonCount].onClick.AddListener(delegate
+                {
+                    monsterDeckId = loadedDeck.id;
+                });
+                activeMonsterButtonCount++;
             }
-            
-            foreach (DeckJsonObject deckJson in dJsonObjects)
+
+            if (loadedDeck.type == Deck.Decktype.Equipments)
             {
-                Deck loadedDeck = deckJson.ConvertToDeck();
-                playerDecks.Add(loadedDeck);
-                if (loadedDeck.type == Deck.Decktype.Monsters)
+                GameObject buttonGameObject = equipmentDeckButtons[activeEquipmentButtonCount].gameObject;
+                buttonGameObject.SetActive(true);
+                buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                equipmentDeckButtons[activeEquipmentButtonCount].onClick.AddListener(delegate
                 {
-                    GameObject buttonGameObject = monsterDeckButtons[activeMonsterButtonCount].gameObject;
-                    buttonGameObject.SetActive(true);
-                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
-                    monsterDeckButtons[activeMonsterButtonCount].onClick.AddListener(delegate
-                        {
-                            monsterDeckId = loadedDeck.id;
-                        });
-                    activeMonsterButtonCount++;
-                }
-                
-                if (loadedDeck.type == Deck.Decktype.Equipments)
-                {
-                    GameObject buttonGameObject = equipmentDeckButtons[activeEquipmentButtonCount].gameObject;
-                    buttonGameObject.SetActive(true);
-                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
-                    equipmentDeckButtons[activeEquipmentButtonCount].onClick.AddListener(delegate
-                    {
-                        equipmentDeckId = loadedDeck.id;
-                    });
-                    activeEquipmentButtonCount++;
-                }
+                    equipmentDeckId = loadedDeck.id;
+                });
+                activeEquipmentButtonCount++;
             }
         }
     }
+}
 }

@@ -13,41 +13,53 @@ using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
-    public enum Classes
-    {
-        Warrior,
-        Ranger,
-        Rogue,
-        Mage
+public enum Classes
+{
+    Warrior,
+    Ranger,
+    Rogue,
+    Mage
+}
+
+public class Player : Entity
+{
+    public HelmetArmor helmetArmor {
+        get;
+        set;
+    }
+    public ChestplateArmor chestplateArmor {
+        get;
+        set;
+    }
+    public LeggingsArmor leggingsArmor {
+        get;
+        set;
     }
 
-    public class Player : Entity
+    private PlayerPrefab playerPrefab;
+
+    public Classes mainClass {
+        get;
+        set;
+    }
+
+    public void SetPlayerPrefab(PlayerPrefab playerPrefab)
     {
-        public HelmetArmor helmetArmor { get; set; }
-        public ChestplateArmor chestplateArmor { get; set; }
-        public LeggingsArmor leggingsArmor { get; set; }
+        this.playerPrefab = playerPrefab;
+    }
 
-        private PlayerPrefab playerPrefab;
+    public override void BasicAttack()
+    {
+        playerPrefab.PlayBasicAttack();
+    }
 
-        public Classes mainClass { get; set; }
+    public override void BasicDefense()
+    {
+        Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
+        Effect invisible = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
 
-        public void SetPlayerPrefab(PlayerPrefab playerPrefab)
+        switch (mainClass)
         {
-            this.playerPrefab = playerPrefab;
-        }
-
-        public override void BasicAttack()
-        {
-            playerPrefab.PlayBasicAttack();
-        }
-
-        public override void BasicDefense()
-        {
-            Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
-            Effect invisible = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
-            
-            switch (mainClass)
-            {
 //                case Classes.Mage:
 //                    EffectController.ApplyEffect(this, regen);
 //                    break;
@@ -68,11 +80,11 @@ namespace Games.Players
 //                case Classes.Warrior:
 //                    isBlocking = true;
 //                    break;
-            }
         }
+    }
 
-        public override void DesactiveBasicDefense()
-        {
+    public override void DesactiveBasicDefense()
+    {
 //            switch (mainClass)
 //            {
 //                case Classes.Mage:
@@ -88,95 +100,95 @@ namespace Games.Players
 //                    isBlocking = false;
 //                    break;
 //            }
-        }
-
-        public void InitPlayerStats(Classes classe)
-        {
-            mainClass = classe;
-            typeEntity = TypeEntity.ALLIES;
-
-            IdEntity = GameController.PlayerIndex;
-            isPlayer = true;
-
-            switch(classe)
-            {
-                case Classes.Mage:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    break;
-                case Classes.Warrior:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    break;
-                case Classes.Rogue:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    break;
-                case Classes.Ranger:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    break;
-            }
-
-            initialAtt = att;
-            initialDef = def;
-            initialHp = hp;
-            initialSpeed = speed;
-            initialAttSpeed = attSpeed;
-            initialRessource1 = ressource1;
-            initialRessource2 = ressource2;
-
-            InitEntityList();
-            int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
-            InitWeapon(idWeapon);
-
-            SpellController.CastPassiveSpell(this);
-        }
-
-        private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
-        {
-            switch(categoryWeapon)
-            {
-                case CategoryWeapon.SHORT_SWORD:
-                    return 1;
-                case CategoryWeapon.BOW:
-                    return 2;
-                case CategoryWeapon.SPEAR:
-                    return 3;
-                case CategoryWeapon.DAGGER:
-                    return 4;
-                case CategoryWeapon.STAFF:
-                    return 5;
-            }
-
-            return 0;
-        }
-
-        public void InitWeapon(int idWeapon)
-        {
-            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
-
-            playerPrefab.AddItemInHand(weapon);
-            weapon.InitPlayerSkill(mainClass);
-            // TODO : Add init weapon => change basic attack spell
-
-            weapons.Add(weapon);
-        }
     }
+
+    public void InitPlayerStats(Classes classe)
+    {
+        mainClass = classe;
+        typeEntity = TypeEntity.ALLIES;
+
+        IdEntity = GameController.PlayerIndex;
+        isPlayer = true;
+
+        switch(classe)
+        {
+        case Classes.Mage:
+            att = 0;
+            def = 2;
+            speed = 10;
+            hp = 50;
+            ressource1 = 50;
+            attSpeed = 0;
+            break;
+        case Classes.Warrior:
+            att = 0;
+            def = 2;
+            speed = 10;
+            hp = 50;
+            ressource1 = 50;
+            attSpeed = 0;
+            break;
+        case Classes.Rogue:
+            att = 0;
+            def = 2;
+            speed = 10;
+            hp = 50;
+            ressource1 = 50;
+            attSpeed = 0;
+            break;
+        case Classes.Ranger:
+            att = 0;
+            def = 2;
+            speed = 10;
+            hp = 50;
+            ressource1 = 50;
+            attSpeed = 0;
+            break;
+        }
+
+        initialAtt = att;
+        initialDef = def;
+        initialHp = hp;
+        initialSpeed = speed;
+        initialAttSpeed = attSpeed;
+        initialRessource1 = ressource1;
+        initialRessource2 = ressource2;
+
+        InitEntityList();
+        int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
+        InitWeapon(idWeapon);
+
+        SpellController.CastPassiveSpell(this);
+    }
+
+    private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
+    {
+        switch(categoryWeapon)
+        {
+        case CategoryWeapon.SHORT_SWORD:
+            return 1;
+        case CategoryWeapon.BOW:
+            return 2;
+        case CategoryWeapon.SPEAR:
+            return 3;
+        case CategoryWeapon.DAGGER:
+            return 4;
+        case CategoryWeapon.STAFF:
+            return 5;
+        }
+
+        return 0;
+    }
+
+    public void InitWeapon(int idWeapon)
+    {
+        Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+
+        playerPrefab.AddItemInHand(weapon);
+        weapon.InitPlayerSkill(mainClass);
+        // TODO : Add init weapon => change basic attack spell
+
+        weapons.Add(weapon);
+    }
+}
 }
