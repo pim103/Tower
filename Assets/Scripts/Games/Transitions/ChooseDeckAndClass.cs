@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using DeckBuilding;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utils;
 
 namespace Games.Transitions
 {
-    public class ChooseDeckAndClasse : MonoBehaviour
+    public class ChooseDeckAndClass : MonoBehaviour
     {
         [SerializeField] private Button[] buttonsOfChoice;
 
         [SerializeField] private Button validateChoices;
 
+        [SerializeField] private Button[] monsterDeckButtons;
+        [SerializeField] private Button[] equipmentDeckButtons;
+
         public static Identity currentRoleIdentity;
         public static Identity currentWeaponIdentity;
+
+        public static int monsterDeckId; 
+        public static int equipmentDeckId; 
 
         private Image currentRoleImage;
         private Image currentWeaponImage;
@@ -27,6 +36,10 @@ namespace Games.Transitions
         private readonly float[] greenColor = {0.1081821f, 0.5566038f, 0f};
 
         public static bool isValidate;
+        private List<Deck> playerDecks;
+
+        private int activeMonsterButtonCount = 0;
+        private int activeEquipmentButtonCount = 0;
 
         private void Start()
         {
@@ -58,6 +71,7 @@ namespace Games.Transitions
             }
 
             validateChoices.onClick.AddListener(LaunchGame);
+            FetchDecks();
         }
 
         private void LaunchGame()
@@ -174,6 +188,48 @@ namespace Games.Transitions
             categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
 
             avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
+        }
+        
+        private void FetchDecks()
+        {
+            playerDecks = new List<Deck>();
+            List<DeckJsonObject> dJsonObjects = new List<DeckJsonObject>();
+
+            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckJson"))
+            {
+                StreamReader reader = new StreamReader(filePath, true);
+        
+                dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
+            }
+            
+            foreach (DeckJsonObject deckJson in dJsonObjects)
+            {
+                Deck loadedDeck = deckJson.ConvertToDeck();
+                playerDecks.Add(loadedDeck);
+                if (loadedDeck.type == Deck.Decktype.Monsters)
+                {
+                    GameObject buttonGameObject = monsterDeckButtons[activeMonsterButtonCount].gameObject;
+                    buttonGameObject.SetActive(true);
+                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                    monsterDeckButtons[activeMonsterButtonCount].onClick.AddListener(delegate
+                        {
+                            monsterDeckId = loadedDeck.id;
+                        });
+                    activeMonsterButtonCount++;
+                }
+                
+                if (loadedDeck.type == Deck.Decktype.Equipments)
+                {
+                    GameObject buttonGameObject = equipmentDeckButtons[activeEquipmentButtonCount].gameObject;
+                    buttonGameObject.SetActive(true);
+                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                    equipmentDeckButtons[activeEquipmentButtonCount].onClick.AddListener(delegate
+                    {
+                        equipmentDeckId = loadedDeck.id;
+                    });
+                    activeEquipmentButtonCount++;
+                }
+            }
         }
     }
 }

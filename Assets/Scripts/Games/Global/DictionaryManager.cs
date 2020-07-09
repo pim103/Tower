@@ -24,7 +24,9 @@ namespace Games.Global
             GroupsPosition.InitPosition();
             FetchCollection();
             
+            Debug.Log("initdict");
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
+            Debug.Log(DataObject.MonsterList);
             DataObject.WeaponList = new WeaponList(weaponsGameObject);
             DataObject.MaterialsList = new List<Material>();
             DataObject.MaterialsList.AddRange(effectMaterials.ToList());

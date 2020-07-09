@@ -43,7 +43,7 @@ namespace Games.Transitions
 
             chooseRoleAndDeckGameObject.SetActive(true);
 
-            while (waitingForStart > 0 && !ChooseDeckAndClasse.isValidate)
+            while (waitingForStart > 0 && !ChooseDeckAndClass.isValidate)
             {
                 objectsInScene.counterText.text = waitingForStart.ToString();
 
