@@ -6,114 +6,103 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using WebSocketSharp;
 
-namespace Networking.Client
-{
-[Serializable]
-public class CanStartHandler
-{
+namespace Networking.Client {
+  [Serializable]
+  public class CanStartHandler {
     [FormerlySerializedAs("Message")]
     public string message;
 
-    public CanStartHandler(string message)
-    {
-        this.message = message;
-    }
-}
+    public CanStartHandler(string message) { this.message = message; }
+  }
 
-public static class TowersWebSocket
+  public static class TowersWebSocket
 
-{
+  {
     // Start is called before the first frame update
     public static string END_POINT_GAME;
     public static string END_POINT_CHAT;
     public static WebSocket wsGame;
     public static WebSocket wsChat;
-    //private CanStartHandler testMessage = null;
+    // private CanStartHandler testMessage = null;
 
-    static TowersWebSocket()
-    {
-        if (NetworkingController.Environnement == "PROD")
-        {
-            END_POINT_GAME = "wss://towers.heolia.eu/websocket";
-            END_POINT_CHAT = "wss://towers.heolia.eu/chat";
-        }
-        else if (NetworkingController.Environnement == "LOCAL")
-        {
-            END_POINT_GAME = "ws://localhost:8081";
-            END_POINT_CHAT = "ws://localhost:8082";
-        }
+    static TowersWebSocket() {
+      if (NetworkingController.Environnement == "PROD") {
+        END_POINT_GAME = "wss://towers.heolia.eu/websocket";
+        END_POINT_CHAT = "wss://towers.heolia.eu/chat";
+      } else if (NetworkingController.Environnement == "LOCAL") {
+        END_POINT_GAME = "ws://localhost:8081";
+        END_POINT_CHAT = "ws://localhost:8082";
+      }
     }
 
-    public static void InitializeWebsocketEndpoint()
-    {
-        wsGame = new WebSocket(END_POINT_GAME);
-        wsChat = new WebSocket(END_POINT_CHAT);
+    public static void InitializeWebsocketEndpoint() {
+      wsGame = new WebSocket(END_POINT_GAME);
+      wsChat = new WebSocket(END_POINT_CHAT);
     }
 
-    public static void TowerSender(string target, string roomId, string rawKey = null, string rawData = null)
-    {
-        string json = "{";
-        json += "\"_TARGET\":" + "\"" + target + "\",";
-        json += "\"_ROOMID\":" + "\"" + roomId + "\",";
-        json += "\""+ rawKey + "\":" + "\"" + rawData + "\"";
-        json += "}";
+    public static void TowerSender(string target, string roomId,
+                                   string rawKey = null,
+                                   string rawData = null) {
+      string json = "{";
+      json += "\"_TARGET\":" + "\"" + target + "\",";
+      json += "\"_ROOMID\":" + "\"" + roomId + "\",";
+      json += "\"" + rawKey + "\":" + "\"" + rawData + "\"";
+      json += "}";
 
-        //Debug.Log(json);
-        wsGame.Send(json);
+      // Debug.Log(json);
+      wsGame.Send(json);
     }
 
-    public static void TowerSender(string target, string roomId, string @class = null, string method = null, string args = null)
-    {
-        string json = "{";
-        json += "\"_TARGET\":" + "\"" + target + "\",";
-        json += "\"_ROOMID\":" + "\"" + roomId + "\",";
-        if (@class != null)
-        {
-            json += "\"_CLASS\":" + "\"" + @class + "\",";
-        }
-        json += "\"_METHOD\":" + "\"" + method + "\",";
-        if (args != null)
-        {
-            json += "\"_ARGS\":" + args;
-        }
-        //Debug.Log(json);
-        wsGame.Send(json.TrimEnd(',', ' ') + "}");
+    public static void TowerSender(string target, string roomId,
+                                   string @class = null, string method = null,
+                                   string args = null) {
+      string json = "{";
+      json += "\"_TARGET\":" + "\"" + target + "\",";
+      json += "\"_ROOMID\":" + "\"" + roomId + "\",";
+      if (@class != null) {
+        json += "\"_CLASS\":" + "\"" + @class + "\",";
+      }
+      json += "\"_METHOD\":" + "\"" + method + "\",";
+      if (args != null) {
+        json += "\"_ARGS\":" + args;
+      }
+      // Debug.Log(json);
+      wsGame.Send(json.TrimEnd(',', ' ') + "}");
     }
 
-    public static string FromDictToString(Dictionary<string, string> dict)
-    {
-        string fromDict = "[{";
-        foreach(KeyValuePair <string, string> keyValues in dict) {
-            fromDict += "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";
-        }
+    public static string FromDictToString(Dictionary<string, string> dict) {
+      string fromDict = "[{";
+      foreach (KeyValuePair<string, string> keyValues in dict) {
+        fromDict +=
+            "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";
+      }
 
-        return fromDict.TrimEnd(',', ' ') + "}]";
+      return fromDict.TrimEnd(',', ' ') + "}]";
     }
-    public static string FromDictToString(Dictionary<string, int> dict)
-    {
-        string fromDict = "[{";
-        foreach(KeyValuePair <string, int> keyValues in dict) {
-            fromDict += "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";
-        }
+    public static string FromDictToString(Dictionary<string, int> dict) {
+      string fromDict = "[{";
+      foreach (KeyValuePair<string, int> keyValues in dict) {
+        fromDict +=
+            "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";
+      }
 
-        return fromDict.TrimEnd(',', ' ') + "}]";
-    }
-
-    public static void StartConnection()
-    {
-        wsGame.Connect();
-
-        var setSocket = new Dictionary<string, string>();
-        setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
-        setSocket.Add("room", NetworkingController.CurrentRoomToken);
-
-        TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setIdentity", FromDictToString(setSocket));
+      return fromDict.TrimEnd(',', ' ') + "}]";
     }
 
-    public static void CloseConnection()
-    {
-        Debug.Log("Websocket Close!");
-        wsGame.Close();
+    public static void StartConnection() {
+      wsGame.Connect();
+
+      var setSocket = new Dictionary<string, string>();
+      setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
+      setSocket.Add("room", NetworkingController.CurrentRoomToken);
+
+      TowerSender("SELF", NetworkingController.CurrentRoomToken, "null",
+                  "setIdentity", FromDictToString(setSocket));
     }
-}
+
+    public static void CloseConnection() {
+      Debug.Log("Websocket Close!");
+      wsGame.Close();
+    }
+  }
 }
