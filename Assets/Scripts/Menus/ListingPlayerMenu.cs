@@ -82,7 +82,6 @@ namespace Menus
                     {
                         Debug.Log("Can't read callback : " + e.Message);
                     }
-
                 }
             };
 
