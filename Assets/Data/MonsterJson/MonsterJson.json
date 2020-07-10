@@ -17,7 +17,7 @@
 				"speed": 1,
 				"nbWeapon": 1,
 				"att_speed": 1,
-				"skills": [
+				"spells": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
@@ -44,7 +44,7 @@
 				"speed": 1,
 				"nbWeapon": 1,
 				"att_speed": 2,
-				"skills": [
+				"spells": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
@@ -71,7 +71,7 @@
 				"speed": 1,
 				"nbWeapon": 1,
 				"att_speed": 1,
-				"skills": [
+				"spells": [
 					"ThrowPoison",
 					"EjectTarget"
 				],
@@ -89,21 +89,20 @@
 			"groupName": "Squelette Mage",
             "monster":{
 				"idMonster": 4,
-				"constraint": 1,
+				"constraint": 0,
 				"name": "Squelette Mage",
-				"number": 4,
+				"number": 1,
                 "hp": 15,
 				"def": 1,
 				"att": 3,
 				"speed": 1,
 				"nbWeapon": 1,
-				"att_speed": 1,
-				"skills": [
-					"ThrowPoison",
-					"EjectTarget"
+				"att_speed": 0,
+				"spells": [
+					"MageSkeletonFreezing"
 				],
 				"on_damage_dealt": "Outch",
-				"on_damage_receive": "Aie",
+				"on_damage_receive": "Resurrect",
 				"model": "SkeletonMage",
 				"weapon": "Basic_Staff"
             }
@@ -125,7 +124,7 @@
 				"speed": 2,
 				"nbWeapon": 1,
 				"att_speed": 3,
-				"skills": [
+				"spells": [
 					"ThrowPoison",
 					"EjectTarget"
 				],

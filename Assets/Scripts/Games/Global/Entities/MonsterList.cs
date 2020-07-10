@@ -32,6 +32,7 @@ namespace Games.Global.Entities
         {
             Monster cloneMonster = Tools.Clone(monsterList.First(monster => monster.id == id));
             cloneMonster.InitEntityList();
+            cloneMonster.InitSpells();
             cloneMonster.typeEntity = TypeEntity.MOB;
             return cloneMonster;
         }

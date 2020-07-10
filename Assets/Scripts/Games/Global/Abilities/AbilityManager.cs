@@ -15,6 +15,8 @@ namespace Games.Global.Abilities
     public struct AbilityParameters
     {
         public Entity origin;
+        public Entity Self;
+        public float DamageDeal;
     }
 
     public static class AbilityManager
@@ -32,6 +34,7 @@ namespace Games.Global.Abilities
             methodMobList.Add("Outch", DemonSkill.Outch);
             methodMobList.Add("EjectTarget", DemonSkill.EjectTarget);
             methodMobList.Add("ThrowPoison", DemonSkill.ThrowPoison);
+            methodMobList.Add("Resurrect", SkeletonSkill.Resurrect);
         }
 
         private static void InitWeaponAbilities()
@@ -59,12 +62,10 @@ namespace Games.Global.Abilities
             {
                 case AbilityDico.MOB:
                     return methodMobList[methodName];
-                    break;
                 case AbilityDico.PLAYER:
                     break;
                 case AbilityDico.WEAPON:
                     return methodWeaponList[methodName];
-                    break;
             }
 
             return null;

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Games;
 using Games.Global;
+using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
@@ -12,6 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utils;
 using Tools = Utils.Tools;
 
 namespace TestC
@@ -110,6 +113,45 @@ namespace TestC
                 else
                 {
                     Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(4);
+                InstantiateGroupsMonster(groups, Vector3.one, null);
+            }
+        }
+
+        public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
+        {
+            InstantiateParameters param;
+            Monster monster;
+            int nbMonsterInit = 0;
+
+            Vector3 origPos = position;
+
+            foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
+            {
+                for (int i = 0; i < mobs.Value; i++)
+                {
+                    monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
+
+                    GameObject monsterGameObject = Instantiate(monster.model);
+                    monsterGameObject.transform.position = position;
+
+                    monster.IdEntity = DataObject.nbEntityInScene;
+                    DataObject.nbEntityInScene++;
+                    nbMonsterInit++;
+
+                    MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
+                    monster.InitMonster(monsterPrefab);
+
+                    groups.InitSpecificEquipment(monster, equipment);
+
+                    position = origPos + GroupsPosition.position[nbMonsterInit];
+
+                    DataObject.monsterInScene.Add(monster);
                 }
             }
         }

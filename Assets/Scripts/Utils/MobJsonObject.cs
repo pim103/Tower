@@ -79,7 +79,7 @@ namespace Utils
                 case "model":
                     modelName = value;
                     break;
-                case "skills":
+                case "spells":
                     if (skills == null)
                     {
                         skills = new List<string>();
@@ -115,6 +115,7 @@ namespace Utils
             monster.initialHp = hp;
             monster.initialSpeed = speed;
             monster.initialAttSpeed = attSpeed;
+            monster.attSpeed = attSpeed;
             monster.mobName = mobName;
             monster.att = att;
             monster.def = def;
@@ -124,6 +125,7 @@ namespace Utils
             monster.family = family;
             monster.weaponOriginalName = weapon;
             monster.constraint = constraint;
+            monster.spellsName = skills;
 
             monster.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB);
             monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;

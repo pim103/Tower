@@ -40,27 +40,30 @@ namespace Games.Global.Entities
         {
             int nbWeaponFound = 0;
 
-            if (monster.constraint == TypeWeapon.Cac)
+            if (equipment != null)
             {
-                if (equipment[0] != 0)
+                if (monster.constraint == TypeWeapon.Cac)
                 {
-                    if (monster.InitWeapon(equipment[0]))
+                    if (equipment[0] != 0)
                     {
-                        nbWeaponFound++;
+                        if (monster.InitWeapon(equipment[0]))
+                        {
+                            nbWeaponFound++;
+                        }
                     }
                 }
-            }
-            else if (monster.constraint == TypeWeapon.Distance)
-            {
-                if (equipment[1] != 0)
+                else if (monster.constraint == TypeWeapon.Distance)
                 {
-                    if (monster.InitWeapon(equipment[1]))
+                    if (equipment[1] != 0)
                     {
-                        nbWeaponFound++;
+                        if (monster.InitWeapon(equipment[1]))
+                        {
+                            nbWeaponFound++;
+                        }
                     }
-                }
                 
-                // TODO init armor with : equipment[2] / equipment[3] / equipment[4]
+                    // TODO init armor with : equipment[2] / equipment[3] / equipment[4]
+                }
             }
 
             if (nbWeaponFound == 0)

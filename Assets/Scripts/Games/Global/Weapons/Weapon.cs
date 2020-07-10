@@ -66,7 +66,6 @@ namespace Games.Global.Weapons
                     InitWeaponSpellWithJson(warriorSpells);
                     break;
                 case Classes.Mage:
-                    Debug.Log("ok");
                     InitWeaponSpellWithJson(mageSpells);
                     break;
                 case Classes.Rogue:

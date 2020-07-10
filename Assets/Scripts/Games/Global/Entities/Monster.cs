@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global.Abilities;
+using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Games.Global.Entities
         public TypeWeapon constraint { get; set; }
 
         private MonsterPrefab monsterPrefab;
+
+        public List<string> spellsName { get; set; }
 
         public override void BasicAttack()
         {
@@ -75,7 +78,7 @@ namespace Games.Global.Entities
 
             return false;
         }
-        
+
         public void InitOriginalWeapon()
         {
             Weapon weapon = DataObject.WeaponList.GetWeaponWithName(weaponOriginalName);
@@ -83,6 +86,23 @@ namespace Games.Global.Entities
             monsterPrefab.AddItemInHand(weapon);
 
             weapons.Add(weapon);
+        }
+
+        public void InitSpells()
+        {
+            foreach (string spellName in spellsName)
+            {
+                Spell spell = SpellController.LoadSpellByName(spellName);
+
+                if (spell != null)
+                {
+                    spells.Add(spell);
+                }
+                else
+                {
+                    Debug.Log("Doesnt find spell " + spellName);
+                }
+            }
         }
     }
 }

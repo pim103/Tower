@@ -56,7 +56,7 @@ namespace Games.Global
         private const int DEFAULT_DEF = 10;
         private const float DEFAULT_ATT = 0;
         private const float DEFAULT_SPEED = 10;
-        private const float DEFAULT_ATT_SPEED = 1;
+        private const float DEFAULT_ATT_SPEED = 0;
         private const float DEFAULT_RESSOURCE = 50;
         
         private const int DEFAULT_NB_WEAPONS = 1;
@@ -241,6 +241,8 @@ namespace Games.Global
                 ApplyDamage(damageReceived);
             }
 
+            abilityParameters.Self = this;
+            abilityParameters.DamageDeal = damageReceived;
             if (OnDamageReceive != null)
             {
                 OnDamageReceive(abilityParameters);

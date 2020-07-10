@@ -531,7 +531,7 @@ PrefabInstance:
     - target: {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8521370539131973237, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
@@ -588,20 +588,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4891197118384083870, guid: d4059769c6bac754189732fbec904bb2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8521370539135346175, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
@@ -648,6 +643,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 86a3e6e818206734ca28afb43d4aaaed, type: 2}
+    - target: {fileID: 4891197118384083870, guid: d4059769c6bac754189732fbec904bb2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4059769c6bac754189732fbec904bb2, type: 3}
 --- !u!1 &149923703
@@ -975,13 +975,13 @@ PrefabInstance:
     - target: {fileID: 6587678624003868067, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6587678624003868067, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: fc105d8c70e12d5448eae463b645c400, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ea6864760070f24d9a894b2a78b39c2, type: 2}
     - target: {fileID: 6879353960672757004, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_IsActive
@@ -1415,20 +1415,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4529688295705688070, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
-        type: 3}
-      propertyPath: m_Radius
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529688295705688070, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
-        type: 3}
-      propertyPath: m_Height
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 9194151941967407422, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
         type: 3}
       propertyPath: m_Name
       value: ArrowTrapParent
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194151941967407422, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9194151941967407421, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
         type: 3}
@@ -1484,6 +1479,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4529688295705688070, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
+        type: 3}
+      propertyPath: m_Radius
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4529688295705688070, guid: eef34010528e0ee4bb1ddee70e0fbdc8,
+        type: 3}
+      propertyPath: m_Height
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eef34010528e0ee4bb1ddee70e0fbdc8, type: 3}
@@ -1681,7 +1686,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.5904e-41, y: 34100.688, z: 4.5904e-41, w: 34320.25}
+  m_BoundingSphereOverride: {x: 1, y: 1, z: 1, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3241,6 +3246,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpikeTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 2046833293617070903, guid: 6cd1fb832f1223741900116a4c9c0377,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3043458982626455844, guid: 6cd1fb832f1223741900116a4c9c0377,
         type: 3}
@@ -8705,6 +8715,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TempMagicalOrb
       objectReference: {fileID: 0}
+    - target: {fileID: 331895918268181724, guid: 0d6dd91830298564d8b136bfd239ebd4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7762315857122494755, guid: 0d6dd91830298564d8b136bfd239ebd4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8713,7 +8728,7 @@ PrefabInstance:
     - target: {fileID: 7762315857122494755, guid: 0d6dd91830298564d8b136bfd239ebd4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.5943837
+      value: 7.2
       objectReference: {fileID: 0}
     - target: {fileID: 7762315857122494755, guid: 0d6dd91830298564d8b136bfd239ebd4,
         type: 3}
