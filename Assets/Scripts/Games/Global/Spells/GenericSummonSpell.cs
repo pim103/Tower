@@ -53,7 +53,8 @@ namespace Games.Global.Spells
                 basicAttack = (summonSpell.basicAttack != null ? Tools.Clone(summonSpell.basicAttack) : null),
                 BehaviorType = summonSpell.BehaviorType,
                 AttackBehaviorType = summonSpell.AttackBehaviorType,
-                isSummon = true
+                isSummon = true,
+                IdEntity = DataObject.nbEntityInScene
             };
 
             entity = summon;
@@ -69,6 +70,7 @@ namespace Games.Global.Spells
             SpellController.CastPassiveSpell(entity);
 
             DataObject.invocationsInScene.Add(summon);
+            DataObject.nbEntityInScene++;
         }
 
         public void DestroySummon()

@@ -42,7 +42,6 @@ namespace Games.Global.Spells.SpellsController
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, entity.entityPrefab.transform.position, entity, buffSpell);
                 }
 
-                Debug.Log(buffSpell.stack);
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
 
                 if (buffSpell.stack == 0 && initialStack > 0)

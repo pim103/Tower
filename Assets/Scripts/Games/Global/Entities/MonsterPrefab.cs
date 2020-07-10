@@ -28,7 +28,7 @@ namespace Games.Global.Entities
                 monster.InitEntityList();
                 monster.weaponOriginalName = "Basic_Bow";
                 //TODO : change to monster
-                monster.BehaviorType = BehaviorType.Distance;
+                monster.BehaviorType = BehaviorType.Player;
                 monster.AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst;
                 
                 entity = monster;

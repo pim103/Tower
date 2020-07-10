@@ -34,7 +34,6 @@ namespace Games.Attacks
 
     public class InitAttackPhase : MonoBehaviour
     {
-        private static int idMobInit = 0;
         public const int MAP_SIZE = 25;
 
         [SerializeField] 
@@ -329,8 +328,8 @@ namespace Games.Attacks
                     GameObject monsterGameObject = Instantiate(monster.model);
                     monsterGameObject.transform.position = position;
                     
-                    monster.IdEntity = idMobInit;
-                    idMobInit++;
+                    monster.IdEntity = DataObject.nbEntityInScene;
+                    DataObject.nbEntityInScene++;
                     nbMonsterInit++;
 
                     MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();

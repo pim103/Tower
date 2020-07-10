@@ -55,7 +55,8 @@ namespace Games.Players
             mainClass = classe;
             typeEntity = TypeEntity.ALLIES;
 
-            IdEntity = GameController.PlayerIndex;
+            IdEntity = DataObject.nbEntityInScene;
+            DataObject.nbEntityInScene++;
             isPlayer = true;
 
             switch(classe)

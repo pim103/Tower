@@ -52,6 +52,8 @@ namespace Games.Global
 
     public static class DataObject
     {
+        public static int nbEntityInScene;
+        
         public static MonsterList MonsterList;
         public static WeaponList WeaponList;
         public static List<Material> MaterialsList;
