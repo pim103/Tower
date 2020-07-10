@@ -20,9 +20,7 @@ namespace Games.Global.Spells
 
         public float interval { get; set; }
         public float duration { get; set; }
-
-        // instead of duration
-        public int stack;
+        public int stack { get; set; }
         public bool disapearOnDamageReceived { get; set; }
 
         public float damageOnSelf;

@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
+using System.IO;
+using FullSerializer;
 using UnityEngine;
-using UnityEngine.AI;
+using Utils;
+using Random = UnityEngine.Random;
 
 namespace Games.Global.Spells.SpellsController
 {
@@ -216,6 +220,42 @@ namespace Games.Global.Spells.SpellsController
                     CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.positionPointed, entity.entityPrefab.target);
                 }
             }
+        }
+
+        public static Spell LoadSpellByName(string nameSpell)
+        {
+            string path = Application.dataPath + "/Data/SpellsJson/" + nameSpell + ".json";
+            Spell spell = FindSpellWithPath(path);
+
+            if (spell == null)
+            {
+                Debug.Log("Pas de spells");
+            }
+
+            return spell;
+        }
+        
+        private static Spell FindSpellWithPath(string tempPath)
+        {
+            fsSerializer serializer = new fsSerializer();
+            fsData data;
+            Spell spell = null;
+            string jsonSpell;
+
+            try
+            {
+                jsonSpell = File.ReadAllText(tempPath);
+                data = fsJsonParser.Parse(jsonSpell);
+                serializer.TryDeserialize(data, ref spell);
+                spell = Tools.Clone(spell);
+            }
+            catch (Exception e)
+            {
+//                Debug.Log("Cant import spell for path : " + tempPath);
+//                Debug.Log(e.Message);
+            }
+
+            return spell;
         }
     }
 }

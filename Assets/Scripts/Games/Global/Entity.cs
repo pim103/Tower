@@ -116,6 +116,8 @@ namespace Games.Global
 
         public bool doingSkill { get; set; } = false;
 
+        public int nbCharges;
+
         public virtual void BasicAttack()
         {
             

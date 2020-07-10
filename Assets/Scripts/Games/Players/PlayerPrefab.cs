@@ -73,13 +73,21 @@ namespace Games.Players
 
         private IEnumerator NaturalRegen()
         {
+            float count = 0;
             while (true)
             {
                 yield return new WaitForSeconds(0.1f);
+                count += 0.1f;
 
                 if (entity.ressource1 < entity.initialRessource1)
                 {
                     entity.ressource1 += 0.1f;
+                }
+
+                if (entity.nbCharges < 4 && count >= 0.5f)
+                {
+                    entity.nbCharges++;
+                    count = 0;
                 }
             }
         }

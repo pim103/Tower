@@ -2,6 +2,7 @@
 using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Armors;
+using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
@@ -43,51 +44,10 @@ namespace Games.Players
 
         public override void BasicDefense()
         {
-            Effect regen = new Effect { typeEffect = TypeEffect.Regen, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
-            Effect invisible = new Effect { typeEffect = TypeEffect.Invisibility, launcher = this, level = 1, durationInSeconds = 5f, ressourceCost = 1 };
-            
-            switch (mainClass)
+            if (basicDefense != null)
             {
-//                case Classes.Mage:
-//                    EffectController.ApplyEffect(this, regen);
-//                    break;
-//                case Classes.Rogue:
-//                    EffectController.ApplyEffect(this, invisible);
-//                    break;
-//                case Classes.Ranger:
-//                    if (!underEffects.ContainsKey(TypeEffect.MadeADash) && ressource1 > 10)
-//                    {
-//                        ressource1 -= 10;
-//
-//                        playerPrefab.PlaySpecialMovement(SpecialMovement.BackDash);
-//                        BasicAttack();
-//
-//                        EffectController.ApplyNewEffectToEntity(this, TypeEffect.MadeADash, 0.2f);
-//                    }
-//                    break;
-//                case Classes.Warrior:
-//                    isBlocking = true;
-//                    break;
+                SpellController.CastSpell(this, basicDefense, entityPrefab.transform.position, entityPrefab.target);
             }
-        }
-
-        public override void DesactiveBasicDefense()
-        {
-//            switch (mainClass)
-//            {
-//                case Classes.Mage:
-//                    EffectController.RemoveEffect(this, TypeEffect.Regen);
-//                    break;
-//                case Classes.Rogue:
-//                    EffectController.RemoveEffect(this, TypeEffect.Invisibility);
-//                    break;
-//                case Classes.Ranger:
-//                    break;
-//                case Classes.Warrior:
-//                    nbShieldBlock = 0;
-//                    isBlocking = false;
-//                    break;
-//            }
         }
 
         public void InitPlayerStats(Classes classe)
@@ -107,6 +67,7 @@ namespace Games.Players
                     hp = 50;
                     ressource1 = 50;
                     attSpeed = 0;
+                    basicDefense = SpellController.LoadSpellByName("BasicDefenseMage");
                     break;
                 case Classes.Warrior:
                     att = 0;
@@ -115,6 +76,8 @@ namespace Games.Players
                     hp = 50;
                     ressource1 = 50;
                     attSpeed = 0;
+                    nbCharges = 4;
+                    basicDefense = SpellController.LoadSpellByName("BasicDefenseWarrior");
                     break;
                 case Classes.Rogue:
                     att = 0;
@@ -123,6 +86,7 @@ namespace Games.Players
                     hp = 50;
                     ressource1 = 50;
                     attSpeed = 0;
+                    basicDefense = SpellController.LoadSpellByName("BasicDefenseRogue");
                     break;
                 case Classes.Ranger:
                     att = 0;
@@ -131,6 +95,7 @@ namespace Games.Players
                     hp = 50;
                     ressource1 = 50;
                     attSpeed = 0;
+                    basicDefense = SpellController.LoadSpellByName("BasicDefenseRanger");
                     break;
             }
 

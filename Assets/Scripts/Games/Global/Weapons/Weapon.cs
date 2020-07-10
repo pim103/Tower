@@ -90,8 +90,7 @@ namespace Games.Global.Weapons
 
         public void InitBasicAttack()
         {
-            string path = Application.dataPath + "/Data/SpellsJson/" + spellOfBasicAttack + ".json";
-            Spell spell = FindSpellWithPath(path);
+            Spell spell = SpellController.LoadSpellByName(spellOfBasicAttack);
             Entity wielder = weaponPrefab.GetWielder();
 
             if (spell != null)
@@ -102,17 +101,11 @@ namespace Games.Global.Weapons
 
         public void InitWeaponSpellWithJson(List<string> spellsToFind)
         {
-            string path = Application.dataPath + "/Data/SpellsJson/";
-            string tempPath = "";
-
             Entity wielder = weaponPrefab.GetWielder();
-            Spell spell;
 
             foreach (string spellString in spellsToFind)
             {
-                tempPath = path + spellString + ".json";
-
-                spell = FindSpellWithPath(tempPath);
+                Spell spell = SpellController.LoadSpellByName(spellString);
 
                 if (spell == null)
                 {
@@ -136,29 +129,6 @@ namespace Games.Global.Weapons
                     }
                 }
             }
-        }
-
-        public Spell FindSpellWithPath(string tempPath)
-        {
-            fsSerializer serializer = new fsSerializer();
-            fsData data;
-            Spell spell = null;
-            string jsonSpell;
-
-            try
-            {
-                jsonSpell = File.ReadAllText(tempPath);
-                data = fsJsonParser.Parse(jsonSpell);
-                serializer.TryDeserialize(data, ref spell);
-                spell = Tools.Clone(spell);
-            }
-            catch (Exception e)
-            {
-//                Debug.Log("Cant import spell for path : " + tempPath);
-//                Debug.Log(e.Message);
-            }
-
-            return spell;
         }
     }
 }

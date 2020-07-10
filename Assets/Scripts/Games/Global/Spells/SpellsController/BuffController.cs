@@ -24,7 +24,9 @@ namespace Games.Global.Spells.SpellsController
             InitialBuff(entity, buffSpell);
             float duration = buffSpell.duration;
 
-            while (duration > 0)
+            int initialStack = buffSpell.stack;
+
+            while (duration > 0 || buffSpell.stack > 0)
             {
                 if (!entity.hasPassiveDeactivate && buffSpell.castByPassive)
                 {
@@ -40,12 +42,13 @@ namespace Games.Global.Spells.SpellsController
                     SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, entity.entityPrefab.transform.position, entity, buffSpell);
                 }
 
+                Debug.Log(buffSpell.stack);
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
-            }
 
-            while (buffSpell.stack > 0)
-            {
-                yield return null;
+                if (buffSpell.stack == 0 && initialStack > 0)
+                {
+                    break;
+                }
             }
 
             if (buffSpell.stack == 0)
@@ -243,6 +246,7 @@ namespace Games.Global.Spells.SpellsController
                 if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
                 {
                     buffSpell.stack--;
+                    Debug.Log("Lose stack " + buffSpell.stack);
                 }
 
                 if (buffSpell.disapearOnDamageReceived)
