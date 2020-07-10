@@ -13,27 +13,16 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace Games.Attacks
-{
-[Serializable]
-public class TransistionTest
-{
+namespace Games.Attacks {
+  [Serializable]
+  public class TransistionTest {
     public string transition;
 
-    public TransistionTest(string transition)
-    {
-        this.transition = transition;
-    }
-}
-public enum TypeData {
-    Nothing,
-    Group,
-    Wall,
-    Trap
-}
+    public TransistionTest(string transition) { this.transition = transition; }
+  }
+  public enum TypeData { Nothing, Group, Wall, Trap }
 
-public class InitAttackPhase : MonoBehaviour
-{
+  public class InitAttackPhase : MonoBehaviour {
     private static int idMobInit = 0;
     public const int MAP_SIZE = 25;
 
@@ -46,12 +35,14 @@ public class InitAttackPhase : MonoBehaviour
     [SerializeField]
     private ScriptsExposer se;
 
-    [SerializeField] private InitDefense initDefense;
+    [SerializeField]
+    private InitDefense initDefense;
 
-    [SerializeField] private HoverDetector hoverDetector;
+    [SerializeField]
+    private HoverDetector hoverDetector;
 
-    private string[,] tempMap1;
-    private string[,] tempMap2;
+    private string[, ] tempMap1;
+    private string[, ] tempMap2;
 
     private Monster monster2;
 
@@ -59,288 +50,285 @@ public class InitAttackPhase : MonoBehaviour
 
     private string currentMap;
 
-    public void GenerateArray()
-    {
-        tempMap1 = new string[MAP_SIZE, MAP_SIZE];
-        tempMap2 = new string[MAP_SIZE, MAP_SIZE];
+    public void GenerateArray() {
+      tempMap1 = new string[MAP_SIZE, MAP_SIZE];
+      tempMap2 = new string[MAP_SIZE, MAP_SIZE];
 
-        for (int i = 0; i < MAP_SIZE; i++)
-        {
-            for (int j = 0; j < MAP_SIZE; j++)
-            {
-                int rand = Random.Range(1, 11) % 10;
+      for (int i = 0; i < MAP_SIZE; i++) {
+        for (int j = 0; j < MAP_SIZE; j++) {
+          int rand = Random.Range(1, 11) % 10;
 
-//                    tempMap1[i, j] = (rand == 0 ? (int)TypeData.Wall : (int)TypeData.Nothing) + ":" + "" + ":" + "[]";
-//                    tempMap2[i, j] = (rand == 0 ? (int)TypeData.Wall : (int)TypeData.Nothing) + ":" + "" + ":" + "[]";
+          //                    tempMap1[i, j] = (rand == 0 ? (int)TypeData.Wall
+          //                    : (int)TypeData.Nothing) + ":" + "" + ":" +
+          //                    "[]"; tempMap2[i, j] = (rand == 0 ?
+          //                    (int)TypeData.Wall : (int)TypeData.Nothing) +
+          //                    ":" + "" + ":" + "[]";
 
-                tempMap1[i, j] = (int)TypeData.Nothing + ":" + "" + ":" + "[]";
-                tempMap2[i, j] = (int)TypeData.Nothing + ":" + "" + ":" + "[]";
-            }
+          tempMap1[i, j] = (int) TypeData.Nothing + ":" + "" + ":" + "[]";
+          tempMap2[i, j] = (int) TypeData.Nothing + ":" + "" + ":" + "[]";
         }
+      }
 
-        tempMap2[MAP_SIZE / 4, MAP_SIZE / 4] = (int)TypeData.Group + ":" + "1" + ":" + "[]";
-//            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group + ":" + "1" + ":" + "[3]";
+      tempMap2[MAP_SIZE / 4, MAP_SIZE / 4] =
+          (int) TypeData.Group + ":" + "1" + ":" + "[]";
+      //            tempMap2[MAP_SIZE - 3, MAP_SIZE - 3] = (int)TypeData.Group +
+      //            ":" + "1" + ":" + "[3]";
     }
 
-    public string ClearMapString(string maps)
-    {
-        Debug.Log(maps);
-        string header = "GRID\":\"{";
-        int indexInit = maps.IndexOf(header);
+    public string ClearMapString(string maps) {
+      Debug.Log(maps);
+      string header = "GRID\":\"{";
+      int indexInit = maps.IndexOf(header);
 
-        maps = maps.Substring(indexInit + header.Length);
+      maps = maps.Substring(indexInit + header.Length);
 
-        int footerPosition = maps.IndexOf("}\"}");
+      int footerPosition = maps.IndexOf("}\"}");
 
-        maps = maps.Substring(0, footerPosition);
+      maps = maps.Substring(0, footerPosition);
 
-        return maps;
+      return maps;
     }
 
-    public (string, int, int, TypeData, int, List<int>) ParseString(string maps)
-    {
-        TypeData type;
-        int idElement;
-        List<int> idEquipements = new List<int>();
+    public(string, int, int, TypeData, int, List<int>)
+        ParseString(string maps) {
+      TypeData type;
+      int idElement;
+      List<int> idEquipements = new List<int>();
 
-        int x;
-        int y;
+      int x;
+      int y;
 
-        int lastIndexString = maps.IndexOf(";");
+      int lastIndexString = maps.IndexOf(";");
 
-        string lineToParse = maps.Substring(0, lastIndexString);
-        string returningMap = maps.Substring(lastIndexString + 1);
+      string lineToParse = maps.Substring(0, lastIndexString);
+      string returningMap = maps.Substring(lastIndexString + 1);
 
-        int firstColon = lineToParse.IndexOf(':');
-        int secondColon = lineToParse.IndexOf(':', firstColon + 1);
+      int firstColon = lineToParse.IndexOf(':');
+      int secondColon = lineToParse.IndexOf(':', firstColon + 1);
 
-        x = Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
-        y = Int32.Parse(lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim());
+      x = Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
+      y = Int32.Parse(
+          lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1))
+              .Trim());
 
-        lineToParse = lineToParse.Substring(secondColon + 1);
-        firstColon = lineToParse.IndexOf(':');
+      lineToParse = lineToParse.Substring(secondColon + 1);
+      firstColon = lineToParse.IndexOf(':');
 
-        if (firstColon == -1)
-        {
-            firstColon = lineToParse.Length;
-        }
-        else
-        {
-            secondColon = lineToParse.IndexOf(':', firstColon + 1);
-        }
+      if (firstColon == -1) {
+        firstColon = lineToParse.Length;
+      } else {
+        secondColon = lineToParse.IndexOf(':', firstColon + 1);
+      }
 
-        type = (TypeData)Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
+      type =
+          (TypeData) Int32.Parse(lineToParse.Substring(0, firstColon).Trim());
 
-        Debug.Log("Want to spawn : " + type + " idType : " + lineToParse.Substring(0, firstColon).Trim());
+      Debug.Log("Want to spawn : " + type +
+                " idType : " + lineToParse.Substring(0, firstColon).Trim());
 
-        if (firstColon == lineToParse.Length)
-        {
-            return (returningMap, x, y, type, 0, idEquipements);
-        }
+      if (firstColon == lineToParse.Length) {
+        return (returningMap, x, y, type, 0, idEquipements);
+      }
 
-        string idElementString = lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1)).Trim();
-        idElement = Int32.Parse(idElementString);
+      string idElementString =
+          lineToParse.Substring(firstColon + 1, secondColon - (firstColon + 1))
+              .Trim();
+      idElement = Int32.Parse(idElementString);
 
-        int firstBracket = lineToParse.IndexOf('[');
-        int secondBracket = lineToParse.IndexOf(']');
+      int firstBracket = lineToParse.IndexOf('[');
+      int secondBracket = lineToParse.IndexOf(']');
 
-        if (firstBracket == secondBracket - 1 || firstBracket == -1)
-        {
-            return (returningMap, x, y, type, idElement, idEquipements);
-        }
-
-        string lineArray = lineToParse.Substring(firstBracket + 1);
-        string valueToParse = lineArray.Trim();
-
-        bool wantToLeave = false;
-        do
-        {
-            int indexComma = valueToParse.IndexOf(',');
-            if (indexComma == -1)
-            {
-                indexComma = valueToParse.Length - 1;
-                wantToLeave = true;
-            }
-
-            idEquipements.Add(Int32.Parse(valueToParse.Substring(0, indexComma)));
-
-            if (!wantToLeave)
-            {
-                valueToParse = valueToParse.Substring(indexComma + 1);
-            }
-        } while (!wantToLeave);
-
+      if (firstBracket == secondBracket - 1 || firstBracket == -1) {
         return (returningMap, x, y, type, idElement, idEquipements);
+      }
+
+      string lineArray = lineToParse.Substring(firstBracket + 1);
+      string valueToParse = lineArray.Trim();
+
+      bool wantToLeave = false;
+      do {
+        int indexComma = valueToParse.IndexOf(',');
+        if (indexComma == -1) {
+          indexComma = valueToParse.Length - 1;
+          wantToLeave = true;
+        }
+
+        idEquipements.Add(Int32.Parse(valueToParse.Substring(0, indexComma)));
+
+        if (!wantToLeave) {
+          valueToParse = valueToParse.Substring(indexComma + 1);
+        }
+      } while (!wantToLeave);
+
+      return (returningMap, x, y, type, idElement, idEquipements);
     }
 
-    private void GeneratingMap(string maps, int playerIndex)
-    {
-        TypeData type;
-        int idElement;
-        List<int> idEquipements;
-        int x;
-        int y;
+    private void GeneratingMap(string maps, int playerIndex) {
+      TypeData type;
+      int idElement;
+      List<int> idEquipements;
+      int x;
+      int y;
 
-        maps = ClearMapString(maps);
+      maps = ClearMapString(maps);
 
-        while (maps.Length > 0)
-        {
-            (maps, x, y, type, idElement, idEquipements) = ParseString(maps);
+      while (maps.Length > 0) {
+        (maps, x, y, type, idElement, idEquipements) = ParseString(maps);
 
-            Debug.Log("New map : " + maps);
-            switch (type)
-            {
-            case TypeData.Nothing:
-                break;
-            case TypeData.Group:
-                Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
-                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
-                InstantiateGroupsMonster(groups, newPos, idEquipements);
-                break;
-            case TypeData.Trap:
-                GameObject trap = objectPoolerDefense.GetPooledObject(0);
-                TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
-                trapBehavior.trapModels[idElement].SetActive(true);
-                trapBehavior.rotation = idEquipements[0];
-                trap.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f, y * 2 + initDefense.currentMap.transform.localPosition.z);
-                trap.SetActive(true);
+        Debug.Log("New map : " + maps);
+        switch (type) {
+        case TypeData.Nothing:
+          break;
+        case TypeData.Group:
+          Vector3 newPos = new Vector3(
+              x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f,
+              y * 2 + initDefense.currentMap.transform.localPosition.z);
+          GroupsMonster groups =
+              DataObject.MonsterList.GetGroupsMonsterById(idElement);
+          InstantiateGroupsMonster(groups, newPos, idEquipements);
+          break;
+        case TypeData.Trap:
+          GameObject trap = objectPoolerDefense.GetPooledObject(0);
+          TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
+          trapBehavior
+              .trapModels [idElement]
+              .SetActive(true);
+          trapBehavior.rotation = idEquipements[0];
+          trap.transform.position = new Vector3(
+              x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f,
+              y * 2 + initDefense.currentMap.transform.localPosition.z);
+          trap.SetActive(true);
 
-                DataObject.objectInScene.Add(trap);
-                break;
-            case TypeData.Wall:
-                GameObject wall = objectPoolerDefense.GetPooledObject(1);
-                wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
-                wall.SetActive(true);
+          DataObject.objectInScene.Add(trap);
+          break;
+        case TypeData.Wall:
+          GameObject wall = objectPoolerDefense.GetPooledObject(1);
+          wall.transform.position = new Vector3(
+              x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f,
+              y * 2 + initDefense.currentMap.transform.localPosition.z);
+          wall.SetActive(true);
 
-                DataObject.objectInScene.Add(wall);
-                break;
-            }
+          DataObject.objectInScene.Add(wall);
+          break;
         }
+      }
     }
 
-    private void DesactiveDefenseMap()
-    {
-        if (hoverDetector.objectInHand != null)
-        {
-            hoverDetector.objectInHand.SetActive(false);
+    private void DesactiveDefenseMap() {
+      if (hoverDetector.objectInHand != null) {
+        hoverDetector.objectInHand.SetActive(false);
+      }
+
+      foreach (GameObject go in initDefense.gridCellList) {
+        GridTileController gridTileController =
+            go.GetComponent<GridTileController>();
+
+        if (gridTileController.content != null) {
+          gridTileController.content.transform.position =
+              new Vector3(0, -10, 0);
+          gridTileController.content.SetActive(false);
         }
 
-        foreach (GameObject go in initDefense.gridCellList)
-        {
-            GridTileController gridTileController = go.GetComponent<GridTileController>();
-
-            if (gridTileController.content != null)
-            {
-                gridTileController.content.transform.position = new Vector3(0,-10,0);
-                gridTileController.content.SetActive(false);
-            }
-
-            go.SetActive(false);
-        }
+        go.SetActive(false);
+      }
     }
 
-    private IEnumerator WaitingForGenerateMap()
-    {
-        while (currentMap == null)
-        {
-            if (se.gameController.byPassDefense)
-            {
-                break;
-            }
-
-            yield return new WaitForSeconds(1f);
+    private IEnumerator WaitingForGenerateMap() {
+      while (currentMap == null) {
+        if (se.gameController.byPassDefense) {
+          break;
         }
 
-        objectsInScene.containerDefense.SetActive(false);
-        objectsInScene.containerAttack.SetActive(true);
+        yield return new WaitForSeconds(1f);
+      }
 
-        DataObject.playerInScene.Clear();
-        DataObject.monsterInScene.Clear();
-        DataObject.objectInScene.Clear();
+      objectsInScene.containerDefense.SetActive(false);
+      objectsInScene.containerAttack.SetActive(true);
 
-        if (!se.gameController.byPassDefense)
-        {
-            GeneratingMap(currentMap, GameController.PlayerIndex);
-        }
+      DataObject.playerInScene.Clear();
+      DataObject.monsterInScene.Clear();
+      DataObject.objectInScene.Clear();
 
-        ActivePlayer();
+      if (!se.gameController.byPassDefense) {
+        GeneratingMap(currentMap, GameController.PlayerIndex);
+      }
 
-        endOfGeneration = true;
+      ActivePlayer();
+
+      endOfGeneration = true;
     }
 
-    public void StartAttackPhase()
-    {
-        DesactiveDefenseMap();
+    public void StartAttackPhase() {
+      DesactiveDefenseMap();
 
-        objectsInScene.containerDefense.SetActive(false);
-        objectsInScene.containerAttack.SetActive(true);
+      objectsInScene.containerDefense.SetActive(false);
+      objectsInScene.containerAttack.SetActive(true);
 
-        DataObject.playerInScene.Clear();
-        DataObject.monsterInScene.Clear();
-        DataObject.objectInScene.Clear();
+      DataObject.playerInScene.Clear();
+      DataObject.monsterInScene.Clear();
+      DataObject.objectInScene.Clear();
 
-        if (!se.gameController.byPassDefense)
-        {
-            GeneratingMap(GameController.mapReceived, GameController.PlayerIndex);
-        }
-        else
-        {
-            string map = "GRID\":\"{-2:-3:1:1:[0,2,0,0,0];}\"}";
-            GeneratingMap(map, GameController.PlayerIndex);
-        }
+      if (!se.gameController.byPassDefense) {
+        GeneratingMap(GameController.mapReceived, GameController.PlayerIndex);
+      } else {
+        string map = "GRID\":\"{-2:-3:1:1:[0,2,0,0,0];}\"}";
+        GeneratingMap(map, GameController.PlayerIndex);
+      }
 
-        GameController.mapReceived = null;
-        ActivePlayer();
+      GameController.mapReceived = null;
+      ActivePlayer();
 
-        endOfGeneration = true;
+      endOfGeneration = true;
     }
 
-    private void ActivePlayer()
-    {
-        objectsInScene.mainCamera.SetActive(false);
+    private void ActivePlayer() {
+      objectsInScene.mainCamera.SetActive(false);
 
-        objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
-        objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
+      objectsInScene.playerPrefab[GameController.PlayerIndex]
+          .playerGameObject.SetActive(true);
+      objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
-        objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
+      objectsInScene.playerPrefab[GameController.PlayerIndex]
+          .cameraGameObject.SetActive(true);
 
-        Cursor.lockState = CursorLockMode.Locked;
+      Cursor.lockState = CursorLockMode.Locked;
 
-        DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
+      DataObject.playerInScene.Add(
+          GameController.PlayerIndex,
+          objectsInScene.playerPrefab[GameController.PlayerIndex]);
     }
 
-    public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
-    {
-        InstantiateParameters param;
-        Monster monster;
-        int nbMonsterInit = 0;
+    public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position,
+                                         List<int> equipment) {
+      InstantiateParameters param;
+      Monster monster;
+      int nbMonsterInit = 0;
 
-        Vector3 origPos = position;
+      Vector3 origPos = position;
 
-        foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
-        {
-            for (int i = 0; i < mobs.Value; i++)
-            {
-                monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
+      foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups) {
+        for (int i = 0; i < mobs.Value; i++) {
+          monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
 
-                GameObject monsterGameObject = Instantiate(monster.model);
-                monsterGameObject.transform.position = position;
+          GameObject monsterGameObject = Instantiate(monster.model);
+          monsterGameObject.transform.position = position;
 
-                monster.IdEntity = idMobInit;
-                idMobInit++;
-                nbMonsterInit++;
+          monster.IdEntity = idMobInit;
+          idMobInit++;
+          nbMonsterInit++;
 
-                MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                monster.SetMonsterPrefab(monsterPrefab);
-                monsterPrefab.SetMonster(monster);
+          MonsterPrefab monsterPrefab =
+              monsterGameObject.GetComponent<MonsterPrefab>();
+          monster.SetMonsterPrefab(monsterPrefab);
+          monsterPrefab.SetMonster(monster);
 
-                groups.InitSpecificEquipment(monster, equipment);
+          groups.InitSpecificEquipment(monster, equipment);
 
-                position = origPos + GroupsPosition.position[nbMonsterInit];
+          position = origPos + GroupsPosition.position[nbMonsterInit];
 
-                DataObject.monsterInScene.Add(monster);
-            }
+          DataObject.monsterInScene.Add(monster);
         }
+      }
     }
-}
+  }
 }

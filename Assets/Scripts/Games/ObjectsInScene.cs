@@ -2,44 +2,43 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Games
-{
-public class ObjectsInScene : MonoBehaviour
-{
-    // ============================ MAIN CAMERA ========================
+namespace Games {
+public class ObjectsInScene : MonoBehaviour {
+  // ============================ MAIN CAMERA ========================
 
-    [SerializeField]
-    public GameObject mainCamera;
+  [SerializeField]
+  public GameObject mainCamera;
 
-    // ============================ CANVAS AND COUNTER ACCESS =============
+  // ============================ CANVAS AND COUNTER ACCESS =============
 
-    [SerializeField]
-    public Text waitingText;
+  [SerializeField]
+  public Text waitingText;
 
-    [SerializeField]
-    public Text counterText;
+  [SerializeField]
+  public Text counterText;
 
-    // ============================ PRINCIPAL ATTACK AND DEFENSE CONTAINER =============
+  // ============================ PRINCIPAL ATTACK AND DEFENSE CONTAINER
+  // =============
 
-    [SerializeField]
-    public GameObject containerDefense;
+  [SerializeField]
+  public GameObject containerDefense;
 
-    [SerializeField]
-    public GameObject containerAttack;
+  [SerializeField]
+  public GameObject containerAttack;
 
-    // =========================== PLAYER CHARACTER ========================
+  // =========================== PLAYER CHARACTER ========================
 
-    [SerializeField]
-    public PlayerPrefab[] playerPrefab;
+  [SerializeField]
+  public PlayerPrefab[] playerPrefab;
 
-    // ========================== ACCESS TO MAP CONTAINER ==================
+  // ========================== ACCESS TO MAP CONTAINER ==================
 
-    [SerializeField]
-    public GameObject[] maps;
+  [SerializeField]
+  public GameObject[] maps;
 
-    // ========================== OBJECT GENERATE IN MAP ==================
+  // ========================== OBJECT GENERATE IN MAP ==================
 
-    [SerializeField]
-    public GameObject simpleWall;
+  [SerializeField]
+  public GameObject simpleWall;
 }
 }
