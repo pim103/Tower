@@ -136,7 +136,11 @@ namespace SpellEditor
 
         private void ChooseSpellToImport()
         {
-            string path = EditorUtility.OpenFilePanel("Choose your spell", Application.dataPath + "/Data/SpellsJson", "json");
+            string path = null;
+            #if UNITY_EDITOR
+            path = EditorUtility.OpenFilePanel("Choose your spell", Application.dataPath + "/Data/SpellsJson", "json");
+            #endif
+            
 
             if (path == null)
             {

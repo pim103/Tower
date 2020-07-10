@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using FullSerializer;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace Menus
 {
@@ -50,41 +54,37 @@ namespace Menus
         {
             returnButton.onClick.AddListener(ReturnAction);
             readyButton.onClick.AddListener(SetReadyAction);
-            
             var setSocket = new Dictionary<string, string>();
             setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
             setSocket.Add("room", NetworkingController.CurrentRoomToken);
-            TowersWebSocket.TowerSender("SELF", "GENERAL","null", "joinWaitingRanked", TowersWebSocket.FromDictToString(setSocket));
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "joinWaitingRanked", TowersWebSocket.FromDictToString(setSocket));
             TowersWebSocket.wsGame.OnMessage += (sender, args) =>
             {
                 if (args.Data.Contains("callbackMessages"))
                 {
-                    Debug.Log("Test");
-                    callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
-                    foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
+                    fsSerializer serializer = new fsSerializer();
+                    fsData data;
+                    CallbackMessages callbackMessage = null; 
+                    try
                     {
-                        if (callback.Message == "WaitingForRanked")
+                        data = fsJsonParser.Parse(args.Data);
+                        Debug.Log(data);
+                        serializer.TryDeserialize(data, ref callbackMessage);
+                        callbackMessage = Tools.Clone(callbackMessage);
+                        if (callbackMessage.callbackMessages.room != null)
                         {
-                            Debug.Log(callback.Message);
-                        }
-                        if (callback.Message == "MatchStart")
-                        {
-                            Debug.Log("Done!");
+                            NetworkingController.CurrentRoomToken = callbackMessage.callbackMessages.room;
                             canStart = args.Data;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Can't read callback : " + e.Message);
+                    }
+
                 }
             };
-            /*
-            
-            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
-            {
-                if (args.Data == "{\"CanStartHandler\":[{\"message\":\"true\"}]}")
-                {
-                    Debug.Log("Done!");
-                    canStart = args.Data;
-                }
-            };*/
+
             StartCoroutine(WaitingForCanStart());
         }
 
