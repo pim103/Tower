@@ -241,35 +241,6 @@ namespace Games.Attacks
             }
         }
 
-        private IEnumerator WaitingForGenerateMap()
-        {
-            while (currentMap == null)
-            {
-                if (se.gameController.byPassDefense)
-                {
-                    break;
-                }
-
-                yield return new WaitForSeconds(1f);
-            }
-            
-            objectsInScene.containerDefense.SetActive(false);
-            objectsInScene.containerAttack.SetActive(true);
-            
-            DataObject.playerInScene.Clear();
-            DataObject.monsterInScene.Clear();
-            DataObject.objectInScene.Clear();
-
-            if (!se.gameController.byPassDefense)
-            {
-                GeneratingMap(currentMap, GameController.PlayerIndex);
-            }
-
-            ActivePlayer();
-
-            endOfGeneration = true;
-        }
-        
         public void StartAttackPhase()
         {
             DesactiveDefenseMap();

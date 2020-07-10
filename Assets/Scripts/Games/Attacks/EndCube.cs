@@ -1,6 +1,8 @@
-﻿using Games.Defenses;
+﻿using System.Collections.Generic;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Players;
 using Networking;
 using Networking.Client;
 using UnityEngine;
@@ -27,8 +29,14 @@ namespace Games.Attacks
             {
                 monster.entityPrefab.gameObject.SetActive(false);
             }
+
+            foreach (KeyValuePair<int, PlayerPrefab> players in DataObject.playerInScene)
+            {
+                players.Value.entity.hp -= 10;
+                players.Value.Reset();
+            }
         }
-        
+
         private void OnTriggerEnter(Collider other)
         {
             Cursor.lockState = CursorLockMode.None;

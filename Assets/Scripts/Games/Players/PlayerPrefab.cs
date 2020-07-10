@@ -47,6 +47,15 @@ namespace Games.Players
 
         public bool wasConfusing = false;
 
+        public void Reset()
+        {
+            wantToGoBack = false;
+            wantToGoForward = false;
+            wantToGoLeft = false;
+            wantToGoRight = false;
+            pressDefenseButton = false;
+        }
+        
         private void Start()
         {
             if (isFakePlayer)

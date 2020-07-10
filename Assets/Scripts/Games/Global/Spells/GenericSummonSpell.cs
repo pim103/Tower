@@ -41,12 +41,19 @@ namespace Games.Global.Spells
 
             summon = new Entity
             {
+                initialDef = 0,
+                initialMagicalDef = 0,
+                initialPhysicalDef = 0,
                 def = 0,
                 magicalDef = 0,
                 physicalDef = 0,
+                initialHp = summonSpell.hp,
                 hp = summonSpell.hp,
+                initialAttSpeed = summonSpell.attackSpeed,
                 attSpeed = summonSpell.attackSpeed,
+                initialAtt = summonSpell.attackDamage,
                 att = summonSpell.attackDamage,
+                initialSpeed = summonSpell.moveSpeed,
                 speed = summonSpell.moveSpeed,
                 typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
