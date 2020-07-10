@@ -45,7 +45,7 @@ namespace SpellEditor
 
         private void Start()
         {
-            StartCoroutine(FixSpell());
+            //StartCoroutine(FixSpell());
             spellPanel.SetActive(false);
             spellComponentPanel.SetActive(false);
             effectPanel.SetActive(false);
