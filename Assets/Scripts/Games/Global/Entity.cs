@@ -11,6 +11,7 @@ using Games.Global.Spells.SpellsController;
 //using Games.Global.Patterns;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking;
 using Networking.Client;
 using TMPro;
 using UnityEngine;
@@ -300,7 +301,7 @@ namespace Games.Global
 
                 if (isPlayer)
                 {
-                    TowersWebSocket.TowerSender("OTHERS", GameController.staticRoomId, "Player", "SendDeath", null);
+                    TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "Player", "SendDeath", null);
                     Debug.Log("Vous êtes mort");
                     Cursor.lockState = CursorLockMode.None;
                     SceneManager.LoadScene("MenuScene");
