@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
+using FullSerializer;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utils;
 
 namespace Games {
     public class GameController : MonoBehaviour
@@ -74,32 +76,35 @@ namespace Games {
                 {
                     if (args.Data.Contains("callbackMessages"))
                     {
-                        Debug.Log("callbackMessages_Debug");
-                        callbackHandlers = JsonUtility.FromJson<CallbackMessages>(args.Data);
-                        /*foreach (CallbackMessage callback in callbackHandlers.callbackMessages)
+                        fsSerializer serializer = new fsSerializer();
+                        fsData data;
+                        CallbackMessages callbackMessage = null; 
+                        try
                         {
-                            if (callback.Identity != null)
+                            data = fsJsonParser.Parse(args.Data);
+                            Debug.Log(data);
+                            serializer.TryDeserialize(data, ref callbackMessage);
+                            callbackMessage = Tools.Clone(callbackMessage);
+                            if (callbackMessage.callbackMessages.message == "WON")
                             {
-                                Debug.Log(callback.Identity);
+                                Debug.Log("Un autre joueur a gagné");
+                                otherPlayerDie = true;
                             }
-                        }*/
+                            if (callbackMessage.callbackMessages.message == "DEATH")
+                            {
+                                Debug.Log("Vous avez gagné");
+                                otherPlayerDie = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.Log("Can't read callback : " + e.Message);
+                        }
                     }
                     if (args.Data.Contains("GRID"))
                     {
                         mapReceived = args.Data;
                         Debug.Log(args.Data);
-                    }
-
-                    if (args.Data.Contains("DEATH"))
-                    {
-                        Debug.Log("Vous avez gagné");
-                        otherPlayerDie = true;
-                    }
-
-                    if (args.Data.Contains("WON"))
-                    {
-                        Debug.Log("Un autre joueur a gagné");
-                        otherPlayerDie = true;
                     }
                 };
             }
