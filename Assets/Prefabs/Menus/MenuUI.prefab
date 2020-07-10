@@ -14783,6 +14783,7 @@ GameObject:
   - component: {fileID: 63351540213862536}
   - component: {fileID: 63351540213862539}
   - component: {fileID: 2138162986}
+  - component: {fileID: 2718084442848477981}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -14833,7 +14834,7 @@ MonoBehaviour:
   - {fileID: 447014232942690038}
   environnement: PROD
   staticRoomId: GENERAL
-  transitionMenuGame: {fileID: 0}
+  transitionMenuGame: {fileID: 2718084442848477981}
   searchingMatchCanvas: {fileID: 8540614462084689039}
   cancelResearchMatchButton: {fileID: 1376672166612389482}
 --- !u!114 &2138162986
@@ -14861,6 +14862,21 @@ MonoBehaviour:
   - {fileID: 9160184416435336024, guid: 00d328ec7d61dab47a4ec94623b2f078, type: 3}
   - {fileID: 3304400958822842756, guid: 7051899b05b3db3478e31e60a2af352a, type: 3}
   effectMaterials: []
+--- !u!114 &2718084442848477981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63351540213862538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d79b324d6bf53cc46ad50643ccea701b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsInScene: {fileID: 0}
+  initDefense: {fileID: 0}
+  chooseRoleAndDeckGameObject: {fileID: 0}
 --- !u!1 &63351540218557734
 GameObject:
   m_ObjectHideFlags: 0
@@ -16634,7 +16650,6 @@ GameObject:
   m_Component:
   - component: {fileID: 63351540405610385}
   - component: {fileID: 7129038235692877712}
-  - component: {fileID: 7799379460040985270}
   m_Layer: 5
   m_Name: MenuListingPlayer
   m_TagString: Untagged
@@ -16682,21 +16697,6 @@ MonoBehaviour:
   playerCase: {fileID: 1292247834563894579, guid: b7d761d363726bb4d92d92869c39eac0,
     type: 3}
   contentListPlayer: {fileID: 4944727870155430947}
---- !u!114 &7799379460040985270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63351540405610389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d79b324d6bf53cc46ad50643ccea701b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectsInScene: {fileID: 0}
-  initDefense: {fileID: 0}
-  chooseRoleAndDeckGameObject: {fileID: 0}
 --- !u!1 &63351540453356151
 GameObject:
   m_ObjectHideFlags: 0
