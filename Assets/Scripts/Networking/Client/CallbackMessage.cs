@@ -16,7 +16,8 @@ namespace Networking.Client
         public string message { get; set; } = null;
         public CallbackIdentity identity { get; set; } = null;
         public string room { get; set; } = null;
-        
+        public int[] maps { get; set; } = null;
+
     }
     
     [Serializable]
@@ -24,6 +25,5 @@ namespace Networking.Client
     {
         public int classes { get; set; } = -1;
         public int weapon { get; set; } = -1;
-
     }
 }

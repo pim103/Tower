@@ -74,6 +74,7 @@ namespace Menus
                         if (callbackMessage.callbackMessages.room != null)
                         {
                             NetworkingController.CurrentRoomToken = callbackMessage.callbackMessages.room;
+                            NetworkingController.CurrentRoomMapsLevel = callbackMessage.callbackMessages.maps;
                             canStart = args.Data;
                         }
                     }

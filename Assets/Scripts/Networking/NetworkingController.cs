@@ -9,6 +9,7 @@ namespace Networking
         public static string AuthToken { get; set; }
         public static string AuthRole { get; set; }
         public static string CurrentRoomToken { get; set; }
+        public static int[] CurrentRoomMapsLevel { get; set; }
         public static string CurrentChatToken { get; set; }
         public static string Environnement { get; set; }
         public static readonly string GameToken = "-dx+L-oGb:EDJ,kGcP(7lVTe^0?9nv";

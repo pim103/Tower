@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Games.Transitions;
+using Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -51,7 +52,7 @@ namespace Games.Defenses
 
             if (currentLevel < maps.Length)
             {
-                currentMap = maps[currentLevel].mapsInLevel[Random.Range(0, maps[currentLevel].mapsInLevel.Length)];
+                currentMap = maps[currentLevel].mapsInLevel[NetworkingController.CurrentRoomMapsLevel[currentLevel]];
                 currentMap.SetActive(true);
                 currentMapStats = currentMap.GetComponent<MapStats>();
                 hoverDetector.dest = currentMapStats.endCube;
