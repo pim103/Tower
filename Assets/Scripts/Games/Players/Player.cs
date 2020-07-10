@@ -50,6 +50,73 @@ namespace Games.Players
             }
         }
 
+        public void ResetSpellCooldownAndStatus()
+        {
+            basicAttack.isOnCooldown = false;
+            basicDefense.isOnCooldown = false;
+            
+            foreach (Spell spell in spells)
+            {
+                spell.isOnCooldown = false;
+            }
+
+            underEffects.Clear();
+            damageDealExtraEffect.Clear();
+            damageReceiveExtraEffect.Clear();
+            currentBuff.Clear();
+
+            SpellController.CastPassiveSpell(this);
+        }
+
+        public void ResetStats()
+        {
+            switch(mainClass)
+            {
+                case Classes.Mage:
+                    att = initialAtt;
+                    def = initialDef;
+                    speed = initialSpeed;
+                    hp = initialHp;
+                    ressource1 = initialRessource1;
+                    attSpeed = initialAttSpeed;
+                    physicalDef = initialPhysicalDef;
+                    magicalDef = initialMagicalDef;
+                    break;
+                case Classes.Warrior:
+                    att = initialAtt;
+                    def = initialDef;
+                    speed = initialSpeed;
+                    hp = initialHp;
+                    ressource1 = initialRessource1;
+                    attSpeed = initialAttSpeed;
+                    physicalDef = initialPhysicalDef;
+                    magicalDef = initialMagicalDef;
+                    break;
+                case Classes.Rogue:
+                    att = initialAtt;
+                    def = initialDef;
+                    speed = initialSpeed;
+                    hp = initialHp;
+                    ressource1 = initialRessource1;
+                    attSpeed = initialAttSpeed;
+                    physicalDef = initialPhysicalDef;
+                    magicalDef = initialMagicalDef;
+                    break;
+                case Classes.Ranger:
+                    att = initialAtt;
+                    def = initialDef;
+                    speed = initialSpeed;
+                    hp = initialHp;
+                    ressource1 = initialRessource1;
+                    attSpeed = initialAttSpeed;
+                    physicalDef = initialPhysicalDef;
+                    magicalDef = initialMagicalDef;
+                    break;
+            }
+
+            ResetSpellCooldownAndStatus();
+        }
+        
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;
@@ -107,6 +174,8 @@ namespace Games.Players
             initialAttSpeed = attSpeed;
             initialRessource1 = ressource1;
             initialRessource2 = ressource2;
+            initialMagicalDef = magicalDef;
+            initialPhysicalDef = physicalDef;
 
             InitEntityList();
             int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);

@@ -54,6 +54,10 @@ namespace Games.Players
             wantToGoLeft = false;
             wantToGoRight = false;
             pressDefenseButton = false;
+
+            Player player = entity as Player;
+            player.ResetStats();
+            
         }
         
         private void Start()
