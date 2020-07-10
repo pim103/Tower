@@ -1126,7 +1126,7 @@ MonoBehaviour:
   se: {fileID: 194075448}
   endPoint: wss://towers.heolia.eu/websocket
   roomId: okBoomer
-  byPassDefense: 0
+  byPassDefense: 1
 --- !u!114 &194075444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3063,7 +3063,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000076293945}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &847064013
@@ -4674,7 +4674,15 @@ MonoBehaviour:
     shouldExpand: 0
   - objectToPool: {fileID: 1823666873270623259, guid: d9f42f42df8d61b4484da2eccdd8ca4b,
       type: 3}
-    amountToPool: 5
+    amountToPool: 10
+    shouldExpand: 0
+  - objectToPool: {fileID: 1085606648044204213, guid: e358ad1b151596447a407f0cbaaf3912,
+      type: 3}
+    amountToPool: 50
+    shouldExpand: 0
+  - objectToPool: {fileID: 331895918268181724, guid: 0d6dd91830298564d8b136bfd239ebd4,
+      type: 3}
+    amountToPool: 50
     shouldExpand: 0
   pooledObjects: []
 --- !u!114 &1495904576
@@ -5495,7 +5503,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1020235946}
   m_HandleRect: {fileID: 1020235945}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 0.99999976
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13671,7 +13679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000076293945}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4466237285151398002
@@ -14251,7 +14259,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4466237284961572548}
   m_HandleRect: {fileID: 4466237284961572551}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 0.99999976
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17011,21 +17019,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7401777425161430234, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: viewIdField
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: objectsInScene
-      value: 
-      objectReference: {fileID: 194075444}
-    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: se
-      value: 
-      objectReference: {fileID: 194075448}
     - target: {fileID: 7039976789761960675, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -17056,6 +17049,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7401777425161430234, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: viewIdField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: objectsInScene
+      value: 
+      objectReference: {fileID: 194075444}
+    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: se
+      value: 
+      objectReference: {fileID: 194075448}
     m_RemovedComponents:
     - {fileID: 7401777425161430233, guid: d4c010c5899cffe4a81036732de267a8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4c010c5899cffe4a81036732de267a8, type: 3}
