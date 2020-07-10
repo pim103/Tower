@@ -1,15 +1,14 @@
-
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using DeckBuilding;
- using System.Collections.Generic;
- using Games.Global.Weapons;
+using Games.Global.Weapons;
 using Games.Players;
 using Networking;
 using Networking.Client;
 using UnityEngine;
- using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Utils;
 
 namespace Games.Transitions
