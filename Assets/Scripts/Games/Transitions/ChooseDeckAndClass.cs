@@ -1,12 +1,15 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using DeckBuilding;
-using Games.Global.Weapons;
+ using System.Collections.Generic;
+ using Games.Global.Weapons;
 using Games.Players;
+using Networking;
+using Networking.Client;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+ using UnityEngine.UI;
 using Utils;
 
 namespace Games.Transitions
@@ -76,6 +79,10 @@ namespace Games.Transitions
 
         private void LaunchGame()
         {
+            Dictionary<string, int> argsDict = new Dictionary<string, int>();
+            argsDict.Add("class", (int)currentRoleIdentity.classe);
+            argsDict.Add("weapon", (int)currentWeaponIdentity.categoryWeapon);
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken, "Player", "SendClassWeapon", TowersWebSocket.FromDictToString(argsDict));
             isValidate = true;
         }
 
