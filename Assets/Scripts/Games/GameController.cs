@@ -87,6 +87,7 @@ namespace Games {
                     if (args.Data.Contains("GRID"))
                     {
                         mapReceived = args.Data;
+                        Debug.Log(args.Data);
                     }
 
                     if (args.Data.Contains("DEATH"))

@@ -193,6 +193,7 @@ namespace Games.Attacks
                     case TypeData.Nothing:
                         break;
                     case TypeData.Group:
+                        Debug.Log("Instantiate group : " + idElement);
                         Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
                         InstantiateGroupsMonster(groups, newPos, idEquipements);
@@ -202,6 +203,7 @@ namespace Games.Attacks
                         TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
                         trapBehavior.trapModels[idElement].SetActive(true);
                         trapBehavior.rotation = idEquipements[0];
+                        trap.transform.eulerAngles = new Vector3(trap.transform.eulerAngles.x,trapBehavior.rotation * 90, trap.transform.eulerAngles.z);
                         trap.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         trap.SetActive(true);
                         
@@ -285,7 +287,7 @@ namespace Games.Attacks
             }
             else
             {
-                string map = "GRID\":\"{-2:-3:1:1:[0,2,0,0,0];}\"}";
+                string map = "GRID\":\"{-7:0:1:1:[0,0,0,0,0];}\"}";
                 GeneratingMap(map, GameController.PlayerIndex);
             }
 
