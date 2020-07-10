@@ -18,9 +18,9 @@ namespace Games.Global.Weapons
            warriorSpells.Add("WarriorStaff3");
 
            mageSpells = new List<string>();
-           mageSpells.Add("");
+           mageSpells.Add("MageStaff1");
            mageSpells.Add("MageStaff2");
-           mageSpells.Add("");
+           mageSpells.Add("MageStaff3");
 
            rangerSpells = new List<string>();
            rangerSpells.Add("RangerStaff1");
