@@ -588,11 +588,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4891197118384083870, guid: d4059769c6bac754189732fbec904bb2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5566086995071674662, guid: d4059769c6bac754189732fbec904bb2,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -648,6 +643,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 86a3e6e818206734ca28afb43d4aaaed, type: 2}
+    - target: {fileID: 4891197118384083870, guid: d4059769c6bac754189732fbec904bb2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4059769c6bac754189732fbec904bb2, type: 3}
 --- !u!1 &149923703
@@ -965,12 +965,12 @@ PrefabInstance:
     - target: {fileID: 974520822388829904, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 974520822388829904, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6587678624003868067, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
@@ -985,7 +985,7 @@ PrefabInstance:
     - target: {fileID: 6879353960672757004, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8930399325141559551, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
@@ -1000,7 +1000,7 @@ PrefabInstance:
     - target: {fileID: 3232653585691823457, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.5
+      value: 1.5000038
       objectReference: {fileID: 0}
     - target: {fileID: 3232653585691823457, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
@@ -2840,6 +2840,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterGameObjects:
   - {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2, type: 3}
+  - {fileID: 8521370539132226987, guid: f9256e254adea044dbc66ef4b04350a8, type: 3}
+  - {fileID: 8521370539132226987, guid: 5ba9999810b233e4cba2d341be1aa941, type: 3}
+  - {fileID: 8521370539132226987, guid: 54c068c21b1ae344da8ac746ebb00b59, type: 3}
+  - {fileID: 8521370539132226987, guid: b3abb1d7114b17c41ab6326bd8358c37, type: 3}
   weaponsGameObject:
   - {fileID: 8179942023738884125, guid: 7f3b9f80817e3bc4d94ef3e458f33696, type: 3}
   - {fileID: 9160184416435336024, guid: 00d328ec7d61dab47a4ec94623b2f078, type: 3}

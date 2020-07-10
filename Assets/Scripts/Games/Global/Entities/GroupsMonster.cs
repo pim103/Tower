@@ -29,7 +29,7 @@ namespace Games.Global.Entities
         public Family family { get; set; }
         public int cost { get; set; }
         public string name { get; set; }
-        public int radius = DEFAULT_RADIUS;
+        public int radius { get; set; } = DEFAULT_RADIUS;
 
         // first int : idMonster - Second int : numberMonster
         public Dictionary<int, int> monsterInGroups { get; set; }

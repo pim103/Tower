@@ -38,9 +38,20 @@ namespace Games.Global.Entities
             throw new NotImplementedException();
         }
 
-        public void SetMonsterPrefab(MonsterPrefab newMonsterPrefab)
+        public void InitMonster(MonsterPrefab newMonsterPrefab)
         {
             monsterPrefab = newMonsterPrefab;
+            monsterPrefab.SetMonster(this);
+
+            if (constraint == TypeWeapon.Distance)
+            {
+                BehaviorType = BehaviorType.Distance;
+            } else if (constraint == TypeWeapon.Cac)
+            {
+                BehaviorType = BehaviorType.Melee;
+            }
+
+            AttackBehaviorType = AttackBehaviorType.Random;
         }
 
         public bool InitWeapon(int idWeapon)

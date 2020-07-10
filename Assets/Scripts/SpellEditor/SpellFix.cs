@@ -66,7 +66,8 @@ namespace SpellEditor
             {
                 return;
             }
-            
+
+            spell.isOnCooldown = false;
             ParsePropertyInfoForFix(spell, spell.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance));
         }
 

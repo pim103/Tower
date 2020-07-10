@@ -193,9 +193,10 @@ namespace Games.Attacks
                     case TypeData.Nothing:
                         break;
                     case TypeData.Group:
-                        Debug.Log("Instantiate group : " + idElement);
                         Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
+                        
+                        Debug.Log("Instantiate group : " + idElement);
                         InstantiateGroupsMonster(groups, newPos, idEquipements);
                         break;
                     case TypeData.Trap:
@@ -333,8 +334,7 @@ namespace Games.Attacks
                     nbMonsterInit++;
 
                     MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                    monster.SetMonsterPrefab(monsterPrefab);
-                    monsterPrefab.SetMonster(monster);
+                    monster.InitMonster(monsterPrefab);
 
                     groups.InitSpecificEquipment(monster, equipment);
 

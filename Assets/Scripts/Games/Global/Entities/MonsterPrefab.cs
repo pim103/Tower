@@ -24,7 +24,7 @@ namespace Games.Global.Entities
                 monster.def = 1;
                 monster.initialDef = 1;
                 
-                monster.SetMonsterPrefab(this);
+                monster.InitMonster(this);
                 monster.InitEntityList();
                 monster.weaponOriginalName = "Basic_Bow";
                 //TODO : change to monster

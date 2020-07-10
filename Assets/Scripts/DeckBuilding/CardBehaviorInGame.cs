@@ -112,8 +112,7 @@ namespace DeckBuilding
                     nbMonsterInit++;
 
                     //MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                    monster.SetMonsterPrefab(monsterPrefab);
-                    monsterPrefab.SetMonster(monster);
+                    monster.InitMonster(monsterPrefab);
                 
                     position = origPos + GroupsPosition.position[nbMonsterInit];
 
