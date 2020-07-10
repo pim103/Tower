@@ -54,8 +54,8 @@ namespace Menus
         
         private void SearchRanked()
         {
-            NetworkingController.CurrentRoomToken = "MatchmakingWaitinglist";
-            mc.ActivateMenu(MenuController.Menu.ListingPlayer);
+            mc.SearchMatch();
+            mc.ActivateMenu(MenuController.Menu.MainMenu);
         }
         
         IEnumerator CreateMatchRequest()

@@ -1,7 +1,13 @@
-﻿using Networking;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using FullSerializer;
+using Games.Transitions;
+using Networking;
 using Networking.Client;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Utils;
 
 namespace Menus
 {   
@@ -15,7 +21,15 @@ namespace Menus
         [SerializeField] 
         private string staticRoomId;
 
+        [SerializeField]
+        private TransitionMenuGame transitionMenuGame;
 
+        [SerializeField] private GameObject searchingMatchCanvas;
+        [SerializeField] private Button cancelResearchMatchButton;
+
+        private static string canStart;
+        private Coroutine searchingMatch;
+        
         public enum Menu
         {
             Connection,
@@ -35,9 +49,12 @@ namespace Menus
 
         private void Start()
         {
+            searchingMatchCanvas.active = false;
             ActivateMenu(Menu.Connection);
             NetworkingController.CurrentRoomToken = staticRoomId;
             NetworkingController.Environnement = environnement;
+            
+            cancelResearchMatchButton.onClick.AddListener(CancelResearchMatch);
         }
 
         public void ActivateMenu(Menu menuIndex)
@@ -62,6 +79,74 @@ namespace Menus
         public void QuitGame()
         {
             Application.Quit();
+        }
+
+        public void SearchMatch()
+        {
+            searchingMatchCanvas.active = true;
+            NetworkingController.CurrentRoomToken = "MatchmakingWaitinglist";
+
+            var setSocket = new Dictionary<string, string>();
+            setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
+            setSocket.Add("room", NetworkingController.CurrentRoomToken);
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "joinWaitingRanked", TowersWebSocket.FromDictToString(setSocket));
+            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
+            {
+                if (args.Data.Contains("callbackMessages"))
+                {
+                    fsSerializer serializer = new fsSerializer();
+                    fsData data;
+                    CallbackMessages callbackMessage = null; 
+                    try
+                    {
+                        data = fsJsonParser.Parse(args.Data);
+                        Debug.Log(data);
+                        serializer.TryDeserialize(data, ref callbackMessage);
+                        callbackMessage = Tools.Clone(callbackMessage);
+                        if (callbackMessage.callbackMessages.room != null && callbackMessage.callbackMessages.message == "MatchStart")
+                        {
+                            NetworkingController.CurrentRoomToken = callbackMessage.callbackMessages.room;
+                            NetworkingController.CurrentRoomMapsLevel = callbackMessage.callbackMessages.maps;
+                            canStart = args.Data;
+                        } else if (callbackMessage.callbackMessages.message == "QuitMatchmaking")
+                        {
+                            NetworkingController.CurrentRoomToken = "GENERAL";
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Can't read callback : " + e.Message);
+                    }
+                }
+            };
+
+            searchingMatch = StartCoroutine(WaitingForCanStart());
+        }
+        
+        private IEnumerator WaitingForCanStart()
+        {
+            yield return new WaitForSeconds(2f);
+            while (canStart == null)
+            {
+                Debug.Log("Waiting");
+                TowersWebSocket.TowerSender("ONLY_ONE", NetworkingController.CurrentRoomToken,"null", "getRankedMatch", "null");
+                yield return new WaitForSeconds(5f);
+            }
+            transitionMenuGame.InitGame();
+        }
+
+        private void CancelResearchMatch()
+        {
+            searchingMatchCanvas.active = false;
+            var setSocket = new Dictionary<string, string>();
+            setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
+            setSocket.Add("room", NetworkingController.CurrentRoomToken);
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "quitMatchmaking", TowersWebSocket.FromDictToString(setSocket));
+
+            if (searchingMatchCanvas != null)
+            {
+                StopCoroutine(searchingMatch);
+            }
         }
     }
 }
