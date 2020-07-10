@@ -3,6 +3,7 @@ using System.Collections;
 using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Spells;
+using Games.Players;
 using UnityEngine;
 
 namespace Games.Defenses
@@ -36,7 +37,8 @@ namespace Games.Defenses
                 activeState.SetActive(true);
                 AbilityParameters abilityParameters = new AbilityParameters();
                 abilityParameters.origin = entity;
-                playerEntity.TakeDamage(30.0f, abilityParameters, DamageType.Physical);
+                playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
+                playerEntity.TakeDamage(20.0f, abilityParameters, DamageType.Physical);
             }
         }
     }
