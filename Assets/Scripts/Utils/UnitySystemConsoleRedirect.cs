@@ -5,58 +5,60 @@ using UnityEngine;
 
 namespace Utils
 {
-    public static class UnitySystemConsoleRedirector
+public static class UnitySystemConsoleRedirector
+{
+    private class UnityTextWriter : TextWriter
     {
-        private class UnityTextWriter : TextWriter
+        private StringBuilder buffer = new StringBuilder();
+
+        public override void Flush()
         {
-            private StringBuilder buffer = new StringBuilder();
- 
-            public override void Flush()
+            Debug.Log(buffer.ToString());
+            buffer.Length = 0;
+        }
+
+        public override void Write(string value)
+        {
+            buffer.Append(value);
+            if (value != null)
             {
-                Debug.Log(buffer.ToString());
-                buffer.Length = 0;
-            }
- 
-            public override void Write(string value)
-            {
-                buffer.Append(value);
-                if (value != null)
+                var len = value.Length;
+                if (len > 0)
                 {
-                    var len = value.Length;
-                    if (len > 0)
+                    var lastChar = value [len - 1];
+                    if (lastChar == '\n')
                     {
-                        var lastChar = value [len - 1];
-                        if (lastChar == '\n')
-                        {
-                            Flush();
-                        }
+                        Flush();
                     }
                 }
             }
- 
-            public override void Write(char value)
+        }
+
+        public override void Write(char value)
+        {
+            buffer.Append(value);
+            if (value == '\n')
             {
-                buffer.Append(value);
-                if (value == '\n')
-                {
-                    Flush();
-                }
-            }
- 
-            public override void Write(char[] value, int index, int count)
-            {
-                Write(new string (value, index, count));
-            }
- 
-            public override Encoding Encoding
-            {
-                get { return Encoding.Default; }
+                Flush();
             }
         }
- 
-        public static void Redirect()
+
+        public override void Write(char[] value, int index, int count)
         {
-            Console.SetOut(new UnityTextWriter());
+            Write(new string (value, index, count));
+        }
+
+        public override Encoding Encoding
+        {
+            get {
+                return Encoding.Default;
+            }
         }
     }
+
+    public static void Redirect()
+    {
+        Console.SetOut(new UnityTextWriter());
+    }
+}
 }
