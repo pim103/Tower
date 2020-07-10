@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
+using Games.Global;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEngine;
 
 namespace Games.Defenses
@@ -10,7 +13,20 @@ namespace Games.Defenses
         private GameObject target;
         private bool followTarget;
         private Coroutine projTimerCoroutine;
-        
+
+        private Entity entity;
+
+        private void Start()
+        {
+            entity = new Entity
+            {
+                entityPrefab = gameObject.AddComponent<EntityPrefab>(), 
+                BehaviorType = BehaviorType.Player,
+                typeEntity = TypeEntity.MOB
+            };
+            entity.entityPrefab.entity = entity;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -36,7 +52,7 @@ namespace Games.Defenses
             if (followTarget)
             {
                 transform.LookAt(target.transform.position+Vector3.up);
-                transform.Rotate(Vector3.right,-90);
+                //transform.Rotate(Vector3.right,-90);
             }
         }
 
@@ -44,21 +60,10 @@ namespace Games.Defenses
         {
             while (true)
             {
-                PoolProjectiles();
+                //PoolProjectiles();
+                SpellController.CastSpell(entity, SpellController.LoadSpellByName("TrapArrowSpell"), transform.position);
                 yield return new WaitForSeconds(.5f);
             }
-        }
-        
-        private void PoolProjectiles()
-        {
-            GameObject proj = ObjectPooler.SharedInstance.GetPooledObject(0);
-
-            proj.transform.position = transform.position;
-
-            proj.transform.localEulerAngles = transform.eulerAngles /*+ (Vector3.right * rotX)*/;
-            proj.SetActive(true);
-
-            proj.GetComponent<Rigidbody>().AddForce(-transform.up * 1000, ForceMode.Acceleration);
         }
     }
 }

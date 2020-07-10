@@ -33,27 +33,37 @@ namespace Games.Transitions
 
         [SerializeField] 
         private HoverDetector hoverDetector;
-        
+
+        [SerializeField] private Button validateButton;
+        [SerializeField] private GameObject waitingOtherPlayerPanel;
+        [SerializeField] private GameObject defenseUI;
         private int defenseTimer;
+        private bool hasValidated;
         
         string newMap;
 
         private void Start()
         {
             defenseTimer = durationDefensePhase;
+            validateButton.onClick.AddListener(delegate { hasValidated = true; });
         }
 
         private IEnumerator WaitingEndDefense()
         {
+            defenseUI.SetActive(true);
+            waitingOtherPlayerPanel.SetActive(false);
+            hoverDetector.enabled = true;
+            hasValidated = false;
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
-            while(defenseTimer > 0)
+            while(defenseTimer > 0 && !hasValidated)
             {
                 counter.text = defenseTimer.ToString();
                 yield return new WaitForSeconds(1);
                 defenseTimer--;
             }
-
+            defenseUI.SetActive(false);
+            waitingOtherPlayerPanel.SetActive(true);
             defenseTimer = durationDefensePhase;
 
             if (hoverDetector.currentlyBlocked)
@@ -74,6 +84,8 @@ namespace Games.Transitions
                     hoverDetector.objectInHand.SetActive(false);
                 }
             }
+
+            hoverDetector.enabled = false;
             SendGridData();
 
             while (GameController.mapReceived == null)
