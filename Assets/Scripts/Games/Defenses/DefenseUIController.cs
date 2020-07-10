@@ -165,7 +165,6 @@ namespace Games.Defenses
             GameObject card = Instantiate(cardPrefab, cardContainer.transform, true);
             card.transform.localPosition = new Vector3(0,0,0);
             card.transform.localEulerAngles = new Vector3(0,0,0);
-            Debug.Log(cardStats.id);
             card.GetComponent<CardBehaviorInGame>().SetCard(type,cardStats.id);
         }
         

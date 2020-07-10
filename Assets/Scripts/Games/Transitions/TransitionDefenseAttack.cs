@@ -45,7 +45,6 @@ namespace Games.Transitions
 
         private IEnumerator WaitingEndDefense()
         {
-            objectsInScene.waitingCanvasGameObject.SetActive(true);
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
             while(defenseTimer > 0)
@@ -56,7 +55,6 @@ namespace Games.Transitions
             }
 
             defenseTimer = durationDefensePhase;
-            objectsInScene.waitingCanvasGameObject.SetActive(false);
 
             if (hoverDetector.currentlyBlocked)
             {
@@ -171,9 +169,10 @@ namespace Games.Transitions
                             break;
                         case GridTileController.TypeData.Trap:
                             TrapBehavior currentTrapBehavior = cellController.content.GetComponent<TrapBehavior>();
-                            stringToSend += "3:" + (int) currentTrapBehavior.mainType + /*":"+ currentTrapBehavior.rotation +*/ ":[";
+                            stringToSend += "3:" + (int) currentTrapBehavior.mainType + ":[";
                             if (currentTrapBehavior.trapEffects.Any())
                             {
+                                stringToSend += currentTrapBehavior.rotation + ",";
                                 foreach (var effect in currentTrapBehavior.trapEffects)
                                 {
                                     stringToSend += (int) effect + ",";

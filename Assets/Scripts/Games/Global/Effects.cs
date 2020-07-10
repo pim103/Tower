@@ -114,6 +114,7 @@ namespace Games.Global
                     break;
                 case TypeEffect.Stun:
                     entity.entityPrefab.canDoSomething = false;
+                    AddEffectMaterials(entity,StaticMaterials.electricityMaterial);
                     break;
                 case TypeEffect.Sleep:
                     entity.isSleep = true;
@@ -286,8 +287,62 @@ namespace Games.Global
 
                     break;
                 case TypeEffect.Burn:
-                    //entity.entityPrefab
+                    AddEffectMaterials(entity,StaticMaterials.burningMaterial);
                     break;
+                case TypeEffect.Freezing:
+                    AddEffectMaterials(entity,StaticMaterials.freezingMaterial);
+                    break;
+                case TypeEffect.Poison:
+                    AddEffectMaterials(entity,StaticMaterials.poisonMaterial);
+                    break;
+            }
+        }
+
+        private void AddEffectMaterials(Entity entity, Material wantedMat)
+        {
+            foreach (var shaderTarget in entity.entityPrefab.mrShaderTargets)
+            {
+                List<Material> memMats = shaderTarget.materials.ToList(); 
+                memMats.Add(wantedMat);
+                shaderTarget.materials = memMats.ToArray();
+            }
+            foreach (var shaderTarget in entity.entityPrefab.smrShaderTargets)
+            {
+                List<Material> memMats = shaderTarget.materials.ToList();
+                memMats.Add(wantedMat);
+                shaderTarget.materials = memMats.ToArray();
+            }
+        }
+        
+        private void RemoveEffectMaterials(Entity entity, Material wantedMat)
+        {
+            foreach (var shaderTarget in entity.entityPrefab.mrShaderTargets)
+            {
+                List<Material> memMats = shaderTarget.materials.ToList();
+                List<Material> memMatsToChange = shaderTarget.materials.ToList();
+                foreach (var mat in memMats)
+                {
+                    if (mat.name == wantedMat.name + " (Instance)")
+                    {
+                        memMatsToChange.Remove(mat);
+                    }
+                }
+                //memMats.Remove(wantedMat);
+                shaderTarget.materials = memMatsToChange.ToArray();
+            }
+            foreach (var shaderTarget in entity.entityPrefab.smrShaderTargets)
+            {
+                List<Material> memMats = shaderTarget.materials.ToList();
+                List<Material> memMatsToChange = shaderTarget.materials.ToList();
+                foreach (var mat in memMats)
+                {
+                    if (mat.name == wantedMat.name + " (Instance)")
+                    {
+                        memMatsToChange.Remove(mat);
+                    }
+                }
+                //memMats.Remove(wantedMat);
+                shaderTarget.materials = memMatsToChange.ToArray();
             }
         }
 
@@ -401,6 +456,7 @@ namespace Games.Global
                     {
                         entity.entityPrefab.canDoSomething = true;
                     }
+                    RemoveEffectMaterials(entity,StaticMaterials.electricityMaterial);
 
                     break;
                 case TypeEffect.Sleep:
@@ -417,6 +473,7 @@ namespace Games.Global
                 case TypeEffect.Slow:
                 case TypeEffect.Freezing:
                     entity.speed = entity.initialSpeed;
+                    RemoveEffectMaterials(entity,StaticMaterials.freezingMaterial);
                     break;
                 case TypeEffect.DefenseUp:
                     entity.def = entity.initialDef;
@@ -545,6 +602,12 @@ namespace Games.Global
                     {
                         entity.spells[2].cooldown = entity.spells[2].initialCooldown;
                     }
+                    break;
+                case TypeEffect.Burn:
+                    RemoveEffectMaterials(entity,StaticMaterials.burningMaterial);
+                    break;
+                case TypeEffect.Poison:
+                    RemoveEffectMaterials(entity,StaticMaterials.poisonMaterial);
                     break;
             }
         }

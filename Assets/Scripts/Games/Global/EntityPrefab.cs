@@ -19,6 +19,8 @@ namespace Games.Global
         [SerializeField] private Rigidbody rigidbodyEntity;
 
         [SerializeField] protected MeshRenderer meshRenderer;
+        [SerializeField] public MeshRenderer[] mrShaderTargets;
+        [SerializeField] public SkinnedMeshRenderer[] smrShaderTargets;
 
         [SerializeField] public Animator animator;
 
@@ -35,6 +37,8 @@ namespace Games.Global
         [SerializeField] public GameObject thornSphere;
         [SerializeField] public GameObject distortionSphere;
 
+        [SerializeField] public Material burningMaterial;
+        
         public Entity entity;
 
         public bool cameraBlocked = false;
