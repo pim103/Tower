@@ -37,7 +37,6 @@ namespace Games.Transitions
 
         public IEnumerator WaitingForStart()
         {
-            objectsInScene.waitingCanvasGameObject.SetActive(true);
             // TODO : Need rpc to synchro chrono
             objectsInScene.waitingText.text = waitingGameStartText;
 
@@ -52,8 +51,7 @@ namespace Games.Transitions
             }
 
             waitingForStart = durationChooseDeckPhase;
-
-            objectsInScene.waitingCanvasGameObject.SetActive(false);
+            
 
             chooseRoleAndDeckGameObject.SetActive(false);
             // TODO : Need RPC to launch game
@@ -62,7 +60,7 @@ namespace Games.Transitions
 
         public void WantToStartGame()
         {
-            waitingGameStartText = "Waiting for game start";
+            waitingGameStartText = "La partie commence dans     secondes";
             waitingForStart = durationChooseDeckPhase;
             StartCoroutine(WaitingForStart());
         }

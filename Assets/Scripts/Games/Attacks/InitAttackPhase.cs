@@ -201,6 +201,7 @@ namespace Games.Attacks
                         GameObject trap = objectPoolerDefense.GetPooledObject(0);
                         TrapBehavior trapBehavior = trap.GetComponent<TrapBehavior>();
                         trapBehavior.trapModels[idElement].SetActive(true);
+                        trapBehavior.rotation = idEquipements[0];
                         trap.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0.6f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         trap.SetActive(true);
                         

@@ -14,9 +14,6 @@ namespace Games
         // ============================ CANVAS AND COUNTER ACCESS =============
 
         [SerializeField]
-        public GameObject waitingCanvasGameObject;
-
-        [SerializeField]
         public Text waitingText;
 
         [SerializeField]

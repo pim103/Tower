@@ -73,6 +73,8 @@ namespace Games.Transitions
             }
 
             validateChoices.onClick.AddListener(LaunchGame);
+            monsterDeckId = 1;
+            equipmentDeckId = 1;
             FetchDecks();
         }
 
