@@ -6,10 +6,8 @@ using Games.Global.Spells;
 using Games.Players;
 using UnityEngine;
 
-namespace Games.Defenses
-{
-public class BearTrapBehavior : MonoBehaviour
-{
+namespace Games.Defenses {
+  public class BearTrapBehavior : MonoBehaviour {
     [SerializeField]
     private GameObject inactiveState;
     [SerializeField]
@@ -18,28 +16,24 @@ public class BearTrapBehavior : MonoBehaviour
     private Entity playerEntity;
     private Entity entity;
 
-    private void Start()
-    {
-        entity = new Entity
-        {
-            entityPrefab = gameObject.AddComponent<EntityPrefab>(),
-            BehaviorType = BehaviorType.Player,
-            typeEntity = TypeEntity.MOB
-        };
-        entity.entityPrefab.entity = entity;
+    private void Start() {
+      entity = new Entity{
+          entityPrefab = gameObject.AddComponent<EntityPrefab>(),
+          BehaviorType = BehaviorType.Player, typeEntity = TypeEntity.MOB};
+      entity.entityPrefab.entity = entity;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player") &&!hasBeenTriggered) {
-            hasBeenTriggered = true;
-            inactiveState.SetActive(false);
-            activeState.SetActive(true);
-            AbilityParameters abilityParameters = new AbilityParameters();
-            abilityParameters.origin = entity;
-            playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
-            playerEntity.TakeDamage(20.0f, abilityParameters, DamageType.Physical);
-        }
+    private void OnTriggerEnter(Collider other) {
+      if (other.gameObject.layer == LayerMask.NameToLayer("Player") &&
+          !hasBeenTriggered) {
+        hasBeenTriggered = true;
+        inactiveState.SetActive(false);
+        activeState.SetActive(true);
+        AbilityParameters abilityParameters = new AbilityParameters();
+        abilityParameters.origin = entity;
+        playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
+        playerEntity.TakeDamage(20.0f, abilityParameters, DamageType.Physical);
+      }
     }
-}
+  }
 }
