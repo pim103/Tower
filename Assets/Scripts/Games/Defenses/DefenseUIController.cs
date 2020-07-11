@@ -66,7 +66,7 @@ namespace Games.Defenses
         public Text currentResourceText;
 
         [SerializeField] 
-        private GameObject keyObject;
+        public GameObject keyObject;
         private void Start()
         {
             wallButton.onClick.AddListener(PutWallInHand);

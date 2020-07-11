@@ -131,7 +131,7 @@ namespace Games.Defenses
                         if (defenseUiController.keyAlreadyPut)
                         {
                             pathToKey = new NavMeshPath();
-                            NavMesh.CalculatePath(startPos.transform.position, defenseUiController.transform.position,NavMesh.AllAreas, pathToKey);
+                            NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
                         }
                         if (pathToEnd.status == NavMeshPathStatus.PathComplete && (pathToKey.status == NavMeshPathStatus.PathComplete || !defenseUiController.keyAlreadyPut))
                         {
@@ -408,12 +408,13 @@ namespace Games.Defenses
         {
             pathToEnd = new NavMeshPath(); 
             NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+            pathToKey = new NavMeshPath();
             if (defenseUiController.keyAlreadyPut)
             {
-                pathToKey = new NavMeshPath();
-                NavMesh.CalculatePath(startPos.transform.position, defenseUiController.transform.position,NavMesh.AllAreas, pathToKey);
+                NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
+                Debug.Log(pathToKey.status);
             }
-            if (pathToEnd.status != NavMeshPathStatus.PathComplete || pathToKey.status != NavMeshPathStatus.PathComplete)
+            if (pathToEnd.status != NavMeshPathStatus.PathComplete || pathToKey.status != NavMeshPathStatus.PathComplete && defenseUiController.keyAlreadyPut)
             {
                 currentlyBlocked = true;
                 if (!objectInHand)

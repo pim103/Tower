@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Transitions;
 using Networking;
 using UnityEngine;
@@ -42,7 +43,16 @@ namespace Games.Defenses
         private HoverDetector hoverDetector;
 
         public List<GameObject> gridCellList;
-        
+
+        [SerializeField] private bool forceInit;
+        private void Start()
+        {
+            if (forceInit)
+            {
+                Init();
+            }
+        }
+
         public void Init()
         {
             if (currentMap)
