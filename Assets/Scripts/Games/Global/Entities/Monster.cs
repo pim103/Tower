@@ -104,5 +104,10 @@ namespace Games.Global.Entities
                 }
             }
         }
+
+        public void InitKey(GameObject keyObject)
+        {
+            monsterPrefab.objectsToLoot.Add(keyObject);
+        }
     }
 }

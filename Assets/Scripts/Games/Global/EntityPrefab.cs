@@ -350,6 +350,12 @@ namespace Games.Global
                 if (!entity.isSummon)
                 {
                     DataObject.monsterInScene.Remove((Monster) entity);
+                    MonsterPrefab monsterPrefab = (MonsterPrefab) this;
+                    foreach (GameObject objectToLoot in monsterPrefab.objectsToLoot)
+                    {
+                        objectToLoot.SetActive(true);
+                        objectToLoot.transform.position = transform.position;
+                    }
                 }
                 else
                 {

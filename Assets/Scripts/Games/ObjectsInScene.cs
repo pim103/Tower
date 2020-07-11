@@ -41,5 +41,8 @@ namespace Games
 
         [SerializeField]
         public GameObject simpleWall;
+
+        [SerializeField] 
+        public GameObject keyObject;
     }
 }

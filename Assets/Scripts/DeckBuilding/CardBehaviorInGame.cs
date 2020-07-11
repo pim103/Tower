@@ -32,7 +32,7 @@ namespace DeckBuilding
         [SerializeField]
         public GameObject rangeSphere;
     
-        private GroupsMonster group;
+        public GroupsMonster group;
         public Weapon equipement;
         public GameObject equipementModel;
         public Transform ownCardContainer;
@@ -45,6 +45,7 @@ namespace DeckBuilding
         public GameObject helmetSlot;
         public GameObject chestSlot;
         public GameObject grievesSlot;
+        public GameObject keySlot;
 
         [SerializeField] 
         public CapsuleCollider groupRangeCollider; 

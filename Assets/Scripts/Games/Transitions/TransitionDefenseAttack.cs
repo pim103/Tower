@@ -49,7 +49,7 @@ namespace Games.Transitions
         {
             defenseTimer = durationDefensePhase;
             validateButton.onClick.AddListener(delegate { hasValidated = true; });
-
+            
             if (TowersWebSocket.wsGame != null)
             {
                 TowersWebSocket.wsGame.OnMessage += (sender, args) =>
@@ -195,7 +195,16 @@ namespace Games.Transitions
                             if (currentCardBehaviorInGame.grievesSlot)
                             {
                                 stringToSend += currentCardBehaviorInGame.grievesSlot.GetComponent<CardBehaviorInGame>()
-                                                    .equipement.id;
+                                                    .equipement.id + ",";
+                            }
+                            else
+                            {
+                                stringToSend += "0";
+                            }
+
+                            if (currentCardBehaviorInGame.keySlot)
+                            {
+                                stringToSend += "1";
                             }
                             else
                             {

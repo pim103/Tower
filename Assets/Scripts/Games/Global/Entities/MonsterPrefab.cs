@@ -12,6 +12,9 @@ namespace Games.Global.Entities
     {
         [SerializeField] private Slider hpBar;
 
+        [SerializeField] 
+        public List<GameObject> objectsToLoot;
+
         private PlayerPrefab playerPrefab;
 
         private Monster monster;

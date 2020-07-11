@@ -1,4 +1,5 @@
-﻿using DeckBuilding;
+﻿using System;
+using DeckBuilding;
 using Games.Global.Weapons;
 using UnityEngine;
 using UnityEngine.AI;
@@ -48,6 +49,8 @@ namespace Games.Defenses
         private CardBehaviorInGame currentCardBehaviorInGame;
 
         private bool puttingWalls;
+        public int maxResource;
+        public int currentResource;
         private void Start()
         {
             //mouseMask = LayerMask.GetMask("Grid");
@@ -63,7 +66,7 @@ namespace Games.Defenses
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                 //Debug.Log(objectInHand);
                 //Debug.Log(currentCardBehavior.cardType);
-                if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1)
+                if (objectInHand && (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1 || objectInHand.layer == LayerMask.NameToLayer("Key")))
                 {
                     if (currentTileController.contentType == GridTileController.TypeData.Group)
                     {
@@ -128,8 +131,8 @@ namespace Games.Defenses
                         {
                             currentlyBlocked = false;
                             if (objectInHand.layer == LayerMask.NameToLayer("Wall") ||
-                                (objectInHand.layer == LayerMask.NameToLayer("CardInHand") &&
-                                 currentCardBehaviorInGame.cardType != 1) || objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                                (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType != 1 /*&& currentCardBehaviorInGame.group.cost <= currentResource*/) 
+                                || objectInHand.layer == LayerMask.NameToLayer("Trap") && currentResource >= 1)
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
@@ -143,11 +146,13 @@ namespace Games.Defenses
                                 {
                                     currentTileController.contentType = GridTileController.TypeData.Group;
                                     currentCardBehaviorInGame.groupRangeBehavior.SetAllTilesTo(true);
+                                    //currentResource -= currentCardBehaviorInGame.group.cost;
                                     //currentCardBehavior.groupRange.SetActive(true);
                                 } 
                                 else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
                                 {
                                     currentTileController.contentType = GridTileController.TypeData.Trap;
+                                    //currentResource--;
                                 }
 
                                 objectInHand = null;
@@ -155,31 +160,46 @@ namespace Games.Defenses
                                 {
                                     defenseUiController.PutWallInHand();
                                 }
+
+                                defenseUiController.currentResourceText.text = currentResource.ToString();
                             }
-                            else
+                            else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1 /*&& currentCardBehaviorInGame.equipement.cost <= currentResource*/)
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
                                 CardBehaviorInGame contentCardBehaviorInGame =
                                     currentTileController.content.GetComponent<CardBehaviorInGame>();
-                                switch (objectInHand.GetComponent<CardBehaviorInGame>().equipement.type)
+                                switch (currentCardBehaviorInGame.equipement.type)
                                 {
                                     case TypeWeapon.Distance:
                                         if (contentCardBehaviorInGame.rangedWeaponSlot)
                                         {
-                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame.rangedWeaponSlot);
+                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame
+                                                .rangedWeaponSlot);
                                         }
+
                                         contentCardBehaviorInGame.rangedWeaponSlot = objectInHand;
                                         break;
                                     case TypeWeapon.Cac:
                                         if (contentCardBehaviorInGame.meleeWeaponSlot)
                                         {
-                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame.meleeWeaponSlot);
+                                            defenseUiController.PutCardBackToHand(contentCardBehaviorInGame
+                                                .meleeWeaponSlot);
                                         }
+
                                         contentCardBehaviorInGame.meleeWeaponSlot = objectInHand;
                                         break;
                                 }
-                                
+
+                                objectInHand.SetActive(false);
+                                objectInHand = null;
+                            }
+                            else if(objectInHand.layer == LayerMask.NameToLayer("Key"))
+                            {
+                                CardBehaviorInGame contentCardBehaviorInGame =
+                                    currentTileController.content.GetComponent<CardBehaviorInGame>();
+                                contentCardBehaviorInGame.keySlot = objectInHand;
+                                defenseUiController.keyAlreadyPut = true;
                                 objectInHand.SetActive(false);
                                 objectInHand = null;
                             }
@@ -244,27 +264,43 @@ namespace Games.Defenses
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    if (objectInHand)
+                    CardBehaviorInGame hitCardBehavior = hit.transform.GetComponent<CardBehaviorInGame>();
+                    if (hitCardBehavior.cardType == 0 && hitCardBehavior.group.cost <= currentResource ||
+                        hitCardBehavior.cardType == 1 && hitCardBehavior.equipement.cost <= currentResource)
                     {
-                        if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
+                        if (objectInHand)
                         {
-                            defenseUiController.PutCardBackToHand(objectInHand);
+                            if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
+                            {
+                                defenseUiController.PutCardBackToHand(objectInHand);
+                            }
+                            else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
+                            {
+                                objectInHand.SetActive(false);
+                                objectInHand = null;
+                                defenseUiController.currentWallNumber += 1;
+                                defenseUiController.wallButtonText.text =
+                                    "Mur x" + defenseUiController.currentWallNumber;
+                            }
+                            else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                            {
+                                objectInHand.SetActive(false);
+                                objectInHand = null;
+                            }
                         }
-                        else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
+
+                        defenseUiController.PutCardInHand(hit.collider.gameObject);
+                        currentCardBehaviorInGame = objectInHand.GetComponent<CardBehaviorInGame>();
+                        if (currentCardBehaviorInGame.cardType == 0)
                         {
-                            objectInHand.SetActive(false);
-                            objectInHand = null;
-                            defenseUiController.currentWallNumber += 1;
-                            defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
+                            currentResource -= currentCardBehaviorInGame.group.cost;
                         }
-                        else if(objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                        else
                         {
-                            objectInHand.SetActive(false);
-                            objectInHand = null;
+                            currentResource -= currentCardBehaviorInGame.equipement.cost;
                         }
+                        defenseUiController.currentResourceText.text = currentResource.ToString();
                     }
-                    defenseUiController.PutCardInHand(hit.collider.gameObject);
-                    currentCardBehaviorInGame = objectInHand.GetComponent<CardBehaviorInGame>();
                 }
             }
             
@@ -274,6 +310,11 @@ namespace Games.Defenses
                 {
                     defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.meleeWeaponSlot);
                     defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.rangedWeaponSlot);
+
+                    currentCardBehaviorInGame.meleeWeaponSlot = null;
+                    currentCardBehaviorInGame.rangedWeaponSlot = null;
+                    currentCardBehaviorInGame.keySlot = null;
+                    defenseUiController.PutKeyBackToSlot();
 
                     currentCardBehaviorInGame.groupParent.SetActive(false);
                     currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
@@ -287,6 +328,15 @@ namespace Games.Defenses
                     objectInHand.transform.localPosition = Vector3.zero;
                     objectInHand.layer = LayerMask.NameToLayer("Card");
                     objectInHand = null;
+                    if (currentCardBehaviorInGame.cardType == 0)
+                    {
+                        currentResource += currentCardBehaviorInGame.group.cost;
+                    }
+                    else
+                    {
+                        currentResource += currentCardBehaviorInGame.equipement.cost;
+                    }
+                    defenseUiController.currentResourceText.text = currentResource.ToString();
                 } else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
                 {
                     objectInHand.SetActive(false);
@@ -297,6 +347,13 @@ namespace Games.Defenses
                 {
                     objectInHand.SetActive(false);
                     objectInHand = null;
+                    currentResource += 1;
+                    defenseUiController.currentResourceText.text = currentResource.ToString();
+                }
+                else if(objectInHand.layer == LayerMask.NameToLayer("Key"))
+                {
+                    objectInHand = null;
+                    defenseUiController.PutKeyBackToSlot();
                 }
             }
 
@@ -324,6 +381,14 @@ namespace Games.Defenses
                 {
                     currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
                 }
+            }
+
+            if (objectInHand && objectInHand.layer == LayerMask.NameToLayer("Key"))
+            {
+                var worldPos = Input.mousePosition;
+                worldPos.z = 10.0f;
+                worldPos = defenseCam.ScreenToWorldPoint(worldPos);
+                objectInHand.transform.position = worldPos;
             }
 
             if (Input.GetKeyUp(KeyCode.Mouse0) && puttingWalls)
