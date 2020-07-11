@@ -269,8 +269,19 @@ namespace Games.Attacks
             StartCoroutine(WaitingForAttackPhase());
         }
 
-        public IEnumerator TimerAttack()
+        public IEnumerator ActivePlayer()
         {
+            objectsInScene.mainCamera.SetActive(false);
+
+            objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
+            objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
+
+            objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.Locked;
+
+            DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
+            
             while (CurrentRoom.loadGameAttack)
             {
                 int nbMin = TransitionMenuGame.timerAttack / 60;
@@ -289,24 +300,9 @@ namespace Games.Attacks
                 yield return new WaitForSeconds(0.5f);
             }
 
-            ActivePlayer();
-            StartCoroutine(TimerAttack());
+            StartCoroutine(ActivePlayer());
 
             endOfGeneration = true;
-        }
-
-        private void ActivePlayer()
-        {
-            objectsInScene.mainCamera.SetActive(false);
-
-            objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
-            objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
-
-            objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
-
-            Cursor.lockState = CursorLockMode.Locked;
-
-            DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
