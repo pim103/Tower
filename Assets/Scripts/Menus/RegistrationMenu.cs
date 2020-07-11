@@ -1,5 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using Networking;
+using Networking.Client;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Menus
@@ -29,8 +34,11 @@ namespace Menus
 
         private void Start()
         {
-            createButton.onClick.AddListener(delegate {
-                mc.ActivateMenu(MenuController.Menu.Connection);
+            passwordField.inputType = InputField.InputType.Password;
+            confirmPasswordField.inputType = InputField.InputType.Password;
+            createButton.onClick.AddListener(delegate
+            {
+                CallRegister();
             });
 
             returnButton.onClick.AddListener(delegate {
@@ -61,12 +69,47 @@ namespace Menus
                     }
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                CallRegister();
+            }
         }
 
         public void InitMenu()
         {
             Debug.Log("Registration Menu");
             //throw new System.NotImplementedException();
+        }
+        public void CallRegister()
+        {
+            StartCoroutine(Register());
+        }
+        IEnumerator Register()
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("gameToken", NetworkingController.GameToken);
+            form.AddField("accountName", loginField.text);
+            form.AddField("accountEmail", emailField.text);
+            form.AddField("accountPassword", passwordField.text);
+            form.AddField("accountPasswordConfirmation", confirmPasswordField.text);
+            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/add.php", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                Debug.Log(www.downloadHandler.text);
+                //DisplayErrors(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+                if (www.responseCode == 201)
+                {
+                    mc.ActivateMenu(MenuController.Menu.Connection);
+                }
+            }
         }
     }
 }

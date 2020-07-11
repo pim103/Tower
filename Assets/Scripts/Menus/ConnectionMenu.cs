@@ -68,6 +68,10 @@ namespace Menus
                     }
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                CallLogin();
+            }
         }
 
         private void CallLogin()
