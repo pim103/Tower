@@ -36,6 +36,11 @@ namespace Games.Attacks
             {
                 players.Value.Reset();
             }
+
+            initDefense.defenseUIController.enabled = false;
+            objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(false);
+            objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = false;
+            objectsInScene.mainCamera.SetActive(true);
         }
 
         public IEnumerator WaitingForDefensePhase()
@@ -45,8 +50,7 @@ namespace Games.Attacks
             {
                 yield return new WaitForSeconds(0.5f);
             }
-            
-            initDefense.defenseUIController.enabled = false;
+
             objectsInScene.containerAttack.SetActive(false);
             objectsInScene.containerDefense.SetActive(true);
             initDefense.Init();
