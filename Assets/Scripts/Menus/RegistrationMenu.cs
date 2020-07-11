@@ -9,107 +9,107 @@ using UnityEngine.UI;
 
 namespace Menus
 {
-    public class RegistrationMenu : MonoBehaviour, MenuInterface
+public class RegistrationMenu : MonoBehaviour, MenuInterface
+{
+    [SerializeField]
+    private MenuController mc;
+
+    [SerializeField]
+    private InputField loginField;
+
+    [SerializeField]
+    private InputField passwordField;
+
+    [SerializeField]
+    private InputField confirmPasswordField;
+
+    [SerializeField]
+    private InputField emailField;
+
+    [SerializeField]
+    private Button createButton;
+
+    [SerializeField]
+    private Button returnButton;
+
+    private void Start()
     {
-        [SerializeField]
-        private MenuController mc;
-
-        [SerializeField]
-        private InputField loginField;
-
-        [SerializeField]
-        private InputField passwordField;
-
-        [SerializeField]
-        private InputField confirmPasswordField;
-
-        [SerializeField]
-        private InputField emailField;
-
-        [SerializeField]
-        private Button createButton;
-
-        [SerializeField]
-        private Button returnButton;
-
-        private void Start()
+        passwordField.inputType = InputField.InputType.Password;
+        confirmPasswordField.inputType = InputField.InputType.Password;
+        createButton.onClick.AddListener(delegate
         {
-            passwordField.inputType = InputField.InputType.Password;
-            confirmPasswordField.inputType = InputField.InputType.Password;
-            createButton.onClick.AddListener(delegate
-            {
-                CallRegister();
-            });
+            CallRegister();
+        });
 
-            returnButton.onClick.AddListener(delegate {
-                mc.ActivateMenu(MenuController.Menu.Connection);
-            });
-        }
+        returnButton.onClick.AddListener(delegate {
+            mc.ActivateMenu(MenuController.Menu.Connection);
+        });
+    }
 
-        private void Update()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (EventSystem.current.currentSelectedGameObject != null)
                 {
-                    if (EventSystem.current.currentSelectedGameObject != null)
-                    {
-                        Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
-                        if (selectable != null)
-                            selectable.Select();
-                    }
+                    Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+                    if (selectable != null)
+                        selectable.Select();
                 }
-                else
-                {
-                    if (EventSystem.current.currentSelectedGameObject != null)
-                    {
-                        Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
-                        if (selectable != null)
-                            selectable.Select();
-                    }
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                CallRegister();
-            }
-        }
-
-        public void InitMenu()
-        {
-            Debug.Log("Registration Menu");
-            //throw new System.NotImplementedException();
-        }
-        public void CallRegister()
-        {
-            StartCoroutine(Register());
-        }
-        IEnumerator Register()
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("gameToken", NetworkingController.GameToken);
-            form.AddField("accountName", loginField.text);
-            form.AddField("accountEmail", emailField.text);
-            form.AddField("accountPassword", passwordField.text);
-            form.AddField("accountPasswordConfirmation", confirmPasswordField.text);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/add.php", form);
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log(www.error);
-                Debug.Log(www.downloadHandler.text);
-                //DisplayErrors(www.downloadHandler.text);
             }
             else
             {
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-                if (www.responseCode == 201)
+                if (EventSystem.current.currentSelectedGameObject != null)
                 {
-                    mc.ActivateMenu(MenuController.Menu.Connection);
+                    Selectable selectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+                    if (selectable != null)
+                        selectable.Select();
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            CallRegister();
+        }
     }
+
+    public void InitMenu()
+    {
+        Debug.Log("Registration Menu");
+        //throw new System.NotImplementedException();
+    }
+    public void CallRegister()
+    {
+        StartCoroutine(Register());
+    }
+    IEnumerator Register()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("gameToken", NetworkingController.GameToken);
+        form.AddField("accountName", loginField.text);
+        form.AddField("accountEmail", emailField.text);
+        form.AddField("accountPassword", passwordField.text);
+        form.AddField("accountPasswordConfirmation", confirmPasswordField.text);
+        var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/add.php", form);
+        www.certificateHandler = new AcceptCertificate();
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            Debug.Log(www.downloadHandler.text);
+            //DisplayErrors(www.downloadHandler.text);
+        }
+        else
+        {
+            Debug.Log(www.responseCode);
+            Debug.Log(www.downloadHandler.text);
+            if (www.responseCode == 201)
+            {
+                mc.ActivateMenu(MenuController.Menu.Connection);
+            }
+        }
+    }
+}
 }
