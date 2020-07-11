@@ -289,8 +289,8 @@ namespace Games.Attacks
                 yield return new WaitForSeconds(0.5f);
             }
 
-            StartCoroutine(TimerAttack());
             ActivePlayer();
+            StartCoroutine(TimerAttack());
 
             endOfGeneration = true;
         }
