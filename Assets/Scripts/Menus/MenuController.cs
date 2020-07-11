@@ -50,9 +50,18 @@ namespace Menus
         private void Start()
         {
             searchingMatchCanvas.active = false;
-            ActivateMenu(Menu.Connection);
-            NetworkingController.CurrentRoomToken = staticRoomId;
-            NetworkingController.Environnement = environnement;
+            Debug.Log(NetworkingController.AuthToken);
+            if (NetworkingController.AuthToken == "")
+            {
+                ActivateMenu(Menu.Connection);
+                NetworkingController.CurrentRoomToken = staticRoomId;
+                NetworkingController.Environnement = environnement;
+            }
+            else
+            {
+                TowersWebSocket.StartConnection();
+                ActivateMenu(Menu.MainMenu);
+            }
             
             cancelResearchMatchButton.onClick.AddListener(CancelResearchMatch);
         }
