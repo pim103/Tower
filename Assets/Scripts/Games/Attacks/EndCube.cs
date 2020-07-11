@@ -70,6 +70,7 @@ namespace Games.Attacks
             else
             {
                 TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "Player", "HasWon", null);
+                TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken, "Player", "SendDeath", null);
             }
         }
     }
