@@ -17,6 +17,9 @@ namespace Networking.Client
         public CallbackIdentity identity { get; set; } = null;
         public string room { get; set; } = null;
         public int[] maps { get; set; } = null;
+        public int roleTimer { get; set; } = -1;
+        public int defenseTimer { get; set; } = -1;
+        public int attackTimer { get; set; } = -1;
 
     }
     

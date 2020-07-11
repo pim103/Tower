@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using Games.Defenses;
+ using System.Collections;
+ using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Players;
 using Networking;
 using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,19 +38,31 @@ namespace Games.Attacks
                 players.Value.Reset();
             }
         }
-
+        
+        public IEnumerator WaitingForDefensePhase()
+        {
+            DesactiveAllGameObject();
+            while (!CurrentRoom.loadGameDefense)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            
+            initDefense.defenseUIController.enabled = false;
+            objectsInScene.containerAttack.SetActive(false);
+            objectsInScene.containerDefense.SetActive(true);
+            initDefense.Init();
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
+            CurrentRoom.loadGameDefense = false;
+            CurrentRoom.loadGameAttack = false;
             Cursor.lockState = CursorLockMode.None;
-
+            
             if (initDefense.currentLevel < initDefense.maps.Length)
             {
-                DesactiveAllGameObject();
-                
-                initDefense.defenseUIController.enabled = false;
-                objectsInScene.containerAttack.SetActive(false);
-                objectsInScene.containerDefense.SetActive(true);
-                initDefense.Init();
+                TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
+                StartCoroutine(WaitingForDefensePhase());
             }
             else
             {

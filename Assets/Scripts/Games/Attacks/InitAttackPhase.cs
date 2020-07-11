@@ -6,7 +6,9 @@ using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking;
 using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -57,7 +59,7 @@ namespace Games.Attacks
         private bool endOfGeneration = false;
 
         private string currentMap;
-        
+
         public void GenerateArray()
         {
             tempMap1 = new string[MAP_SIZE, MAP_SIZE];
@@ -261,6 +263,17 @@ namespace Games.Attacks
             }
 
             GameController.mapReceived = null;
+            
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setAttackReady", "null");
+            StartCoroutine(WaitingForAttackPhase());
+        }
+
+        public IEnumerator WaitingForAttackPhase()
+        {
+            while (!CurrentRoom.loadGameAttack)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
             ActivePlayer();
 
             endOfGeneration = true;

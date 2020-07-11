@@ -100,7 +100,7 @@ namespace Menus
                     try
                     {
                         data = fsJsonParser.Parse(args.Data);
-                        Debug.Log(data);
+                        //Debug.Log(data);
                         serializer.TryDeserialize(data, ref callbackMessage);
                         callbackMessage = Tools.Clone(callbackMessage);
                         if (callbackMessage.callbackMessages.room != null && callbackMessage.callbackMessages.message == "MatchStart")
