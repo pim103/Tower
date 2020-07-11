@@ -2,6 +2,7 @@
 using System.Collections;
 using FullSerializer;
 using Games.Defenses;
+using Games.Global;
 using Networking;
 using Networking.Client;
 using Networking.Client.Room;
@@ -22,7 +23,7 @@ namespace Games.Transitions
         private InitDefense initDefense;
 
         private static int waitingForStart;
-        private static int timerAttack = Int32.MaxValue;
+        public static int timerAttack = Int32.MaxValue;
 
         private string waitingGameStartText;
 
@@ -35,9 +36,11 @@ namespace Games.Transitions
             waitingGameStartText = "Waiting for another player";
         }
 
-
         public bool InitGame()
         {
+            CurrentRoom.loadGameDefense = false;
+            CurrentRoom.loadGameAttack = false;
+
             StartCoroutine(LoadGame());
             TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setGameLoaded", "null");
             if (TowersWebSocket.wsGame != null)

@@ -6,6 +6,7 @@ using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using Games.Players;
+using Games.Transitions;
 using Networking;
 using Networking.Client;
 using Networking.Client.Room;
@@ -268,18 +269,7 @@ namespace Games.Attacks
             StartCoroutine(WaitingForAttackPhase());
         }
 
-        public IEnumerator WaitingForAttackPhase()
-        {
-            while (!CurrentRoom.loadGameAttack)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-            ActivePlayer();
-
-            endOfGeneration = true;
-        }
-
-        private void ActivePlayer()
+        public IEnumerator ActivePlayer()
         {
             objectsInScene.mainCamera.SetActive(false);
 
@@ -291,6 +281,28 @@ namespace Games.Attacks
             Cursor.lockState = CursorLockMode.Locked;
 
             DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
+            
+            while (CurrentRoom.loadGameAttack)
+            {
+                int nbMin = TransitionMenuGame.timerAttack / 60;
+                int nbSec = TransitionMenuGame.timerAttack % 60;
+
+                DataObject.playerInScene[GameController.PlayerIndex].timerAttack.text =
+                    "Timer : " + nbMin + (nbMin > 0 ? "min" : "") + nbSec;
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+
+        public IEnumerator WaitingForAttackPhase()
+        {
+            while (!CurrentRoom.loadGameAttack)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            StartCoroutine(ActivePlayer());
+
+            endOfGeneration = true;
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)

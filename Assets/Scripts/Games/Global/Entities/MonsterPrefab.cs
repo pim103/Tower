@@ -40,12 +40,21 @@ namespace Games.Global.Entities
                 DataObject.monsterInScene.Add(monster);
             }
 
-            playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
             entity.playerInBack = new List<int>();
         }
 
         private void Update()
         {
+            if (DataObject.playerInScene == null || DataObject.playerInScene.Count == 0)
+            {
+                return;
+            }
+
+            if (playerPrefab == null)
+            {
+                playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
+            }
+
             float diff = (float) entity.hp / (float) entity.initialHp;
 
             hpBar.value = diff;
