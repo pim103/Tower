@@ -4,6 +4,7 @@ using FullSerializer;
 using Games.Defenses;
 using Networking;
 using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -20,24 +21,24 @@ namespace Games.Transitions
         [SerializeField] 
         private InitDefense initDefense;
 
-        private int waitingForStart;
+        private static int waitingForStart;
+        private static int timerAttack = Int32.MaxValue;
 
         private string waitingGameStartText;
 
         [SerializeField] private GameObject chooseRoleAndDeckGameObject;
-
-        private bool loadGame = false;
-        private bool loadRoleAndDeck = false;
-        private bool loadGameDefense = false;
+        
         
         private void Start()
         {
+            waitingForStart = durationChooseDeckPhase;
             waitingGameStartText = "Waiting for another player";
         }
 
 
         public bool InitGame()
         {
+            StartCoroutine(LoadGame());
             TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setGameLoaded", "null");
             if (TowersWebSocket.wsGame != null)
             {
@@ -51,31 +52,41 @@ namespace Games.Transitions
                         try
                         {
                             data = fsJsonParser.Parse(args.Data);
-                            Debug.Log(data);
                             serializer.TryDeserialize(data, ref callbackMessage);
                             callbackMessage = Tools.Clone(callbackMessage);
                             if (callbackMessage.callbackMessages.message == "LoadGame")
                             {
-                                loadGame = true;
+                                CurrentRoom.loadGame = true;
                             }
                             if (callbackMessage.callbackMessages.message == "setGameLoaded")
                             {
                                 Debug.Log("En attente de l'adversaire");
                             }
-                            if (callbackMessage.callbackMessages.timer != -1)
+
+                            if (CurrentRoom.loadGame)
                             {
-                                loadRoleAndDeck = true;
-                                waitingForStart = callbackMessage.callbackMessages.timer;
-                                Debug.Log(callbackMessage.callbackMessages.timer);
-                                objectsInScene.waitingText.text = waitingGameStartText;
-                                objectsInScene.counterText.text = waitingForStart.ToString();
-                                if (waitingForStart >= 30)
+                                if (callbackMessage.callbackMessages.roleTimer != -1)
                                 {
-                                    waitingForStart = 100;
-                                    loadRoleAndDeck = false;
-                                    loadGameDefense = true;
+                                    waitingForStart = callbackMessage.callbackMessages.roleTimer;
+                                    CurrentRoom.loadRoleAndDeck = true;
+                                }
+                                if (callbackMessage.callbackMessages.message == "StartDefense")
+                                {
+                                    CurrentRoom.loadGameDefense = true;
+                                }
+                                if (callbackMessage.callbackMessages.message == "StartAttack")
+                                {
+                                    CurrentRoom.loadGameAttack = true;
+                                }
+                                if (CurrentRoom.loadGameAttack)
+                                {
+                                    if (callbackMessage.callbackMessages.attackTimer != -1)
+                                    {
+                                        timerAttack = callbackMessage.callbackMessages.attackTimer;
+                                    }
                                 }
                             }
+                            
                         }
                         catch (Exception e)
                         {
@@ -84,49 +95,41 @@ namespace Games.Transitions
                     }
                 };
             }
+
             return true;
         }
 
-        private void ActiveChooseRoleAndDeack()
+        public IEnumerator LoadGame()
         {
-            chooseRoleAndDeckGameObject.SetActive(true);
-        }
-
-        private void Update()
-        {
-            if (loadGame)
+            while (!CurrentRoom.loadGame)
             {
-                SceneManager.LoadScene("GameScene");
-                if (loadRoleAndDeck)
-                {
-                    ActiveChooseRoleAndDeack();
-                }
-                if (loadGameDefense)
-                {
-                    StartGameWithDefense();
-                }
+                yield return new WaitForSeconds(0.1f);
             }
+            SceneManager.LoadScene("GameScene");
         }
 
         public IEnumerator WaitingForStart()
         {
-            // TODO : Need rpc to synchro chrono
-            objectsInScene.waitingText.text = waitingGameStartText;
+            while (!CurrentRoom.loadRoleAndDeck)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
 
             chooseRoleAndDeckGameObject.SetActive(true);
-
+            
             while (waitingForStart > 0 && !ChooseDeckAndClass.isValidate)
             {
+                objectsInScene.waitingText.text = waitingGameStartText;
                 objectsInScene.counterText.text = waitingForStart.ToString();
-
-                yield return new WaitForSeconds(1);
-                waitingForStart -= 1;
+                yield return new WaitForSeconds(0.5f);
             }
 
             waitingForStart = durationChooseDeckPhase;
-            
-
-            chooseRoleAndDeckGameObject.SetActive(false);
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
+            while (!CurrentRoom.loadGameDefense)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
             // TODO : Need RPC to launch game
             StartGameWithDefense();
         }
@@ -134,8 +137,7 @@ namespace Games.Transitions
         public void WantToStartGame()
         {
             waitingGameStartText = "La partie commence dans     secondes";
-            //waitingForStart = durationChooseDeckPhase;
-            //StartCoroutine(WaitingForStart());
+            StartCoroutine(WaitingForStart());
         }
 
         public void StartGameWithDefense()
