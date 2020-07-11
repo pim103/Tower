@@ -26,8 +26,8 @@ namespace Networking.Client
         // Start is called before the first frame update
         public static string END_POINT_GAME;
         public static string END_POINT_CHAT;
-        public static WebSocket wsGame;
-        public static WebSocket wsChat;
+        public static WebSocket wsGame = null;
+        public static WebSocket wsChat= null;
         //private CanStartHandler testMessage = null;
 
         static TowersWebSocket()
@@ -101,8 +101,11 @@ namespace Networking.Client
 
         public static void StartConnection()
         {
-            wsGame.Connect();
-            
+            if (wsGame != null && !wsGame.IsAlive)
+            {
+                wsGame.Connect();
+            }
+
             var setSocket = new Dictionary<string, string>();
             setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
             setSocket.Add("room", NetworkingController.CurrentRoomToken);
