@@ -43,6 +43,8 @@ namespace Games.Players
         [SerializeField] public GameObject bgTimer2;
         [SerializeField] public GameObject bgTimer3;
 
+        [SerializeField] public Text timerAttack;
+
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
 
