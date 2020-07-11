@@ -361,6 +361,7 @@ namespace Games.Global
                 if (entity.isPlayer)
                 {
                     DataObject.playerInScene.Remove(GameController.PlayerIndex);
+                    GameController.mainCamera.SetActive(true);
                 }
                 else if (entity.isSummon)
                 {

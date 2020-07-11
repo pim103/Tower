@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using FullSerializer;
+using Games.Global;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Utils;
 
 namespace Games {
@@ -17,12 +19,19 @@ namespace Games {
         [SerializeField]
         private TransitionMenuGame transitionMenuGame;
 
+        [SerializeField] private Text endGameText;
+
         [SerializeField]
         private ScriptsExposer se;
         [SerializeField] 
         private string endPoint;
         [SerializeField] 
         private string roomId;
+
+        [SerializeField] private GameObject endGameMenu;
+        [SerializeField] private Button backToMenu;
+
+        public static GameObject mainCamera;
 
         public static string staticRoomId;
         
@@ -56,14 +65,24 @@ namespace Games {
             }
 
             Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene("MenuScene");
+            DataObject.playerInScene.Remove(PlayerIndex);
+            objectsInScene.mainCamera.SetActive(true);
+            endGameMenu.SetActive(true);
         }
 
+        private void LoadMainMenu()
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+        
         // ================================== BASIC METHODS ======================================
 
         // Start is called before the first frame update
         void Start()
         {
+            mainCamera = objectsInScene.mainCamera;
+            endGameMenu.SetActive(false);
+            backToMenu.onClick.AddListener(LoadMainMenu);
             staticRoomId = roomId;
 
             objectsInScene.mainCamera.SetActive(true);
@@ -89,11 +108,13 @@ namespace Games {
                             {
                                 Debug.Log("Un autre joueur a gagné");
                                 otherPlayerDie = true;
+                                endGameText.text = "Vous avez perdu...";
                             }
                             if (callbackMessage.callbackMessages.message == "DEATH")
                             {
                                 Debug.Log("Vous avez gagné");
                                 otherPlayerDie = true;
+                                endGameText.text = "Vous avez gagné !";
                             }
                         }
                         catch (Exception e)

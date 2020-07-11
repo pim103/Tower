@@ -304,9 +304,9 @@ namespace Games.Global
                 if (isPlayer)
                 {
                     TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "Player", "SendDeath", null);
+                    TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken, "Player", "HasWon", null);
                     Debug.Log("Vous êtes mort");
                     Cursor.lockState = CursorLockMode.None;
-                    SceneManager.LoadScene("MenuScene");
                 }
             }
         }

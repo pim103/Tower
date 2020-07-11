@@ -53,7 +53,6 @@ namespace Games.Attacks
             else
             {
                 TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "Player", "HasWon", null);
-                SceneManager.LoadScene("MenuScene");
             }
         }
     }

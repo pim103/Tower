@@ -27,7 +27,7 @@ namespace Menus
         [SerializeField] private GameObject searchingMatchCanvas;
         [SerializeField] private Button cancelResearchMatchButton;
 
-        private static string canStart;
+        private string canStart;
         private Coroutine searchingMatch;
         
         public enum Menu

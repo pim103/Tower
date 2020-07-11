@@ -72,10 +72,6 @@ namespace Games.Defenses
 
                 currentLevel++;
             }
-            else
-            {
-                SceneManager.LoadScene("MenuScene");
-            }
         }
 
         private void Generate()
