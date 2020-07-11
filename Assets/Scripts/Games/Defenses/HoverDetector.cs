@@ -37,7 +37,8 @@ namespace Games.Defenses
         
         public GameObject dest;
 
-        private NavMeshPath path;
+        private NavMeshPath pathToEnd;
+        private NavMeshPath pathToKey;
 
         [SerializeField] 
         private GameObject WarningPanel;
@@ -80,7 +81,7 @@ namespace Games.Defenses
                     }
                 }
                 else if (currentTileController.contentType != GridTileController.TypeData.Empty || 
-                         path.status != NavMeshPathStatus.PathComplete || 
+                         pathToEnd.status != NavMeshPathStatus.PathComplete || 
                          currentTileController.isTooCloseFromAMob || 
                          (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 0 && !currentCardBehaviorInGame.groupRangeBehavior.CheckContentEmpty()))
                 {
@@ -125,9 +126,14 @@ namespace Games.Defenses
                     if (canPutItHere && objectInHand)
                     {
                         currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                        path = new NavMeshPath(); 
-                        NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
-                        if (path.status == NavMeshPathStatus.PathComplete)
+                        pathToEnd = new NavMeshPath(); 
+                        NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+                        if (defenseUiController.keyAlreadyPut)
+                        {
+                            pathToKey = new NavMeshPath();
+                            NavMesh.CalculatePath(startPos.transform.position, defenseUiController.transform.position,NavMesh.AllAreas, pathToKey);
+                        }
+                        if (pathToEnd.status == NavMeshPathStatus.PathComplete && (pathToKey.status == NavMeshPathStatus.PathComplete || !defenseUiController.keyAlreadyPut))
                         {
                             currentlyBlocked = false;
                             if (objectInHand.layer == LayerMask.NameToLayer("Wall") ||
@@ -200,7 +206,8 @@ namespace Games.Defenses
                                     currentTileController.content.GetComponent<CardBehaviorInGame>();
                                 contentCardBehaviorInGame.keySlot = objectInHand;
                                 defenseUiController.keyAlreadyPut = true;
-                                objectInHand.SetActive(false);
+                                objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 2.25f;
+                                //objectInHand.SetActive(false);
                                 objectInHand = null;
                             }
 
@@ -399,9 +406,14 @@ namespace Games.Defenses
         
         private void LateUpdate()
         {
-            path = new NavMeshPath(); 
-            NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,path);
-            if (path.status != NavMeshPathStatus.PathComplete)
+            pathToEnd = new NavMeshPath(); 
+            NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+            if (defenseUiController.keyAlreadyPut)
+            {
+                pathToKey = new NavMeshPath();
+                NavMesh.CalculatePath(startPos.transform.position, defenseUiController.transform.position,NavMesh.AllAreas, pathToKey);
+            }
+            if (pathToEnd.status != NavMeshPathStatus.PathComplete || pathToKey.status != NavMeshPathStatus.PathComplete)
             {
                 currentlyBlocked = true;
                 if (!objectInHand)
