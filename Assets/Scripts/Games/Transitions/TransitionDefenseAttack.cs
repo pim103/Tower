@@ -199,7 +199,7 @@ namespace Games.Transitions
                             }
                             else
                             {
-                                stringToSend += "0";
+                                stringToSend += "0,";
                             }
 
                             if (currentCardBehaviorInGame.keySlot)

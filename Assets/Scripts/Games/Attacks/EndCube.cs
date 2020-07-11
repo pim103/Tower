@@ -34,11 +34,10 @@ namespace Games.Attacks
 
             foreach (KeyValuePair<int, PlayerPrefab> players in DataObject.playerInScene)
             {
-                players.Value.entity.hp -= 10;
                 players.Value.Reset();
             }
         }
-        
+
         public IEnumerator WaitingForDefensePhase()
         {
             DesactiveAllGameObject();

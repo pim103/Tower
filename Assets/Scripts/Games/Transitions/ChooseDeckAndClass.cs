@@ -45,6 +45,11 @@ namespace Games.Transitions
         private int activeMonsterButtonCount = 0;
         private int activeEquipmentButtonCount = 0;
 
+        private void OnEnable()
+        {
+            isValidate = false;
+        }
+
         private void Start()
         {
             isValidate = false;
