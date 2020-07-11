@@ -5,6 +5,7 @@ using Games.Global;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -105,12 +106,16 @@ namespace Games {
                             callbackMessage = Tools.Clone(callbackMessage);
                             if (callbackMessage.callbackMessages.message == "WON")
                             {
+                                CurrentRoom.loadGameDefense = false;
+                                CurrentRoom.loadGameAttack = false;
                                 Debug.Log("Un autre joueur a gagné");
                                 otherPlayerDie = true;
                                 endGameText.text = "Vous avez perdu...";
                             }
                             if (callbackMessage.callbackMessages.message == "DEATH")
                             {
+                                CurrentRoom.loadGameDefense = false;
+                                CurrentRoom.loadGameAttack = false;
                                 Debug.Log("Vous avez gagné");
                                 otherPlayerDie = true;
                                 endGameText.text = "Vous avez gagné !";
