@@ -21,12 +21,18 @@ namespace Games.Defenses
         
         [SerializeField]
         private Button[] trapButtons;
+        
+        [SerializeField] 
+        private Button keyButton;
+
+        [SerializeField] 
+        private Transform keySlot;
 
         [SerializeField] 
         public Text wallButtonText;
         
         [SerializeField] 
-        private InitDefense initDefense;
+        public InitDefense initDefense;
 
         [SerializeField] 
         private ObjectPooler defensePooler;
@@ -39,6 +45,7 @@ namespace Games.Defenses
         
         public int currentWallNumber;
         private int currentWallType;
+        public bool keyAlreadyPut;
 
         public MobDecklist mobDecklist;
         public List<GroupsMonster> mobDeckContent;
@@ -51,10 +58,19 @@ namespace Games.Defenses
         private GameObject[] equipementCardContainers;
         private List<Card> cardsInMonsterDeck;
         private List<Card> cardsInEquipmentDeck;
+
+        [SerializeField]
+        public Text maxResourceText;
+
+        [SerializeField] 
+        public Text currentResourceText;
+
+        [SerializeField] 
+        private GameObject keyObject;
         private void Start()
         {
             wallButton.onClick.AddListener(PutWallInHand);
-            
+            keyButton.onClick.AddListener(PutKeyInHand);
             foreach (var button in trapButtons)
             {
                 button.transform.GetChild(0).GetComponent<Text>().text =
@@ -64,6 +80,8 @@ namespace Games.Defenses
                     PutTrapInHand(button.gameObject.GetComponent<TrapBehavior>());
                 });
             }
+
+            keyObject.transform.position = keySlot.position;
         }
 
         void OnEnable()
@@ -83,6 +101,10 @@ namespace Games.Defenses
             }
             
             DrawCards();
+            hoverDetector.maxResource = initDefense.currentLevel + 3;
+            hoverDetector.currentResource = initDefense.currentLevel + 3;
+            maxResourceText.text = "/ "+hoverDetector.maxResource;
+            currentResourceText.text = hoverDetector.currentResource.ToString();
         }
 
         public void PutWallInHand()
@@ -95,6 +117,22 @@ namespace Games.Defenses
                 hoverDetector.objectInHand = wall;
                 wall.SetActive(true);
             }
+        }
+
+        public void PutKeyInHand()
+        {
+            if (!hoverDetector.objectInHand && !keyAlreadyPut)
+            {
+                keyObject.SetActive(true);
+                hoverDetector.objectInHand = keyObject;
+            }
+        }
+
+        public void PutKeyBackToSlot()
+        {
+            keyObject.SetActive(true);
+            keyAlreadyPut = false;
+            keyObject.transform.position = keySlot.position;
         }
 
         public void PutCardInHand(GameObject card)
@@ -116,6 +154,8 @@ namespace Games.Defenses
                 equipementCardBehaviorInGame.transform.localPosition = Vector3.zero;
                 equipementCardBehaviorInGame.gameObject.layer = LayerMask.NameToLayer("Card");
                 equipementCard.SetActive(true);
+                hoverDetector.currentResource += equipementCardBehaviorInGame.equipement.cost;
+                Debug.Log("return card");
             }
         }
 
@@ -127,6 +167,7 @@ namespace Games.Defenses
                 trap.GetComponent<TrapBehavior>().CopyBehavior(trapBehavior);
                 hoverDetector.objectInHand = trap;
                 trap.SetActive(true);
+                hoverDetector.currentResource -= 1;
             }
         }
         

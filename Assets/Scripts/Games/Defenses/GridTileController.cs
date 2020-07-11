@@ -28,7 +28,7 @@ namespace Games.Defenses
 
         public void ChangeColorToCyan()
         {
-            GetComponent<Renderer>().material.color = new Color(0,255,255,0);
+            GetComponent<Renderer>().material.color = new Color(0,255,255,100);
         }
     }
 }

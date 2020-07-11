@@ -310,9 +310,12 @@ namespace Games.Attacks
             InstantiateParameters param;
             Monster monster;
             int nbMonsterInit = 0;
-
+            bool shouldPutKey = false;
             Vector3 origPos = position;
-
+            if (equipment[5] != 0)
+            {
+                shouldPutKey = true;
+            }
             foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
             {
                 for (int i = 0; i < mobs.Value; i++)
@@ -330,7 +333,11 @@ namespace Games.Attacks
                     monster.InitMonster(monsterPrefab);
 
                     groups.InitSpecificEquipment(monster, equipment);
-
+                    if (shouldPutKey)
+                    {
+                        monster.InitKey(objectsInScene.keyObject);
+                        shouldPutKey = false;
+                    }
                     position = origPos + GroupsPosition.position[nbMonsterInit];
 
                     DataObject.monsterInScene.Add(monster);

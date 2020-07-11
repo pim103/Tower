@@ -77,7 +77,7 @@ namespace Networking.Client
                 json += "\"_ARGS\":" + args;
             }
 
-            wsGame.Send(json.TrimEnd(',', ' ') + "}");
+//            wsGame.Send(json.TrimEnd(',', ' ') + "}");
         }
 
         public static string FromDictToString(Dictionary<string, string> dict)

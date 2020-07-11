@@ -2,22 +2,19 @@
 using System.Collections;
 using System.Linq;
 using DeckBuilding;
-using FullSerializer;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global.Entities;
 using Networking;
 using Networking.Client;
-using Networking.Client.Room;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 
 namespace Games.Transitions
 {
     public class TransitionDefenseAttack : MonoBehaviour
     {
-        private const int durationDefensePhase = 30;
+        private const int durationDefensePhase = 90;
 
         [SerializeField]
         private ObjectsInScene objectsInScene;
@@ -49,37 +46,6 @@ namespace Games.Transitions
         {
             defenseTimer = durationDefensePhase;
             validateButton.onClick.AddListener(delegate { hasValidated = true; });
-
-            if (TowersWebSocket.wsGame != null)
-            {
-                TowersWebSocket.wsGame.OnMessage += (sender, args) =>
-                {
-                    if (args.Data.Contains("callbackMessages"))
-                    {
-                        fsSerializer serializer = new fsSerializer();
-                        fsData data;
-                        CallbackMessages callbackMessage = null;
-                        try
-                        {
-                            data = fsJsonParser.Parse(args.Data);
-                            serializer.TryDeserialize(data, ref callbackMessage);
-                            callbackMessage = Tools.Clone(callbackMessage);
-
-                            if (CurrentRoom.loadGameDefense)
-                            {
-                                if (callbackMessage.callbackMessages.defenseTimer != -1)
-                                {
-                                    defenseTimer = callbackMessage.callbackMessages.defenseTimer;
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log("Can't read callback : " + e.Message);
-                        }
-                    }
-                };
-            }
         }
 
         private IEnumerator WaitingEndDefense()
@@ -93,7 +59,8 @@ namespace Games.Transitions
             while(defenseTimer > 0 && !hasValidated)
             {
                 counter.text = defenseTimer.ToString();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1);
+                defenseTimer--;
             }
             defenseUI.SetActive(false);
             waitingOtherPlayerPanel.SetActive(true);
@@ -195,7 +162,16 @@ namespace Games.Transitions
                             if (currentCardBehaviorInGame.grievesSlot)
                             {
                                 stringToSend += currentCardBehaviorInGame.grievesSlot.GetComponent<CardBehaviorInGame>()
-                                                    .equipement.id;
+                                                    .equipement.id + ",";
+                            }
+                            else
+                            {
+                                stringToSend += "0";
+                            }
+
+                            if (currentCardBehaviorInGame.keySlot)
+                            {
+                                stringToSend += "1";
                             }
                             else
                             {
