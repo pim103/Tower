@@ -36,6 +36,12 @@ namespace Games.Players
         [SerializeField] public Text spell1;
         [SerializeField] public Text spell2;
         [SerializeField] public Text spell3;
+        [SerializeField] public Text timer1;
+        [SerializeField] public Text timer2;
+        [SerializeField] public Text timer3;
+        [SerializeField] public GameObject bgTimer1;
+        [SerializeField] public GameObject bgTimer2;
+        [SerializeField] public GameObject bgTimer3;
 
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
@@ -304,17 +310,17 @@ namespace Games.Players
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        SpellController.CastSpell(entity, entity.spells[0], positionPointed, target);
+                        SpellController.CastSpell(entity, entity.spells[0], positionPointed, target, 1);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
-                        SpellController.CastSpell(entity, entity.spells[1], positionPointed, target);
+                        SpellController.CastSpell(entity, entity.spells[1], positionPointed, target, 2);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
-                        SpellController.CastSpell(entity, entity.spells[2], positionPointed, target);
+                        SpellController.CastSpell(entity, entity.spells[2], positionPointed, target, 3);
                     }
                 }
             }

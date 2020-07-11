@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Net.Mime;
 using FullSerializer;
+using Games.Players;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 using Random = UnityEngine.Random;
 
@@ -41,7 +44,7 @@ namespace Games.Global.Spells.SpellsController
             instance = this;
         }
 
-        public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
+        public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
         {
             if (spell == null)
             {
@@ -56,7 +59,7 @@ namespace Games.Global.Spells.SpellsController
                 }
 
                 spell.isOnCooldown = true;
-                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
+                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target, spellSlotIfPlayer));
             }
             else if (spell.canCastDuringCast)
             {
@@ -163,14 +166,62 @@ namespace Games.Global.Spells.SpellsController
             iSpellController.LaunchSpell(entity, spellComponent, originSpell);
         }
 
-        public static IEnumerator StartCooldown(Entity entity, Spell spell)
+        public static IEnumerator StartCooldown(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
         {
-            yield return new WaitForSeconds(spell.cooldown);
+            GameObject bgTimer = null;
+            Text timer = null;
+            
+            if (spellSlotIfPlayer > 0)
+            {
+                PlayerPrefab playerPrefab = entity.entityPrefab as PlayerPrefab;
+
+                switch (spellSlotIfPlayer)
+                {
+                    case 1:
+                        bgTimer = playerPrefab.bgTimer1;
+                        timer = playerPrefab.timer1;
+                        break;
+                    case 2:
+                        bgTimer = playerPrefab.bgTimer2;
+                        timer = playerPrefab.timer2;
+                        break;
+                    case 3:
+                        bgTimer = playerPrefab.bgTimer3;
+                        timer = playerPrefab.timer3;
+                        break;
+                }
+
+                Debug.Log(timer);
+                Debug.Log(bgTimer);
+                if (timer != null && bgTimer != null)
+                {
+                    bgTimer.SetActive(true);
+                    timer.text = spell.cooldown.ToString();
+                }
+            }
+
+            float duration = spell.cooldown;
+            while (duration > 0)
+            {
+                yield return new WaitForSeconds(1);
+                duration -= 1;
+
+                if (timer != null)
+                {
+                    timer.text = duration.ToString();
+                }
+            }
+
+            if (bgTimer != null)
+            {
+                bgTimer.SetActive(false);
+            }
+
             spell.isOnCooldown = false;
             spell.alreadyRecast = false;
         }
 
-        public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null)
+        public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
         {
             float duration = spell.castTime;
 
@@ -202,7 +253,7 @@ namespace Games.Global.Spells.SpellsController
                 yield break;
             }
             
-            instance.StartCoroutine(StartCooldown(entity, spell));
+            instance.StartCoroutine(StartCooldown(entity, spell, spellSlotIfPlayer));
             CastSpellComponent(entity, spell.activeSpellComponent, startPosition, target);
         }
 
