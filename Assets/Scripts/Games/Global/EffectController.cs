@@ -3,13 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global.Entities;
+using Games.Players;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace Games.Global
 {
     public class EffectController : MonoBehaviour
     {
+        [SerializeField] private List<Sprite> spritesEffect;
+        
         public static EffectController EffectControllerInstance;
         public static readonly TypeEffect[] ControlEffect = {TypeEffect.Freezing, TypeEffect.Stun, TypeEffect.Sleep, TypeEffect.Immobilization, TypeEffect.Slow, TypeEffect.Expulsion, 
             TypeEffect.Confusion, TypeEffect.Fear, TypeEffect.Charm };
@@ -24,9 +28,42 @@ namespace Games.Global
         {
             EffectControllerInstance = this;
         }
+        
+        private static void AddEffectSprite(Effect effect)
+        {
+            Sprite buffSprite = EffectControllerInstance.spritesEffect.Find(sprite => sprite.name == effect.typeEffect.ToString());
+            PlayerPrefab playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
+            int indexBuff = playerPrefab.entity.underEffects.Count;
+            
+            if (buffSprite != null)
+            {
+                // 20 images of sprite
+                if (indexBuff < 20)
+                {
+                    playerPrefab.buffCases[indexBuff].sprite = buffSprite;
+                    Color color = playerPrefab.buffCases[indexBuff].color;
+                    color.a = 1;
+                    playerPrefab.buffCases[indexBuff].color = color;
+                }
+            }
+        }
+
+        private static void RemoveEffectSprite(Effect effect)
+        {
+            PlayerPrefab playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
+            Image buffImage = playerPrefab.buffCases.Find(image => image.sprite != null && image.sprite.name == effect.typeEffect.ToString());
+            
+            if (buffImage != null)
+            {
+                buffImage.sprite = null;
+                Color color = buffImage.color;
+                color.a = 0;
+                buffImage.color = color;
+            }
+        }
 
         public static void ApplyEffect(Entity entityAffected, Effect effect, Entity origin, Vector3 srcDamage, List<Entity> affectedEntity = null)
-        {
+        {   
             if (effect == null || entityAffected.hasWill && ControlEffect.Contains(effect.typeEffect))
             {
                 return;
@@ -69,6 +106,11 @@ namespace Games.Global
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 
             cloneEffect.currentCoroutine = currentCoroutine;
+
+            if (entity.isPlayer)
+            {
+                AddEffectSprite(effect);
+            }
         }
 
         public static IEnumerator PlayEffectOnTime(Entity entity, Effect effect)
@@ -103,9 +145,7 @@ namespace Games.Global
 
                 effect.TriggerEffectAtTime(entity);
 
-//                effectInList = entity.underEffects[effect.typeEffect];
                 effect.durationInSeconds -= 0.1f;
-//                entity.underEffects[effect.typeEffect] = effectInList;
             }
 
             StopCurrentEffect(entity, effect);
@@ -121,6 +161,10 @@ namespace Games.Global
 
             effect.EndEffect(entity);
 
+            if (entity.isPlayer)
+            {
+                RemoveEffectSprite(effect);
+            }
             entity.underEffects.Remove(effect.typeEffect);
         }
     }

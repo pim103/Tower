@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Games.Global;
 using Games.Global.Spells;
@@ -44,6 +45,8 @@ namespace Games.Players
         [SerializeField] public GameObject bgTimer3;
 
         [SerializeField] public Text timerAttack;
+
+        [SerializeField] public List<Image> buffCases;
 
         // Use for some spell
         [SerializeField] private bool isFakePlayer = false;
