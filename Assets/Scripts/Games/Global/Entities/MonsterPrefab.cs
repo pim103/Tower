@@ -45,7 +45,7 @@ namespace Games.Global.Entities
 
         private void Update()
         {
-            if (DataObject.playerInScene == null && DataObject.playerInScene.Count == 0)
+            if (DataObject.playerInScene == null || DataObject.playerInScene.Count == 0)
             {
                 return;
             }
