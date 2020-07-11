@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace Games.Defenses.Traps
 {
-    public class BladeColliderBehavior : MonoBehaviour
+public class BladeColliderBehavior : MonoBehaviour
+{
+    [SerializeField] private SpinningPoleBehavior spinningPoleBehavior;
+    private void OnTriggerEnter(Collider other)
     {
-        [SerializeField] private SpinningPoleBehavior spinningPoleBehavior;
-        private void OnTriggerEnter(Collider other)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                spinningPoleBehavior.playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
-                AbilityParameters abilityParameters = new AbilityParameters();
-                abilityParameters.origin = spinningPoleBehavior.entity;
-                spinningPoleBehavior.playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
-                spinningPoleBehavior.playerEntity.TakeDamage(5.0f, abilityParameters, DamageType.Physical);
-            }
+            spinningPoleBehavior.playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
+            AbilityParameters abilityParameters = new AbilityParameters();
+            abilityParameters.origin = spinningPoleBehavior.entity;
+            spinningPoleBehavior.playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
+            spinningPoleBehavior.playerEntity.TakeDamage(5.0f, abilityParameters, DamageType.Physical);
         }
     }
+}
 }
