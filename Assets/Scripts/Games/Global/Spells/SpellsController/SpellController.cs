@@ -46,7 +46,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
         {
-            if (spell == null)
+            if (spell == null && spell.cost <= entity.ressource1 - spell.cost)
             {
                 return false;
             }
@@ -191,8 +191,6 @@ namespace Games.Global.Spells.SpellsController
                         break;
                 }
 
-                Debug.Log(timer);
-                Debug.Log(bgTimer);
                 if (timer != null && bgTimer != null)
                 {
                     bgTimer.SetActive(true);
@@ -223,6 +221,8 @@ namespace Games.Global.Spells.SpellsController
 
         public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
         {
+            entity.ressource1 -= spell.cost;
+            
             float duration = spell.castTime;
 
             if (spell.duringCastSpellComponent != null)
