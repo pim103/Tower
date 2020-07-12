@@ -6,18 +6,43 @@ using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
 
-[Serializable]
-public class WeaponsListSerialize
-{
-    public List<WeaponJsonObject> weapons { get; set; }
-}
-
 public class TestParser : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        WeaponsLoad();
+        //GroupMonsterLoad();
+        //WeaponsLoad();
+    }
+
+    private void GroupMonsterLoad()
+    {
+        string json = "{\"groups\":[{\"id\":\"1\",\"family\":\"5\",\"cost\":\"10\",\"radius\":\"2\",\"monsterList\":[{\"id\":\"1\",\"typeWeapon\":\"0\",\"name\":\"Archer Squelette\",\"number\":\"2\",\"hp\":\"20\",\"def\":\"2\",\"att\":\"5\",\"speed\":\"1\",\"nbWeapon\":\"1\",\"skillListId\":[{\"id\":\"1\",\"name\":\"ThrowPoison\"},{\"id\":\"2\",\"name\":\"EjectTarget\"}],\"onDamageDealt\":\"Outch\",\"onDamageReceive\":\"Aie\",\"model\":\"SkeletonMonster\",\"weaponId\":\"2\"},{\"id\":\"2\",\"typeWeapon\":\"1\",\"name\":\"Berserker Squelette\",\"number\":\"2\",\"hp\":\"30\",\"def\":\"4\",\"att\":\"2\",\"speed\":\"1\",\"nbWeapon\":\"1\",\"skillListId\":[{\"id\":\"1\",\"name\":\"ThrowPoison\"}],\"onDamageDealt\":\"Outch\",\"onDamageReceive\":\"Aie\",\"model\":\"SkeletonMonsterBerserk\",\"weaponId\":\"1\"}]}]}";
+
+        fsSerializer serializer = new fsSerializer();
+        fsData data;
+
+        try
+        {
+            GroupsMonsterList mobsList = null;
+            data = fsJsonParser.Parse(json);
+            serializer.TryDeserialize(data, ref mobsList);
+
+            if (mobsList == null)
+            {
+                return;
+            }
+
+            foreach (GroupsJsonObject groups in mobsList.groups)
+            {
+                groups.PrintAttribute();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            Debug.Log(e.Data);
+        }
     }
 
     private void WeaponsLoad()
@@ -29,13 +54,12 @@ public class TestParser : MonoBehaviour
 
         try
         {
-            WeaponsListSerialize weaponList = null;
+            WeaponJsonList weaponList = null;
             data = fsJsonParser.Parse(jsonWeapons);
             serializer.TryDeserialize(data, ref weaponList);
 
             if (weaponList == null)
             {
-                Debug.Log("Null");
                 return;
             }
 
@@ -46,7 +70,6 @@ public class TestParser : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log("Error");
             Debug.Log(e.Message);
             Debug.Log(e.Data);
         }

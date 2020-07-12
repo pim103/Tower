@@ -29,7 +29,7 @@ namespace Games.Global.Entities
                 
                 monster.InitMonster(this);
                 monster.InitEntityList();
-                monster.weaponOriginalName = "Basic_Bow";
+                monster.weaponOriginalId = 1;
                 //TODO : change to monster
                 monster.BehaviorType = BehaviorType.Player;
                 monster.AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst;

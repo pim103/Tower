@@ -5,6 +5,7 @@ using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using UnityEngine;
+using Utils;
 
 namespace Games.Global.Entities
 {
@@ -13,7 +14,7 @@ namespace Games.Global.Entities
         public int id { get; set; }
         public string mobName { get; set; }
         public int nbWeapon { get; set; }
-        public string weaponOriginalName { get; set; }
+        public int weaponOriginalId { get; set; }
 
         public Family family { get; set; }
 
@@ -21,7 +22,7 @@ namespace Games.Global.Entities
 
         private MonsterPrefab monsterPrefab;
 
-        public List<string> spellsName { get; set; }
+        public List<SpellList> spellsName { get; set; }
 
         public override void BasicAttack()
         {
@@ -81,7 +82,7 @@ namespace Games.Global.Entities
 
         public void InitOriginalWeapon()
         {
-            Weapon weapon = DataObject.WeaponList.GetWeaponWithName(weaponOriginalName);
+            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(weaponOriginalId);
 
             monsterPrefab.AddItemInHand(weapon);
 
@@ -90,9 +91,9 @@ namespace Games.Global.Entities
 
         public void InitSpells()
         {
-            foreach (string spellName in spellsName)
+            foreach (SpellList spellName in spellsName)
             {
-                Spell spell = SpellController.LoadSpellByName(spellName);
+                Spell spell = SpellController.LoadSpellByName(spellName.name);
 
                 if (spell != null)
                 {
@@ -100,7 +101,7 @@ namespace Games.Global.Entities
                 }
                 else
                 {
-                    Debug.Log("Doesnt find spell " + spellName);
+                    Debug.Log("Doesnt find spell " + spellName.name);
                 }
             }
         }

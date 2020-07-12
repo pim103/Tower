@@ -138,7 +138,6 @@ namespace Games.Global.Weapons
                     Weapon loadedWeapon = weaponJson.ConvertToWeapon();
                     loadedWeapon.model = weaponsGameObject.First(go => go.name == loadedWeapon.modelName);
                     weapons.Add(loadedWeapon);
-                    loadedWeapon.PrintAttributes();
                 }
             }
             catch (Exception e)

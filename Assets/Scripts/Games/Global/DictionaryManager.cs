@@ -28,8 +28,8 @@ namespace Games.Global
             FetchCollection();
 
             StartCoroutine(GetWeapons());
+            StartCoroutine(GetGroupsMonster());
 
-            DataObject.MonsterList = new MonsterList(monsterGameObjects);
             DataObject.MaterialsList = new List<Material>();
             DataObject.MaterialsList.AddRange(effectMaterials.ToList());
         }
@@ -47,6 +47,22 @@ namespace Games.Global
             else
             {
                 Debug.Log("Can't get weapons...");
+            }
+        }
+        
+        public IEnumerator GetGroupsMonster()
+        {
+            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/group/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                DataObject.MonsterList = new MonsterList(monsterGameObjects, www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Monsters...");
             }
         }
         

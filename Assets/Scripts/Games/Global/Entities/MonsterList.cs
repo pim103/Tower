@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FullSerializer;
 using UnityEngine;
 using Utils;
 
@@ -13,14 +15,14 @@ namespace Games.Global.Entities
         public List<GroupsMonster> groupsList;
         public List<Monster> monsterList;
         
-        public MonsterList(GameObject[] list)
+        public MonsterList(GameObject[] list, string json)
         {
             monsterGameObjects = list;
 
             groupsList = new List<GroupsMonster>();
             monsterList = new List<Monster>();
 
-            InitMonsterList();
+            InitMonsterList(json);
         }
 
         public GroupsMonster GetGroupsMonsterById(int id)
@@ -37,26 +39,38 @@ namespace Games.Global.Entities
             return cloneMonster;
         }
 
-        private void InitMonsterList()
+        private void InitMonsterList(string json)
         {
-            List<GroupsJsonObject> wJsonObjects = new List<GroupsJsonObject>();
+            fsSerializer serializer = new fsSerializer();
+            fsData data;
 
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/MonsterJson"))
+            try
             {
-                StreamReader reader = new StreamReader(filePath, true);
-            
-                wJsonObjects.AddRange(ParserJson<GroupsJsonObject>.Parse(reader, "groups"));
-            }
+                GroupsMonsterList mobsList = null;
+                data = fsJsonParser.Parse(json);
+                serializer.TryDeserialize(data, ref mobsList);
 
-            foreach (GroupsJsonObject groupsJson in wJsonObjects)
-            {
-                groupsList.Add(groupsJson.ConvertToMonsterGroups());
-                foreach (KeyValuePair<MobJsonObject, int> mob in groupsJson.mobs)
+                if (mobsList == null)
                 {
-                    Monster monster = mob.Key.ConvertToMonster(groupsJson.family);
-                    monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
-                    monsterList.Add(monster);
+                    return;
                 }
+
+                foreach (GroupsJsonObject groupsJson in mobsList.groups)
+                {
+                    groupsList.Add(groupsJson.ConvertToMonsterGroups());
+                    foreach (KeyValuePair<MobJsonObject, int> mob in groupsJson.mobs)
+                    {
+                        Monster monster = mob.Key.ConvertToMonster((Family)Int32.Parse(groupsJson.family));
+                        monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
+                        monsterList.Add(monster);
+                    }
+                    groupsJson.PrintAttribute();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                Debug.Log(e.Data);
             }
         }
     }

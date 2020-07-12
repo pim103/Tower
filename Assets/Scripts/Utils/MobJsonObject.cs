@@ -4,71 +4,89 @@ using Games.Global;
 using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 namespace Utils
 {
+    [Serializable]
+    public class GroupsMonsterList
+    {
+        public List<GroupsJsonObject> groups;
+    }
+
+    [Serializable]
+    public class SpellList
+    {
+        public string id;
+        public string name;
+    }
+
+    [Serializable]
     public class MobJsonObject
     {
-        public int id;
-        
-        private string mobName;
-        private int att;
-        private int def;
-        private int physicalDef;
-        private int magicalDef;
-        private int hp;
-        private float attSpeed;
-        private float speed;
-        private int nbWeapon;
-        private string weapon;
+        public string id { get; set; }
 
-        private TypeWeapon constraint;
+        public string name { get; set; }
+        public string att { get; set; }
+        public string def { get; set; }
+        public string physicalDef { get; set; }
+        public string magicalDef { get; set; }
+        public string hp { get; set; }
+        public string attSpeed { get; set; }
+        public string speed { get; set; }
+        public string nbWeapon { get; set; }
+        public string weaponId { get; set; }
 
-        private List<string> skills;
-        private string onDamageDealt;
-        private string onDamageReceive;
-        private string modelName;
+        public string constraint { get; set; }
+
+        public List<SpellList> skillListId;
+
+        public string onDamageDealt { get; set; }
+        public string onDamageReceive { get; set; }
+        public string model { get; set; }
+
+        public string number { get; set; }
 
         public void InsertValue(string key, string value)
         {
             switch (key)
             {
                 case "idMonster":
-                    id = Int32.Parse(value);
+                    id = value;
                     break;
                 case "name":
-                    mobName = value;
+                    name = value;
                     break;
                 case "att":
-                    att = Int32.Parse(value);
+                    att = value;
                     break;
                 case "def":
-                    def = Int32.Parse(value);
+                    def = value;
                     break;
                 case "magicalDef":
-                    magicalDef = Int32.Parse(value);
+                    magicalDef = value;
                     break;
                 case "physicalDef":
-                    physicalDef = Int32.Parse(value);
+                    physicalDef = value;
                     break;
                 case "hp":
-                    hp = Int32.Parse(value);
+                    hp = value;
                     break;
                 case "att_speed":
-                    attSpeed = Int32.Parse(value);
+                    attSpeed = value;
                     break;
                 case "speed":
-                    speed = Int32.Parse(value);
+                    speed = value;
                     break;
                 case "nbWeapon":
-                    nbWeapon = Int32.Parse(value);
+                    nbWeapon = value;
                     break;
                 case "weapon":
-                    weapon = value;
+                    weaponId = value;
                     break;
                 case "constraint":
-                    constraint = (TypeWeapon)Int32.Parse(value);
+                    constraint = value;
                     break;
                 case "on_damage_dealt":
                     onDamageDealt = value;
@@ -77,143 +95,135 @@ namespace Utils
                     onDamageReceive = value;
                     break;
                 case "model":
-                    modelName = value;
-                    break;
-                case "spells":
-                    if (skills == null)
-                    {
-                        skills = new List<string>();
-                    }
-
-                    skills.Add(value);
+                    model = value;
                     break;
             }
         }
         
         public void PrintAttribute()
         {
-            Debug.Log("Object id : " + id + " name : " + mobName);
+            Debug.Log("Object id : " + id + " name : " + name);
             Debug.Log("Stats => dmg : " + att + " speed : " + speed + " hp : " + hp + " def : " + def + " nbWeapon : " + nbWeapon);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
-            Debug.Log("Model Name : " + modelName);
+            Debug.Log("Model Name : " + model);
             Debug.Log("skills : ");
-            foreach (string skill in skills)
+            foreach (SpellList skill in skillListId)
             {
-                Debug.Log("Apply : " + skill);
+                Debug.Log("Cast : " + skill.name);
             }
         }
 
         public Monster ConvertToMonster(Family family)
         {
-            Monster monster = new Monster();
-            monster.id = id;
+            Monster monster = new Monster
+            {
+                id = Int32.Parse(id),
+                initialAtt = Int32.Parse(att),
+                initialDef = Int32.Parse(def),
+                initialPhysicalDef = Int32.Parse(physicalDef),
+                initialMagicalDef = Int32.Parse(magicalDef),
+                initialHp = Int32.Parse(hp),
+                initialSpeed = Int32.Parse(speed),
+                initialAttSpeed = Int32.Parse(attSpeed),
+                attSpeed = Int32.Parse(attSpeed),
+                mobName = name,
+                att = Int32.Parse(att),
+                def = Int32.Parse(def),
+                hp = Int32.Parse(hp),
+                speed = Int32.Parse(speed),
+                nbWeapon = Int32.Parse(nbWeapon),
+                family = family,
+                weaponOriginalId = Int32.Parse(weaponId),
+                constraint = (TypeWeapon) Int32.Parse(constraint),
+                spellsName = skillListId,
+                OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB),
+                OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB)
+            };
 
-            monster.initialAtt = att;
-            monster.initialDef = def;
-            monster.initialPhysicalDef = physicalDef;
-            monster.initialMagicalDef = magicalDef;
-            monster.initialHp = hp;
-            monster.initialSpeed = speed;
-            monster.initialAttSpeed = attSpeed;
-            monster.attSpeed = attSpeed;
-            monster.mobName = mobName;
-            monster.att = att;
-            monster.def = def;
-            monster.hp = hp;
-            monster.speed = speed;
-            monster.nbWeapon = nbWeapon;
-            monster.family = family;
-            monster.weaponOriginalName = weapon;
-            monster.constraint = constraint;
-            monster.spellsName = skills;
-
-            monster.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB);
-            monster.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB);;
-            monster.modelName = modelName;
+            monster.modelName = model;
 
             return monster;
         }
     }
     
+    [Serializable]
     public class GroupsJsonObject: ObjectParsed
     {
-        public int id;
-        public Dictionary<MobJsonObject, int> mobs = new Dictionary<MobJsonObject, int>();
-        public Family family;
-        private int cost;
-        private int radius = GroupsMonster.DEFAULT_RADIUS;
-        private string name;
+        public string id { get; set; }
+        public Dictionary<MobJsonObject, int> mobs { get; set; } = new Dictionary<MobJsonObject, int>();
+        public string family { get; set; }
+        public string cost { get; set; }
+        public string radius { get; set; }
+        public string name { get; set; }
 
-        private MobJsonObject mob;
-        private int number = 0;
-        
+        public List<MobJsonObject> monsterList { get; set; }
+        public string number { get; set; }
+
         public override void InsertValue(string key, string value)
         {
             switch (key)
             {
                 case "id":
-                    id = Int32.Parse(value);
+                    id = value;
                     break;
                 case "family":
-                    family = (Family)Int32.Parse(value);
+                    family = value;
                     break;
                 case "cost":
-                    cost = Int32.Parse(value);
+                    cost = value;
                     break;
                 case "number":
-                    number = Int32.Parse(value);
+                    number = value;
                     break;
                 case "monster":
-                    mob = new MobJsonObject();
+                    monsterList = new List<MobJsonObject>();
                     break;
                 case "radius":
-                    radius = Int32.Parse(value);
+                    radius = value;
                     break;
                 case "groupName":
                     name = value;
                     break;
                 default:
-                    mob.InsertValue(key, value);
+                    //mob.InsertValue(key, value);
                     break;
             }
         }
 
         public override void DoSomething()
-        {
-            if (number != 0 || mob != null)
+        {/*
+            if (Int32.Parse(number) != 0 || mob != null)
             {
-                mobs.Add(mob, number);
+                mobs.Add(mob, Int32.Parse(number));
                 mob = null;
-                number = 0;
-            }
+                number = "0";
+            }*/
         }
 
         public void PrintAttribute()
         {
             Debug.Log("Object id : " + id);
-            Debug.Log("Family : " + family);
+            Debug.Log("Family : " + (Family)Int32.Parse(family));
 
-            foreach (KeyValuePair<MobJsonObject, int> entry in mobs)
+            foreach (MobJsonObject mob in monsterList)
             {
-                Debug.Log("Nombre de monstre : " + entry.Value);
-                entry.Key.PrintAttribute();
+                mob.PrintAttribute();
             }
         }
         
         public GroupsMonster ConvertToMonsterGroups()
         {
-            
             GroupsMonster groupsMonster = new GroupsMonster();
-            groupsMonster.id = id;
-            groupsMonster.cost = cost;
-            groupsMonster.family = family;
-            groupsMonster.radius = radius;
+            groupsMonster.id = Int32.Parse(id);
+            groupsMonster.cost = Int32.Parse(cost);
+            groupsMonster.family = (Family) Int32.Parse(family);
+            groupsMonster.radius = Int32.Parse(radius);
             groupsMonster.name = name;
             groupsMonster.monsterInGroups = new Dictionary<int, int>();
 
-            foreach (KeyValuePair<MobJsonObject, int> mob in mobs)
+            foreach (MobJsonObject mob in monsterList)
             {
-                groupsMonster.monsterInGroups.Add(mob.Key.id, mob.Value);
+                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.number));
             }
 
             return groupsMonster;
