@@ -86,6 +86,8 @@ namespace Games.Defenses
 
         void OnEnable()
         {
+            keyAlreadyPut = false;
+            keyObject.SetActive(true);
             currentWallNumber = initDefense.currentMapStats.wallNumber;
             currentWallType = initDefense.currentMapStats.wallType;
             wallButtonText.text = "Mur x" + currentWallNumber;

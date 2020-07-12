@@ -116,8 +116,16 @@ namespace Games.Transitions
                 {
                     hoverDetector.objectInHand.SetActive(false);
                 }
-            }
 
+                if (hoverDetector.defenseUiController.keyAlreadyPut)
+                {
+                    hoverDetector.tileHoldingKeyGroup.content.SetActive(false);
+                    hoverDetector.tileHoldingKeyGroup.content = null;
+                    hoverDetector.tileHoldingKeyGroup.contentType = GridTileController.TypeData.Empty;
+                }
+            }
+            
+            hoverDetector.defenseUiController.keyObject.SetActive(false);
             hoverDetector.enabled = false;
             SendGridData();
 

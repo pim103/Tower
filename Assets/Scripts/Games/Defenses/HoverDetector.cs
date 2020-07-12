@@ -17,11 +17,12 @@ namespace Games.Defenses
         private Camera defenseCam;
 
         [SerializeField] 
-        private DefenseUIController defenseUiController;
+        public DefenseUIController defenseUiController;
         
         public GameObject objectInHand;
         public GameObject lastObjectPutInPlay;
         public GridTileController lastTileWithContent;
+        public GridTileController tileHoldingKeyGroup;
         public bool currentlyBlocked;
         
         [SerializeField]
@@ -204,6 +205,7 @@ namespace Games.Defenses
                             {
                                 CardBehaviorInGame contentCardBehaviorInGame =
                                     currentTileController.content.GetComponent<CardBehaviorInGame>();
+                                tileHoldingKeyGroup = currentTileController;
                                 contentCardBehaviorInGame.keySlot = objectInHand;
                                 defenseUiController.keyAlreadyPut = true;
                                 objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 2.25f;

@@ -92,7 +92,7 @@ namespace Games.Global.Weapons
         {
             Spell spell = SpellController.LoadSpellByName(spellOfBasicAttack);
             Entity wielder = weaponPrefab.GetWielder();
-
+            
             if (spell != null)
             {
                 wielder.basicAttack = spell;

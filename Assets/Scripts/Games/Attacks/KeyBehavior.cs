@@ -5,8 +5,8 @@ namespace Games.Attacks
 {
     public class KeyBehavior : MonoBehaviour
     {
-        [SerializeField] private GameObject doorPivot;
-        [SerializeField] private GameObject endCube;
+        [SerializeField] public GameObject doorPivot;
+        [SerializeField] public GameObject endCube;
 
         private void OnTriggerEnter(Collider other)
         {

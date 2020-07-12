@@ -20,4 +20,6 @@ public class MapStats : MonoBehaviour
     public GameObject endCube;
     [SerializeField] 
     public GameObject startPos;
+    [SerializeField] 
+    public GameObject keyParent;
 }

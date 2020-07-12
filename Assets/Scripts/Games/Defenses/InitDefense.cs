@@ -43,16 +43,7 @@ namespace Games.Defenses
         private HoverDetector hoverDetector;
 
         public List<GameObject> gridCellList;
-
-        [SerializeField] private bool forceInit;
-        private void Start()
-        {
-            if (forceInit)
-            {
-                Init();
-            }
-        }
-
+        
         public void Init()
         {
             if (currentMap)

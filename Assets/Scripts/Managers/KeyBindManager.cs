@@ -45,14 +45,14 @@ public class KeyBindManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(keys["Up"]))
+        /*if (Input.GetKeyDown(keys["Up"]))
         {
             Debug.Log("J'ai appuyé sur keys['Up']");
         }
         if (Input.GetKeyDown(keys["Down"]))
         {
             Debug.Log("J'ai appuyé sur keys['Down']");
-        }
+        }*/
     }
 
     private void OnGUI()

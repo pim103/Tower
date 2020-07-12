@@ -28,17 +28,12 @@ namespace Games.Transitions
         private string waitingGameStartText;
 
         [SerializeField] private GameObject chooseRoleAndDeckGameObject;
-
-        [SerializeField] private bool bypassServer;
+        
         
         private void Start()
         {
             waitingForStart = durationChooseDeckPhase;
             waitingGameStartText = "Waiting for another player";
-            if (bypassServer)
-            {
-                StartGameWithDefense();
-            }
         }
 
         public bool InitGame()
