@@ -8,18 +8,18 @@ public class MapStats : MonoBehaviour
     public int mapHeight;
     [SerializeField]
     public int mapWidth;
-    [SerializeField] 
+    [SerializeField]
     public GameObject cameraPosition;
-    [SerializeField] 
+    [SerializeField]
     public GameObject spawnPosition;
-    [SerializeField] 
+    [SerializeField]
     public int wallNumber;
-    [SerializeField] 
+    [SerializeField]
     public int wallType;
-    [SerializeField] 
+    [SerializeField]
     public GameObject endCube;
-    [SerializeField] 
+    [SerializeField]
     public GameObject startPos;
-    [SerializeField] 
+    [SerializeField]
     public GameObject keyParent;
 }
