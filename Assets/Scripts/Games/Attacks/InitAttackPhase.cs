@@ -300,9 +300,12 @@ namespace Games.Attacks
             {
                 int nbMin = TransitionMenuGame.timerAttack / 60;
                 int nbSec = TransitionMenuGame.timerAttack % 60;
+                if (DataObject.playerInScene.Count > 0)
+                {
+                    DataObject.playerInScene[GameController.PlayerIndex].timerAttack.text =
+                        "Timer : " + nbMin + (nbMin > 0 ? "min" : "") + nbSec;
+                }
 
-                DataObject.playerInScene[GameController.PlayerIndex].timerAttack.text =
-                    "Timer : " + nbMin + (nbMin > 0 ? "min" : "") + nbSec;
                 yield return new WaitForSeconds(0.5f);
             }
         }
