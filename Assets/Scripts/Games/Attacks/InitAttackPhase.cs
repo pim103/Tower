@@ -184,7 +184,7 @@ namespace Games.Attacks
             int y;
 
             maps = ClearMapString(maps);
-
+            bool keyInMap = false;
             while (maps.Length > 0)
             {
                 (maps, x, y, type, idElement, idEquipements) = ParseString(maps);
@@ -197,7 +197,14 @@ namespace Games.Attacks
                     case TypeData.Group:
                         Vector3 newPos = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(idElement);
-                        InstantiateGroupsMonster(groups, newPos, idEquipements);
+                        if (!keyInMap)
+                        {
+                            keyInMap = InstantiateGroupsMonster(groups, newPos, idEquipements);
+                        }
+                        else
+                        {
+                            InstantiateGroupsMonster(groups, newPos, idEquipements);
+                        }
                         break;
                     case TypeData.Trap:
                         GameObject trap = objectPoolerDefense.GetPooledObject(0);
@@ -212,12 +219,19 @@ namespace Games.Attacks
                         break;
                     case TypeData.Wall:
                         GameObject wall = objectPoolerDefense.GetPooledObject(1);
-                        wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 1.5f, y * 2 + initDefense.currentMap.transform.localPosition.z);
+                        wall.transform.position = new Vector3(x * 2 + initDefense.currentMap.transform.localPosition.x, 0, y * 2 + initDefense.currentMap.transform.localPosition.z);
                         wall.SetActive(true);
                         
                         DataObject.objectInScene.Add(wall);
                         break;
                 }
+            }
+
+            if (!keyInMap)
+            {
+                KeyBehavior keyBehavior = initDefense.currentMap.GetComponent<MapStats>().keyParent.GetComponent<KeyBehavior>();
+                keyBehavior.doorPivot.SetActive(false);
+                keyBehavior.endCube.SetActive(true);
             }
         }
 
@@ -286,9 +300,12 @@ namespace Games.Attacks
             {
                 int nbMin = TransitionMenuGame.timerAttack / 60;
                 int nbSec = TransitionMenuGame.timerAttack % 60;
+                if (DataObject.playerInScene.Count > 0)
+                {
+                    DataObject.playerInScene[GameController.PlayerIndex].timerAttack.text =
+                        "Timer : " + nbMin + (nbMin > 0 ? "min" : "") + nbSec;
+                }
 
-                DataObject.playerInScene[GameController.PlayerIndex].timerAttack.text =
-                    "Timer : " + nbMin + (nbMin > 0 ? "min" : "") + nbSec;
                 yield return new WaitForSeconds(0.5f);
             }
         }
@@ -305,12 +322,13 @@ namespace Games.Attacks
             endOfGeneration = true;
         }
 
-        public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
+        public bool InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
         {
             InstantiateParameters param;
             Monster monster;
             int nbMonsterInit = 0;
             bool shouldPutKey = false;
+            bool hasAKey = false;
             Vector3 origPos = position;
             if (equipment[5] != 0)
             {
@@ -335,7 +353,8 @@ namespace Games.Attacks
                     groups.InitSpecificEquipment(monster, equipment);
                     if (shouldPutKey)
                     {
-                        monster.InitKey(objectsInScene.keyObject);
+                        monster.InitKey(initDefense.maps[initDefense.currentLevel-1].mapsInLevel[NetworkingController.CurrentRoomMapsLevel[initDefense.currentLevel-1]].GetComponent<MapStats>().keyParent);
+                        hasAKey = true;
                         shouldPutKey = false;
                     }
                     position = origPos + GroupsPosition.position[nbMonsterInit];
@@ -343,6 +362,8 @@ namespace Games.Attacks
                     DataObject.monsterInScene.Add(monster);
                 }
             }
+
+            return hasAKey;
         }
     }
 }

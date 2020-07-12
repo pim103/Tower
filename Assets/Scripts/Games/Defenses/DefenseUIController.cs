@@ -66,7 +66,7 @@ namespace Games.Defenses
         public Text currentResourceText;
 
         [SerializeField] 
-        private GameObject keyObject;
+        public GameObject keyObject;
         private void Start()
         {
             wallButton.onClick.AddListener(PutWallInHand);
@@ -86,6 +86,8 @@ namespace Games.Defenses
 
         void OnEnable()
         {
+            keyAlreadyPut = false;
+            keyObject.SetActive(true);
             currentWallNumber = initDefense.currentMapStats.wallNumber;
             currentWallType = initDefense.currentMapStats.wallType;
             wallButtonText.text = "Mur x" + currentWallNumber;

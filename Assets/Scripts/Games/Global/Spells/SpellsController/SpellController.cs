@@ -275,7 +275,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static Spell LoadSpellByName(string nameSpell)
         {
-            string path = Application.dataPath + "/Data/SpellsJson/" + nameSpell + ".json";
+            string path = "Assets/Data/SpellsJson/" + nameSpell + ".json";
             Spell spell = FindSpellWithPath(path);
 
             if (spell == null)
