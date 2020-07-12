@@ -21,6 +21,9 @@ namespace Games.Global
         [SerializeField] private GameObject[] weaponsGameObject;
         [SerializeField] private Material[] effectMaterials;
 
+        public static bool hasWeaponsLoad;
+        public static bool hasMonstersLoad;
+
         public void Awake()
         {
             AbilityManager.InitAbilities();

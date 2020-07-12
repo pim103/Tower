@@ -139,6 +139,8 @@ namespace Games.Global.Weapons
                     loadedWeapon.model = weaponsGameObject.First(go => go.name == loadedWeapon.modelName);
                     weapons.Add(loadedWeapon);
                 }
+
+                DictionaryManager.hasWeaponsLoad = true;
             }
             catch (Exception e)
             {

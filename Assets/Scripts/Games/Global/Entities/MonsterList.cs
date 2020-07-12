@@ -54,18 +54,19 @@ namespace Games.Global.Entities
                 {
                     return;
                 }
-
+                
                 foreach (GroupsJsonObject groupsJson in mobsList.groups)
                 {
                     groupsList.Add(groupsJson.ConvertToMonsterGroups());
-                    foreach (KeyValuePair<MobJsonObject, int> mob in groupsJson.mobs)
+                    foreach (MobJsonObject mob in groupsJson.monsterList)
                     {
-                        Monster monster = mob.Key.ConvertToMonster((Family)Int32.Parse(groupsJson.family));
+                        Monster monster = mob.ConvertToMonster((Family)Int32.Parse(groupsJson.family));
                         monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
                         monsterList.Add(monster);
                     }
-                    groupsJson.PrintAttribute();
                 }
+
+                DictionaryManager.hasMonstersLoad = true;
             }
             catch (Exception e)
             {

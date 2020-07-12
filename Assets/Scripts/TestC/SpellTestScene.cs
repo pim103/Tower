@@ -30,12 +30,6 @@ namespace TestC
         // Start is called before the first frame update
         void Awake()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            DataObject.playerInScene.Clear();
-            DataObject.playerInScene.Add(GameController.PlayerIndex, player);
-
             Identity classe = new Identity();
             classe.classe = Classes.Warrior;
 
@@ -44,10 +38,15 @@ namespace TestC
 
             ChooseDeckAndClass.currentRoleIdentity = classe;
             ChooseDeckAndClass.currentWeaponIdentity = weapon;
+            backToEditor.onClick.AddListener(BackToEditorAction);
+            player.gameObject.SetActive(false);
 
             StartCoroutine(Waiting());
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
-            backToEditor.onClick.AddListener(BackToEditorAction);
+            DataObject.playerInScene.Clear();
+            DataObject.playerInScene.Add(GameController.PlayerIndex, player);
         }
 
         private void Update()
@@ -118,7 +117,7 @@ namespace TestC
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(4);
+                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(1);
                 InstantiateGroupsMonster(groups, Vector3.one, null);
             }
         }
@@ -163,6 +162,12 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
+            while (!DictionaryManager.hasWeaponsLoad || !DictionaryManager.hasMonstersLoad)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+            
+            player.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
 
             player.entity.spells.Clear();

@@ -25,20 +25,20 @@ namespace Utils
     [Serializable]
     public class MobJsonObject
     {
-        public string id { get; set; }
+        public string id { get; set; } = "";
 
         public string name { get; set; }
-        public string att { get; set; }
-        public string def { get; set; }
-        public string physicalDef { get; set; }
-        public string magicalDef { get; set; }
-        public string hp { get; set; }
-        public string attSpeed { get; set; }
-        public string speed { get; set; }
-        public string nbWeapon { get; set; }
-        public string weaponId { get; set; }
+        public string att { get; set; } = "0";
+        public string def { get; set; } = "0";
+        public string physicalDef { get; set; } = "0";
+        public string magicalDef { get; set; } = "0";
+        public string hp { get; set; } = "0";
+        public string attSpeed { get; set; } = "0";
+        public string speed { get; set; } = "0";
+        public string nbWeapon { get; set; } = "0";
+        public string weaponId { get; set; } = "0";
 
-        public string constraint { get; set; }
+        public string typeWeapon { get; set; } = "0";
 
         public List<SpellList> skillListId;
 
@@ -86,7 +86,7 @@ namespace Utils
                     weaponId = value;
                     break;
                 case "constraint":
-                    constraint = value;
+                    typeWeapon = value;
                     break;
                 case "on_damage_dealt":
                     onDamageDealt = value;
@@ -134,13 +134,12 @@ namespace Utils
                 nbWeapon = Int32.Parse(nbWeapon),
                 family = family,
                 weaponOriginalId = Int32.Parse(weaponId),
-                constraint = (TypeWeapon) Int32.Parse(constraint),
+                constraint = (TypeWeapon) Int32.Parse(typeWeapon),
                 spellsName = skillListId,
                 OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB),
-                OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB)
+                OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB),
+                modelName = model
             };
-
-            monster.modelName = model;
 
             return monster;
         }
@@ -150,11 +149,10 @@ namespace Utils
     public class GroupsJsonObject: ObjectParsed
     {
         public string id { get; set; }
-        public Dictionary<MobJsonObject, int> mobs { get; set; } = new Dictionary<MobJsonObject, int>();
         public string family { get; set; }
         public string cost { get; set; }
         public string radius { get; set; }
-        public string name { get; set; }
+        public string groupName { get; set; }
 
         public List<MobJsonObject> monsterList { get; set; }
         public string number { get; set; }
@@ -182,7 +180,7 @@ namespace Utils
                     radius = value;
                     break;
                 case "groupName":
-                    name = value;
+                    groupName = value;
                     break;
                 default:
                     //mob.InsertValue(key, value);
@@ -213,13 +211,15 @@ namespace Utils
         
         public GroupsMonster ConvertToMonsterGroups()
         {
-            GroupsMonster groupsMonster = new GroupsMonster();
-            groupsMonster.id = Int32.Parse(id);
-            groupsMonster.cost = Int32.Parse(cost);
-            groupsMonster.family = (Family) Int32.Parse(family);
-            groupsMonster.radius = Int32.Parse(radius);
-            groupsMonster.name = name;
-            groupsMonster.monsterInGroups = new Dictionary<int, int>();
+            GroupsMonster groupsMonster = new GroupsMonster
+            {
+                id = Int32.Parse(id),
+                cost = Int32.Parse(cost),
+                family = (Family) Int32.Parse(family),
+                radius = Int32.Parse(radius),
+                name = groupName,
+                monsterInGroups = new Dictionary<int, int>()
+            };
 
             foreach (MobJsonObject mob in monsterList)
             {
