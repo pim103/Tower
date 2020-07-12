@@ -23,7 +23,7 @@ namespace Games.Defenses
         private Button[] trapButtons;
         
         [SerializeField] 
-        private Button keyButton;
+        public Button keyButton;
 
         [SerializeField] 
         private Transform keySlot;
