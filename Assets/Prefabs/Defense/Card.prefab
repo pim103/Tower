@@ -126,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -164,7 +164,7 @@ TextMesh:
   m_FontSize: 0
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -217,7 +217,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -255,7 +255,7 @@ TextMesh:
   m_FontSize: 0
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -314,10 +314,15 @@ MonoBehaviour:
   rangeMeshRenderer: {fileID: 3173309205614358602}
   rangeSphere: {fileID: 575945053105934357}
   equipementModel: {fileID: 0}
-  container: {fileID: 0}
+  ownCardContainer: {fileID: 0}
   cardType: 0
   groupId: 0
-  equipementsList: []
+  meleeWeaponSlot: {fileID: 0}
+  rangedWeaponSlot: {fileID: 0}
+  helmetSlot: {fileID: 0}
+  chestSlot: {fileID: 0}
+  grievesSlot: {fileID: 0}
+  keySlot: {fileID: 0}
   groupRangeCollider: {fileID: 3722067658893304119}
   groupRangeBehavior: {fileID: 4549336453299401633}
 --- !u!65 &8514760287722325066
@@ -472,7 +477,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -510,7 +515,7 @@ TextMesh:
   m_FontSize: 0
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 6d33a283bd320ee49b2453856d075b09, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -531,6 +536,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2534866581884222612, guid: 40d0f44bbbf2f9844a53dfe083acae95,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -2416733968201007103, guid: 40d0f44bbbf2f9844a53dfe083acae95,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2416733968201007103, guid: 40d0f44bbbf2f9844a53dfe083acae95,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cf201d311e723b34abf337b6f2dd978d, type: 2}
     - target: {fileID: -4216859302048453862, guid: 40d0f44bbbf2f9844a53dfe083acae95,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -600,16 +620,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -2416733968201007103, guid: 40d0f44bbbf2f9844a53dfe083acae95,
-        type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2534866581884222612, guid: 40d0f44bbbf2f9844a53dfe083acae95,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40d0f44bbbf2f9844a53dfe083acae95, type: 3}

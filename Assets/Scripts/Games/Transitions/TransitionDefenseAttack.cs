@@ -93,6 +93,10 @@ namespace Games.Transitions
             while(defenseTimer > 0 && !hasValidated)
             {
                 counter.text = defenseTimer.ToString();
+                if (defenseTimer <= 10 && !hoverDetector.defenseUiController.keyAlreadyPut)
+                {
+                    hoverDetector.defenseUiController.keyButton.transform.GetComponent<Image>().color = new Color(1,defenseTimer%2,defenseTimer%2,1);
+                }
                 yield return new WaitForSeconds(0.5f);
             }
             defenseUI.SetActive(false);
