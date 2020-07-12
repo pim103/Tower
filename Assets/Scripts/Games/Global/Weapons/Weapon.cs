@@ -42,6 +42,7 @@ namespace Games.Global.Weapons
     {
         public WeaponPrefab weaponPrefab;
         
+        public int id { get; set; }
         public string equipementName { get; set; }
         public CategoryWeapon category { get; set; }
         public TypeWeapon type { get; set; }
@@ -128,6 +129,13 @@ namespace Games.Global.Weapons
                     }
                 }
             }
+        }
+
+        public void PrintAttributes()
+        {
+            Debug.Log("Weapon " + modelName + " - " + equipementName + " type : " + type + " Category : " + category + " cost " + cost);
+            Debug.Log(" att : " + damage + " attSpd : " + attSpeed + " animation to play : " + animationToPlay);
+            Debug.Log(" onDamageReceive : " + OnDamageReceive + " OnDamageDeal : " + OnDamageDealt);
         }
     }
 }

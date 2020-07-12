@@ -193,6 +193,18 @@ namespace Games.Global.Spells.SpellsController
             {
                 damage /= 2;
             }
+            
+            if (enemy.hasMirror && areaOfEffectSpell.damageType == DamageType.Magical)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = entity };
+                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
+            }
+
+            if (enemy.hasThorn && areaOfEffectSpell.damageType == DamageType.Physical)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = entity };
+                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
+            }
 
             damage = damageIsNull ? 0 : damage;
 

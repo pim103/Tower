@@ -7,31 +7,38 @@ using UnityEngine;
 
 namespace Utils
 {
+    [Serializable]
+    public class WeaponJsonList
+    {
+        public List<WeaponJsonObject> weapons;
+    }
+    
+    [Serializable]
     public class WeaponJsonObject: ObjectParsed
     {
-        private CategoryWeapon category;
-        private TypeWeapon type;
-        private string nameWeapon;
-        private int id;
+        public string id { get; set; }
+        public string name { get; set; }
+        public string category { get; set; }
+        public string type { get; set; }
 
-        private Rarity rarity;
-        private int lootRate;
-        private int cost;
+        public string rarity { get; set; }
+        public string lootRate { get; set; }
+        public string cost { get; set; }
 
-        private List<TypeEffect> effects;
-        private int damage;
-        private int attSpeed;
+//        private List<TypeEffect> effects;
+        public string damage { get; set; }
+        public string attSpeed { get; set; }
 
-        private string onDamageDealt;
-        private string onDamageReceive;
-        private string modelName;
+        public string onDamageDealt { get; set; }
+        public string onDamageReceive { get; set; }
+        public string model { get; set; }
 
         public void PrintAttribute()
         {
-            Debug.Log("Object id : " + id + " name : " + nameWeapon + " type : " + category + " rarity : " + rarity);
+            Debug.Log("Object id : " + id + " name : " + name + " type : " + category + " rarity : " + rarity);
             Debug.Log("Stats => dmg : " + damage + " att speed : " + attSpeed);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
-            Debug.Log("Model Name : " + modelName);
+            Debug.Log("Model Name : " + model);
         }
         
         public override void InsertValue(string key, string value)
@@ -39,31 +46,31 @@ namespace Utils
             switch (key)
             {
                 case "id":
-                    id = Int32.Parse(value);
+                    id = value;
                     break;
                 case "name":
-                    nameWeapon = value;
+                    name = value;
                     break;
                 case "category":
-                    category = (CategoryWeapon)Int32.Parse(value);
+                    category = value;
                     break;
                 case "type":
-                    type = (TypeWeapon)Int32.Parse(value);
+                    type = value;
                     break;
                 case "rarity":
-                    rarity = (Rarity)Int32.Parse(value);
+                    rarity = value;
                     break;
                 case "loot_rate":
-                    lootRate = Int32.Parse(value);
+                    lootRate = value;
                     break;
                 case "cost":
-                    cost = Int32.Parse(value);
+                    cost = value;
                     break;
                 case "damage":
-                    damage = Int32.Parse(value);
+                    damage = value;
                     break;
                 case "att_speed":
-                    attSpeed = Int32.Parse(value);
+                    attSpeed = value;
                     break;
                 case "on_damage_dealt":
                     onDamageDealt = value;
@@ -72,7 +79,7 @@ namespace Utils
                     onDamageReceive = value;
                     break;
                 case "model":
-                    modelName = value;
+                    model = value;
                     break;
             }
         }
@@ -87,7 +94,7 @@ namespace Utils
             Weapon weapon = null;
 
             // If need specific attribute for weapon, init this after creation of weapon in the switch
-            switch (category)
+            switch ((CategoryWeapon)Int32.Parse(category))
             {
                 case CategoryWeapon.AXE:
                     weapon = new Axe();
@@ -139,16 +146,16 @@ namespace Utils
                     break;
             }
 
-            weapon.id = id;
-            weapon.damage = damage;
-            weapon.category = category;
-            weapon.type = type;
-            weapon.rarity = rarity;
-            weapon.lootRate = lootRate;
-            weapon.equipementName = nameWeapon;
-            weapon.cost = cost;
-            weapon.attSpeed = attSpeed;
-            weapon.modelName = modelName;
+            weapon.id = Int32.Parse(id);
+            weapon.damage = Int32.Parse(damage);
+            weapon.category = (CategoryWeapon)Int32.Parse(category);
+            weapon.type = (TypeWeapon)Int32.Parse(type);
+            weapon.rarity = (Rarity)Int32.Parse(rarity);
+            weapon.lootRate = Int32.Parse(lootRate);
+            weapon.equipementName = name;
+            weapon.cost = Int32.Parse(cost);
+            weapon.attSpeed = Int32.Parse(attSpeed);
+            weapon.modelName = model;
 
             weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.WEAPON);
             weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.WEAPON);

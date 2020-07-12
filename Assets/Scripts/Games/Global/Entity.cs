@@ -179,6 +179,7 @@ namespace Games.Global
         // Take true damage is usefull with effect pierce
         public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
         {
+            float rawDamage = initialDamage;
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
             Entity originDamage = abilityParameters.origin;
@@ -270,23 +271,11 @@ namespace Games.Global
             }
 
             BuffController.EntityReceivedDamage(this, originDamage);
-
-            if (hasMirror && isMagic)
-            {
-                AbilityParameters newAbility = new AbilityParameters { origin = this };
-                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
-            }
-
-            if (hasThorn && isPhysic)
-            {
-                AbilityParameters newAbility = new AbilityParameters { origin = this };
-                abilityParameters.origin.TakeDamage(initialDamage * 0.25f, newAbility, DamageType.Magical, canPierce);
-            }
         }
 
         public virtual void ApplyDamage(float directDamage)
         {
-            Debug.Log("Damage applied = " + directDamage);
+            //Debug.Log(modelName + " - Damage applied = " + directDamage);
             hp -= directDamage;
             
             if (hp <= 0)

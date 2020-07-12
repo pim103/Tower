@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DeckBuilding;
@@ -7,7 +8,9 @@ using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking.Client;
 using UnityEngine;
+using UnityEngine.Networking;
 using Utils;
 
 namespace Games.Global
@@ -23,14 +26,30 @@ namespace Games.Global
             AbilityManager.InitAbilities();
             GroupsPosition.InitPosition();
             FetchCollection();
-            
+
+            StartCoroutine(GetWeapons());
+
             DataObject.MonsterList = new MonsterList(monsterGameObjects);
-            Debug.Log(DataObject.MonsterList);
-            DataObject.WeaponList = new WeaponList(weaponsGameObject);
             DataObject.MaterialsList = new List<Material>();
             DataObject.MaterialsList.AddRange(effectMaterials.ToList());
         }
 
+        public IEnumerator GetWeapons()
+        {
+            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/weapons/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                DataObject.WeaponList = new WeaponList(weaponsGameObject, www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get weapons...");
+            }
+        }
+        
         private void FetchCollection()
         {
             List<CollectionJsonObject> dJsonObjects = new List<CollectionJsonObject>();

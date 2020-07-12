@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FullSerializer;
 using UnityEngine;
 using UnityEngine.XR;
 using Utils;
@@ -14,12 +15,12 @@ namespace Games.Global.Weapons
 
         public List<Weapon> weapons;
 
-        public WeaponList(GameObject[] list)
+        public WeaponList(GameObject[] list, string jsonObject)
         {
             weaponsGameObject = list;
 
             weapons = new List<Weapon>();
-            InitWeaponDictionnary();
+            InitWeaponDictionnary(jsonObject);
         }
 
         private Weapon CloneWeapon(Weapon orig)
@@ -121,22 +122,31 @@ namespace Games.Global.Weapons
             }
         }
 
-        private void InitWeaponDictionnary()
+        private void InitWeaponDictionnary(string json)
         {
-            List<WeaponJsonObject> wJsonObjects = new List<WeaponJsonObject>();
+            fsSerializer serializer = new fsSerializer();
+            fsData data;
 
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/WeaponsJson"))
+            try
             {
-                StreamReader reader = new StreamReader(filePath, true);
-            
-                wJsonObjects.AddRange(ParserJson<WeaponJsonObject>.Parse(reader, "weapons"));
+                WeaponJsonList weaponList = null;
+                data = fsJsonParser.Parse(json);
+                serializer.TryDeserialize(data, ref weaponList);
+
+                foreach (WeaponJsonObject weaponJson in weaponList.weapons)
+                {
+                    Weapon loadedWeapon = weaponJson.ConvertToWeapon();
+                    loadedWeapon.model = weaponsGameObject.First(go => go.name == loadedWeapon.modelName);
+                    weapons.Add(loadedWeapon);
+                    loadedWeapon.PrintAttributes();
+                }
             }
-
-            foreach (WeaponJsonObject weaponJson in wJsonObjects)
+            catch (Exception e)
             {
-                Weapon loadedWeapon = weaponJson.ConvertToWeapon();
-                loadedWeapon.model = weaponsGameObject.First(go => go.name == loadedWeapon.modelName);
-                weapons.Add(loadedWeapon);
+                Debug.Log("Error");
+                Debug.Log(json);
+                Debug.Log(e.Message);
+                Debug.Log(e.Data);
             }
         }
     }

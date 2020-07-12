@@ -81,7 +81,7 @@ namespace Games.Global.Spells.SpellsController
                                 entity.isBlind ||
                                 enemy.isUntargeatable ||
                                 enemy.hasDivineShield;
-            
+
             Weapon weapon = entity.weapons != null && entity.weapons.Count > 0 ? entity.weapons[0] : null;
 
             if (weapon != null)
@@ -108,6 +108,18 @@ namespace Games.Global.Spells.SpellsController
             if (entity.isWeak)
             {
                 damage /= 2;
+            }
+
+            if (enemy.hasMirror && projectileSpell.damageType == DamageType.Magical)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = entity };
+                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
+            }
+
+            if (enemy.hasThorn && projectileSpell.damageType == DamageType.Physical)
+            {
+                AbilityParameters newAbility = new AbilityParameters { origin = entity };
+                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
             }
 
             damage = damageIsNull ? 0 : damage;
