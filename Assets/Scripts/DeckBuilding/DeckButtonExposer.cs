@@ -8,5 +8,6 @@ namespace DeckBuilding
         [SerializeField] public Text deckName;
         [SerializeField] public RawImage deckImage;
         [SerializeField] public RawImage typeImage;
+        public int deckId;
     }
 }

@@ -7,4 +7,5 @@ public class CardInDeckButtonExposer : MonoBehaviour
 {
     [SerializeField] public Text name;
     [SerializeField] public Text copies;
+    public Card card;
 }

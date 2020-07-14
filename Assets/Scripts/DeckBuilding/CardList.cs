@@ -12,7 +12,7 @@ namespace DeckBuilding
     public class CardList
     {
         private List<Card> cards;
-        private List<Deck> decks;
+        public List<Deck> decks;
 
         // int : IdCard - int : number of this card
         private Dictionary<int, int> cardsInCollection;

@@ -17,7 +17,7 @@ namespace DeckBuilding
         {
             GetComponent<Button>().onClick.AddListener(delegate
             {
-                if (isPrevious)
+                /*if (isPrevious)
                 {
                     if (onCollection)
                     {
@@ -58,8 +58,8 @@ namespace DeckBuilding
                             createDeckMenu.maxBorder += 15;
                             createDeckMenu.ShowCards();
                         }
-                    }*/
-                }
+                    }#1#
+                }*/
             });
         }
     }

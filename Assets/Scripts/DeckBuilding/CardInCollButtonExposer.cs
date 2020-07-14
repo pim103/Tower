@@ -10,5 +10,6 @@ namespace DeckBuilding
         [SerializeField] public Text copies;
         [SerializeField] public Text effect;
         [SerializeField] public Text family;
+        public Card card;
     }
 }
