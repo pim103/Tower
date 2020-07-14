@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 using FullSerializer;
 using Games.Global;
 using Networking;
@@ -12,9 +13,40 @@ using Utils;
 
 namespace Menus
 {
+    enum ErrorConnectionType
+    {
+        DisconnectedError,
+        IdentificationError,
+        ServerError
+    }
+    enum InformationConnectionType
+    {
+        SendingData,
+        AuthentificationStep,
+        ValidateConnection
+    }
+
+    public static class ConnectionMessage
+    {
+        public static readonly string[] Error = {
+            "Votre connexion a été interrompue", 
+            "Erreur d'identifiant ou de mot de passe", 
+            "Serveur indisponible"
+        };
+        public static readonly string[] Information = {
+            "Envoie des données au serveur", 
+            "Authenfication en cours", 
+            "Connexion au serveur"
+        };
+    }
+    
     public class ConnectionMenu : MonoBehaviour, MenuInterface
     {
         [SerializeField] private GameObject accountErrorPanel;
+        [SerializeField] private Text accountErrorText;
+        
+        [SerializeField] private GameObject accountInformationPanel;
+        [SerializeField] private Text accountInformationText;
 
         [SerializeField]
         private MenuController mc;
@@ -38,6 +70,13 @@ namespace Menus
 
         private void Start()
         {
+            accountInformationPanel.SetActive(false);
+            if (NetworkingController.ConnectionClosed)
+            {
+                accountErrorPanel.SetActive(true);
+                accountErrorText.text = ConnectionMessage.Error[(int)ErrorConnectionType.DisconnectedError];
+                NetworkingController.ConnectionClosed = false;
+            }
             passwordField.inputType = InputField.InputType.Password;
             createButton.onClick.AddListener(delegate {
                 mc.ActivateMenu(MenuController.Menu.Registration);
@@ -77,6 +116,8 @@ namespace Menus
 
         private void CallLogin()
         {
+            accountInformationPanel.SetActive(true);
+            accountInformationText.text = ConnectionMessage.Information[(int)InformationConnectionType.SendingData];
             StartCoroutine(Login());
         }
         
@@ -99,6 +140,22 @@ namespace Menus
                 yield return new WaitForSeconds(0.5f);
                 TowersWebSocket.InitializeWebsocketEndpoint();
                 TowersWebSocket.StartConnection();
+                accountInformationText.text = ConnectionMessage.Information[(int)InformationConnectionType.AuthentificationStep];
+                yield return new WaitForSeconds(1.5f);
+                if (!NetworkingController.IsConnected)
+                {
+                    accountInformationPanel.SetActive(false);
+                    TowersWebSocket.wsGame.Close();
+                    accountErrorPanel.SetActive(true);
+                    accountErrorText.text = ConnectionMessage.Error[(int)ErrorConnectionType.IdentificationError];
+                    NetworkingController.ConnectionStart = false;
+                    NetworkingController.AuthToken = "";
+                    NetworkingController.CurrentRoomToken = "";
+                    NetworkingController.AuthRole = "";
+                    yield break;
+                }
+                accountInformationText.text = ConnectionMessage.Information[(int)InformationConnectionType.ValidateConnection];
+                yield return new WaitForSeconds(0.2f);
 
                 DictionaryManager.wasConnected = true;
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
@@ -108,7 +165,9 @@ namespace Menus
                 Debug.Log("Erreur dans les informations de connection");
                 if (accountErrorPanel != null)
                 {
+                    accountInformationPanel.SetActive(false);
                     accountErrorPanel.SetActive(true);
+                    accountErrorText.text = ConnectionMessage.Error[(int)ErrorConnectionType.IdentificationError];
                 }
             }
             else
@@ -118,7 +177,9 @@ namespace Menus
                 Debug.Log("Serveur d'authentification indisponible.");
                 if (accountErrorPanel != null)
                 {
+                    accountInformationPanel.SetActive(false);
                     accountErrorPanel.SetActive(true);
+                    accountErrorText.text = ConnectionMessage.Error[(int)ErrorConnectionType.ServerError];
                 }
             }
         }
