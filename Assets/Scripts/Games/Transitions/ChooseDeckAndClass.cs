@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using DeckBuilding;
+using Games.Global;
 using Games.Global.Weapons;
 using Games.Players;
 using Networking;
@@ -42,8 +43,8 @@ namespace Games.Transitions
         public static bool isValidate;
         private List<Deck> playerDecks;
 
-        private int activeMonsterButtonCount = 0;
-        private int activeEquipmentButtonCount = 0;
+        private int activeMonsterButtonCount = 1;
+        private int activeEquipmentButtonCount = 1;
 
         private void OnEnable()
         {
@@ -80,8 +81,8 @@ namespace Games.Transitions
             }
 
             validateChoices.onClick.AddListener(LaunchGame);
-            monsterDeckId = 1;
-            equipmentDeckId = 1;
+            monsterDeckId = 0;
+            equipmentDeckId = 0;
             FetchDecks();
         }
 
@@ -212,42 +213,45 @@ namespace Games.Transitions
         
         private void FetchDecks()
         {
-            playerDecks = new List<Deck>();
-            List<DeckJsonObject> dJsonObjects = new List<DeckJsonObject>();
+            playerDecks = DataObject.CardList.GetDecks();
 
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckJson"))
+            Debug.Log(playerDecks.Count);
+            foreach (Deck deck in playerDecks)
             {
-                StreamReader reader = new StreamReader(filePath, true);
-        
-                dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
-            }
-            
-            foreach (DeckJsonObject deckJson in dJsonObjects)
-            {
-                Deck loadedDeck = deckJson.ConvertToDeck();
-                playerDecks.Add(loadedDeck);
-                if (loadedDeck.type == Deck.Decktype.Monsters)
+                if (deck.type == Decktype.Monsters)
                 {
                     GameObject buttonGameObject = monsterDeckButtons[activeMonsterButtonCount].gameObject;
                     buttonGameObject.SetActive(true);
-                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = deck.name;
                     monsterDeckButtons[activeMonsterButtonCount].onClick.AddListener(delegate
                         {
-                            monsterDeckId = loadedDeck.id;
+                            monsterDeckId = deck.id;
                         });
                     activeMonsterButtonCount++;
+
+                    if (monsterDeckId == 0)
+                    {
+                        Debug.Log("default monster deck = " + deck.id);
+                        monsterDeckId = deck.id;
+                    }
                 }
-                
-                if (loadedDeck.type == Deck.Decktype.Equipments)
+
+                if (deck.type == Decktype.Equipments)
                 {
                     GameObject buttonGameObject = equipmentDeckButtons[activeEquipmentButtonCount].gameObject;
                     buttonGameObject.SetActive(true);
-                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = loadedDeck.name;
+                    buttonGameObject.transform.GetChild(0).GetComponent<Text>().text = deck.name;
                     equipmentDeckButtons[activeEquipmentButtonCount].onClick.AddListener(delegate
                     {
-                        equipmentDeckId = loadedDeck.id;
+                        equipmentDeckId = deck.id;
                     });
                     activeEquipmentButtonCount++;
+
+                    if (equipmentDeckId == 0)
+                    {
+                        Debug.Log("default weapon deck = " + deck.id);
+                        equipmentDeckId = deck.id;
+                    }
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace Menus
                     Debug.Log(DataObject.MonsterList);
                     GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(card.id);
                     currentButtonExposer.name.text = group.name;
-                    currentButtonExposer.copies.text = "X" + card.copies;
+                    //currentButtonExposer.copies.text = "X" + card.copies;
                     currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate { });
                 }
             }
@@ -169,7 +169,7 @@ namespace Menus
                 CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
                 GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(DataObject.playerCollection[i].id);
                 currentButtonExposer.name.text = group.name;
-                currentButtonExposer.copies.text = "X" + DataObject.playerCollection[i].copies;
+                //currentButtonExposer.copies.text = "X" + DataObject.playerCollection[i].copies;
                 currentButtonExposer.effect.text = "effet";
                 currentButtonExposer.cost.text = group.cost.ToString();
                 currentButtonExposer.family.text = group.family.ToString();

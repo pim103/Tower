@@ -50,7 +50,6 @@ namespace Menus
         private void Start()
         {
             searchingMatchCanvas.active = false;
-            Debug.Log(NetworkingController.AuthToken);
             if (NetworkingController.AuthToken == "")
             {
                 ActivateMenu(Menu.Connection);

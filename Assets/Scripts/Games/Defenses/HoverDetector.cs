@@ -68,7 +68,7 @@ namespace Games.Defenses
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                 //Debug.Log(objectInHand);
                 //Debug.Log(currentCardBehavior.cardType);
-                if (objectInHand && (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1 || objectInHand.layer == LayerMask.NameToLayer("Key")))
+                if (objectInHand && (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.equipement != null || objectInHand.layer == LayerMask.NameToLayer("Key")))
                 {
                     if (currentTileController.contentType == GridTileController.TypeData.Group)
                     {
@@ -84,7 +84,7 @@ namespace Games.Defenses
                 else if (currentTileController.contentType != GridTileController.TypeData.Empty || 
                          pathToEnd.status != NavMeshPathStatus.PathComplete || 
                          currentTileController.isTooCloseFromAMob || 
-                         (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 0 && !currentCardBehaviorInGame.groupRangeBehavior.CheckContentEmpty()))
+                         (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.group != null && !currentCardBehaviorInGame.groupRangeBehavior.CheckContentEmpty()))
                 {
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
@@ -114,7 +114,7 @@ namespace Games.Defenses
                     {
                         objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 1.5f;
                         currentCardBehaviorInGame.ownMeshRenderer.enabled = false;
-                        if (currentCardBehaviorInGame.cardType == 0)
+                        if (currentCardBehaviorInGame.group != null)
                         {
                             currentCardBehaviorInGame.rangeMeshRenderer.enabled = true;
                         }
@@ -138,7 +138,7 @@ namespace Games.Defenses
                         {
                             currentlyBlocked = false;
                             if (objectInHand.layer == LayerMask.NameToLayer("Wall") ||
-                                (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType != 1 /*&& currentCardBehaviorInGame.group.cost <= currentResource*/) 
+                                (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.group != null /*&& currentCardBehaviorInGame.group.cost <= currentResource*/) 
                                 || objectInHand.layer == LayerMask.NameToLayer("Trap") && currentResource >= 1)
                             {
                                 lastObjectPutInPlay = objectInHand;
@@ -170,7 +170,7 @@ namespace Games.Defenses
 
                                 defenseUiController.currentResourceText.text = currentResource.ToString();
                             }
-                            else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.cardType == 1 /*&& currentCardBehaviorInGame.equipement.cost <= currentResource*/)
+                            else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.equipement != null /*&& currentCardBehaviorInGame.equipement.cost <= currentResource*/)
                             {
                                 lastObjectPutInPlay = objectInHand;
                                 lastTileWithContent = currentTileController;
@@ -274,8 +274,8 @@ namespace Games.Defenses
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     CardBehaviorInGame hitCardBehavior = hit.transform.GetComponent<CardBehaviorInGame>();
-                    if (hitCardBehavior.cardType == 0 && hitCardBehavior.group.cost <= currentResource ||
-                        hitCardBehavior.cardType == 1 && hitCardBehavior.equipement.cost <= currentResource)
+                    if ((hitCardBehavior.group != null && hitCardBehavior.group.cost <= currentResource) ||
+                        (hitCardBehavior.equipement != null && hitCardBehavior.equipement.cost <= currentResource))
                     {
                         if (objectInHand)
                         {
@@ -300,7 +300,7 @@ namespace Games.Defenses
 
                         defenseUiController.PutCardInHand(hit.collider.gameObject);
                         currentCardBehaviorInGame = objectInHand.GetComponent<CardBehaviorInGame>();
-                        if (currentCardBehaviorInGame.cardType == 0)
+                        if (currentCardBehaviorInGame.group != null)
                         {
                             currentResource -= currentCardBehaviorInGame.group.cost;
                         }
@@ -328,7 +328,7 @@ namespace Games.Defenses
                     currentCardBehaviorInGame.groupParent.SetActive(false);
                     currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
                     currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
-                    if (currentCardBehaviorInGame.cardType == 0)
+                    if (currentCardBehaviorInGame.group != null)
                     {
                         currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
                     }
@@ -337,7 +337,7 @@ namespace Games.Defenses
                     objectInHand.transform.localPosition = Vector3.zero;
                     objectInHand.layer = LayerMask.NameToLayer("Card");
                     objectInHand = null;
-                    if (currentCardBehaviorInGame.cardType == 0)
+                    if (currentCardBehaviorInGame.group != null)
                     {
                         currentResource += currentCardBehaviorInGame.group.cost;
                     }
@@ -386,7 +386,7 @@ namespace Games.Defenses
                 worldPos = defenseCam.ScreenToWorldPoint(worldPos);
                 objectInHand.transform.position = worldPos;
                 currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
-                if (currentCardBehaviorInGame.cardType == 0)
+                if (currentCardBehaviorInGame.group != null)
                 {
                     currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
                 }

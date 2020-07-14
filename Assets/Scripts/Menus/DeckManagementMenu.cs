@@ -83,7 +83,7 @@ namespace Menus
             {
                 StreamReader reader = new StreamReader(filePath, true);
         
-                dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
+                //dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
             }
 
             foreach (DeckJsonObject deckJson in dJsonObjects)
@@ -111,7 +111,7 @@ namespace Menus
                     currentPosition.y - (120 * (ycount - 1)), 0);
                 DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
                 currentButtonExposer.deckName.text = deck.name;
-                currentButtonExposer.typeImage.color = deck.type == Deck.Decktype.Monsters ? Color.red : Color.blue;
+                currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
                 currentDeckButton.GetComponent<Button>().onClick.AddListener(delegate
                 {
                     selectedDeck = deck.id;

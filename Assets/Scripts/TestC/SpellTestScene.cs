@@ -162,7 +162,7 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-            while (!DictionaryManager.hasWeaponsLoad || !DictionaryManager.hasMonstersLoad)
+            while (!DictionaryManager.hasWeaponsLoad || !DictionaryManager.hasMonstersLoad || !DictionaryManager.hasCardsLoad)
             {
                 yield return new WaitForSeconds(0.1f);
             }

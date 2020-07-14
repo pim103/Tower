@@ -1078,7 +1078,6 @@ GameObject:
   - component: {fileID: 194075446}
   - component: {fileID: 194075444}
   - component: {fileID: 194075448}
-  - component: {fileID: 194075449}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -1198,33 +1197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initAttackPhase: {fileID: 1495904576}
-  dm: {fileID: 194075449}
+  dm: {fileID: 0}
   gameController: {fileID: 194075443}
---- !u!114 &194075449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194075440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e680ead8df5e4ffb8eca6d1e4de7c205, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterGameObjects:
-  - {fileID: 8521370539132226987, guid: d4059769c6bac754189732fbec904bb2, type: 3}
-  - {fileID: 8521370539132226987, guid: f9256e254adea044dbc66ef4b04350a8, type: 3}
-  - {fileID: 8521370539132226987, guid: 5ba9999810b233e4cba2d341be1aa941, type: 3}
-  - {fileID: 8521370539132226987, guid: 54c068c21b1ae344da8ac746ebb00b59, type: 3}
-  - {fileID: 8521370539132226987, guid: b3abb1d7114b17c41ab6326bd8358c37, type: 3}
-  weaponsGameObject:
-  - {fileID: 8179942023738884125, guid: 7f3b9f80817e3bc4d94ef3e458f33696, type: 3}
-  - {fileID: 9160184416435336024, guid: 00d328ec7d61dab47a4ec94623b2f078, type: 3}
-  - {fileID: 7020508739117811708, guid: fb4ac55509956024a90d5c4c4bd5d31b, type: 3}
-  - {fileID: 119217643592156107, guid: e9ead973063a0f146a1404bec6f0278a, type: 3}
-  - {fileID: 3304400958822842756, guid: 7051899b05b3db3478e31e60a2af352a, type: 3}
-  effectMaterials: []
 --- !u!1 &200499149
 GameObject:
   m_ObjectHideFlags: 0
@@ -3919,9 +3893,9 @@ MonoBehaviour:
   hoverDetector: {fileID: 83993302}
   cardPrefab: {fileID: 4292817582179159012, guid: c402cc2f9b7a43e4d8e58547fe81fc7a,
     type: 3}
-  currentWallNumber: 0
-  keyAlreadyPut: 0
-  mobDecklist: {fileID: 0}
+  maxResourceText: {fileID: 984670535}
+  currentResourceText: {fileID: 1063802354}
+  keyObject: {fileID: 1612661595}
   mobCardContainers:
   - {fileID: 1872098371}
   - {fileID: 915260696}
@@ -3933,9 +3907,8 @@ MonoBehaviour:
   - {fileID: 8994857}
   - {fileID: 1994680882}
   - {fileID: 1591445282}
-  maxResourceText: {fileID: 984670535}
-  currentResourceText: {fileID: 1063802354}
-  keyObject: {fileID: 1612661595}
+  currentWallNumber: 0
+  keyAlreadyPut: 0
 --- !u!114 &934534612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18318,21 +18291,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7401777425161430234, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: viewIdField
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: objectsInScene
-      value: 
-      objectReference: {fileID: 194075444}
-    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
-        type: 3}
-      propertyPath: se
-      value: 
-      objectReference: {fileID: 194075448}
     - target: {fileID: 7039976789761960675, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -18363,6 +18321,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7401777425161430234, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: viewIdField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: objectsInScene
+      value: 
+      objectReference: {fileID: 194075444}
+    - target: {fileID: 4043486432691114709, guid: d4c010c5899cffe4a81036732de267a8,
+        type: 3}
+      propertyPath: se
+      value: 
+      objectReference: {fileID: 194075448}
     m_RemovedComponents:
     - {fileID: 7401777425161430233, guid: d4c010c5899cffe4a81036732de267a8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4c010c5899cffe4a81036732de267a8, type: 3}

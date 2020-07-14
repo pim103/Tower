@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using FullSerializer;
+using Games.Global;
 using Networking;
 using Networking.Client;
 using UnityEngine;
@@ -98,7 +99,8 @@ namespace Menus
                 yield return new WaitForSeconds(0.5f);
                 TowersWebSocket.InitializeWebsocketEndpoint();
                 TowersWebSocket.StartConnection();
-                
+
+                DictionaryManager.wasConnected = true;
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
             }
             else if (www.responseCode == 406)

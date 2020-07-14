@@ -8,6 +8,7 @@ using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
+using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,18 +24,31 @@ namespace Games.Global
 
         public static bool hasWeaponsLoad;
         public static bool hasMonstersLoad;
+        public static bool hasCardsLoad;
+        public static bool wasConnected;
+
+        private static bool wasInit;
 
         public void Awake()
         {
-            AbilityManager.InitAbilities();
-            GroupsPosition.InitPosition();
-            FetchCollection();
+            if (!wasInit)
+            {
+                AbilityManager.InitAbilities();
+                GroupsPosition.InitPosition();
 
-            StartCoroutine(GetWeapons());
-            StartCoroutine(GetGroupsMonster());
+                DataObject.CardList = new CardList();
 
-            DataObject.MaterialsList = new List<Material>();
-            DataObject.MaterialsList.AddRange(effectMaterials.ToList());
+                StartCoroutine(GetWeapons());
+                StartCoroutine(GetGroupsMonster());
+                StartCoroutine(GetCards());
+                StartCoroutine(GetCardCollection());
+                StartCoroutine(GetDecks());
+
+                DataObject.MaterialsList = new List<Material>();
+                DataObject.MaterialsList.AddRange(effectMaterials.ToList());
+
+                wasInit = true;
+            }
         }
 
         public IEnumerator GetWeapons()
@@ -68,22 +82,88 @@ namespace Games.Global
                 Debug.Log("Can't get Monsters...");
             }
         }
-        
-        private void FetchCollection()
-        {
-            List<CollectionJsonObject> dJsonObjects = new List<CollectionJsonObject>();
 
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/CollectionJson"))
+        public IEnumerator GetCards()
+        {
+            while (!hasMonstersLoad || !hasWeaponsLoad)
             {
-                StreamReader reader = new StreamReader(filePath, true);
-        
-                dJsonObjects.AddRange(ParserJson<CollectionJsonObject>.Parse(reader, "cards"));
+                yield return new WaitForSeconds(0.5f);
             }
 
-            foreach (CollectionJsonObject deckJson in dJsonObjects)
+            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/card/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
             {
-                Card loadedCard = deckJson.ConvertToCard();
-                DataObject.playerCollection.Add(loadedCard);
+                DataObject.CardList.InitCards(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Cards...");
+            }
+        }
+
+        public IEnumerator GetCardCollection()
+        {
+            while (!hasCardsLoad || !wasConnected)
+            {
+                Debug.Log("Wait connection");
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            WWWForm form = new WWWForm();
+            if (NetworkingController.AuthToken != "")
+            {
+                form.AddField("collectionOwner", NetworkingController.AuthToken);
+            }
+            else
+            {
+                form.AddField("collectionOwner", "HZ0PUiJjDly8EDkyYUiP");
+            }
+            
+            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/card/listAccountCollection.php", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                DataObject.CardList.InitCardCollection(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Cards collection...");
+            }
+        }
+        
+        public IEnumerator GetDecks()
+        {
+            while (!hasCardsLoad || !wasConnected)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            WWWForm form = new WWWForm();
+            if (NetworkingController.AuthToken != "")
+            {
+                form.AddField("deckOwner", NetworkingController.AuthToken);
+            }
+            else
+            {
+                form.AddField("deckOwner", "HZ0PUiJjDly8EDkyYUiP");
+            }
+            
+            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/card/listCardDeck.php", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                DataObject.CardList.InitDeck(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Cards decks...");
             }
         }
     }
@@ -94,6 +174,7 @@ namespace Games.Global
         
         public static MonsterList MonsterList;
         public static WeaponList WeaponList;
+        public static CardList CardList;
         public static List<Material> MaterialsList;
         
         public static List<Monster> monsterInScene = new List<Monster>();

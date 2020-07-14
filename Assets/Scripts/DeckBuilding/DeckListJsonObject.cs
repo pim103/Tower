@@ -11,7 +11,7 @@ namespace DeckBuilding
         private int deckId;
         private int id;
         private int copies;
-    
+
         public void PrintAttribute()
         {
             Debug.Log("Object id : " + id + " deckId : "+ deckId + " copies : "+copies);
@@ -43,8 +43,8 @@ namespace DeckBuilding
             Card card = new Card();
 
             card.id = id;
-            card.deckId = deckId;
-            card.copies = copies;
+            //card.deckId = deckId;
+            //card.copies = copies;
 
             return card;
         }

@@ -36,7 +36,6 @@ namespace DeckBuilding
         public Weapon equipement;
         public GameObject equipementModel;
         public Transform ownCardContainer;
-        public int cardType;
         private int idMobInit = 0;
         public int groupId;
 
@@ -51,20 +50,14 @@ namespace DeckBuilding
         public CapsuleCollider groupRangeCollider; 
     
         public GroupRangeBehavior groupRangeBehavior;
-    
-    
-        private void OnEnable()
-        {
-            //SetCard();
-        }
 
-        public void SetCard(int type, int id)
+        public void SetCard(Card card)
         {
             ownCardContainer = transform.parent;
-            cardType = type;
-            if (type == 0)
+
+            if (card.GroupsMonster != null)
             {
-                group = DataObject.MonsterList.GetGroupsMonsterById(1);
+                group = card.GroupsMonster;
                 nameText.text = group.name;
                 costText.text = group.cost + " RP";
                 effectText.text = "effet";
@@ -72,10 +65,10 @@ namespace DeckBuilding
                 rangeSphere.transform.localScale = new Vector3(group.radius*4,group.radius*4,group.radius*4);
                 InstantiateGroupsMonster(group, Vector3.zero, groupParent.transform);
             }
-            else if(type == 1)
+            else if(card.Weapon != null)
             {
-                equipement = DataObject.WeaponList.GetWeaponWithId(1);
-                nameText.text = equipement.modelName;
+                equipement = card.Weapon;
+                nameText.text = equipement.equipementName;
                 costText.text = equipement.cost+" RP";
                 effectText.text = "effet";
                 equipementModel = Instantiate(equipement.model, groupParent.transform);
@@ -114,7 +107,7 @@ namespace DeckBuilding
 
                     //MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
                     monster.InitMonster(monsterPrefab);
-                
+
                     position = origPos + GroupsPosition.position[nbMonsterInit];
 
                 }
