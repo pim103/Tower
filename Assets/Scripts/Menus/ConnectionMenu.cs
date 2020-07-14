@@ -17,7 +17,8 @@ namespace Menus
     {
         DisconnectedError,
         IdentificationError,
-        ServerError
+        ServerError,
+        DisconnectedByAnother
     }
     enum InformationConnectionType
     {
@@ -31,7 +32,8 @@ namespace Menus
         public static readonly string[] Error = {
             "Votre connexion a été interrompue", 
             "Erreur d'identifiant ou de mot de passe", 
-            "Serveur indisponible"
+            "Serveur indisponible",
+            "Vous vous êtes connecté sur un autre périphérique"
         };
         public static readonly string[] Information = {
             "Envoie des données au serveur", 
@@ -71,11 +73,11 @@ namespace Menus
         private void Start()
         {
             accountInformationPanel.SetActive(false);
-            if (NetworkingController.ConnectionClosed)
+            if (NetworkingController.ConnectionClosed != -1)
             {
                 accountErrorPanel.SetActive(true);
-                accountErrorText.text = ConnectionMessage.Error[(int)ErrorConnectionType.DisconnectedError];
-                NetworkingController.ConnectionClosed = false;
+                accountErrorText.text = NetworkingController.ConnectionClosed == 1005 ? ConnectionMessage.Error[(int)ErrorConnectionType.DisconnectedByAnother] : ConnectionMessage.Error[(int)ErrorConnectionType.DisconnectedError];
+                NetworkingController.ConnectionClosed = -1;
             }
             passwordField.inputType = InputField.InputType.Password;
             createButton.onClick.AddListener(delegate {

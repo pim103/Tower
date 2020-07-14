@@ -122,7 +122,7 @@ namespace Menus
                 NetworkingController.CurrentRoomToken = "";
                 NetworkingController.AuthRole = "";
                 NetworkingController.IsConnected = false;
-                NetworkingController.ConnectionClosed = true;
+                NetworkingController.ConnectionClosed = args.Code;
                 NetworkingController.ConnectionStart = false;
                 SceneManager.LoadScene("MenuScene");
             };
