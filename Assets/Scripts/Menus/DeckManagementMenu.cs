@@ -13,144 +13,144 @@ using Utils;
 
 namespace Menus
 {
-    public class DeckManagementMenu : MonoBehaviour, MenuInterface
+public class DeckManagementMenu : MonoBehaviour, MenuInterface
+{
+    [SerializeField]
+    private MenuController mc;
+
+    [SerializeField]
+    private Button collectionButton;
+
+    [SerializeField]
+    private Button createDeckButton;
+
+    [SerializeField]
+    private Button editDeckButton;
+
+    [SerializeField]
+    private Button returnButton;
+
+    [SerializeField]
+    private GameObject deckButton;
+
+    [SerializeField]
+    private CreateDeckMenu createDeckMenu;
+
+    [SerializeField] private Button deleteButton;
+
+    private List<GameObject> deckButtonList;
+
+    public int selectedDeck;
+    public string selectedDeckName;
+    private void Start()
     {
-        [SerializeField]
-        private MenuController mc;
+        collectionButton.onClick.AddListener(delegate {
+            mc.ActivateMenu(MenuController.Menu.Collection);
+        });
 
-        [SerializeField]
-        private Button collectionButton;
-
-        [SerializeField]
-        private Button createDeckButton;
-
-        [SerializeField]
-        private Button editDeckButton;
-
-        [SerializeField]
-        private Button returnButton;
-
-        [SerializeField] 
-        private GameObject deckButton;
-
-        [SerializeField] 
-        private CreateDeckMenu createDeckMenu;
-
-        [SerializeField] private Button deleteButton;
-        
-        private List<GameObject> deckButtonList;
-
-        public int selectedDeck;
-        public string selectedDeckName;
-        private void Start()
+        createDeckButton.onClick.AddListener(delegate
         {
-            collectionButton.onClick.AddListener(delegate {
-                mc.ActivateMenu(MenuController.Menu.Collection);
-            });
-
-            createDeckButton.onClick.AddListener(delegate
-            {
-                createDeckMenu.newDeck = true;
-                selectedDeck = 0;
-                mc.ActivateMenu(MenuController.Menu.CreateDeck);
-            });
-
-            editDeckButton.onClick.AddListener(delegate {
-                if (selectedDeck != 0)
-                {
-                    createDeckMenu.newDeck = false;
-                    mc.ActivateMenu(MenuController.Menu.CreateDeck);
-                }
-            });
-
-            returnButton.onClick.AddListener(delegate
-            {
-                mc.ActivateMenu(MenuController.Menu.MainMenu);
-            });
-            
-            deleteButton.onClick.AddListener(delegate
-            {
-                if (selectedDeck != 0)
-                {
-                    StartCoroutine(DeleteDeck(selectedDeck));
-                }
-            });
-        }
-
-        public void InitMenu()
-        {
+            createDeckMenu.newDeck = true;
             selectedDeck = 0;
-            deckButtonList = new List<GameObject>();
-            ShowDecks();
-            Debug.Log("Deck Management Menu");
-        }
+            mc.ActivateMenu(MenuController.Menu.CreateDeck);
+        });
 
-        private void ShowDecks()
-        {
-            int ycount = 0;
-            foreach (var deck in DataObject.CardList.GetDecks())
+        editDeckButton.onClick.AddListener(delegate {
+            if (selectedDeck != 0)
             {
-                int currentCount = deckButtonList.Count;
-                GameObject currentDeckButton = Instantiate(deckButton, transform);
-                deckButtonList.Add(currentDeckButton);
-                if (currentCount % 4 == 0)
-                {
-                    ycount += 1;
-                }
+                createDeckMenu.newDeck = false;
+                mc.ActivateMenu(MenuController.Menu.CreateDeck);
+            }
+        });
 
-                Vector3 currentPosition = currentDeckButton.transform.position;
-                currentDeckButton.transform.position = new Vector3(currentPosition.x + 150 * (currentCount % 4),
+        returnButton.onClick.AddListener(delegate
+        {
+            mc.ActivateMenu(MenuController.Menu.MainMenu);
+        });
+
+        deleteButton.onClick.AddListener(delegate
+        {
+            if (selectedDeck != 0)
+            {
+                StartCoroutine(DeleteDeck(selectedDeck));
+            }
+        });
+    }
+
+    public void InitMenu()
+    {
+        selectedDeck = 0;
+        deckButtonList = new List<GameObject>();
+        ShowDecks();
+        Debug.Log("Deck Management Menu");
+    }
+
+    private void ShowDecks()
+    {
+        int ycount = 0;
+        foreach (var deck in DataObject.CardList.GetDecks())
+        {
+            int currentCount = deckButtonList.Count;
+            GameObject currentDeckButton = Instantiate(deckButton, transform);
+            deckButtonList.Add(currentDeckButton);
+            if (currentCount % 4 == 0)
+            {
+                ycount += 1;
+            }
+
+            Vector3 currentPosition = currentDeckButton.transform.position;
+            currentDeckButton.transform.position = new Vector3(currentPosition.x + 150 * (currentCount % 4),
                     currentPosition.y - (120 * (ycount - 1)), 0);
-                DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
-                currentButtonExposer.deckName.text = deck.name;
-                currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
-                currentButtonExposer.deckId = deck.id;
-                currentDeckButton.GetComponent<Button>().onClick.AddListener(delegate
-                {
-                    selectedDeck = deck.id;
-                    selectedDeckName = deck.name;
-                });
-            }
-        }
-        
-        public IEnumerator DeleteDeck(int deckId)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("deckId", deckId);
-            form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/delete.php", form);
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 201)
+            DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
+            currentButtonExposer.deckName.text = deck.name;
+            currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
+            currentButtonExposer.deckId = deck.id;
+            currentDeckButton.GetComponent<Button>().onClick.AddListener(delegate
             {
-                Debug.Log("Suppression des cartes effectuée");
-                foreach (GameObject deckButton in deckButtonList)
-                {
-                    if (deckButton.GetComponent<DeckButtonExposer>().deckId == deckId)
-                    {
-                        deckButton.SetActive(false);
-                    }
-                }
-            }
-            else if (www.responseCode == 406)
-            {
-                Debug.Log("Erreur dans la suppression des cartes");
-            }
-            else if (www.responseCode == 403)
-            {
-                Debug.Log("Erreur dans le formulaire");
-            }
-            else if (www.responseCode == 401)
-            {
-                Debug.Log("Vérifiez le GameToken");
-            }
-            else
-            {
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-                Debug.Log("Serveur indisponible.");
-            }
+                selectedDeck = deck.id;
+                selectedDeckName = deck.name;
+            });
         }
     }
+
+    public IEnumerator DeleteDeck(int deckId)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("deckId", deckId);
+        form.AddField("gameToken", NetworkingController.GameToken);
+        var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/delete.php", form);
+        www.certificateHandler = new AcceptCertificate();
+        yield return www.SendWebRequest();
+        yield return new WaitForSeconds(0.5f);
+        if (www.responseCode == 201)
+        {
+            Debug.Log("Suppression des cartes effectuée");
+            foreach (GameObject deckButton in deckButtonList)
+            {
+                if (deckButton.GetComponent<DeckButtonExposer>().deckId == deckId)
+                {
+                    deckButton.SetActive(false);
+                }
+            }
+        }
+        else if (www.responseCode == 406)
+        {
+            Debug.Log("Erreur dans la suppression des cartes");
+        }
+        else if (www.responseCode == 403)
+        {
+            Debug.Log("Erreur dans le formulaire");
+        }
+        else if (www.responseCode == 401)
+        {
+            Debug.Log("Vérifiez le GameToken");
+        }
+        else
+        {
+            Debug.Log(www.responseCode);
+            Debug.Log(www.downloadHandler.text);
+            Debug.Log("Serveur indisponible.");
+        }
+    }
+}
 }

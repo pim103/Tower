@@ -6,61 +6,61 @@ using UnityEngine.UI;
 
 namespace DeckBuilding
 {
-    public class ScrollButtonController : MonoBehaviour
+public class ScrollButtonController : MonoBehaviour
+{
+    //IL FAUT FUSIONNER LES MENUS
+    [SerializeField] private CollectionMenu collectionMenu;
+    [SerializeField] private bool isPrevious;
+    [SerializeField] private CreateDeckMenu createDeckMenu;
+    [SerializeField] private bool onCollection;
+    private void Start()
     {
-        //IL FAUT FUSIONNER LES MENUS
-        [SerializeField] private CollectionMenu collectionMenu;
-        [SerializeField] private bool isPrevious;
-        [SerializeField] private CreateDeckMenu createDeckMenu;
-        [SerializeField] private bool onCollection;
-        private void Start()
+        GetComponent<Button>().onClick.AddListener(delegate
         {
-            GetComponent<Button>().onClick.AddListener(delegate
+            /*if (isPrevious)
             {
-                /*if (isPrevious)
+                if (onCollection)
                 {
-                    if (onCollection)
+                    if (collectionMenu.minBorder >= 15)
                     {
-                        if (collectionMenu.minBorder >= 15)
-                        {
-                            collectionMenu.minBorder -= 15;
-                            collectionMenu.maxBorder -= 15;
-                            collectionMenu.ShowCards();
-                        }
-                    }
-                    else
-                    {
-                        if (createDeckMenu.minBorder >= 15)
-                        {
-                            createDeckMenu.minBorder -= 15;
-                            createDeckMenu.maxBorder -= 15;
-                            createDeckMenu.ShowCards();
-                        }
+                        collectionMenu.minBorder -= 15;
+                        collectionMenu.maxBorder -= 15;
+                        collectionMenu.ShowCards();
                     }
                 }
                 else
                 {
-                    /*
-                    if (onCollection)
+                    if (createDeckMenu.minBorder >= 15)
                     {
-                        if (collectionMenu.maxBorder < DataObject.CardList.GetTotalDistinctCardsInCollection())
-                        {
-                            collectionMenu.minBorder += 15;
-                            collectionMenu.maxBorder += 15;
-                            collectionMenu.ShowCards();
-                        }
+                        createDeckMenu.minBorder -= 15;
+                        createDeckMenu.maxBorder -= 15;
+                        createDeckMenu.ShowCards();
                     }
-                    else
+                }
+            }
+            else
+            {
+                /*
+                if (onCollection)
+                {
+                    if (collectionMenu.maxBorder < DataObject.CardList.GetTotalDistinctCardsInCollection())
                     {
-                        if (createDeckMenu.maxBorder < DataObject.playerCollection.Count)
-                        {
-                            createDeckMenu.minBorder += 15;
-                            createDeckMenu.maxBorder += 15;
-                            createDeckMenu.ShowCards();
-                        }
-                    }#1#
-                }*/
-            });
-        }
+                        collectionMenu.minBorder += 15;
+                        collectionMenu.maxBorder += 15;
+                        collectionMenu.ShowCards();
+                    }
+                }
+                else
+                {
+                    if (createDeckMenu.maxBorder < DataObject.playerCollection.Count)
+                    {
+                        createDeckMenu.minBorder += 15;
+                        createDeckMenu.maxBorder += 15;
+                        createDeckMenu.ShowCards();
+                    }
+                }#1#
+            }*/
+        });
     }
+}
 }
