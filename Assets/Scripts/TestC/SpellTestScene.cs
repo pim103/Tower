@@ -117,9 +117,11 @@ namespace TestC
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(4);
+                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(6);
                 InstantiateGroupsMonster(groups, Vector3.one, null);
             }
+
+            player.entity.att = 5;
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)

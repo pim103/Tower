@@ -58,6 +58,7 @@ namespace Games.Global.Spells.SpellsController
 
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
             spellPrefabController.SetValues(entity, projectileSpell);
+            spellPrefabController.ActiveCollider(Geometry.Cone, true);
 
             projectileSpell.objectPooled = genericSpellPrefab;
             projectileSpell.prefabPooled = prefabWanted;

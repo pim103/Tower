@@ -24,12 +24,20 @@ namespace Games.Global.Spells.SpellsController
             spellComponent = originSpellComponent;
         }
 
-        public void ActiveCollider(Geometry geometry)
+        public void ActiveCollider(Geometry geometry, bool isProj = false)
         {
             square.SetActive(false);
             sphere.SetActive(false);
             cone.SetActive(false);
-            
+            meshCollider.enabled = false;
+            sphereCollider.enabled = false;
+            boxCollider.enabled = false;
+
+            if (isProj)
+            {
+                return;
+            }
+
             switch (geometry)
             {
                 case Geometry.Cone:
