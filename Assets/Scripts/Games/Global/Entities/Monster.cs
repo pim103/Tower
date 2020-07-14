@@ -82,6 +82,11 @@ namespace Games.Global.Entities
 
         public void InitOriginalWeapon()
         {
+            if (nbWeapon == 0)
+            {
+                return;
+            }
+            
             Weapon weapon = DataObject.WeaponList.GetWeaponWithId(weaponOriginalId);
 
             monsterPrefab.AddItemInHand(weapon);

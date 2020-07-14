@@ -117,7 +117,7 @@ namespace TestC
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(1);
+                GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(4);
                 InstantiateGroupsMonster(groups, Vector3.one, null);
             }
         }

@@ -97,6 +97,7 @@ namespace Games.Global
             yield return new WaitForSeconds(0.5f);
             if (www.responseCode == 200)
             {
+                Debug.Log(www.downloadHandler.text);
                 DataObject.CardList.InitCards(www.downloadHandler.text);
             }
             else

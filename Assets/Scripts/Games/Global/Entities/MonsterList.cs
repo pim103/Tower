@@ -54,7 +54,7 @@ namespace Games.Global.Entities
                 {
                     return;
                 }
-                
+
                 foreach (GroupsJsonObject groupsJson in mobsList.groups)
                 {
                     groupsList.Add(groupsJson.ConvertToMonsterGroups());

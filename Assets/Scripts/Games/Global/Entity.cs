@@ -49,9 +49,7 @@ namespace Games.Global
 
         public bool isPlayer { get; set; } = false;
         public bool isSummon { get; set; } = false;
-        
-        private ItemModel itemModel { get; set; }
-        
+
         private const float DEFAULT_HP  = 100;
         private const int DEFAULT_DEF = 10;
         private const float DEFAULT_ATT = 0;
