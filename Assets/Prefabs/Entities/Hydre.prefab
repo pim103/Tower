@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 402424}
   - component: {fileID: 95122306035438016}
   - component: {fileID: -8970272797044456543}
-  - component: {fileID: 625918317156563597}
   - component: {fileID: -6474639144410905188}
   - component: {fileID: 5688264618955937120}
+  - component: {fileID: 7793434449253382817}
   m_Layer: 11
   m_Name: Hydre
   m_TagString: Untagged
@@ -220,19 +220,6 @@ MonoBehaviour:
   positionPointed: {x: 0, y: 0, z: 0}
   hpBar: {fileID: 3154442099338803573}
   objectsToLoot: []
---- !u!65 &625918317156563597
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107674}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.629141, y: 4.753107, z: 8.5814705}
-  m_Center: {x: -0.10498965, y: 2.492135, z: 1.4744263}
 --- !u!195 &-6474639144410905188
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -271,6 +258,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &7793434449253382817
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.685019
+  m_Height: 8.773407
+  m_Direction: 2
+  m_Center: {x: 0.07406449, y: 1.677994, z: 0.76134586}
 --- !u!1 &108270
 GameObject:
   m_ObjectHideFlags: 0
