@@ -31,18 +31,5 @@ namespace Games
 
         [SerializeField]
         public PlayerPrefab[] playerPrefab;
-
-        // ========================== ACCESS TO MAP CONTAINER ==================
-
-        [SerializeField]
-        public GameObject[] maps;
-
-        // ========================== OBJECT GENERATE IN MAP ==================
-
-        [SerializeField]
-        public GameObject simpleWall;
-
-        [SerializeField] 
-        public GameObject keyObject;
     }
 }
