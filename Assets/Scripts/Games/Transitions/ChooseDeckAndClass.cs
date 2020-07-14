@@ -175,7 +175,7 @@ namespace Games.Transitions
             List<CategoryWeapon> categoryWeaponsWarrior = new List<CategoryWeapon>();
             categoryWeaponsWarrior.Add(CategoryWeapon.SHORT_SWORD);
             categoryWeaponsWarrior.Add(CategoryWeapon.BOW);
-            categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
+//            categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
             categoryWeaponsWarrior.Add(CategoryWeapon.STAFF);
             categoryWeaponsWarrior.Add(CategoryWeapon.DAGGER);
 
@@ -185,7 +185,7 @@ namespace Games.Transitions
 
             categoryWeaponsRanger.Add(CategoryWeapon.SHORT_SWORD);
             categoryWeaponsRanger.Add(CategoryWeapon.BOW);
-            categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
+//            categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
             categoryWeaponsRanger.Add(CategoryWeapon.STAFF);
             categoryWeaponsRanger.Add(CategoryWeapon.DAGGER);
 
@@ -195,8 +195,8 @@ namespace Games.Transitions
 
             categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
             categoryWeaponsMage.Add(CategoryWeapon.BOW);
-            categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsMage.Add(CategoryWeapon.STAFF);
+//            categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
+//            categoryWeaponsMage.Add(CategoryWeapon.STAFF);
             categoryWeaponsMage.Add(CategoryWeapon.DAGGER);
 
             avalaibleWeaponForClass.Add(Classes.Mage, categoryWeaponsMage);
@@ -205,8 +205,9 @@ namespace Games.Transitions
 
             categoryWeaponsRogue.Add(CategoryWeapon.SHORT_SWORD);
             categoryWeaponsRogue.Add(CategoryWeapon.BOW);
-            categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
+//            categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
+//            categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
+            categoryWeaponsRogue.Add(CategoryWeapon.DAGGER);
 
             avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
         }
