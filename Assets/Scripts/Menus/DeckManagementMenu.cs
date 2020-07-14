@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DeckBuilding;
 using Games.Global;
+using Networking;
+using Networking.Client;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using Utils;
 
@@ -31,6 +35,8 @@ namespace Menus
 
         [SerializeField] 
         private CreateDeckMenu createDeckMenu;
+
+        [SerializeField] private Button deleteButton;
         
         private List<GameObject> deckButtonList;
 
@@ -61,6 +67,14 @@ namespace Menus
             {
                 mc.ActivateMenu(MenuController.Menu.MainMenu);
             });
+            
+            deleteButton.onClick.AddListener(delegate
+            {
+                if (selectedDeck != 0)
+                {
+                    StartCoroutine(DeleteDeck(selectedDeck));
+                }
+            });
         }
 
         public void InitMenu()
@@ -90,11 +104,52 @@ namespace Menus
                 DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
                 currentButtonExposer.deckName.text = deck.name;
                 currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
+                currentButtonExposer.deckId = deck.id;
                 currentDeckButton.GetComponent<Button>().onClick.AddListener(delegate
                 {
                     selectedDeck = deck.id;
                     selectedDeckName = deck.name;
                 });
+            }
+        }
+        
+        public IEnumerator DeleteDeck(int deckId)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("deckId", deckId);
+            form.AddField("gameToken", NetworkingController.GameToken);
+            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/delete.php", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 201)
+            {
+                Debug.Log("Suppression des cartes effectuée");
+                foreach (GameObject deckButton in deckButtonList)
+                {
+                    if (deckButton.GetComponent<DeckButtonExposer>().deckId == deckId)
+                    {
+                        deckButton.SetActive(false);
+                    }
+                }
+            }
+            else if (www.responseCode == 406)
+            {
+                Debug.Log("Erreur dans la suppression des cartes");
+            }
+            else if (www.responseCode == 403)
+            {
+                Debug.Log("Erreur dans le formulaire");
+            }
+            else if (www.responseCode == 401)
+            {
+                Debug.Log("Vérifiez le GameToken");
+            }
+            else
+            {
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+                Debug.Log("Serveur indisponible.");
             }
         }
     }
