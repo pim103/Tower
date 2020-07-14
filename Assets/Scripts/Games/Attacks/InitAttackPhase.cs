@@ -291,7 +291,9 @@ namespace Games.Attacks
             objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
             objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
-
+            MapStats mapStats = initDefense.currentMap.GetComponent<MapStats>();
+            objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = mapStats.spawnPosition.transform.position;
+            
             Cursor.lockState = CursorLockMode.Locked;
 
             DataObject.playerInScene.Add(GameController.PlayerIndex, objectsInScene.playerPrefab[GameController.PlayerIndex]);
