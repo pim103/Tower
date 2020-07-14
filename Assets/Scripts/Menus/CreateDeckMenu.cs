@@ -37,6 +37,8 @@ namespace Menus
         public int minBorder;
         public int maxBorder;
 
+        private Deck selectedDeck;
+
         [SerializeField] private InputField deckName;
         private void Start()
         {
@@ -54,8 +56,14 @@ namespace Menus
         {
             minBorder = 0;
             maxBorder = 15;
-            Debug.Log(deckManagementMenu.selectedDeckName);
-            deckName.text = deckManagementMenu.selectedDeckName;
+            
+            if (deckManagementMenu.selectedDeck != 0)
+            {
+                Debug.Log(deckManagementMenu.selectedDeckName);
+                deckName.text = deckManagementMenu.selectedDeckName;
+                selectedDeck = DataObject.CardList.GetDeckById(deckManagementMenu.selectedDeck);
+            }
+            
             if (cardInCollButtonsList != null)
             {
                 foreach (var button in cardInCollButtonsList)
@@ -71,34 +79,37 @@ namespace Menus
                 }
             }
 
-            cardsInDeck = new List<Card>();
             cardInDeckButtonsList = new List<GameObject>();
             cardInCollButtonsList = new List<GameObject>();
+
             if (!newDeck)
             {
-                FetchDeckList();
-                foreach (var card in cardsInDeck)
+                foreach (Card card in selectedDeck.GetCardsInDeck())
                 {
                     int currentCount = cardInDeckButtonsList.Count;
                     GameObject currentCardInDeckButton = Instantiate(cardInDeckButton, transform);
                     cardInDeckButtonsList.Add(currentCardInDeckButton);
                     Vector3 currentPosition = currentCardInDeckButton.transform.position;
-                    currentCardInDeckButton.transform.position =
-                        new Vector3(750, currentPosition.y - 15 * currentCount - 1, 0);
-                    CardInDeckButtonExposer currentButtonExposer =
-                        currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
-                    Debug.Log(card.id);
-                    Debug.Log(DataObject.MonsterList);
-                    GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(card.id);
-                    currentButtonExposer.name.text = group.name;
-                    //currentButtonExposer.copies.text = "X" + card.copies;
-                    currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate { });
+                    currentCardInDeckButton.transform.position = new Vector3(750, currentPosition.y - 15 * currentCount - 1, 0);
+                    
+                    CardInDeckButtonExposer currentButtonExposer = currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
+
+                    if (card.GroupsMonster != null)
+                    {
+                        currentButtonExposer.name.text = card.GroupsMonster.name;
+                        currentButtonExposer.copies.text = "X" + selectedDeck.GetCardNumber(card.id);
+                        currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate { });
+                    } else if (card.Weapon != null)
+                    {
+                        currentButtonExposer.name.text = card.Weapon.equipementName;
+                        currentButtonExposer.copies.text = "X" + selectedDeck.GetCardNumber(card.id);
+                        currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate { });
+                    }
                 }
             }
             
-            
-            /*int ycount = 0;
-            foreach (var card in DataObject.playerCollection)
+            int ycount = 0;
+            foreach (Card card in DataObject.CardList.GetCardsInCollection())
             {
                 int currentCount = cardInCollButtonsList.Count;
                 GameObject currentCardInCollButton = Instantiate(cardInCollButton, transform);
@@ -110,38 +121,34 @@ namespace Menus
                 Vector3 currentPosition = currentCardInCollButton.transform.position;
                 currentCardInCollButton.transform.position = new Vector3(currentPosition.x+100*(currentCount%5),currentPosition.y-(150*(ycount-1))-20,0);
                 CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
-                GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(card.id);
-                currentButtonExposer.name.text = group.name;
-                currentButtonExposer.copies.text = "X" + card.copies;
-                currentButtonExposer.effect.text = "effet";
-                currentButtonExposer.cost.text = group.cost.ToString();
-                currentButtonExposer.family.text = group.family.ToString();
-                currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+
+                if (card.GroupsMonster != null)
                 {
+                    currentButtonExposer.name.text = card.GroupsMonster.name;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.GroupsMonster.cost.ToString();
+                    currentButtonExposer.family.text = card.GroupsMonster.family.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
                     
-                });
+                    });
+                } else if (card.Weapon != null)
+                {
+                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.Weapon.cost.ToString();
+                    currentButtonExposer.family.text = card.Weapon.type.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                    
+                    });
+                }
                 
-            }*/
+            }
             ShowCards();
             Debug.Log("Create Deck Menu");
-        }
-
-        private void FetchDeckList()
-        {
-            List<DeckListJsonObject> dJsonObjects = new List<DeckListJsonObject>();
-
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckListJson"))
-            {
-                StreamReader reader = new StreamReader(filePath, true);
-        
-                dJsonObjects.AddRange(ParserJson<DeckListJsonObject>.Parse(reader, "cards"));
-            }
-
-            foreach (DeckListJsonObject deckJson in dJsonObjects)
-            {
-                Card loadedCard = deckJson.ConvertToCard();
-                cardsInDeck.Add(loadedCard);
-            }
         }
 
         public void ShowCards()
@@ -153,10 +160,12 @@ namespace Menus
                     button.SetActive(false);
                 }
             }
+            
             cardInCollButtonsList = new List<GameObject>();
             int ycount = 0;
-            for(int i = minBorder; i < maxBorder; i++){
-                if(i>=DataObject.playerCollection.Count) return;
+
+            foreach (Card card in DataObject.CardList.GetCardsInCollection())
+            {
                 int currentCount = cardInCollButtonsList.Count;
                 GameObject currentCardInCollButton = Instantiate(cardInCollButton, transform);
                 cardInCollButtonsList.Add(currentCardInCollButton);
@@ -166,18 +175,32 @@ namespace Menus
                 }
                 Vector3 currentPosition = currentCardInCollButton.transform.position;
                 currentCardInCollButton.transform.position = new Vector3(currentPosition.x+100*(currentCount%5),currentPosition.y-(150*(ycount-1))+20,0);
-                CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
-                GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(DataObject.playerCollection[i].id);
-                currentButtonExposer.name.text = group.name;
-                //currentButtonExposer.copies.text = "X" + DataObject.playerCollection[i].copies;
-                currentButtonExposer.effect.text = "effet";
-                currentButtonExposer.cost.text = group.cost.ToString();
-                currentButtonExposer.family.text = group.family.ToString();
-                currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
-                {
-                    
-                });
                 
+                CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
+
+                if (card.GroupsMonster != null)
+                {
+                    currentButtonExposer.name.text = card.GroupsMonster.name;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.GroupsMonster.cost.ToString();
+                    currentButtonExposer.family.text = card.GroupsMonster.family.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                    
+                    });
+                } else if (card.Weapon != null)
+                {
+                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.Weapon.cost.ToString();
+                    currentButtonExposer.family.text = card.Weapon.type.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                    
+                    });
+                }
             }
         }
     }

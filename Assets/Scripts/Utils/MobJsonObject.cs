@@ -44,7 +44,7 @@ namespace Utils
         public string onDamageReceive { get; set; }
         public string model { get; set; }
 
-        public string number { get; set; }
+        public string nbMonster { get; set; }
 
         public void InsertValue(string key, string value)
         {
@@ -221,7 +221,7 @@ namespace Utils
 
             foreach (MobJsonObject mob in monsterList)
             {
-                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.number));
+                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));
             }
 
             return groupsMonster;

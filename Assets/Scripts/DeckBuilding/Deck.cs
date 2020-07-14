@@ -125,5 +125,27 @@ namespace DeckBuilding
 
             return DataObject.CardList.GetCardById(idCard);
         }
+
+        public List<Card> GetCardsInDeck()
+        {
+            List<Card> cardsInDeck = new List<Card>();
+            
+            foreach (KeyValuePair<int, int> cardPair in cards)
+            {
+                cardsInDeck.Add(DataObject.CardList.GetCardById(cardPair.Key));
+            }
+
+            return cardsInDeck;
+        }
+
+        public int GetCardNumber(int idCard)
+        {
+            if (cards.ContainsKey(idCard))
+            {
+                return cards[idCard];
+            }
+
+            return 0;
+        }
     }
 }

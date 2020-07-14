@@ -49,8 +49,9 @@ namespace Menus
             }
             cardInCollButtonsList = new List<GameObject>();
             int ycount = 0;
-            for(int i = minBorder; i < maxBorder; i++){
-                if(i>=DataObject.playerCollection.Count) return;
+
+            foreach (Card card in DataObject.CardList.GetCardsInCollection())
+            {
                 int currentCount = cardInCollButtonsList.Count;
                 GameObject currentCardInCollButton = Instantiate(cardInCollButton, transform);
                 cardInCollButtonsList.Add(currentCardInCollButton);
@@ -60,18 +61,32 @@ namespace Menus
                 }
                 Vector3 currentPosition = currentCardInCollButton.transform.position;
                 currentCardInCollButton.transform.position = new Vector3(currentPosition.x+100*(currentCount%5),currentPosition.y-(150*(ycount-1))+20,0);
-                CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
-                GroupsMonster group = DataObject.MonsterList.GetGroupsMonsterById(DataObject.playerCollection[i].id);
-                currentButtonExposer.name.text = group.name;
-                //currentButtonExposer.copies.text = "X" + DataObject.playerCollection[i].copies;
-                currentButtonExposer.effect.text = "effet";
-                currentButtonExposer.cost.text = group.cost.ToString();
-                currentButtonExposer.family.text = group.family.ToString();
-                currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
-                {
-                    
-                });
                 
+                CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
+
+                if (card.GroupsMonster != null)
+                {
+                    currentButtonExposer.name.text = card.GroupsMonster.name;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.GroupsMonster.cost.ToString();
+                    currentButtonExposer.family.text = card.GroupsMonster.family.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                    
+                    });
+                } else if (card.Weapon != null)
+                {
+                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.effect.text = "effet";
+                    currentButtonExposer.cost.text = card.Weapon.cost.ToString();
+                    currentButtonExposer.family.text = card.Weapon.type.ToString();
+                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                    
+                    });
+                }
             }
         }
     }

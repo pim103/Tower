@@ -96,8 +96,6 @@ namespace DeckBuilding
                     monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
                     monsterGameObject.GetComponent<NavMeshAgent>().enabled = false;
                     MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                    /*monsterPrefab.leftHand.SetActive(false);
-                    monsterPrefab.rightHand.SetActive(false);*/
                     monsterPrefab.enabled = false;
                     monsterGameObject.transform.localPosition = position;
                     
@@ -105,7 +103,6 @@ namespace DeckBuilding
                     idMobInit++;
                     nbMonsterInit++;
 
-                    //MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
                     monster.InitMonster(monsterPrefab);
 
                     position = origPos + GroupsPosition.position[nbMonsterInit];

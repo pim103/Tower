@@ -66,7 +66,7 @@ namespace Games.Global
                 Debug.Log("Can't get weapons...");
             }
         }
-        
+
         public IEnumerator GetGroupsMonster()
         {
             var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/group/list.php");
@@ -75,6 +75,7 @@ namespace Games.Global
             yield return new WaitForSeconds(0.5f);
             if (www.responseCode == 200)
             {
+                Debug.Log(www.downloadHandler.text);
                 DataObject.MonsterList = new MonsterList(monsterGameObjects, www.downloadHandler.text);
             }
             else
@@ -108,7 +109,6 @@ namespace Games.Global
         {
             while (!hasCardsLoad || !wasConnected)
             {
-                Debug.Log("Wait connection");
                 yield return new WaitForSeconds(0.5f);
             }
 
@@ -182,7 +182,5 @@ namespace Games.Global
         public static List<Entity> invocationsInScene = new List<Entity>();
 
         public static List<GameObject> objectInScene = new List<GameObject>();
-        
-        public static List<Card> playerCollection = new List<Card>();
     }
 }

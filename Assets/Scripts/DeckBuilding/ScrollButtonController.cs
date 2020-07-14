@@ -40,9 +40,10 @@ namespace DeckBuilding
                 }
                 else
                 {
+                    /*
                     if (onCollection)
                     {
-                        if (collectionMenu.maxBorder < DataObject.playerCollection.Count)
+                        if (collectionMenu.maxBorder < DataObject.CardList.GetTotalDistinctCardsInCollection())
                         {
                             collectionMenu.minBorder += 15;
                             collectionMenu.maxBorder += 15;
@@ -57,7 +58,7 @@ namespace DeckBuilding
                             createDeckMenu.maxBorder += 15;
                             createDeckMenu.ShowCards();
                         }
-                    }
+                    }*/
                 }
             });
         }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using DeckBuilding;
+using Games.Global;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -32,7 +33,6 @@ namespace Menus
         private CreateDeckMenu createDeckMenu;
         
         private List<GameObject> deckButtonList;
-        public List<Deck> playerDecks;
 
         public int selectedDeck;
         public string selectedDeckName;
@@ -45,6 +45,7 @@ namespace Menus
             createDeckButton.onClick.AddListener(delegate
             {
                 createDeckMenu.newDeck = true;
+                selectedDeck = 0;
                 mc.ActivateMenu(MenuController.Menu.CreateDeck);
             });
 
@@ -65,38 +66,15 @@ namespace Menus
         public void InitMenu()
         {
             selectedDeck = 0;
-            if (playerDecks == null)
-            {
-                playerDecks = new List<Deck>();
-                deckButtonList = new List<GameObject>();
-                FetchDecks();
-                ShowDecks();
-            }
+            deckButtonList = new List<GameObject>();
+            ShowDecks();
             Debug.Log("Deck Management Menu");
-        }
-
-        private void FetchDecks()
-        {
-            List<DeckJsonObject> dJsonObjects = new List<DeckJsonObject>();
-
-            foreach (string filePath in Directory.EnumerateFiles("Assets/Data/DeckJson"))
-            {
-                StreamReader reader = new StreamReader(filePath, true);
-        
-                //dJsonObjects.AddRange(ParserJson<DeckJsonObject>.Parse(reader, "decks"));
-            }
-
-            foreach (DeckJsonObject deckJson in dJsonObjects)
-            {
-                Deck loadedDeck = deckJson.ConvertToDeck();
-                playerDecks.Add(loadedDeck);
-            }
         }
 
         private void ShowDecks()
         {
             int ycount = 0;
-            foreach (var deck in playerDecks)
+            foreach (var deck in DataObject.CardList.GetDecks())
             {
                 int currentCount = deckButtonList.Count;
                 GameObject currentDeckButton = Instantiate(deckButton, transform);
@@ -117,7 +95,6 @@ namespace Menus
                     selectedDeck = deck.id;
                     selectedDeckName = deck.name;
                 });
-                //currentButtonExposer.deckImage a set
             }
         }
     }

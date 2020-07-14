@@ -41,6 +41,33 @@ namespace DeckBuilding
             return Tools.Clone(cards.First(card => card.id == id));
         }
 
+        public List<Card> GetCardsInCollection()
+        {
+            List<Card> collectionCards = new List<Card>();
+
+            foreach (KeyValuePair<int, int> card in cardsInCollection)
+            {
+                collectionCards.Add(GetCardById(card.Key));
+            }
+
+            return collectionCards;
+        }
+
+        public int GetNbSpecificCardInCollection(int cardId)
+        {
+            if (cardsInCollection.ContainsKey(cardId))
+            {
+                return cardsInCollection[cardId];
+            }
+
+            return 0;
+        }
+
+        public int GetTotalDistinctCardsInCollection()
+        {
+            return cardsInCollection.Count;
+        }
+
         public void InitCards(string json)
         {
             fsSerializer serializer = new fsSerializer();
