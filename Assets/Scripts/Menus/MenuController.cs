@@ -116,15 +116,17 @@ namespace Menus
 
             TowersWebSocket.wsGame.OnClose += (sender, args) =>
             {
-                Debug.Log("Deconnexion : " + args.Code);
-                
-                NetworkingController.AuthToken = "";
-                NetworkingController.CurrentRoomToken = "";
-                NetworkingController.AuthRole = "";
-                NetworkingController.IsConnected = false;
-                NetworkingController.ConnectionClosed = args.Code;
-                NetworkingController.ConnectionStart = false;
-                SceneManager.LoadScene("MenuScene");
+                if (args.Code != 1000)
+                {
+                    Debug.Log("Deconnexion : " + args.Code);
+                    NetworkingController.AuthToken = "";
+                    NetworkingController.CurrentRoomToken = "";
+                    NetworkingController.AuthRole = "";
+                    NetworkingController.IsConnected = false;
+                    NetworkingController.ConnectionClosed = args.Code;
+                    NetworkingController.ConnectionStart = false;
+                    SceneManager.LoadScene("MenuScene");
+                }
             };
         }
 

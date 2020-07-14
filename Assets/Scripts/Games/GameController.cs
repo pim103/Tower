@@ -134,13 +134,16 @@ namespace Games {
                 };
                 TowersWebSocket.wsGame.OnClose += (sender, args) =>
                 {
-                    NetworkingController.AuthToken = "";
-                    NetworkingController.CurrentRoomToken = "";
-                    NetworkingController.AuthRole = "";
-                    NetworkingController.IsConnected = false;
-                    NetworkingController.ConnectionClosed = args.Code;
-                    NetworkingController.ConnectionStart = false;
-                    SceneManager.LoadScene("MenuScene");
+                    if (args.Code != 1000)
+                    {
+                        NetworkingController.AuthToken = "";
+                        NetworkingController.CurrentRoomToken = "";
+                        NetworkingController.AuthRole = "";
+                        NetworkingController.IsConnected = false;
+                        NetworkingController.ConnectionClosed = args.Code;
+                        NetworkingController.ConnectionStart = false;
+                        SceneManager.LoadScene("MenuScene");
+                    }
                 };
             }
 
