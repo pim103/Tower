@@ -1,7 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using FullSerializer;
+using Networking;
+using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 /// <summary>
 /// This is the ChatBoxManager script, it contains functionality that is specific to the chatbox
@@ -23,6 +28,8 @@ public class ChatBoxManager : MonoBehaviour
     public Color server;
     public Color playerMessage;
     public Color privateMessage;
+    private bool sendNewMessage = false;
+    private string sendNewText = "";
 
     [Header("Message list")]
     [SerializeField] List<Message> messageList = new List<Message>();
@@ -36,6 +43,8 @@ public class ChatBoxManager : MonoBehaviour
 
         // Welcome message
         SendMessageToChat("Bienvenue dans Tower", Message.MessageType.server);
+        StartCoroutine(WaitingForChatMessage());
+        StartCoroutine(SendNewMessage());
     }
 
     // Update is called once per frame
@@ -47,6 +56,48 @@ public class ChatBoxManager : MonoBehaviour
             // Activate the chatbox input field
             chatBox.ActivateInputField();
         }
+    }
+    public IEnumerator SendNewMessage()
+    {
+        while (!sendNewMessage)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        SendMessageToChat(sendNewText, Message.MessageType.playerMessage);
+        sendNewMessage = false;
+        sendNewText = "";
+        yield return SendNewMessage();
+    }
+    public IEnumerator WaitingForChatMessage()
+    {
+        while (NetworkingController.ConnectionStart == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        TowersWebSocket.wsChat.OnMessage += (sender, args) =>
+        {
+            if (args.Data.Contains("callbackChatMessage"))
+            {
+                fsSerializer serializer = new fsSerializer();
+                fsData data;
+                CallbackChatMessages callbackChatMessage = null; 
+                try
+                {
+                    data = fsJsonParser.Parse(args.Data);
+                    serializer.TryDeserialize(data, ref callbackChatMessage);
+                    callbackChatMessage = Tools.Clone(callbackChatMessage);
+                    sendNewText = callbackChatMessage.callbackChatMessage.sender + " : " +
+                                  callbackChatMessage.callbackChatMessage.message;
+                    sendNewMessage = true;
+                    Debug.Log(callbackChatMessage.callbackChatMessage.sender + " : " + callbackChatMessage.callbackChatMessage.message);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Can't read callback : " + e.Message);
+                }
+            }
+        };
     }
 
     /// <summary>
@@ -107,8 +158,7 @@ public class ChatBoxManager : MonoBehaviour
                 }
                 else
                 {
-                    // Send the user message as a general message
-                    SendMessageToChat(username + " : " + chatBox.text, Message.MessageType.playerMessage);
+                    TowersWebSocket.ChatSender("ALL", "GENERAL", NetworkingController.NickName, chatBox.text);
                 }
             }
 
@@ -151,7 +201,7 @@ public class ChatBoxManager : MonoBehaviour
             else
             {
                 // Send the user message as a general message
-                SendMessageToChat(username + " : " + chatBox.text, Message.MessageType.playerMessage);
+                TowersWebSocket.ChatSender("ALL", "GENERAL", NetworkingController.NickName, chatBox.text);
             }
 
             // Clean the chatbox input field
@@ -169,9 +219,8 @@ public class ChatBoxManager : MonoBehaviour
             Destroy(messageList[0].textObject.gameObject);
             messageList.Remove(messageList[0]);
         }
-
         Message newMessage = new Message();
-
+        
         newMessage.text = text;
 
         GameObject newText = Instantiate(textObject, chatPanel.transform);

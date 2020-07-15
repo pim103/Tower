@@ -29,4 +29,17 @@ namespace Networking.Client
         public int classes { get; set; } = -1;
         public int weapon { get; set; } = -1;
     }
+    
+    [Serializable]
+    public class CallbackChatMessages
+    {
+        public CallbackChatMessage callbackChatMessage { get; set; }
+    }
+    
+    [Serializable]
+    public class CallbackChatMessage
+    {
+        public string sender { get; set; } = null;
+        public string message { get; set; } = null;
+    }
 }
