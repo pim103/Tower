@@ -64,7 +64,7 @@ namespace Menus
             }
 
             StartCoroutine(CheckForDeconnection());
-            
+
             cancelResearchMatchButton.onClick.AddListener(CancelResearchMatch);
         }
 

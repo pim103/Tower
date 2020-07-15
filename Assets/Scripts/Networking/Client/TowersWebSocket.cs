@@ -27,7 +27,7 @@ namespace Networking.Client
         public static string END_POINT_GAME;
         public static string END_POINT_CHAT;
         public static WebSocket wsGame = null;
-        public static WebSocket wsChat= null;
+        public static WebSocket wsChat = null;
         //private CanStartHandler testMessage = null;
 
         static TowersWebSocket()
@@ -79,6 +79,18 @@ namespace Networking.Client
 
             wsGame.Send(json.TrimEnd(',', ' ') + "}");
         }
+        
+        public static void ChatSender(string target, string roomId, string senderName, string message)
+        {
+            string json = "{";
+            json += "\"_TARGET\":" + "\"" + target + "\",";
+            json += "\"_ROOMID\":" + "\"" + roomId + "\",";
+            json += "\"_SENDER\":" + "\"" + senderName + "\",";
+            json += "\"_MESSAGE\":" + "\"" + message + "\"";
+            
+
+            wsChat.Send(json.TrimEnd(',', ' ') + "}");
+        }
 
         public static string FromDictToString(Dictionary<string, string> dict)
         {
@@ -104,6 +116,7 @@ namespace Networking.Client
             if (wsGame != null && !wsGame.IsAlive)
             {
                 wsGame.Connect();
+                wsChat.Connect();
             }
 
             var setSocket = new Dictionary<string, string>();
