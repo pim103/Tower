@@ -43,6 +43,10 @@ namespace Menus
 
         [SerializeField] private InputField deckName;
         [SerializeField] private Transform deckPosition;
+        [SerializeField] private Transform ColPosition;
+        [SerializeField] private Transform ColPositionXOffset;
+        [SerializeField] private Transform ColPositionYOffset;
+        [SerializeField] private GameObject ColParent;
         private void Start()
         {
             saveDeckButton.onClick.AddListener(delegate {
@@ -67,6 +71,7 @@ namespace Menus
             else
             {
                 selectedDeck = null;
+                deckName.text = "";
             }
             
             if (cardInCollButtonsList != null)
@@ -94,7 +99,7 @@ namespace Menus
                     int currentCount = cardInDeckButtonsList.Count;
                     GameObject currentCardInDeckButton = Instantiate(cardInDeckButton, transform);
                     cardInDeckButtonsList.Add(currentCardInDeckButton);
-                    currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 15 * currentCount - 1, 0);
+                    currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * currentCount - 1, 0);
                     
                     CardInDeckButtonExposer currentButtonExposer = currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
 
@@ -140,13 +145,13 @@ namespace Menus
             {
                 int currentCount = cardInCollButtonsList.Count;
                 GameObject currentCardInCollButton = Instantiate(cardInCollButton, transform);
+                currentCardInCollButton.transform.SetParent(ColParent.transform);
                 cardInCollButtonsList.Add(currentCardInCollButton);
                 if (currentCount % 5 == 0)
                 {
                     ycount += 1;
                 }
-                Vector3 currentPosition = currentCardInCollButton.transform.position;
-                currentCardInCollButton.transform.position = new Vector3(currentPosition.x+100*(currentCount%5),currentPosition.y-(150*(ycount-1))+20,0);
+                currentCardInCollButton.transform.position = new Vector3(ColPosition.position.x+(ColPositionXOffset.position.x-ColPosition.position.x)*(currentCount%5),ColPosition.position.y+((ColPositionYOffset.position.y-ColPosition.position.y)*(ycount-1))+20,0);
                 
                 CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
 
@@ -192,7 +197,7 @@ namespace Menus
                 int posCount = 0;
                 foreach (GameObject button in cardInDeckButtonsList)
                 {
-                    button.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 15 * posCount - 1, button.transform.position.z);
+                    button.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * posCount - 1, button.transform.position.z);
                     posCount++;
                 }
             }
@@ -220,7 +225,7 @@ namespace Menus
                 int currentCount = cardInDeckButtonsList.Count;
                 GameObject currentCardInDeckButton = Instantiate(cardInDeckButton, transform);
                 cardInDeckButtonsList.Add(currentCardInDeckButton);
-                currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 15 * currentCount - 1, 0);
+                currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * currentCount - 1, 0);
                     
                 CardInDeckButtonExposer currentButtonExposer = currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
 
@@ -367,7 +372,6 @@ namespace Menus
             bool containsEquipments = false;
             totalDistinctCardNumber = 0;
             cardCounter = 0;
-            Debug.Log("allo");
             foreach (GameObject cardButton in cardInDeckButtonsList)
             {
                 CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();

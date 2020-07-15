@@ -37,6 +37,9 @@ namespace Menus
         private CreateDeckMenu createDeckMenu;
 
         [SerializeField] private Button deleteButton;
+        [SerializeField] private Transform BasePos;
+        [SerializeField] private Transform BasePosXOffset;
+        [SerializeField] private Transform BasePosYOffset;
         
         private List<GameObject> deckButtonList;
 
@@ -93,14 +96,13 @@ namespace Menus
                 int currentCount = deckButtonList.Count;
                 GameObject currentDeckButton = Instantiate(deckButton, transform);
                 deckButtonList.Add(currentDeckButton);
-                if (currentCount % 4 == 0)
+                if (currentCount % 3 == 0)
                 {
                     ycount += 1;
                 }
-
-                Vector3 currentPosition = currentDeckButton.transform.position;
-                currentDeckButton.transform.position = new Vector3(currentPosition.x + 150 * (currentCount % 4),
-                    currentPosition.y - (120 * (ycount - 1)), 0);
+                
+                currentDeckButton.transform.position = new Vector3(BasePos.position.x + (BasePosXOffset.position.x-BasePos.position.x) * (currentCount % 3),
+                    BasePos.position.y + ((BasePosYOffset.position.y-BasePos.position.y) * (ycount - 1)), 0);
                 DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
                 currentButtonExposer.deckName.text = deck.name;
                 currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
