@@ -111,6 +111,7 @@ namespace Networking.Client
             setSocket.Add("room", NetworkingController.CurrentRoomToken);
 
             TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setIdentity", FromDictToString(setSocket));
+            NetworkingController.ConnectionStart = true;
         }
 
         public static void CloseConnection()

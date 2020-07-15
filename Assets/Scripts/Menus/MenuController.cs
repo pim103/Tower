@@ -6,6 +6,7 @@ using Games.Transitions;
 using Networking;
 using Networking.Client;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
@@ -61,6 +62,8 @@ namespace Menus
                 TowersWebSocket.StartConnection();
                 ActivateMenu(Menu.MainMenu);
             }
+
+            StartCoroutine(CheckForDeconnection());
             
             cancelResearchMatchButton.onClick.AddListener(CancelResearchMatch);
         }
@@ -74,6 +77,57 @@ namespace Menus
 
             menus[index].SetActive(true);
             mi.InitMenu();
+        }
+        
+        public IEnumerator CheckForDeconnection()
+        {
+            while (NetworkingController.ConnectionStart == false)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+            TowersWebSocket.wsGame.OnMessage += (sender, args) =>
+            {
+                if (args.Data.Contains("callbackMessages"))
+                {
+                    fsSerializer serializer = new fsSerializer();
+                    fsData data;
+                    CallbackMessages callbackMessage = null; 
+                    try
+                    {
+                        data = fsJsonParser.Parse(args.Data);
+                        serializer.TryDeserialize(data, ref callbackMessage);
+                        callbackMessage = Tools.Clone(callbackMessage);
+                        
+                        if (callbackMessage.callbackMessages.message == "Identity Set")
+                        {
+                            NetworkingController.IsConnected = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Can't read callback : " + e.Message);
+                    }
+                }
+            };
+            while (NetworkingController.IsConnected == false)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            TowersWebSocket.wsGame.OnClose += (sender, args) =>
+            {
+                if (args.Code != 1000)
+                {
+                    Debug.Log("Deconnexion : " + args.Code);
+                    NetworkingController.AuthToken = "";
+                    NetworkingController.CurrentRoomToken = "";
+                    NetworkingController.AuthRole = "";
+                    NetworkingController.IsConnected = false;
+                    NetworkingController.ConnectionClosed = args.Code;
+                    NetworkingController.ConnectionStart = false;
+                    SceneManager.LoadScene("MenuScene");
+                }
+            };
         }
 
         private void DesactiveMenus()
