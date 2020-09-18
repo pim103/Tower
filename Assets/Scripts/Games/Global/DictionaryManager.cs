@@ -57,6 +57,7 @@ namespace Games.Global
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
+            
             if (www.responseCode == 200)
             {
                 DataObject.WeaponList = new WeaponList(weaponsGameObject, www.downloadHandler.text);

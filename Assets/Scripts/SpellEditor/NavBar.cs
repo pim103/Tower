@@ -29,6 +29,7 @@ namespace SpellEditor
         [SerializeField] private SpellComponentPanel spellComponentPanelScript;
         [SerializeField] private Button exportSpells;
         [SerializeField] private Button importSpell;
+        [SerializeField] private Button createRandomSpell;
         
         [SerializeField] private Button createSpellButton;
         [SerializeField] private Button createSpellComponentButton;
@@ -43,6 +44,8 @@ namespace SpellEditor
 
         [SerializeField] private Button TestSpellButton;
 
+        private RandomSpellGenerator randomSpellGenerator;
+
         private void Start()
         {
             //StartCoroutine(FixSpell());
@@ -54,11 +57,23 @@ namespace SpellEditor
             createSpellComponentButton.onClick.AddListener(delegate { SwitchPanel(Panel.SpellComponent); });
             createSpellEffectButton.onClick.AddListener(delegate { SwitchPanel(Panel.Effect); });
             createSpellWithConditionButton.onClick.AddListener(delegate { SwitchPanel(Panel.SpellWithCondition); });
+            createRandomSpell.onClick.AddListener(CreateAndAddRandomSpell);
             
             exportSpells.onClick.AddListener(ExportSpells);
             importSpell.onClick.AddListener(ChooseSpellToImport);
             
             TestSpellButton.onClick.AddListener(SwitchToTestSpellScene);
+            
+            randomSpellGenerator = new RandomSpellGenerator();
+        }
+
+        public void CreateAndAddRandomSpell()
+        {
+            Spell spell = randomSpellGenerator.RandomSpell();
+            ListCreatedElement.SpellComponents.Add(
+                spell.activeSpellComponent.nameSpellComponent,
+                spell.activeSpellComponent);
+            ListCreatedElement.Spell.Add(spell.nameSpell, spell);
         }
 
         public static void ModifyExistingComponent(object component, object newComponent)
