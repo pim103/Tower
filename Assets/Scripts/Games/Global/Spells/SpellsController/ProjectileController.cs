@@ -129,10 +129,16 @@ namespace Games.Global.Spells.SpellsController
         }
 
         public static void EntityTriggerEnter(Entity origin, Collider other, ProjectileSpell projectileSpell,
-            bool isSpell)
+            bool isSpell, bool isWall)
         {
             if (isSpell)
             {
+                return;
+            }
+
+            if (isWall)
+            {
+                EndArea(origin, projectileSpell);
                 return;
             }
 

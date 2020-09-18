@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Games.Global.Spells.SpellsController
 {
@@ -60,11 +59,14 @@ namespace Games.Global.Spells.SpellsController
             int playerLayer = LayerMask.NameToLayer("Player");
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int spellLayer = LayerMask.NameToLayer("Spell");
+            int wallLayer = LayerMask.NameToLayer("Wall");
 
+            Debug.Log("Wall : " + wallLayer);
+            Debug.Log("Here : " + other.gameObject.layer);
 //            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
 //            Debug.Log("Other layer : " + other.gameObject.layer);
             if (other.gameObject.layer != playerLayer && other.gameObject.layer != monsterLayer &&
-                other.gameObject.layer != spellLayer)
+                other.gameObject.layer != spellLayer && other.gameObject.layer != wallLayer)
             {
                 return;
             }
@@ -79,7 +81,7 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Buff:
                     break;
                 case TypeSpell.Projectile:
-                    ProjectileController.EntityTriggerEnter(originOfSpell, other, (ProjectileSpell) spellComponent, other.gameObject.layer == spellLayer);
+                    ProjectileController.EntityTriggerEnter(originOfSpell, other, (ProjectileSpell) spellComponent, other.gameObject.layer == spellLayer, other.gameObject.layer == wallLayer);
                     break;
                 case TypeSpell.Summon:
                     break;
