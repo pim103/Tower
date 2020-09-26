@@ -12,7 +12,7 @@ namespace Games.Global.Weapons
     {
         public Spear()
         {
-            animationToPlay = "SpearAttack";
+            animationToPlay = "doingSpearAttack";
             //pattern = //pattern[2];
             //pattern[0] = //pattern(PA_INST.FRONT, 1, 0.2f, 0.01f);
             //pattern[1] = //pattern(PA_INST.BACK, 1, 0.2f, 0.01f);

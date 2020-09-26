@@ -12,7 +12,7 @@ namespace Games.Global.Weapons
     {
         public Bow()
         {
-           animationToPlay = "BowAttack";
+           animationToPlay = "doingBowAttack";
            spellOfBasicAttack = "BowBasicAttack";
 
            warriorSpells = new List<string>();

@@ -122,6 +122,11 @@ namespace Games.Global
             
         }
 
+        public virtual void CancelBasicAttack()
+        {
+            
+        }
+
         public virtual void BasicDefense()
         {
             
@@ -180,7 +185,6 @@ namespace Games.Global
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
 
             Entity originDamage = abilityParameters.origin;
-            Debug.Log(modelName + " " + damageReceived);
 
             bool isMagic = damageType == DamageType.Magical;
             bool isPhysic = damageType == DamageType.Physical;

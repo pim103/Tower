@@ -10,7 +10,7 @@ namespace Games.Global.Weapons
     {
         public Dagger()
         {
-            animationToPlay = "DaggerAttack";
+            animationToPlay = "doingDaggerAttack";
             spellOfBasicAttack = "DaggerBasicAttack";
             
             warriorSpells = new List<string>();

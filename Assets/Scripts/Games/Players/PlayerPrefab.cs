@@ -58,6 +58,8 @@ namespace Games.Players
 
         public bool wasConfusing = false;
 
+        private bool doingAttack = false;
+
         public void Reset()
         {
             wantToGoBack = false;
@@ -68,7 +70,6 @@ namespace Games.Players
 
             Player player = entity as Player;
             player.ResetStats();
-            
         }
         
         private void Start()
@@ -279,16 +280,23 @@ namespace Games.Players
                 wantToGoLeft = false;
                 wantToGoRight = false;
             }
-            
+
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
 
             if (!intentBlocked)
             {
                 if(Input.GetMouseButton(0) && entity.canBasicAttack)
                 {
+                    doingAttack = true;
                     entity.BasicAttack();
+                } 
+                else if (doingAttack)
+                {
+                    doingAttack = false;
+                    CancelBasicAttack();
                 }
-                else if (Input.GetMouseButtonDown(1))
+
+                if (Input.GetMouseButtonDown(1))
                 {
                     entity.BasicDefense();
                     pressDefenseButton = true;

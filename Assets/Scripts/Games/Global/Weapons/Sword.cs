@@ -16,7 +16,7 @@ namespace Games.Global.Weapons
     {
         public Sword()
         {
-            animationToPlay = "ShortSwordAttack";
+            animationToPlay = "doingShortSwordAttack";
             spellOfBasicAttack = "ShortSwordBasicAttack";
             
             warriorSpells = new List<string>();

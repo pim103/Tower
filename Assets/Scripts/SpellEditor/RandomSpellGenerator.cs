@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace SpellEditor
 {
     public class RandomSpellGenerator
     {
+        public int depth = 2;
+        
         public Spell RandomSpell()
         {
             Spell spell = new Spell
@@ -53,6 +56,20 @@ namespace SpellEditor
 
         public ProjectileSpell InitRandomProjectileSpell()
         {
+            SpellComponent spellCompo = null;
+            if (depth > 0)
+            {
+                depth--;
+                spellCompo = GenerateRandomSpellComponent();
+            }
+            
+            List<Effect> effects = new List<Effect>();
+
+            if (Random.Range(0, 2) == 1)
+            {
+                effects.Add(GetRandomEffect());
+            }
+            
             return new ProjectileSpell
             {
                 idPoolObject = 0,
@@ -66,13 +83,28 @@ namespace SpellEditor
                 damageMultiplierOnDistance = Random.Range(1, 2),
                 nameSpellComponent = "Projectile-" + System.DateTime.Now.Millisecond,
                 needPositionToMidToEntity = true,
-                linkedSpellOnDisable = GenerateRandomSpellComponent(),
+                linkedSpellOnDisable = spellCompo,
+                effectsOnHit = effects,
             };
         }
         
         public AreaOfEffectSpell InitRandomAreaOfEffectSpell()
         {
             int randomScale = Random.Range(1, 20);
+            
+            SpellComponent spellCompo = null;
+            if (depth > 0)
+            {
+                depth--;
+                spellCompo = GenerateRandomSpellComponent();
+            }
+            
+            List<Effect> effects = new List<Effect>();
+
+            if (Random.Range(0, 2) == 1)
+            {
+                effects.Add(GetRandomEffect());
+            }
             
             return new AreaOfEffectSpell
             {
@@ -89,12 +121,20 @@ namespace SpellEditor
                 OriginalDirection = OriginalDirection.None,
                 OriginalPosition = (OriginalPosition) Random.Range(0, 4),
                 nameSpellComponent = "AreaOfEffect-" + System.DateTime.Now.Millisecond,
-                linkedSpellOnEnd = GenerateRandomSpellComponent(),
+                linkedSpellOnEnd = spellCompo,
+                effectsOnEnemiesOnInterval = effects,
             };
         }
         
         public WaveSpell InitRandomWaveSpell()
         {
+            List<Effect> effects = new List<Effect>();
+
+            if (Random.Range(0, 2) == 1)
+            {
+                effects.Add(GetRandomEffect());
+            }
+            
             return new WaveSpell
             {
                 damages = Random.Range(1, 50),
@@ -107,6 +147,26 @@ namespace SpellEditor
                 OriginalDirection = OriginalDirection.Forward,
                 OriginalPosition = (OriginalPosition) Random.Range(0, 4),
                 nameSpellComponent = "Wave-" + System.DateTime.Now.Millisecond,
+                effectsOnHit = effects,
+            };
+        }
+
+        public Effect GetRandomEffect()
+        {
+            List<TypeEffect> possibleEffecType = new List<TypeEffect>
+            {
+                TypeEffect.Burn,
+                TypeEffect.Freezing,
+                TypeEffect.Poison,
+            };
+
+            TypeEffect typeEffect = possibleEffecType[Random.Range(0, possibleEffecType.Count)];
+
+            return new Effect
+            {
+                level = Random.Range(1, 5),
+                durationInSeconds = Random.Range(1, 5),
+                typeEffect = typeEffect,
             };
         }
     }

@@ -61,8 +61,6 @@ namespace Games.Global.Spells.SpellsController
             int spellLayer = LayerMask.NameToLayer("Spell");
             int wallLayer = LayerMask.NameToLayer("Wall");
 
-            Debug.Log("Wall : " + wallLayer);
-            Debug.Log("Here : " + other.gameObject.layer);
 //            Debug.Log("List layer : player => " + playerLayer + " monster => " + monsterLayer + " spell => " + spellLayer);
 //            Debug.Log("Other layer : " + other.gameObject.layer);
             if (other.gameObject.layer != playerLayer && other.gameObject.layer != monsterLayer &&

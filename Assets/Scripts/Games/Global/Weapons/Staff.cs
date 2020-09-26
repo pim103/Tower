@@ -9,7 +9,7 @@ namespace Games.Global.Weapons
     {
         public Staff()
         {
-           animationToPlay = "ShortSwordAttack";
+           animationToPlay = "doingShortSwordAttack";
            spellOfBasicAttack = "StaffBasicAttack";
             
            warriorSpells = new List<string>();

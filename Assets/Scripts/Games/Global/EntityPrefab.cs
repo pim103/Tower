@@ -120,20 +120,22 @@ namespace Games.Global
         public void PlayBasicAttack()
         {
             BuffController.EntityAttack(entity, positionPointed);
-            bool canAttack = false;
-
             if (entity.basicAttack != null)
             {
                 if (entity.weapons.Count > 0)
                 {
                     WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
-                    canAttack = weaponPrefab.BasicAttack(entity.basicAttack);    
+                    weaponPrefab.BasicAttack();    
                 }
+            }
+        }
 
-                if (canAttack || entity.weapons.Count == 0)
-                {
-                    SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
-                }
+        public void CancelBasicAttack()
+        {
+            if (entity.weapons.Count > 0)
+            {
+                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+                weaponPrefab.DeactivateBoolAttack();    
             }
         }
 

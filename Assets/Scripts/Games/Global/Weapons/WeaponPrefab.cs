@@ -19,49 +19,50 @@ namespace Games.Global.Weapons
         private Weapon weapon;
         private Entity wielder;
 
-        private bool isAttacking;
+        public bool isAttacking;
 
-        [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private Transform positionInHand;
 
         public IEnumerator PlayAnimationAttack(Spell basicAttack)
         {
-            boxCollider.enabled = true;
-
             Animator animator = wielder.entityPrefab.animator;
             float initialSpeed = animator.speed;
 
-            animator.speed *= (wielder.attSpeed + weapon.attSpeed);
+            //animator.speed *= (wielder.attSpeed + weapon.attSpeed);
             animator.Play(weapon.animationToPlay);
 
-            weapon.FixAngleAttack(true, wielder);
+            //weapon.FixAngleAttack(true, wielder);
 
             do
             {
                 yield return new WaitForSeconds(0.1f);
-            } while (animator.GetCurrentAnimatorStateInfo(0).IsName(weapon.animationToPlay));
+            } while (animator.GetCurrentAnimatorStateInfo(0).IsName("ok"));
 
-            weapon.FixAngleAttack(false, wielder);
+            animator.SetBool(weapon.animationToPlay, false);
+            //weapon.FixAngleAttack(false, wielder);
 
             wielder.entityPrefab.characterMesh.transform.localPosition = Vector3.zero;
             wielder.entityPrefab.characterMesh.transform.localEulerAngles = Vector3.zero;
 
             animator.speed = initialSpeed;
             isAttacking = false;
-            boxCollider.enabled = false;
         }
 
-        public bool BasicAttack(Spell basicAttack)
+        public void BasicAttack()
         {
-            bool attacking = isAttacking;
-            
             if (!isAttacking)
             {
+                Animator animator = wielder.entityPrefab.animator;
+                animator.SetBool(weapon.animationToPlay, true);
                 isAttacking = true;
-                StartCoroutine(PlayAnimationAttack(basicAttack));
             }
+        }
 
-            return !attacking;
+        public void DeactivateBoolAttack()
+        {
+            Animator animator = wielder.entityPrefab.animator;
+            animator.SetBool(weapon.animationToPlay, false);
+            isAttacking = false;
         }
 
         public void SetWeapon(Weapon weapon)
