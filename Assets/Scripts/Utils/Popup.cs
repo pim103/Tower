@@ -1,14 +1,13 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 //Author : Attika
 
 namespace Utils
 {
-    //TODO : une fois fini de dev le systeme de popup, supprimer les commentaires dans PopupOptions (ou les réduire au strict minimum)
+    //TODO : une fois fini de dev le système de popup, supprimer les commentaires dans PopupOptions (ou les réduire au strict minimum)
     [System.Serializable]
     public class PopupOptions
     {
@@ -25,30 +24,42 @@ namespace Utils
         private static Popup _this;
 
         [Header("General Parameters")]
-        [SerializeField] private GameObject background;
+        [SerializeField] private GameObject content;
         [SerializeField] private TextMeshProUGUI title;
         [SerializeField] private Button closeButton;
         [SerializeField] private TextMeshProUGUI description;
         private bool callbackAdded;
-        [SerializeField] private PopupOptions options;
-        
-        [Header("Contextual Parameters")]
+        private PopupOptions options;
+
+        [Header("Contextual Parameters")] public bool isContextualDialog;
+        [DrawIf("isContextualDialog", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private GameObject contextualUiBlock;
-        
-        [Header("Question Parameters")]
+
+        [Header("Question Parameters")] public bool isAQuestion;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private GameObject question;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private TextMeshProUGUI titleQuestion;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private TextMeshProUGUI validateButtonText;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private Button validateButton;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         private bool validateCallbackAdded;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private TextMeshProUGUI cancelButtonText;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private Button cancelButton;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         private bool cancelCallbackAdded;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private TextMeshProUGUI thirdButtonText;
+        [DrawIf("isAQuestion", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private Button thirdButton;
         private bool thirdCallbackAdded;
 
-        [Header("Animation parameters")]
+        [Header("Animation parameters")] public bool isAnimated;
+        [DrawIf("isAnimated", true, ComparisonType.Equals, DisablingType.DontDraw)]
         [SerializeField] private Animator animator;
         
         //Attribution (instance of this popup) and initialization (add Close function to closeButton and set background to false)  
@@ -59,7 +70,9 @@ namespace Utils
 
             _this.callbackAdded = false;
             _this.closeButton.onClick.AddListener(Close);
-            background.SetActive(false);
+            content.SetActive(false);
+
+            InitializeOptionsAttributes();
         }
 
         #region customize attributes methods
@@ -158,13 +171,13 @@ namespace Utils
         //Open popup
         public static void Open()
         {
-            _this.background.SetActive(true);
+            _this.content.SetActive(true);
         }
 
         //Close popup, and if there is other(s) callback(s), clear them
         private static void Close()
         {
-            _this.background.SetActive(false);
+            _this.content.SetActive(false);
             if (_this.callbackAdded)
             {
                 ReinitializeCallbacks();
@@ -177,6 +190,34 @@ namespace Utils
             _this.closeButton.onClick.RemoveAllListeners();
             _this.closeButton.onClick.AddListener(Close);
             _this.callbackAdded = false;
+        }
+        
+        #endregion
+        
+        #region options methods
+
+        private void InitializeOptionsAttributes()
+        {
+            if (_this.options.isContextualDialog)
+            {
+                
+            }
+            if (_this.options.isDynamicPosition)
+            {
+                
+            }
+            if (_this.options.isDynamicSize)
+            {
+                
+            }
+            if (_this.options.isAQuestion)
+            {
+                //Est-ce qu'on force le contextual dialog en cas de question ? 
+            }
+            if (_this.options.isAnimated)
+            {
+                
+            }
         }
         
         #endregion
