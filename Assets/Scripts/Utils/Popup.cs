@@ -111,6 +111,12 @@ namespace Utils
         }
 
         /* Question customization */
+        //Set the question customization status
+        public void SetQuestionStatus(bool status)
+        {
+            isAQuestion = status;
+        }
+        
         //Customize question title
         public void SetTitleQuestion(string value)
         {
@@ -193,6 +199,24 @@ namespace Utils
         }
         
         /* Dynamic customization */
+        //Set the dynamic status
+        public void SetDynamicStatus(bool status)
+        {
+            isDynamic = status;
+        }
+
+        //Set the dynamic size status
+        public void SetDynamicSizeStatus(bool status)
+        {
+            isSizeDynamic = status;
+        }
+        
+        //Set the dynamic position status
+        public void SetDynamicPositionStatus(bool status)
+        {
+            isPositionDynamic = status;
+        }
+        
         //Set the other object the popup should be dynamic to
         //TODO : should there be several objects the popup can be dynamically positioned next to ?
         public void AddDynamicObject(GameObject other)
