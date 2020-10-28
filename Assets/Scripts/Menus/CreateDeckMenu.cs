@@ -115,7 +115,7 @@ namespace Menus
                     } else if (card.Weapon != null)
                     {
                         currentButtonExposer.card = card;
-                        currentButtonExposer.name.text = card.Weapon.equipementName;
+                        currentButtonExposer.name.text = card.Weapon.equipmentName;
                         currentButtonExposer.copies.text = selectedDeck.GetCardNumber(card.id).ToString();
                         currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
                         {
@@ -170,7 +170,7 @@ namespace Menus
                 } else if (card.Weapon != null)
                 {
                     currentButtonExposer.card = card;
-                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.name.text = card.Weapon.equipmentName;
                     currentButtonExposer.copies.text = DataObject.CardList.GetNbSpecificCardInCollection(card.id).ToString();
                     currentButtonExposer.effect.text = "effet";
                     currentButtonExposer.cost.text = card.Weapon.cost.ToString();
@@ -241,7 +241,7 @@ namespace Menus
                 } else if (card.Weapon != null)
                 {
                     currentButtonExposer.card = card;
-                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.name.text = card.Weapon.equipmentName;
                     currentButtonExposer.copies.text = "1";
                     currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
                     {

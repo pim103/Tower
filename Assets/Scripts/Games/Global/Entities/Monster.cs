@@ -24,6 +24,8 @@ namespace Games.Global.Entities
 
         public List<SpellList> spellsName { get; set; }
 
+        public Texture2D sprite { get; set; }
+
         public override void BasicAttack()
         {
             if (monsterPrefab.target != null)
@@ -62,7 +64,7 @@ namespace Games.Global.Entities
         {
             if (weapons.Count < nbWeapon)
             {
-                Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+                Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
 
                 if (constraint != weapon.type)
                 {
@@ -87,7 +89,7 @@ namespace Games.Global.Entities
                 return;
             }
             
-            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(weaponOriginalId);
+            Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(weaponOriginalId);
 
             monsterPrefab.AddItemInHand(weapon);
 

@@ -46,58 +46,6 @@ namespace Utils
 
         public string nbMonster { get; set; }
 
-        public void InsertValue(string key, string value)
-        {
-            switch (key)
-            {
-                case "idMonster":
-                    id = value;
-                    break;
-                case "name":
-                    name = value;
-                    break;
-                case "att":
-                    att = value;
-                    break;
-                case "def":
-                    def = value;
-                    break;
-                case "magicalDef":
-                    magicalDef = value;
-                    break;
-                case "physicalDef":
-                    physicalDef = value;
-                    break;
-                case "hp":
-                    hp = value;
-                    break;
-                case "att_speed":
-                    attSpeed = value;
-                    break;
-                case "speed":
-                    speed = value;
-                    break;
-                case "nbWeapon":
-                    nbWeapon = value;
-                    break;
-                case "weapon":
-                    weaponId = value;
-                    break;
-                case "constraint":
-                    typeWeapon = value;
-                    break;
-                case "on_damage_dealt":
-                    onDamageDealt = value;
-                    break;
-                case "on_damage_receive":
-                    onDamageReceive = value;
-                    break;
-                case "model":
-                    model = value;
-                    break;
-            }
-        }
-        
         public void PrintAttribute()
         {
             Debug.Log("Object id : " + id + " name : " + name);
@@ -153,7 +101,8 @@ namespace Utils
         public string groupName { get; set; }
 
         public List<MobJsonObject> monsterList { get; set; }
-        public string number { get; set; }
+
+        public string spritePath { get; set; }
 
         public override void InsertValue(string key, string value)
         {
@@ -168,9 +117,6 @@ namespace Utils
                 case "cost":
                     cost = value;
                     break;
-                case "number":
-                    number = value;
-                    break;
                 case "monster":
                     monsterList = new List<MobJsonObject>();
                     break;
@@ -179,6 +125,9 @@ namespace Utils
                     break;
                 case "groupName":
                     groupName = value;
+                    break;
+                case "spritePath":
+                    spritePath = value;
                     break;
                 default:
                     //mob.InsertValue(key, value);
@@ -216,12 +165,20 @@ namespace Utils
                 family = (Family) Int32.Parse(family),
                 radius = Int32.Parse(radius),
                 name = groupName,
-                monsterInGroups = new Dictionary<int, int>()
+                sprite = Resources.Load<Texture2D>(spritePath),
+                monstersInGroupList = new List<MonstersInGroup>()
             };
 
             foreach (MobJsonObject mob in monsterList)
             {
-                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));
+                MonstersInGroup monstersInGroup = new MonstersInGroup
+                {
+                    nbMonster = Int32.Parse(mob.nbMonster)
+                };
+                monstersInGroup.SetMonster(mob.ConvertToMonster(groupsMonster.family));
+                
+                groupsMonster.monstersInGroupList.Add(monstersInGroup);
+//                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));
             }
 
             return groupsMonster;

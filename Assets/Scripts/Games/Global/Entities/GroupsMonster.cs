@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Weapons;
+using Unity.Collections;
 using UnityEngine;
 using Utils;
 
@@ -21,6 +23,34 @@ namespace Games.Global.Entities
         Elf
     }
 
+    public class MonstersInGroup
+    {
+        private Monster monster { get; set; }
+        public int nbMonster { get; set; }
+
+        public void SetMonster(Monster nMonster)
+        {
+            monster = nMonster;
+        }
+
+        public Monster GetMonster()
+        {
+            return Tools.Clone(monster);
+        }
+
+        public int GetMonsterId()
+        {
+            int id = -1;
+
+            if (monster != null)
+            {
+                id = monster.id;
+            }
+
+            return id;
+        }
+    }
+
     public class GroupsMonster
     {
         public const int DEFAULT_RADIUS = 1;
@@ -31,10 +61,8 @@ namespace Games.Global.Entities
         public string name { get; set; }
         public int radius { get; set; } = DEFAULT_RADIUS;
 
-        // first int : idMonster - Second int : numberMonster
-        public Dictionary<int, int> monsterInGroups { get; set; }
-
-        private List<Monster> monsters { get; set; }
+        public List<MonstersInGroup> monstersInGroupList { get; set; } = new List<MonstersInGroup>();
+        public Texture2D sprite { get; set; }
 
         public void InitSpecificEquipment(Monster monster, List<int> equipment)
         {
@@ -71,5 +99,26 @@ namespace Games.Global.Entities
                 monster.InitOriginalWeapon();
             }
         }
+
+//        public bool IsMonsterListDifferentToOtherList(List<MonstersInGroup> comparedMonstersInGroups)
+//        {
+//            if (monstersInGroupList.Count != comparedMonstersInGroups.Count)
+//            {
+//                return true;
+//            }
+//
+//            bool doesntFindMonster = false;
+//            foreach (MonstersInGroup monstersInGroup in monstersInGroupList)
+//            {
+//                doesntFindMonster = !comparedMonstersInGroups.Exists(monster => monster.GetMonsterId() == monstersInGroup.GetMonsterId());
+//                
+//                if (doesntFindMonster)
+//                {
+//                    break;
+//                }
+//            }
+//
+//            return doesntFindMonster;
+//        }
     }
 }

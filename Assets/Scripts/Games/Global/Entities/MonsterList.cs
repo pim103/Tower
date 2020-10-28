@@ -61,8 +61,16 @@ namespace Games.Global.Entities
                     foreach (MobJsonObject mob in groupsJson.monsterList)
                     {
                         Monster monster = mob.ConvertToMonster((Family)Int32.Parse(groupsJson.family));
-                        monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
-                        monsterList.Add(monster);
+
+                        if (monsterGameObjects != null)
+                        {
+                            monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
+                        }
+
+                        if (!monsterList.Exists(monsterAdded => monsterAdded.id == monster.id))
+                        {
+                            monsterList.Add(monster);
+                        }
                     }
                 }
 

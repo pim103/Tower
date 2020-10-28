@@ -68,7 +68,7 @@ namespace DeckBuilding
             else if(card.Weapon != null)
             {
                 equipement = card.Weapon;
-                nameText.text = equipement.equipementName;
+                nameText.text = equipement.equipmentName;
                 costText.text = equipement.cost+" RP";
                 effectText.text = "effet";
                 equipementModel = Instantiate(equipement.model, groupParent.transform);
@@ -83,11 +83,11 @@ namespace DeckBuilding
             Vector3 origPos = position;
 
             groupId = groups.id;
-            foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
+            foreach (MonstersInGroup monstersInGroup in groups.monstersInGroupList)
             {
-                for (int i = 0; i < mobs.Value; i++)
+                for (int i = 0; i < monstersInGroup.nbMonster; i++)
                 {
-                    monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
+                    monster = monstersInGroup.GetMonster();
 
                     GameObject monsterGameObject = Instantiate(monster.model, pGroupParent, true);
                     Rigidbody monsterRigidBody = monsterGameObject.GetComponent<Rigidbody>();

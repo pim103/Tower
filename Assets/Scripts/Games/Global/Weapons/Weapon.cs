@@ -12,6 +12,12 @@ using Utils;
 
 namespace Games.Global.Weapons
 {
+    public enum TypeWeapon
+    {
+        Distance,
+        Cac
+    }
+    
     public enum CategoryWeapon
     {
         SHORT_SWORD,
@@ -30,12 +36,6 @@ namespace Games.Global.Weapons
         CROSSBOW,
         SLING,
         HANDGUN
-    };
-
-    public enum TypeWeapon
-    {
-        Distance,
-        Cac
     }
 
     public class Weapon : Equipement
@@ -43,7 +43,6 @@ namespace Games.Global.Weapons
         public WeaponPrefab weaponPrefab;
         
         public int id { get; set; }
-        public string equipementName { get; set; }
         public CategoryWeapon category { get; set; }
         public TypeWeapon type { get; set; }
         public int damage { get; set; }
@@ -133,7 +132,7 @@ namespace Games.Global.Weapons
 
         public void PrintAttributes()
         {
-            Debug.Log("Weapon " + modelName + " - " + equipementName + " type : " + type + " Category : " + category + " cost " + cost);
+            Debug.Log("Weapon " + modelName + " - " + equipmentName + " type : " + type + " Category : " + category + " cost " + cost);
             Debug.Log(" att : " + damage + " attSpd : " + attSpeed + " animation to play : " + animationToPlay);
             Debug.Log(" onDamageReceive : " + OnDamageReceive + " OnDamageDeal : " + OnDamageDealt);
         }

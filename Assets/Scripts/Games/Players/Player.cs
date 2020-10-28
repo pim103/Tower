@@ -205,7 +205,7 @@ namespace Games.Players
 
         public void InitWeapon(int idWeapon)
         {
-            Weapon weapon = DataObject.WeaponList.GetWeaponWithId(idWeapon);
+            Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
 
             playerPrefab.AddItemInHand(weapon);
             weapon.InitPlayerSkill(mainClass);

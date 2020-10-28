@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Abilities;
+using Games.Global.Armors;
 using Games.Global.Weapons;
+using UnityEditor;
 using UnityEngine;
 
 namespace Utils
 {
     [Serializable]
-    public class WeaponJsonList
+    public class EquipmentJsonList
     {
-        public List<WeaponJsonObject> weapons;
+        public List<EquipmentJsonObject> equipment;
     }
     
     [Serializable]
-    public class WeaponJsonObject: ObjectParsed
+    public class EquipmentJsonObject: ObjectParsed
     {
         public string id { get; set; }
         public string name { get; set; }
@@ -32,6 +34,9 @@ namespace Utils
         public string onDamageDealt { get; set; }
         public string onDamageReceive { get; set; }
         public string model { get; set; }
+        
+        public string equipmentType { get; set; }
+        public string spritePath { get; set; }
 
         public void PrintAttribute()
         {
@@ -80,6 +85,12 @@ namespace Utils
                     break;
                 case "model":
                     model = value;
+                    break;
+                case "equipmentType":
+                    equipmentType = value;
+                    break;
+                case "spritePath":
+                    spritePath = value;
                     break;
             }
         }
@@ -152,15 +163,36 @@ namespace Utils
             weapon.type = (TypeWeapon)Int32.Parse(type);
             weapon.rarity = (Rarity)Int32.Parse(rarity);
             weapon.lootRate = Int32.Parse(lootRate);
-            weapon.equipementName = name;
+            weapon.equipmentName = name;
             weapon.cost = Int32.Parse(cost);
             weapon.attSpeed = Int32.Parse(attSpeed);
             weapon.modelName = model;
+            weapon.sprite = Resources.Load<Texture2D>(spritePath);
+            weapon.equipmentType = (EquipmentType)Int32.Parse(equipmentType);
 
             weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.WEAPON);
             weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.WEAPON);
 
             return weapon;
+        }
+
+        public Armor ConvertToArmor()
+        {
+            Armor armor = new Armor
+            {
+                id = Int32.Parse(id),
+                rarity = (Rarity) Int32.Parse(rarity),
+                lootRate = Int32.Parse(lootRate),
+                equipmentName = name,
+                cost = Int32.Parse(cost),
+                modelName = model,
+                sprite = Resources.Load<Texture2D>(spritePath),
+                equipmentType = (EquipmentType)Int32.Parse(equipmentType),
+                armorCategory = (CategoryArmor)Int32.Parse(category),
+                def = Int32.Parse(damage)
+            };
+
+            return armor;
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Menus
                     });
                 } else if (card.Weapon != null)
                 {
-                    currentButtonExposer.name.text = card.Weapon.equipementName;
+                    currentButtonExposer.name.text = card.Weapon.equipmentName;
                     currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
                     currentButtonExposer.effect.text = "effet";
                     currentButtonExposer.cost.text = card.Weapon.cost.ToString();

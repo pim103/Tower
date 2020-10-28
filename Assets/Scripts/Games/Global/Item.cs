@@ -1,4 +1,6 @@
-﻿namespace Games.Global
+﻿using UnityEngine;
+
+namespace Games.Global
 {
     public enum Rarity
     {
@@ -25,5 +27,9 @@
 
         // In percent
         public int lootRate { get; set; } = 100;
+        public Texture2D sprite { get; set; }
+        
+        // Used by editor
+        public string tempPathSprite;
     }
 }

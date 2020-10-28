@@ -24,7 +24,7 @@ public class CardJsonObject
         {
             id = Int32.Parse(id),
             GroupsMonster = monsterGroupId != null ? DataObject.MonsterList.GetGroupsMonsterById(Int32.Parse(monsterGroupId)) : null,
-            Weapon = weaponId != null ? DataObject.WeaponList.GetWeaponWithId(Int32.Parse(weaponId)) : null
+            Weapon = weaponId != null ? DataObject.EquipmentList.GetWeaponWithId(Int32.Parse(weaponId)) : null
         };
 
         return card;

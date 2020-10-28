@@ -80,6 +80,7 @@ namespace Menus
                 NetworkingController.ConnectionClosed = -1;
             }
             passwordField.inputType = InputField.InputType.Password;
+
             createButton.onClick.AddListener(delegate {
                 mc.ActivateMenu(MenuController.Menu.Registration);
             });

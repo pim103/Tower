@@ -61,11 +61,21 @@ namespace Games.Global.Abilities
             switch (dico)
             {
                 case AbilityDico.MOB:
-                    return methodMobList[methodName];
+                    if (methodMobList.ContainsKey(methodName))
+                    {
+                        return methodMobList[methodName];
+                    }
+
+                    break;
                 case AbilityDico.PLAYER:
                     break;
                 case AbilityDico.WEAPON:
-                    return methodWeaponList[methodName];
+                    if (methodMobList.ContainsKey(methodName))
+                    {
+                        return methodWeaponList[methodName];
+                    }
+
+                    break;
             }
 
             return null;

@@ -2,17 +2,17 @@
 
 namespace Games.Global.Armors
 {
-    public enum TypeArmor
+    public enum CategoryArmor
     {
         HELMET,
         CHESTPLATE,
         LEGGINGS
     }
-
-    public abstract class Armor : Equipement
+    
+    public class Armor : Equipement
     {
         public int def;
-        public TypeArmor typeArmor;
+        public CategoryArmor armorCategory;
 
         public List<TypeEffect> effects;
     } 

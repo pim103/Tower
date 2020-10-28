@@ -1,4 +1,5 @@
-﻿using Games.Global.Weapons;
+﻿using Games.Global;
+using Games.Global.Weapons;
 using Games.Players;
 using UnityEngine;
 

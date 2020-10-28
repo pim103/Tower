@@ -130,12 +130,12 @@ namespace TestC
 
             Vector3 origPos = position;
 
-            foreach (KeyValuePair<int, int> mobs in groups.monsterInGroups)
+            foreach (MonstersInGroup monstersInGroup in groups.monstersInGroupList)
             {
-                for (int i = 0; i < mobs.Value; i++)
+                for (int i = 0; i < monstersInGroup.nbMonster; i++)
                 {
-                    monster = DataObject.MonsterList.GetMonsterById(mobs.Key);
-
+                    monster = monstersInGroup.GetMonster();
+                    
                     GameObject monsterGameObject = Instantiate(monster.model);
                     monsterGameObject.transform.position = position;
 

@@ -33,9 +33,8 @@ namespace Games.Global
         {
             if (!wasInit)
             {
-                AbilityManager.InitAbilities();
-                GroupsPosition.InitPosition();
-
+                InitAbility();
+                
                 DataObject.CardList = new CardList();
 
                 StartCoroutine(GetWeapons());
@@ -51,6 +50,12 @@ namespace Games.Global
             }
         }
 
+        public static void InitAbility()
+        {
+            AbilityManager.InitAbilities();
+            GroupsPosition.InitPosition();
+        }
+
         public IEnumerator GetWeapons()
         {
             var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/weapons/list.php");
@@ -60,7 +65,7 @@ namespace Games.Global
             
             if (www.responseCode == 200)
             {
-                DataObject.WeaponList = new WeaponList(weaponsGameObject, www.downloadHandler.text);
+                DataObject.EquipmentList = new EquipmentList(weaponsGameObject, www.downloadHandler.text);
             }
             else
             {
@@ -175,7 +180,7 @@ namespace Games.Global
         public static int nbEntityInScene;
         
         public static MonsterList MonsterList;
-        public static WeaponList WeaponList;
+        public static EquipmentList EquipmentList;
         public static CardList CardList;
         public static List<Material> MaterialsList;
         
