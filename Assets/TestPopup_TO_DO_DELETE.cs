@@ -13,7 +13,7 @@ public class TestPopup_TO_DO_DELETE : MonoBehaviour
     {
         popup.AddListenerToCloseButton(HelloWorld);
     }
-    
+
     public void HelloWorld()
     {
         helloWorld.gameObject.SetActive(true);

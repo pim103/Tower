@@ -63,38 +63,38 @@ public class NumericType : IEquatable<NumericType>
 
         switch (Type.GetTypeCode(left.type))
         {
-            case TypeCode.Byte:
-                return (byte)leftValue < (byte)rightValue;
+        case TypeCode.Byte:
+            return (byte)leftValue < (byte)rightValue;
 
-            case TypeCode.SByte:
-                return (sbyte)leftValue < (sbyte)rightValue;
+        case TypeCode.SByte:
+            return (sbyte)leftValue < (sbyte)rightValue;
 
-            case TypeCode.UInt16:
-                return (ushort)leftValue < (ushort)rightValue;
+        case TypeCode.UInt16:
+            return (ushort)leftValue < (ushort)rightValue;
 
-            case TypeCode.UInt32:
-                return (uint)leftValue < (uint)rightValue;
+        case TypeCode.UInt32:
+            return (uint)leftValue < (uint)rightValue;
 
-            case TypeCode.UInt64:
-                return (ulong)leftValue < (ulong)rightValue;
+        case TypeCode.UInt64:
+            return (ulong)leftValue < (ulong)rightValue;
 
-            case TypeCode.Int16:
-                return (short)leftValue < (short)rightValue;
+        case TypeCode.Int16:
+            return (short)leftValue < (short)rightValue;
 
-            case TypeCode.Int32:
-                return (int)leftValue < (int)rightValue;
+        case TypeCode.Int32:
+            return (int)leftValue < (int)rightValue;
 
-            case TypeCode.Int64:
-                return (long)leftValue < (long)rightValue;
+        case TypeCode.Int64:
+            return (long)leftValue < (long)rightValue;
 
-            case TypeCode.Decimal:
-                return (decimal)leftValue < (decimal)rightValue;
+        case TypeCode.Decimal:
+            return (decimal)leftValue < (decimal)rightValue;
 
-            case TypeCode.Double:
-                return (double)leftValue < (double)rightValue;
+        case TypeCode.Double:
+            return (double)leftValue < (double)rightValue;
 
-            case TypeCode.Single:
-                return (float)leftValue < (float)rightValue;
+        case TypeCode.Single:
+            return (float)leftValue < (float)rightValue;
         }
         throw new NumericTypeExpectedException("Please compare valid numeric types.");
     }
@@ -109,38 +109,38 @@ public class NumericType : IEquatable<NumericType>
 
         switch (Type.GetTypeCode(left.type))
         {
-            case TypeCode.Byte:
-                return (byte)leftValue > (byte)rightValue;
+        case TypeCode.Byte:
+            return (byte)leftValue > (byte)rightValue;
 
-            case TypeCode.SByte:
-                return (sbyte)leftValue > (sbyte)rightValue;
+        case TypeCode.SByte:
+            return (sbyte)leftValue > (sbyte)rightValue;
 
-            case TypeCode.UInt16:
-                return (ushort)leftValue > (ushort)rightValue;
+        case TypeCode.UInt16:
+            return (ushort)leftValue > (ushort)rightValue;
 
-            case TypeCode.UInt32:
-                return (uint)leftValue > (uint)rightValue;
+        case TypeCode.UInt32:
+            return (uint)leftValue > (uint)rightValue;
 
-            case TypeCode.UInt64:
-                return (ulong)leftValue > (ulong)rightValue;
+        case TypeCode.UInt64:
+            return (ulong)leftValue > (ulong)rightValue;
 
-            case TypeCode.Int16:
-                return (short)leftValue > (short)rightValue;
+        case TypeCode.Int16:
+            return (short)leftValue > (short)rightValue;
 
-            case TypeCode.Int32:
-                return (int)leftValue > (int)rightValue;
+        case TypeCode.Int32:
+            return (int)leftValue > (int)rightValue;
 
-            case TypeCode.Int64:
-                return (long)leftValue > (long)rightValue;
+        case TypeCode.Int64:
+            return (long)leftValue > (long)rightValue;
 
-            case TypeCode.Decimal:
-                return (decimal)leftValue > (decimal)rightValue;
+        case TypeCode.Decimal:
+            return (decimal)leftValue > (decimal)rightValue;
 
-            case TypeCode.Double:
-                return (double)leftValue > (double)rightValue;
+        case TypeCode.Double:
+            return (double)leftValue > (double)rightValue;
 
-            case TypeCode.Single:
-                return (float)leftValue > (float)rightValue;
+        case TypeCode.Single:
+            return (float)leftValue > (float)rightValue;
         }
         throw new NumericTypeExpectedException("Please compare valid numeric types.");
     }

@@ -7,10 +7,22 @@ using System;
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 public class DrawIfAttribute : PropertyAttribute
 {
-    public string comparedPropertyName { get; private set; }
-    public object comparedValue { get; private set; }
-    public ComparisonType comparisonType { get; private set; }
-    public DisablingType disablingType { get; private set; }
+    public string comparedPropertyName {
+        get;
+        private set;
+    }
+    public object comparedValue {
+        get;
+        private set;
+    }
+    public ComparisonType comparisonType {
+        get;
+        private set;
+    }
+    public DisablingType disablingType {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// Only draws the field only if a condition is met.

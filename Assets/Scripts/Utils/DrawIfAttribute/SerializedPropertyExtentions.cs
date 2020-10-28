@@ -2,11 +2,11 @@
 
 namespace Utilities
 {
-    public static class SerializedPropertyExtentions
+public static class SerializedPropertyExtentions
+{
+    public static T GetValue<T>(this SerializedProperty property)
     {
-	    public static T GetValue<T>(this SerializedProperty property)
-        {
-            return ReflectionUtil.GetNestedObject<T>(property.serializedObject.targetObject, property.propertyPath);
-        }
+        return ReflectionUtil.GetNestedObject<T>(property.serializedObject.targetObject, property.propertyPath);
     }
+}
 }

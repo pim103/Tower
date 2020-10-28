@@ -55,40 +55,40 @@ public class DrawIfPropertyDrawer : PropertyDrawer
         // Compare the values to see if the condition is met.
         switch (drawIf.comparisonType)
         {
-            case ComparisonType.Equals:
-                if (comparedFieldValue.Equals(drawIf.comparedValue))
-                    conditionMet = true;
-                break;
+        case ComparisonType.Equals:
+            if (comparedFieldValue.Equals(drawIf.comparedValue))
+                conditionMet = true;
+            break;
 
-            case ComparisonType.NotEqual:
-                if (!comparedFieldValue.Equals(drawIf.comparedValue))
-                    conditionMet = true;
-                break;
+        case ComparisonType.NotEqual:
+            if (!comparedFieldValue.Equals(drawIf.comparedValue))
+                conditionMet = true;
+            break;
 
-            case ComparisonType.GreaterThan:
-                if (numericComparedFieldValue > numericComparedValue)
-                    conditionMet = true;
-                break;
+        case ComparisonType.GreaterThan:
+            if (numericComparedFieldValue > numericComparedValue)
+                conditionMet = true;
+            break;
 
-            case ComparisonType.SmallerThan:
-                if (numericComparedFieldValue < numericComparedValue)
-                    conditionMet = true;
-                break;
+        case ComparisonType.SmallerThan:
+            if (numericComparedFieldValue < numericComparedValue)
+                conditionMet = true;
+            break;
 
-            case ComparisonType.SmallerOrEqual:
-                if (numericComparedFieldValue <= numericComparedValue)
-                    conditionMet = true;
-                break;
+        case ComparisonType.SmallerOrEqual:
+            if (numericComparedFieldValue <= numericComparedValue)
+                conditionMet = true;
+            break;
 
-            case ComparisonType.GreaterOrEqual:
-                if (numericComparedFieldValue >= numericComparedValue)
-                    conditionMet = true;
-                break;
+        case ComparisonType.GreaterOrEqual:
+            if (numericComparedFieldValue >= numericComparedValue)
+                conditionMet = true;
+            break;
         }
 
         // The height of the property should be defaulted to the default height.
         propertyHeight = base.GetPropertyHeight(property, label);
-        
+
         // If the condition is met, simply draw the field. Else...
         if (conditionMet)
         {
