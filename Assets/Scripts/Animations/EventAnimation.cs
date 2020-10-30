@@ -20,7 +20,7 @@ namespace Animations
             shortSwordSlash.SetActive(true);
             Entity entity = entityPrefab.entity;
             
-            SpellController.CastSpell(entity, entity.basicAttack, transform.position + (Vector3.up * 1.5f),  entity);
+            SpellController.CastSpell(entity, entity.basicAttack);
             //shortSwordSlash.GetComponent<ParticleSystem>().Play();
         }
 

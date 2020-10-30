@@ -323,17 +323,17 @@ namespace Games.Players
 
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        SpellController.CastSpell(entity, entity.spells[0], positionPointed, target, 1);
+                        SpellController.CastSpell(entity, entity.spells[0], 1);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha2))
                     {
-                        SpellController.CastSpell(entity, entity.spells[1], positionPointed, target, 2);
+                        SpellController.CastSpell(entity, entity.spells[1], 2);
                     }
 
                     if (Input.GetKeyUp(KeyCode.Alpha3))
                     {
-                        SpellController.CastSpell(entity, entity.spells[2], positionPointed, target, 3);
+                        SpellController.CastSpell(entity, entity.spells[2], 3);
                     }
                 }
             }

@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Games.Global.Abilities;
 using Games.Global.Armors;
-using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
-//using Games.Global.Patterns;
 using Games.Global.Weapons;
-using Games.Players;
 using Networking;
 using Networking.Client;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Utils;
 using Debug = UnityEngine.Debug;
+using Vector3 = System.Numerics.Vector3;
 
 namespace Games.Global
 {
@@ -79,10 +70,6 @@ namespace Games.Global
 
         public float ressource1 { get; set; } = DEFAULT_RESSOURCE;
         public float ressource2 { get; set; } = 0;
-
-        public Func<AbilityParameters, bool> OnDamageReceive { get; set; }
-
-        public Func<AbilityParameters, bool> OnDamageDealt { get; set; }
 
         public List<int> playerInBack { get; set; }
         
@@ -180,16 +167,15 @@ namespace Games.Global
         }
 
         // Take true damage is usefull with effect pierce
-        public virtual void TakeDamage(float initialDamage, AbilityParameters abilityParameters, DamageType damageType, bool takeTrueDamage = false)
+        public virtual void TakeDamage(float initialDamage, Entity originDamage, DamageType damageType)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
-
-            Entity originDamage = abilityParameters.origin;
+            bool takeTrueDamage = originDamage != null ? originDamage.canPierce : false;
 
             bool isMagic = damageType == DamageType.Magical;
             bool isPhysic = damageType == DamageType.Physical;
 
-            if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || originDamage.isBlind)
+            if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || (originDamage != null && originDamage.isBlind))
             {
                 initialDamage = 0;
                 damageReceived = 0;
@@ -204,15 +190,15 @@ namespace Games.Global
                 damageReceived = (damageReceived - physicalDef) > 0 ? (damageReceived - physicalDef) : 0;
             }
 
-            if (takeTrueDamage ||
+            if (originDamage != null && (takeTrueDamage ||
                 (originDamage.canPierceOnBack && 
-                 playerInBack.Contains(abilityParameters.origin.IdEntity)
-                ))
+                 playerInBack.Contains(originDamage.IdEntity)
+                )))
             {
                 damageReceived = initialDamage;
             }
 
-            if (originDamage.hasLifeLink)
+            if (originDamage != null && originDamage.hasLifeLink)
             {
                 if (originDamage.isSummon)
                 {
@@ -225,7 +211,7 @@ namespace Games.Global
                 }
             }
 
-            if (originDamage.hasLifeSteal)
+            if (originDamage != null && originDamage.hasLifeSteal)
             {
                 originDamage.hp += damageReceived * originDamage.underEffects[TypeEffect.LifeSteal].level;
                 if (originDamage.hp > originDamage.initialHp)
@@ -244,27 +230,10 @@ namespace Games.Global
                 ApplyDamage(damageReceived);
             }
 
-            abilityParameters.Self = this;
-            abilityParameters.DamageDeal = damageReceived;
-            if (OnDamageReceive != null)
-            {
-                OnDamageReceive(abilityParameters);
-            }
-
-            foreach (Weapon weapon in weapons)
-            {
-                weapon.OnDamageReceive(abilityParameters);
-            }
-
-            foreach (Armor armor in armors)
-            {
-                armor.OnDamageReceive(abilityParameters);
-            }
-
             List<Effect> effects = damageReceiveExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
             foreach (Effect effect in effects)
             {
-                EffectController.ApplyEffect(this, effect, originDamage, originDamage.entityPrefab.transform.position);
+                EffectController.ApplyEffect(this, effect, originDamage, originDamage != null ? originDamage.entityPrefab.transform.position : UnityEngine.Vector3.zero);
             }
 
             if (isSleep)

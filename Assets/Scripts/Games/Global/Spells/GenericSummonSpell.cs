@@ -71,7 +71,7 @@ namespace Games.Global.Spells
 
             if (linkedSpellOnEnable != null)
             {
-                SpellController.CastSpellComponent(summon, linkedSpellOnEnable, selfGameObject.transform.position, summon);
+                SpellController.CastSpellComponent(summon, linkedSpellOnEnable, target);
             }
 
             SpellController.CastPassiveSpell(entity);
@@ -84,7 +84,7 @@ namespace Games.Global.Spells
         {
             if (linkedSpellOnDisapear != null)
             {
-                SpellController.CastSpellComponent(summoner, linkedSpellOnDisapear, selfGameObject.transform.position, summoner);
+                SpellController.CastSpellComponent(summoner, linkedSpellOnDisapear, target);
             }
 
             DataObject.invocationsInScene.Remove(summon);
@@ -95,7 +95,7 @@ namespace Games.Global.Spells
         {
             if (spellWhenPlayerCall != null)
             {
-                SpellController.CastSpellComponent(entity, spellWhenPlayerCall, transform.position, target);
+                SpellController.CastSpellComponent(entity, spellWhenPlayerCall, target);
             }
         }
     }

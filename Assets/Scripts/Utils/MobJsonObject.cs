@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Games.Global.Abilities;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using UnityEngine;
@@ -11,6 +10,12 @@ namespace Utils
     public class GroupsMonsterList
     {
         public List<GroupsJsonObject> groups;
+    }
+
+    [Serializable]
+    public class RawMonsterList
+    {
+        public List<MobJsonObject> monsters;
     }
 
     [Serializable]
@@ -59,7 +64,7 @@ namespace Utils
             }
         }
 
-        public Monster ConvertToMonster(Family family)
+        public Monster ConvertToMonster()
         {
             Monster monster = new Monster
             {
@@ -78,12 +83,9 @@ namespace Utils
                 hp = Int32.Parse(hp),
                 speed = Int32.Parse(speed),
                 nbWeapon = Int32.Parse(nbWeapon),
-                family = family,
                 weaponOriginalId = Int32.Parse(weaponId),
                 constraint = (TypeWeapon) Int32.Parse(typeWeapon),
                 spellsName = skillListId,
-                OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.MOB),
-                OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.MOB),
                 modelName = model
             };
 
@@ -175,7 +177,7 @@ namespace Utils
                 {
                     nbMonster = Int32.Parse(mob.nbMonster)
                 };
-                monstersInGroup.SetMonster(mob.ConvertToMonster(groupsMonster.family));
+                monstersInGroup.SetMonster(mob.ConvertToMonster());
                 
                 groupsMonster.monstersInGroupList.Add(monstersInGroup);
 //                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));

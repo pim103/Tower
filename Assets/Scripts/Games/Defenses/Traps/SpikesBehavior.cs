@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Games.Global;
-using Games.Global.Abilities;
 using Games.Global.Spells;
 using Games.Players;
 using UnityEngine;
@@ -60,9 +58,7 @@ namespace Games.Defenses
             var spikesPosition = spikes.transform.position;
             spikesPosition = new Vector3(spikesPosition.x,spikesPosition.y+1,spikesPosition.z);
             spikes.transform.position = spikesPosition;
-            AbilityParameters abilityParameters = new AbilityParameters();
-            abilityParameters.origin = entity;
-            playerEntity.TakeDamage(10.0f, abilityParameters, DamageType.Physical);
+            playerEntity.TakeDamage(10.0f, null, DamageType.Physical);
             while (trapTimer<3)
             {
                 yield return new WaitForSeconds(1f);

@@ -60,7 +60,7 @@ namespace Games.Global.Entities
                     groupsList.Add(groupsJson.ConvertToMonsterGroups());
                     foreach (MobJsonObject mob in groupsJson.monsterList)
                     {
-                        Monster monster = mob.ConvertToMonster((Family)Int32.Parse(groupsJson.family));
+                        Monster monster = mob.ConvertToMonster();
 
                         if (monsterGameObjects != null)
                         {
@@ -75,6 +75,44 @@ namespace Games.Global.Entities
                 }
 
                 DictionaryManager.hasMonstersLoad = true;
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                Debug.Log(e.Data);
+            }
+        }
+
+        // Method used by editor
+        public void InitSpecificMonsterList(string monsterListJson)
+        {
+            fsSerializer serializer = new fsSerializer();
+            fsData data;
+
+            try
+            {
+                RawMonsterList mobsList = null;
+                data = fsJsonParser.Parse(monsterListJson);
+                serializer.TryDeserialize(data, ref mobsList);
+
+                if (mobsList == null)
+                {
+                    return;
+                }
+
+                monsterList.Clear();
+
+                foreach (MobJsonObject mobs in mobsList.monsters)
+                {
+                    Monster nMonster = mobs.ConvertToMonster();
+
+                    if (monsterGameObjects != null)
+                    {
+                        nMonster.model = monsterGameObjects.First(model => model.name == nMonster.modelName);
+                    }
+
+                    monsterList.Add(nMonster);
+                }
             }
             catch (Exception e)
             {

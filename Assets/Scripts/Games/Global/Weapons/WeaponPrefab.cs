@@ -1,16 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Games.Global.Abilities;
-using Games.Global.Armors;
-using Games.Global.Entities;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellsController;
-//using Games.Global.Patterns;
-using Games.Players;
 using UnityEngine;
-using Utils;
 
 namespace Games.Global.Weapons
 {

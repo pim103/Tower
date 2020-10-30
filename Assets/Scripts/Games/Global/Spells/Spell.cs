@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global.Spells.SpellBehavior;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using UnityEngine;
 
@@ -35,6 +37,35 @@ namespace Games.Global.Spells
         Magical,
         Physical
     }
+    
+    public enum Trigger
+    {
+        START,
+        END,
+        ON_TRIGGER_ENTER,
+        ON_TRIGGER_END,
+        ON_TRIGGER_STAY,
+//        ON_HIT_AT_START,
+//        ON_HIT_DURING_INTERVAL,
+//        ON_DAMAGE_RECEIVE_AT_START,
+//        ON_DAMAGE_RECEIVE_DURING_INTERVAL,
+        INTERVAL
+    }
+    
+    public enum TargetType
+    {
+        ENNEMIES,
+        CASTER,
+        ALLIES
+    }
+
+    public class ActionTriggered
+    {
+        public Effect effect;
+        public SpellComponent spellComponent;
+        public int damageDeal;
+        public int percentageToTrigger;
+    }
 
     [Serializable]
     public class SpellComponent
@@ -45,22 +76,30 @@ namespace Games.Global.Spells
 
         public Coroutine currentCoroutine;
 
-        public OriginalPosition OriginalPosition { get; set; }
-        public OriginalDirection OriginalDirection { get; set; }
+        public StartFrom startFrom { get; set; }
+//        public OriginalDirection OriginalDirection { get; set; }
+//
+//        public Vector3 startPosition { get; set; }
+//        public Vector3 initialRotation { get; set; }
+//        public Vector3 trajectoryNormalized { get; set; }
+//
+//        public bool isBasicAttack { get; set; }
+//        public bool needPositionToMidToEntity { get; set; }
+//        public bool castByPassive { get; set; }
 
-        public Vector3 startPosition { get; set; }
-        public Vector3 initialRotation { get; set; }
-        public Vector3 trajectoryNormalized { get; set; }
+        public Dictionary<Trigger, Dictionary<TargetType, List<ActionTriggered>>> actions;
+        
+        /* New var */
+        public float spellDuration;
+        public float spellInterval;
 
-        public bool isBasicAttack { get; set; }
-        public bool needPositionToMidToEntity { get; set; }
-        public bool castByPassive { get; set; }
+        public Trajectory trajectory;
+        public SpellToInstantiate spellToInstantiate;
 
-        public int[] geometryShaders;
-        public int[] particleEffects;
-        public int[] AddedMeshs;
+        public SpellPrefabController spellPrefabController;
+        public Entity caster;
 
-        //public List<>
+        public Entity targetAtCast;
     }
 
     [Serializable]

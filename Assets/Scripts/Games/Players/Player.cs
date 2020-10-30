@@ -1,16 +1,9 @@
-﻿using System.Diagnostics;
-using Games.Global;
-using Games.Global.Abilities;
+﻿using Games.Global;
 using Games.Global.Armors;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
-using Networking.Client;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using Utils;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -46,7 +39,7 @@ namespace Games.Players
         {
             if (basicDefense != null)
             {
-                SpellController.CastSpell(this, basicDefense, entityPrefab.transform.position, entityPrefab.target);
+                SpellController.CastSpell(this, basicDefense);
             }
         }
 

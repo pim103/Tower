@@ -118,6 +118,7 @@ namespace ContentEditor
             }
             else if (GUILayout.Button(EditorConstant.monsterSprite, GUILayout.Width(75), GUILayout.Height(75)))
             {
+                monsterEditor.CreateWeaponChoiceList();
                 currentCategory = Category.MONSTER;
                 currentEditor = monsterEditor;
             }
@@ -308,8 +309,8 @@ namespace ContentEditor
             form.AddField("cost", weapon.cost);
             form.AddField("damage", weapon.damage);
             form.AddField("attSpeed", (int)weapon.attSpeed);
-            form.AddField("onDamageDealt", weapon.OnDamageDealt != null ? weapon.OnDamageDealt.ToString() : "");
-            form.AddField("onDamageReceive", weapon.OnDamageReceive != null ? weapon.OnDamageReceive.ToString() : "");
+            form.AddField("onDamageDealt", "");
+            form.AddField("onDamageReceive", "");
             form.AddField("model", weapon.modelName);
             form.AddField("equipmentType", (int)weapon.equipmentType);
             form.AddField("spritePath", weapon.sprite != null ? GetSpritePath(weapon.sprite) : "");
@@ -340,8 +341,8 @@ namespace ContentEditor
             form.AddField("lootRate", armor.lootRate);
             form.AddField("cost", armor.cost);
             form.AddField("damage", armor.def);
-            form.AddField("onDamageDealt", armor.OnDamageDealt != null ? armor.OnDamageDealt.ToString() : "");
-            form.AddField("onDamageReceive", armor.OnDamageReceive != null ? armor.OnDamageReceive.ToString() : "");
+            form.AddField("onDamageDealt", "");
+            form.AddField("onDamageReceive", "");
             form.AddField("model", armor.modelName);
             form.AddField("equipmentType", (int)armor.equipmentType);
             form.AddField("spritePath", armor.sprite != null ? GetSpritePath(armor.sprite) : "");
@@ -376,8 +377,8 @@ namespace ContentEditor
             form.AddField("att", (int) monster.att);
             form.AddField("speed", (int) monster.speed);
             form.AddField("nbWeapon", monster.nbWeapon);
-            form.AddField("onDamageDealt", monster.OnDamageDealt != null ? monster.OnDamageDealt.ToString() : "");
-            form.AddField("onDamageReceive", monster.OnDamageReceive != null ? monster.OnDamageReceive.ToString() : "");
+            form.AddField("onDamageDealt", "");
+            form.AddField("onDamageReceive", "");
             form.AddField("model", monster.modelName);
             form.AddField("weaponId", monster.weaponOriginalId);
             form.AddField("attSpeed", (int) monster.attSpeed);
@@ -492,6 +493,7 @@ namespace ContentEditor
                 DataObject.EquipmentList = new EquipmentList(null, www.downloadHandler.text);
                 weaponEditor.CloneWeaponDictionary();
                 armorEditor.CloneArmorDictionary();
+                monsterEditor.CreateWeaponChoiceList();
             }
             else
             {
@@ -513,6 +515,19 @@ namespace ContentEditor
             if (www.responseCode == 200)
             {
                 DataObject.MonsterList = new MonsterList(null, www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Monsters...");
+            }
+    
+            www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/monster/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            if (www.responseCode == 200)
+            {
+                DataObject.MonsterList.InitSpecificMonsterList(www.downloadHandler.text);
                 monsterEditor.CloneMonsterDictionary();
             }
             else

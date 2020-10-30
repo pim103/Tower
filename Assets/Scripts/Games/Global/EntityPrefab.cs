@@ -180,7 +180,7 @@ namespace Games.Global
                 case AttackBehaviorType.AllSpellsIFirst:
                     foreach (Spell spell in entity.spells)
                     {
-                        if (SpellController.CastSpell(entity, spell, transform.position, target))
+                        if (SpellController.CastSpell(entity, spell))
                         {
                             return true;
                         }
@@ -188,7 +188,7 @@ namespace Games.Global
                     break;
                 case AttackBehaviorType.Random:
                     int rand = Random.Range(0, entity.spells.Count);
-                    SpellController.CastSpell(entity, entity.spells[rand], transform.position, target);
+                    SpellController.CastSpell(entity, entity.spells[rand]);
 
                     return !entity.spells[rand].isOnCooldown;
             }

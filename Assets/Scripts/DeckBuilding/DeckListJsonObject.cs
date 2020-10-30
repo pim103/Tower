@@ -1,6 +1,4 @@
 ﻿using System;
-using Games.Global.Abilities;
-using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
 

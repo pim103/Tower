@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Games.Global.Spells.SpellBehavior;
 using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
@@ -34,7 +35,7 @@ namespace Games.Global.Spells.SpellsController
         {
             GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
 
-            genericSpellPrefab.transform.position = waveSpell.startPosition;
+//            genericSpellPrefab.transform.position = waveSpell.startPosition;
             Vector3 scale = genericSpellPrefab.transform.localScale;
             scale.x = waveSpell.initialWidth;
             scale.y = waveSpell.initialWidth;
@@ -48,7 +49,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (waveSpell.geometryPropagation == Geometry.Square)
             {
-                genericSpellPrefab.transform.localEulerAngles = waveSpell.initialRotation;
+//                genericSpellPrefab.transform.localEulerAngles = waveSpell.initialRotation;
             }
 
             SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();

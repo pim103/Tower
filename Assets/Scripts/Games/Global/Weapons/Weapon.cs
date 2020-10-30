@@ -134,7 +134,7 @@ namespace Games.Global.Weapons
         {
             Debug.Log("Weapon " + modelName + " - " + equipmentName + " type : " + type + " Category : " + category + " cost " + cost);
             Debug.Log(" att : " + damage + " attSpd : " + attSpeed + " animation to play : " + animationToPlay);
-            Debug.Log(" onDamageReceive : " + OnDamageReceive + " OnDamageDeal : " + OnDamageDealt);
+//            Debug.Log(" onDamageReceive : " + OnDamageReceive + " OnDamageDeal : " + OnDamageDealt);
         }
     }
 }

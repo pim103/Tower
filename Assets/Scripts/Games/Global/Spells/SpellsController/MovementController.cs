@@ -17,7 +17,7 @@ namespace Games.Global.Spells.SpellsController
         {
             if (movementSpell.linkedSpellAtTheStart != null)
             {
-                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity, movementSpell);
+//                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheStart, entity.entityPrefab.transform.position, entity, movementSpell);
             }
 
             if (movementSpell.movementSpellType == MovementSpellType.Tp || movementSpell.movementSpellType == MovementSpellType.TpWithTarget)
@@ -53,15 +53,15 @@ namespace Games.Global.Spells.SpellsController
 
         private void DoTp(Entity entity, MovementSpell movementSpell)
         {
-            Vector3 newPosition = movementSpell.startPosition;
-            if (movementSpell.movementSpellType == MovementSpellType.TpWithTarget && movementSpell.target != null)
-            {        
+//            Vector3 newPosition = movementSpell.startPosition;
+//            if (movementSpell.movementSpellType == MovementSpellType.TpWithTarget && movementSpell.target != null)
+//            {        
 //                entity.entityPrefab.transform.LookAt(movementSpell.target.entityPrefab.transform);
-                entity.entityPrefab.transform.forward = movementSpell.target.entityPrefab.transform.forward;
-                newPosition -= movementSpell.target.entityPrefab.transform.forward;
-            }
-
-            entity.entityPrefab.transform.position = newPosition;
+//                entity.entityPrefab.transform.forward = movementSpell.target.entityPrefab.transform.forward;
+//                newPosition -= movementSpell.target.entityPrefab.transform.forward;
+//            }
+//
+//            entity.entityPrefab.transform.position = newPosition;
         }
 
         private void UpdatePosition(Entity entity, MovementSpell movementSpell)
@@ -75,7 +75,7 @@ namespace Games.Global.Spells.SpellsController
             }
             else
             {
-                entityPrefab.transform.position += (movementSpell.trajectoryNormalized * speed);
+//                entityPrefab.transform.position += (movementSpell.trajectoryNormalized * speed);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (movementSpell.linkedSpellAtTheEnd != null)
             {
-                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheEnd, entity.entityPrefab.transform.position, entity.entityPrefab.target, movementSpell);
+//                SpellController.CastSpellComponent(entity, movementSpell.linkedSpellAtTheEnd, entity.entityPrefab.transform.position, entity.entityPrefab.target, movementSpell);
             }
 
             if (movementSpell.currentCoroutine != null)

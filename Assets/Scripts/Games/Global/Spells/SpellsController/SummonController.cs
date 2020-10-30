@@ -51,7 +51,7 @@ namespace Games.Global.Spells.SpellsController
             for (int nbSummon = 0; nbSummon < summonSpell.summonNumber; nbSummon++)
             {
                 GameObject summon = ObjectPooler.SharedInstance.GetPooledObject(summonSpell.idPoolObject);
-                summon.transform.position = summonSpell.startPosition + GroupsPosition.position[nbSummon];
+//                summon.transform.position = summonSpell.startPosition + GroupsPosition.position[nbSummon];
 
                 GenericSummonSpell genericSummonSpell = summon.GetComponent<GenericSummonSpell>();
                 genericSummonSpell.SummonEntity(entity, summonSpell, summon);

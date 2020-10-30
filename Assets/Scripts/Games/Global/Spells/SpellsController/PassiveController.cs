@@ -19,7 +19,7 @@ namespace Games.Global.Spells.SpellsController
             
             if (passiveSpell.permanentLinkedEffect != null)
             {
-                SpellController.CastSpellComponent(entity, passiveSpell.permanentLinkedEffect, entity.entityPrefab.positionPointed, entity.entityPrefab.target, passiveSpell);
+//                SpellController.CastSpellComponent(entity, passiveSpell.permanentLinkedEffect, entity.entityPrefab.positionPointed, entity.entityPrefab.target, passiveSpell);
             }
 
             while (true)
@@ -42,7 +42,7 @@ namespace Games.Global.Spells.SpellsController
                 yield return new WaitForSeconds(passiveSpell.interval);
                 if (passiveSpell.linkedEffectOnInterval != null)
                 {
-                    SpellController.CastSpellComponent(entity, passiveSpell.linkedEffectOnInterval, entity.entityPrefab.positionPointed, entity.entityPrefab.target, passiveSpell);
+//                    SpellController.CastSpellComponent(entity, passiveSpell.linkedEffectOnInterval, entity.entityPrefab.positionPointed, entity.entityPrefab.target, passiveSpell);
                 }
             }
         }

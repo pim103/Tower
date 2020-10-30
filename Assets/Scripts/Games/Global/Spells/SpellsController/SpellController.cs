@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Net.Mime;
 using FullSerializer;
+using Games.Global.Entities;
+using Games.Global.Spells.SpellBehavior;
+using Games.Global.Spells.SpellParameter;
 using Games.Players;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,11 +15,14 @@ using Random = UnityEngine.Random;
 
 namespace Games.Global.Spells.SpellsController
 {
-    public enum OriginalPosition
+    public enum StartFrom
     {
         Caster,
-        Target,
-        PositionInParameter,
+        TargetEntity,
+        CursorTarget,
+        RandomPositionInArea,
+        RandomEnemyInArea,
+        LastSpellComponent,
         ClosestEnemyFromCaster
     }
 
@@ -28,14 +35,16 @@ namespace Games.Global.Spells.SpellsController
 
     public class SpellController : MonoBehaviour
     {
-        [SerializeField] private BuffController buffController;
-        [SerializeField] private AreaOfEffectController areaOfEffectController;
-        [SerializeField] private MovementController movementController;
-        [SerializeField] private WaveController waveController;
-        [SerializeField] private ProjectileController projectileController;
-        [SerializeField] private SummonController summonController;
-        [SerializeField] private PassiveController passiveController;
-        [SerializeField] private TransformationController transformationController;
+//        [SerializeField] private BuffController buffController;
+//        [SerializeField] private AreaOfEffectController areaOfEffectController;
+//        [SerializeField] private MovementController movementController;
+//        [SerializeField] private WaveController waveController;
+//        [SerializeField] private ProjectileController projectileController;
+//        [SerializeField] private SummonController summonController;
+//        [SerializeField] private PassiveController passiveController;
+//        [SerializeField] private TransformationController transformationController;
+
+        [SerializeField] private SpellInterpreter spellInterpreter;
 
         public static SpellController instance;
 
@@ -44,14 +53,15 @@ namespace Games.Global.Spells.SpellsController
             instance = this;
         }
 
-        public static bool CastSpell(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
+        public static bool CastSpell(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
         {
             if (spell == null && spell.cost <= entity.ressource1 - spell.cost)
             {
                 return false;
             }
             
-            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack && entity.weapons.Count > 0))
+//            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack && entity.weapons.Count > 0))
+            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && entity.weapons.Count > 0))
             {
                 Debug.Log("Launch spell " + spell.nameSpell);
                 if (spell.nbUse > 0)
@@ -60,7 +70,7 @@ namespace Games.Global.Spells.SpellsController
                 }
 
                 spell.isOnCooldown = true;
-                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target, spellSlotIfPlayer));
+                instance.StartCoroutine(PlayCastTime(entity, spell, spellSlotIfPlayer));
             }
             else if (spell.canCastDuringCast)
             {
@@ -69,7 +79,7 @@ namespace Games.Global.Spells.SpellsController
             else if (spell.canRecast && !spell.alreadyRecast && entity.canRecast)
             {
                 spell.alreadyRecast = true;
-                instance.StartCoroutine(PlayCastTime(entity, spell, startPosition, target));
+                instance.StartCoroutine(PlayCastTime(entity, spell));
             }
             else
             {
@@ -79,92 +89,131 @@ namespace Games.Global.Spells.SpellsController
             return true;
         }
 
-        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity caster, Entity target = null)
+//        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity caster, Entity target = null)
+//        {
+//            switch (spellComponent.OriginalPosition)
+//            {
+//                case OriginalPosition.Caster:
+//                    spellComponent.startPosition = caster.entityPrefab.transform.position;
+//                    if (spellComponent.needPositionToMidToEntity)
+//                    {
+//                        spellComponent.startPosition += Vector3.up * (caster.entityPrefab.transform.localScale.y / 2);
+//                    }
+//                    break;
+//                case OriginalPosition.Target:
+//                    if (target != null)
+//                    {
+//                        spellComponent.startPosition = target.entityPrefab.transform.position;
+//                        if (spellComponent.needPositionToMidToEntity)
+//                        {
+//                            spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        spellComponent.startPosition = startPosition;
+//                    }
+//                    break;
+//                case OriginalPosition.PositionInParameter:
+//                    spellComponent.startPosition = startPosition;
+//                    break;
+//            }
+//
+//            switch (spellComponent.OriginalDirection)
+//            {
+//                case OriginalDirection.Forward:
+//                    spellComponent.initialRotation = caster.entityPrefab.transform.localEulerAngles;
+//                    spellComponent.trajectoryNormalized = caster.entityPrefab.transform.forward;
+//                    break;
+//                case OriginalDirection.Random:
+//                    Vector3 rand = new Vector3();
+//                    rand.x = 0;
+//                    rand.y = Random.Range(0, 360);
+//                    rand.z = 0;
+//                    spellComponent.initialRotation = rand;
+//                    spellComponent.trajectoryNormalized = rand.normalized;
+//                    break;
+//            }
+//        }
+
+        public static Vector3 FindStartPosition(SpellComponent newSpellComponent, SpellComponent lastSpellComponent = null)
         {
-            switch (spellComponent.OriginalPosition)
+            switch (newSpellComponent.startFrom)
             {
-                case OriginalPosition.Caster:
-                    spellComponent.startPosition = caster.entityPrefab.transform.position;
-                    if (spellComponent.needPositionToMidToEntity)
+                case StartFrom.Caster:
+                    return newSpellComponent.caster.entityPrefab.transform.position;
+                case StartFrom.TargetEntity:
+                    return newSpellComponent.targetAtCast.entityPrefab.transform.position;
+                case StartFrom.RandomPositionInArea:
+                    if (lastSpellComponent == null)
                     {
-                        spellComponent.startPosition += Vector3.up * (caster.entityPrefab.transform.localScale.y / 2);
+                        return Vector3.one;
                     }
-                    break;
-                case OriginalPosition.Target:
-                    if (target != null)
+                    
+                    SpellPrefabController spellPrefabController = lastSpellComponent.spellPrefabController;
+                    SpellToInstantiate spellToInstantiate = lastSpellComponent.spellToInstantiate;
+                    Vector3 currentPosition = spellPrefabController.transform.position;
+                    
+                    if (lastSpellComponent.spellToInstantiate.geometry == Geometry.Sphere)
                     {
-                        spellComponent.startPosition = target.entityPrefab.transform.position;
-                        if (spellComponent.needPositionToMidToEntity)
+                        float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
+                        float rx = Random.Range(0.0f, spellToInstantiate.scale.x / 2);
+                        float rz = Random.Range(0.0f, spellToInstantiate.scale.z / 2);
+                        return new Vector3
                         {
-                            spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
-                        }
+                            x = currentPosition.x + rx * Mathf.Cos(t), 
+                            y = currentPosition.y, 
+                            z = currentPosition.z + rz * Mathf.Sin(t)
+                        };
                     }
                     else
                     {
-                        spellComponent.startPosition = startPosition;
+                        return new Vector3
+                        {
+                            x = currentPosition.x + Random.Range(-spellToInstantiate.scale.x/2, spellToInstantiate.scale.x/2), 
+                            y = currentPosition.y, 
+                            z = currentPosition.z + Random.Range(-spellToInstantiate.scale.z/2, spellToInstantiate.scale.z/2)
+                        };
+                    }
+                case StartFrom.RandomEnemyInArea:
+                    if (lastSpellComponent == null)
+                    {
+                        return Vector3.one;
+                    }
+
+                    int randEnemy = Random.Range(0, lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.Count);
+                    return lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy].entityPrefab.transform
+                        .position;
+                case StartFrom.LastSpellComponent:
+                    if (lastSpellComponent == null)
+                    {
+                        return Vector3.one;
+                    }
+
+                    return lastSpellComponent.spellPrefabController.transform.position;
+                case StartFrom.ClosestEnemyFromCaster:
+                    if (newSpellComponent.caster.isPlayer)
+                    {
+                        Monster closestMonster = DataObject.monsterInScene.OrderByDescending(monster =>
+                            newSpellComponent.caster.entityPrefab.transform.position -
+                            monster.entityPrefab.transform.position).First();
                     }
                     break;
-                case OriginalPosition.PositionInParameter:
-                    spellComponent.startPosition = startPosition;
-                    break;
+                case StartFrom.CursorTarget:
+                    return newSpellComponent.caster.entityPrefab.positionPointed;
             }
-
-            switch (spellComponent.OriginalDirection)
-            {
-                case OriginalDirection.Forward:
-                    spellComponent.initialRotation = caster.entityPrefab.transform.localEulerAngles;
-                    spellComponent.trajectoryNormalized = caster.entityPrefab.transform.forward;
-                    break;
-                case OriginalDirection.Random:
-                    Vector3 rand = new Vector3();
-                    rand.x = 0;
-                    rand.y = Random.Range(0, 360);
-                    rand.z = 0;
-                    spellComponent.initialRotation = rand;
-                    spellComponent.trajectoryNormalized = rand.normalized;
-                    break;
-            }
+            
+            return Vector3.one;
         }
 
-        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Vector3 startPosition, Entity target = null, SpellComponent originSpell = null)
+        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Entity target, SpellComponent originSpellComponent = null)
         {
-            SetOriginalPosition(spellComponent, startPosition, entity, target);
+            spellComponent.caster = entity;
+            spellComponent.targetAtCast = target;
 
-            ISpellController iSpellController = null;
-            switch (spellComponent.typeSpell)
-            {
-                case TypeSpell.Buff:
-                    iSpellController = instance.buffController;
-                    break;
-                case TypeSpell.Projectile:
-                    iSpellController = instance.projectileController;
-                    break;
-                case TypeSpell.Summon:
-                    iSpellController = instance.summonController;
-                    break;
-                case TypeSpell.Transformation:
-                    iSpellController = instance.transformationController;
-                    break;
-                case TypeSpell.Wave:
-                    iSpellController = instance.waveController;
-                    break;
-                case TypeSpell.AreaOfEffect:
-                    iSpellController = instance.areaOfEffectController;
-                    break;
-                case TypeSpell.Movement:
-                    iSpellController = instance.movementController;
-                    break;
-                case TypeSpell.Passive:
-                    iSpellController = instance.passiveController;
-                    break;
-            }
+            Vector3 initialPosition = FindStartPosition(spellComponent, originSpellComponent);
 
-            if (iSpellController == null)
-            {
-                return;
-            }
-
-            iSpellController.LaunchSpell(entity, spellComponent, originSpell);
+            instance.spellInterpreter.StartSpellTreatment(spellComponent, initialPosition);
         }
 
         public static IEnumerator StartCooldown(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
@@ -220,7 +269,7 @@ namespace Games.Global.Spells.SpellsController
             spell.alreadyRecast = false;
         }
 
-        public static IEnumerator PlayCastTime(Entity entity, Spell spell, Vector3 startPosition, Entity target = null, int spellSlotIfPlayer = 0)
+        public static IEnumerator PlayCastTime(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
         {
             entity.ressource1 -= spell.cost;
             
@@ -241,7 +290,7 @@ namespace Games.Global.Spells.SpellsController
                     spell.wantToCastDuringCast = false;
                     spell.canCastDuringCast = false;
                     
-                    CastSpellComponent(entity, spell.duringCastSpellComponent, startPosition, target);
+                    CastSpellComponent(entity, spell.duringCastSpellComponent, entity.entityPrefab.target);
                     if (spell.interruptCurrentCast)
                     {
                         yield break;
@@ -255,7 +304,7 @@ namespace Games.Global.Spells.SpellsController
             }
             
             instance.StartCoroutine(StartCooldown(entity, spell, spellSlotIfPlayer));
-            CastSpellComponent(entity, spell.activeSpellComponent, startPosition, target);
+            CastSpellComponent(entity, spell.activeSpellComponent, entity.entityPrefab.target);
         }
 
         public static void CastPassiveSpell(Entity entity)
@@ -269,7 +318,7 @@ namespace Games.Global.Spells.SpellsController
             {
                 if (spell.passiveSpellComponent != null)
                 {
-                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.positionPointed, entity.entityPrefab.target);
+                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.target);
                 }
             }
         }

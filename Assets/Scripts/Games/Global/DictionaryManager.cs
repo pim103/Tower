@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using DeckBuilding;
-using Games.Global.Abilities;
 using Games.Global.Entities;
-using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using Networking;
@@ -52,7 +49,6 @@ namespace Games.Global
 
         public static void InitAbility()
         {
-            AbilityManager.InitAbilities();
             GroupsPosition.InitPosition();
         }
 

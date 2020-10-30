@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using Games.Global;
-using Games.Global.Abilities;
+﻿using Games.Global;
 using Games.Global.Spells;
 using Games.Players;
 using UnityEngine;
@@ -35,10 +32,8 @@ namespace Games.Defenses
                 hasBeenTriggered = true;
                 inactiveState.SetActive(false);
                 activeState.SetActive(true);
-                AbilityParameters abilityParameters = new AbilityParameters();
-                abilityParameters.origin = entity;
                 playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
-                playerEntity.TakeDamage(20.0f, abilityParameters, DamageType.Physical);
+                playerEntity.TakeDamage(20.0f, null, DamageType.Physical);
             }
         }
     }

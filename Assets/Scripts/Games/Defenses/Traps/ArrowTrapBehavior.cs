@@ -61,7 +61,7 @@ namespace Games.Defenses
             while (true)
             {
                 //PoolProjectiles();
-                SpellController.CastSpell(entity, SpellController.LoadSpellByName("TrapArrowSpell"), transform.position);
+                SpellController.CastSpell(entity, SpellController.LoadSpellByName("TrapArrowSpell"));
                 yield return new WaitForSeconds(.5f);
             }
         }

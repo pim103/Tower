@@ -49,6 +49,9 @@ namespace ContentEditor
         private List<string> monsterChoice = new List<string>();
         private List<int> monsterChoiceIds = new List<int>();
 
+        private List<string> weaponChoice = new List<string>();
+        private List<int> weaponChoiceIds = new List<int>();
+
         public void DisplayHeaderContent()
         {
             GUILayout.FlexibleSpace();
@@ -167,7 +170,17 @@ namespace ContentEditor
             monster.speed = EditorGUILayout.FloatField("Speed", monster.speed);
             monster.constraint = (TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.constraint);
             monster.modelName = EditorGUILayout.TextField("Model Name", monster.modelName);
-            monster.weaponOriginalId = EditorGUILayout.IntField("Original weapon id", monster.weaponOriginalId);
+            
+            EditorGUI.BeginChangeCheck();
+            int selected = weaponChoiceIds.IndexOf(monster.weaponOriginalId);
+            selected = EditorGUILayout.Popup("Original weapon", selected == -1 ? 0 : selected, weaponChoice.ToArray());
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                monster.weaponOriginalId = weaponChoiceIds[selected];
+            }
+
+//            monster.weaponOriginalId = EditorGUILayout.IntField("Original weapon id", monster.weaponOriginalId);
             EditorGUILayout.LabelField("Sprite");
 
             monster.sprite = (Texture2D)EditorGUILayout.ObjectField(monster.sprite, typeof(Texture2D), false);
@@ -355,6 +368,26 @@ namespace ContentEditor
             {
                 monsterChoice.Add(monster.id + " : " + monster.mobName);
                 monsterChoiceIds.Add(monster.id);
+            });
+        }
+
+        public void CreateWeaponChoiceList()
+        {
+            if (DataObject.EquipmentList == null)
+            {
+                return;
+            }
+            
+            weaponChoice.Clear();
+            weaponChoiceIds.Clear();
+            
+            weaponChoice.Add("Nothing");
+            weaponChoiceIds.Add(-1);
+            
+            DataObject.EquipmentList.weapons.ForEach(weapon =>
+            {
+                weaponChoice.Add(weapon.id + " : " + weapon.equipmentName);
+                weaponChoiceIds.Add(weapon.id);
             });
         }
 

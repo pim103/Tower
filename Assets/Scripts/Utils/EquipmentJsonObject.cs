@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Games.Global;
-using Games.Global.Abilities;
 using Games.Global.Armors;
 using Games.Global.Weapons;
-using UnityEditor;
 using UnityEngine;
 
 namespace Utils
@@ -169,9 +167,6 @@ namespace Utils
             weapon.modelName = model;
             weapon.sprite = Resources.Load<Texture2D>(spritePath);
             weapon.equipmentType = (EquipmentType)Int32.Parse(equipmentType);
-
-            weapon.OnDamageDealt = AbilityManager.GetAbility(onDamageDealt, AbilityDico.WEAPON);
-            weapon.OnDamageReceive = AbilityManager.GetAbility(onDamageReceive, AbilityDico.WEAPON);
 
             return weapon;
         }
