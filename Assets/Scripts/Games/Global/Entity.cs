@@ -88,8 +88,8 @@ namespace Games.Global
         // Effect add to damage receive
         public List<Effect> damageReceiveExtraEffect { get; set; }
 
-        public List<BuffSpell> currentBuff { get; set; }
-        public List<Entity> entityInRange { get; set; }
+        public List<SpellComponent> activeSpellComponents;
+        public List<Entity> entityInRange;
 
         public EntityPrefab entityPrefab;
 
@@ -162,20 +162,20 @@ namespace Games.Global
             damageDealExtraEffect = new List<Effect>();
             damageReceiveExtraEffect = new List<Effect>();
             entityInRange = new List<Entity>();
-            currentBuff = new List<BuffSpell>();
+            activeSpellComponents = new List<SpellComponent>();
             spells = new List<Spell>();
         }
 
         // Take true damage is usefull with effect pierce
-        public virtual void TakeDamage(float initialDamage, Entity originDamage, DamageType damageType)
+        public virtual void TakeDamage(float initialDamage, Entity originDamage, DamageType damageType, SpellComponent originSpellComponent = null)
         {
             float damageReceived = (initialDamage - def) > 0 ? (initialDamage - def) : 0;
-            bool takeTrueDamage = originDamage != null ? originDamage.canPierce : false;
+            bool takeTrueDamage = originDamage.canPierce;
 
             bool isMagic = damageType == DamageType.Magical;
             bool isPhysic = damageType == DamageType.Physical;
 
-            if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || (originDamage != null && originDamage.isBlind))
+            if (hasDivineShield || (isIntangible && isPhysic) || (hasAntiSpell && isMagic) || originDamage.isBlind)
             {
                 initialDamage = 0;
                 damageReceived = 0;
@@ -190,15 +190,15 @@ namespace Games.Global
                 damageReceived = (damageReceived - physicalDef) > 0 ? (damageReceived - physicalDef) : 0;
             }
 
-            if (originDamage != null && (takeTrueDamage ||
+            if (takeTrueDamage ||
                 (originDamage.canPierceOnBack && 
                  playerInBack.Contains(originDamage.IdEntity)
-                )))
+                ))
             {
                 damageReceived = initialDamage;
             }
 
-            if (originDamage != null && originDamage.hasLifeLink)
+            if (originDamage.hasLifeLink)
             {
                 if (originDamage.isSummon)
                 {
@@ -211,7 +211,7 @@ namespace Games.Global
                 }
             }
 
-            if (originDamage != null && originDamage.hasLifeSteal)
+            if (originDamage.hasLifeSteal)
             {
                 originDamage.hp += damageReceived * originDamage.underEffects[TypeEffect.LifeSteal].level;
                 if (originDamage.hp > originDamage.initialHp)
@@ -222,18 +222,18 @@ namespace Games.Global
 
             if (hasRedirection && DataObject.invocationsInScene.Count > 0)
             {
-                DataObject.invocationsInScene[0].ApplyDamage(damageReceived * 0.75f);
-                ApplyDamage(damageReceived * 0.25f);
+                DataObject.invocationsInScene[0].ApplyDamage(damageReceived * 0.75f, originSpellComponent);
+                ApplyDamage(damageReceived * 0.25f, originSpellComponent);
             }
             else
             {
-                ApplyDamage(damageReceived);
+                ApplyDamage(damageReceived, originSpellComponent);
             }
 
             List<Effect> effects = damageReceiveExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect).ToList();
             foreach (Effect effect in effects)
             {
-                EffectController.ApplyEffect(this, effect, originDamage, originDamage != null ? originDamage.entityPrefab.transform.position : UnityEngine.Vector3.zero);
+                EffectController.ApplyEffect(this, effect, originDamage, originDamage.entityPrefab.transform.position);
             }
 
             if (isSleep)
@@ -241,16 +241,21 @@ namespace Games.Global
                 EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Sleep]);
             }
 
-            BuffController.EntityReceivedDamage(this, originDamage);
+            SpellInterpreter.TriggerWhenEntityReceivedDamage(activeSpellComponents);
         }
 
-        public virtual void ApplyDamage(float directDamage)
+        public virtual void ApplyDamage(float directDamage, SpellComponent originSpellComponent = null)
         {
             //Debug.Log(modelName + " - Damage applied = " + directDamage);
             hp -= directDamage;
             
             if (hp <= 0)
             {
+                if (originSpellComponent != null)
+                {
+                    SpellInterpreter.TriggerWhenEntityDie(originSpellComponent);
+                }
+                
                 if (shooldResurrect)
                 {
                     hp = initialHp / 2;

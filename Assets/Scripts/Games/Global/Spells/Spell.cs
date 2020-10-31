@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellParameter;
-using Games.Global.Spells.SpellsController;
 using UnityEngine;
 
 namespace Games.Global.Spells
 {
+    // StartFrom is used by spell and by ActionTriggered
+    public enum StartFrom
+    {
+        Caster,
+        TargetEntity,
+        CursorTarget,
+        AllEnemiesInArea,
+        AllAlliesInArea,
+        RandomPositionInArea,
+        RandomEnemyInArea,
+        LastSpellComponent,
+        ClosestEnemyFromCaster
+    }
+
     public enum Geometry
     {
         Square,
         Sphere,
         Cone,
-    }
-
-    public enum OriginArea
-    {
-        Center,
-        From
     }
 
     public enum TypeSpell
@@ -44,27 +51,81 @@ namespace Games.Global.Spells
         END,
         ON_TRIGGER_ENTER,
         ON_TRIGGER_END,
-        ON_TRIGGER_STAY,
-//        ON_HIT_AT_START,
-//        ON_HIT_DURING_INTERVAL,
-//        ON_DAMAGE_RECEIVE_AT_START,
-//        ON_DAMAGE_RECEIVE_DURING_INTERVAL,
-        INTERVAL
+        INTERVAL,
+        ON_ATTACK,
+        ON_DAMAGE_RECEIVED,
+        ON_ENTITY_DIE
     }
     
-    public enum TargetType
+    public enum ConditionType
     {
-        ENNEMIES,
-        CASTER,
-        ALLIES
+        IfTargetHasEffect,
+        IfCasterHasEffect,
+        MinEnemiesInArea
     }
 
+    public class TargetsFound
+    {
+        public List<Entity> targets = new List<Entity>();
+        public Entity target = null;
+
+        public Vector3 position = Vector3.negativeInfinity;
+    }
+
+    [Serializable]
+    public class ConditionToTrigger
+    {
+        public ConditionType conditionType { get; set; }
+        public TypeEffect typeEffectNeeded { get; set; }
+        public int valueNeeded { get; set; }
+
+        public bool TestCondition(Entity caster, Entity target)
+        {
+            bool conditionIsValid;
+            
+            switch (conditionType)
+            {
+                case ConditionType.IfCasterHasEffect:
+                    conditionIsValid = caster.underEffects.ContainsKey(typeEffectNeeded);
+                    break;
+                case ConditionType.IfTargetHasEffect:
+                    conditionIsValid = target.underEffects.ContainsKey(typeEffectNeeded);
+                    break;
+                case ConditionType.MinEnemiesInArea:
+                    conditionIsValid = caster.entityInRange.Count >= valueNeeded;
+                    break;
+                default:
+                    conditionIsValid = true;
+                    break;
+            }
+
+            return conditionIsValid;
+        }
+    }
+
+    public enum ActionOnEffectType
+    {
+        ADD,
+        DELETE
+    }
+
+    public enum ConditionReduceCharge
+    {
+        None,
+        OnAttack,
+        OnDamageReceived
+    }
+
+    [Serializable]
     public class ActionTriggered
     {
-        public Effect effect;
-        public SpellComponent spellComponent;
-        public int damageDeal;
-        public int percentageToTrigger;
+        public StartFrom startFrom { get; set; }
+        public ActionOnEffectType actionOnEffectType { get; set; }
+        public Effect effect { get; set; }
+        public SpellComponent spellComponent { get; set; }
+        public int damageDeal { get; set; }
+        public int percentageToTrigger { get; set; }
+        public ConditionToTrigger conditionToTrigger { get; set; }
     }
 
     [Serializable]
@@ -74,37 +135,44 @@ namespace Games.Global.Spells
         public TypeSpell typeSpell { get; set; }
         public DamageType damageType { get; set; }
 
-        public Coroutine currentCoroutine;
-
-        public StartFrom startFrom { get; set; }
-//        public OriginalDirection OriginalDirection { get; set; }
-//
-//        public Vector3 startPosition { get; set; }
-//        public Vector3 initialRotation { get; set; }
-//        public Vector3 trajectoryNormalized { get; set; }
-//
-//        public bool isBasicAttack { get; set; }
-//        public bool needPositionToMidToEntity { get; set; }
-//        public bool castByPassive { get; set; }
-
-        public Dictionary<Trigger, Dictionary<TargetType, List<ActionTriggered>>> actions;
-        
         /* New var */
-        public float spellDuration;
-        public float spellInterval;
+        public Dictionary<Trigger, List<ActionTriggered>> actions { get; set; }
+        public float spellDuration { get; set; }
+        public float spellInterval { get; set; }
 
-        public Trajectory trajectory;
-        public SpellToInstantiate spellToInstantiate;
+        public ConditionReduceCharge conditionReduceCharge { get; set; }
+        public int spellCharges { get; set; }
 
-        public SpellPrefabController spellPrefabController;
+        public Trajectory trajectory { get; set; }
+        public SpellToInstantiate spellToInstantiate { get; set; }
+        public SpellPrefabController spellPrefabController { get; set; }
+
+        public int damageMultiplierOnDistance { get; set; }
+
+        public bool appliesPlayerOnHitEffect { get; set; }
+        public bool canStopProjectile { get; set; }
+        public bool stopSpellComponentAtDamageReceived { get; set; }
+
+        public virtual void AtTheStart() {}
+        public virtual void AtTheEnd() {}
+        public virtual void DuringInterval() {}
+        public virtual void OnAttack() {}
+        public virtual void OnDamageReceive() {}
+        public virtual void OnTriggerEnter(Entity enemy) {}
+        public virtual void OnTriggerExit(Entity enemy) {}
+
+        /* Parameters used in game */
+        public Coroutine currentCoroutine;
         public Entity caster;
-
         public Entity targetAtCast;
+
+        public Vector3 startAtPosition;
     }
 
     [Serializable]
     public class Spell
     {
+        public StartFrom startFrom { get; set; }
         public string nameSpell { get; set; }
         public float initialCooldown { get; set; }
         public float cooldown { get; set; }

@@ -7,24 +7,11 @@
         ApplyOnTarget,
         DeleteOnTarget
     }
-    
-    public enum ConditionType
-    {
-        PlayerDies,
-        PlayerDoesntDie,
-        
-        IfTargetHasEffectWhenHit,
-        IfPlayerHasEffect,
-        IfTargetDies,
 
-        MinEnemiesInArea,
-        DamageIfTargetHasEffect
-    }
-    
     public class SpellWithCondition
     {
         public InstructionTargeting instructionTargeting { get; set; }
-        public ConditionType conditionType { get; set; }
+//        public ConditionType conditionType { get; set; }
 
         public Effect effect { get; set; }
         public SpellComponent spellComponent { get; set; }

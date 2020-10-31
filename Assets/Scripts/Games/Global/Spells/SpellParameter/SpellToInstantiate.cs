@@ -7,16 +7,13 @@ namespace Games.Global.Spells.SpellParameter
     {
         public Geometry geometry { get; set; }
         public Vector3 scale { get; set; }
-        public float speed;
-        public Trajectory trajectory;
 
         // If not null, set objetToPool at children of SpellPrefabController
-        public GameObject objectToPool { get; set; }
+        public int idPoolObject { get; set; }
 
         // Specific to Wave
-        public int initialWidth { get; set; }
-        public float incrementAmplitudeByTime { get; set; }
-
-        // Specific to Area
+        public Vector3 incrementAmplitudeByTime { get; set; }
+        
+        public bool passingThroughEntity { get; set; }
     }
 }

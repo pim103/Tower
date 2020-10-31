@@ -119,7 +119,8 @@ namespace Games.Global
 
         public void PlayBasicAttack()
         {
-            BuffController.EntityAttack(entity, positionPointed);
+            SpellInterpreter.TriggerWhenEntityAttack(entity.activeSpellComponents);
+            
             if (entity.basicAttack != null)
             {
                 if (entity.weapons.Count > 0)

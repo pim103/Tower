@@ -39,7 +39,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (buffSpell.linkedSpellOnInterval != null)
                 {
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, buffSpell.targetAtCast);
+//                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnInterval, buffSpell.targetAtCast);
                 }
 
                 CheckSpellWithCondition(entity, buffSpell.spellWithCondition);
@@ -65,35 +65,35 @@ namespace Games.Global.Spells.SpellsController
                 return;
             }
 
-            List<SpellWithCondition> minEnemyInArea = spellWithConditions.FindAll(spell => spell.conditionType == ConditionType.MinEnemiesInArea);
-
-            foreach (SpellWithCondition spellWithCondition in minEnemyInArea)
-            {
-                if (spellWithCondition.conditionType == ConditionType.MinEnemiesInArea)
-                {
-                    if (entity.entityInRange.Count >= spellWithCondition.level)
-                    {
-                        switch (spellWithCondition.instructionTargeting)
-                        {
-                            case InstructionTargeting.ApplyOnSelf:
-                                EffectController.ApplyEffect(entity, spellWithCondition.effect, entity, entity.entityPrefab.transform.position);
-                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent, entity.entityPrefab.target);
-                                break;
-                            case InstructionTargeting.ApplyOnTarget:
-                                break;
-                            case InstructionTargeting.DeleteOnSelf:
-                                break;
-                            case InstructionTargeting.DeleteOnTarget:
-                                break;
-                        }
-                    }
-                }
-            }
+//            List<SpellWithCondition> minEnemyInArea = spellWithConditions.FindAll(spell => spell.conditionType == ConditionType.MinEnemiesInArea);
+//
+//            foreach (SpellWithCondition spellWithCondition in minEnemyInArea)
+//            {
+//                if (spellWithCondition.conditionType == ConditionType.MinEnemiesInArea)
+//                {
+//                    if (entity.entityInRange.Count >= spellWithCondition.level)
+//                    {
+//                        switch (spellWithCondition.instructionTargeting)
+//                        {
+//                            case InstructionTargeting.ApplyOnSelf:
+//                                EffectController.ApplyEffect(entity, spellWithCondition.effect, entity, entity.entityPrefab.transform.position);
+////                                SpellController.CastSpellComponent(entity, spellWithCondition.spellComponent, entity.entityPrefab.target);
+//                                break;
+//                            case InstructionTargeting.ApplyOnTarget:
+//                                break;
+//                            case InstructionTargeting.DeleteOnSelf:
+//                                break;
+//                            case InstructionTargeting.DeleteOnTarget:
+//                                break;
+//                        }
+//                    }
+//                }
+//            }
         }
 
         private void InitialBuff(Entity entity, BuffSpell buffSpell)
         {
-            entity.currentBuff.Add(buffSpell);
+//            entity.currentBuff.Add(buffSpell);
 
             if (buffSpell.replaceProjectile != null)
             {
@@ -131,19 +131,19 @@ namespace Games.Global.Spells.SpellsController
             List<SpellWithCondition> ifPlayerDies = null;
             List<SpellWithCondition> ifPlayerDoesntDie = null;
 
-            if (buffSpell.spellWithCondition != null)
-            {
-                ifPlayerDies = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDies);
-                
-                ifPlayerDoesntDie = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDoesntDie);
-            }
+//            if (buffSpell.spellWithCondition != null)
+//            {
+//                ifPlayerDies = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDies);
+//                
+//                ifPlayerDoesntDie = buffSpell.spellWithCondition.FindAll(condition => condition.conditionType == ConditionType.PlayerDoesntDie);
+//            }
 
             if ((entity.hp - buffSpell.damageOnSelf) <= 0 && ifPlayerDies != null)
             {
                 foreach (SpellWithCondition spellCondition in ifPlayerDies)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect, entity, entity.entityPrefab.transform.position);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, buffSpell.targetAtCast);
+//                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, buffSpell.targetAtCast);
                 }
             }
             else if (ifPlayerDoesntDie != null)
@@ -151,7 +151,7 @@ namespace Games.Global.Spells.SpellsController
                 foreach (SpellWithCondition spellCondition in ifPlayerDoesntDie)
                 {
                     EffectController.ApplyEffect(entity, spellCondition.effect, entity, entity.entityPrefab.transform.position);
-                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, buffSpell.targetAtCast);
+//                    SpellController.CastSpellComponent(entity, spellCondition.spellComponent, buffSpell.targetAtCast);
                 }
             }
 
@@ -172,7 +172,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static void EndBuff(Entity entity, BuffSpell buffSpell, SpellComponent originalBasicAttackComponent = null)
         {
-            entity.currentBuff.Remove(buffSpell);
+//            entity.currentBuff.Remove(buffSpell);
 
             if (buffSpell.replaceProjectile != null)
             {
@@ -211,70 +211,48 @@ namespace Games.Global.Spells.SpellsController
 
         public static void EntityDealDamage(Entity entity, Entity entityTouch)
         {
-            foreach (BuffSpell buffSpell in entity.currentBuff)
-            {
-                if (buffSpell.linkedSpellOnHit != null)
-                {
-                    Vector3 position = Vector3.positiveInfinity;
-                    if (buffSpell.needNewPositionOnHit)
-                    {
-                        position = entityTouch.entityPrefab.transform.position;
-                    }
-                    
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, buffSpell.targetAtCast, buffSpell);
-                }
-            }
+//            foreach (BuffSpell buffSpell in entity.currentBuff)
+//            {
+//                if (buffSpell.linkedSpellOnHit != null)
+//                {
+//                    Vector3 position = Vector3.positiveInfinity;
+//                    if (buffSpell.needNewPositionOnHit)
+//                    {
+//                        position = entityTouch.entityPrefab.transform.position;
+//                    }
+//                    
+////                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnHit, buffSpell.targetAtCast, buffSpell);
+//                }
+//            }
         }
 
         public static void EntityReceivedDamage(Entity entity, Entity entityOriginOfDamage)
         {
-            List<BuffSpell> entityCurrentBuff = new List<BuffSpell>(entity.currentBuff);
-            foreach (BuffSpell buffSpell in entityCurrentBuff)
-            {
-                if (buffSpell.linkedSpellOnDamageReceived != null)
-                {
-                    Vector3 position = Vector3.positiveInfinity;
-                    if (buffSpell.needNewPositionOnDamageReceived)
-                    {
-                        position = entityOriginOfDamage.entityPrefab.transform.position;
-                    }
-
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, buffSpell.targetAtCast, buffSpell);
-                }
-
-                if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
-                {
-                    buffSpell.stack--;
-                    Debug.Log("Lose stack " + buffSpell.stack);
-                }
-
-                if (buffSpell.disapearOnDamageReceived)
-                {
-                    EndBuff(entity, buffSpell);
-                }
-            }
-        }
-
-        public static void EntityAttack(Entity entity, Vector3 positionPointed)
-        {
-            foreach (BuffSpell buffSpell in entity.currentBuff)
-            {
-                if (buffSpell.linkedSpellOnAttack != null)
-                {
-                    Vector3 position = entity.entityPrefab.transform.position;
-                    if (buffSpell.needNewPositionOnAttack)
-                    {
-                        position = positionPointed;
-                    }
-
-                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnAttack, buffSpell.targetAtCast, buffSpell);
-                }
-
-                if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnAttack)
-                {
-                    buffSpell.stack--;
-                }
-            }
+//            List<BuffSpell> entityCurrentBuff = new List<BuffSpell>(entity.currentBuff);
+//            foreach (BuffSpell buffSpell in entityCurrentBuff)
+//            {
+//                if (buffSpell.linkedSpellOnDamageReceived != null)
+//                {
+//                    Vector3 position = Vector3.positiveInfinity;
+//                    if (buffSpell.needNewPositionOnDamageReceived)
+//                    {
+//                        position = entityOriginOfDamage.entityPrefab.transform.position;
+//                    }
+//
+////                    SpellController.CastSpellComponent(entity, buffSpell.linkedSpellOnDamageReceived, buffSpell.targetAtCast, buffSpell);
+//                }
+//
+//                if (buffSpell.conditionReduceCharge == ConditionReduceCharge.OnDamageReceived)
+//                {
+//                    buffSpell.stack--;
+//                    Debug.Log("Lose stack " + buffSpell.stack);
+//                }
+//
+//                if (buffSpell.disapearOnDamageReceived)
+//                {
+//                    EndBuff(entity, buffSpell);
+//                }
+//            }
         }
     }
 }

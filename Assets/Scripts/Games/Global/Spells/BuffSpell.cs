@@ -4,12 +4,6 @@ using Games.Global.Spells.SpellParameter;
 
 namespace Games.Global.Spells
 {
-    public enum ConditionReduceCharge
-    {
-        OnAttack,
-        OnDamageReceived
-    }
-
     [Serializable]
     public class BuffSpell : SpellComponent
     {

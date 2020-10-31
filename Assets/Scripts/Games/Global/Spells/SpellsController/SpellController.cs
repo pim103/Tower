@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
@@ -15,23 +16,6 @@ using Random = UnityEngine.Random;
 
 namespace Games.Global.Spells.SpellsController
 {
-    public enum StartFrom
-    {
-        Caster,
-        TargetEntity,
-        CursorTarget,
-        RandomPositionInArea,
-        RandomEnemyInArea,
-        LastSpellComponent,
-        ClosestEnemyFromCaster
-    }
-
-    public enum OriginalDirection
-    {
-        None,
-        Forward,
-        Random
-    }
 
     public class SpellController : MonoBehaviour
     {
@@ -51,6 +35,7 @@ namespace Games.Global.Spells.SpellsController
         private void Start()
         {
             instance = this;
+            SpellInterpreter.instance = spellInterpreter;
         }
 
         public static bool CastSpell(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
@@ -136,20 +121,38 @@ namespace Games.Global.Spells.SpellsController
 //            }
 //        }
 
-        public static Vector3 FindStartPosition(SpellComponent newSpellComponent, SpellComponent lastSpellComponent = null)
+        public static TargetsFound GetTargetGetWithStartForm(Entity caster, StartFrom startFromNewSpellComponent,
+            SpellComponent lastSpellComponent = null)
         {
-            switch (newSpellComponent.startFrom)
+            TargetsFound targetFound = new TargetsFound();
+
+            switch (startFromNewSpellComponent)
             {
+                /* Can be use by Spell and ActionTriggered */
                 case StartFrom.Caster:
-                    return newSpellComponent.caster.entityPrefab.transform.position;
+                    targetFound.position = caster.entityPrefab.transform.position;
+                    targetFound.target = caster;
+                    break;
+                /* Can be use by Spell and ActionTriggered */
                 case StartFrom.TargetEntity:
-                    return newSpellComponent.targetAtCast.entityPrefab.transform.position;
-                case StartFrom.RandomPositionInArea:
                     if (lastSpellComponent == null)
                     {
-                        return Vector3.one;
+                        targetFound.position = caster.entityPrefab.target.entityPrefab.transform.position;
+                        targetFound.target = caster.entityPrefab.target;
                     }
-                    
+                    else
+                    {
+                        targetFound.position = lastSpellComponent.targetAtCast.entityPrefab.transform.position;
+                        targetFound.target = lastSpellComponent.targetAtCast;
+                    }
+                    break;
+                /* Can be use by ActionTriggered after area */
+                case StartFrom.RandomPositionInArea:
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
+                    {
+                        break;
+                    }
+
                     SpellPrefabController spellPrefabController = lastSpellComponent.spellPrefabController;
                     SpellToInstantiate spellToInstantiate = lastSpellComponent.spellToInstantiate;
                     Vector3 currentPosition = spellPrefabController.transform.position;
@@ -159,7 +162,7 @@ namespace Games.Global.Spells.SpellsController
                         float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
                         float rx = Random.Range(0.0f, spellToInstantiate.scale.x / 2);
                         float rz = Random.Range(0.0f, spellToInstantiate.scale.z / 2);
-                        return new Vector3
+                        targetFound.position = new Vector3
                         {
                             x = currentPosition.x + rx * Mathf.Cos(t), 
                             y = currentPosition.y, 
@@ -168,62 +171,120 @@ namespace Games.Global.Spells.SpellsController
                     }
                     else
                     {
-                        return new Vector3
+                        targetFound.position = new Vector3
                         {
                             x = currentPosition.x + Random.Range(-spellToInstantiate.scale.x/2, spellToInstantiate.scale.x/2), 
                             y = currentPosition.y, 
                             z = currentPosition.z + Random.Range(-spellToInstantiate.scale.z/2, spellToInstantiate.scale.z/2)
                         };
                     }
+
+                    break;
+                /* Can be use by ActionTriggered after area */
                 case StartFrom.RandomEnemyInArea:
-                    if (lastSpellComponent == null)
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
                     {
-                        return Vector3.one;
+                        break;
                     }
 
                     int randEnemy = Random.Range(0, lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.Count);
-                    return lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy].entityPrefab.transform
+                    targetFound.position = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy].entityPrefab.transform
                         .position;
+                    targetFound.target = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy];
+                    break;
+                /* Can be use by ActionTriggered */
                 case StartFrom.LastSpellComponent:
-                    if (lastSpellComponent == null)
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
                     {
-                        return Vector3.one;
+                        break;
                     }
 
-                    return lastSpellComponent.spellPrefabController.transform.position;
+                    targetFound.position = lastSpellComponent.spellPrefabController.transform.position;
+                    break;
+                /* Can be use by Spell and ActionTriggered */
                 case StartFrom.ClosestEnemyFromCaster:
-                    if (newSpellComponent.caster.isPlayer)
+                    if (caster.isPlayer)
                     {
                         Monster closestMonster = DataObject.monsterInScene.OrderByDescending(monster =>
-                            newSpellComponent.caster.entityPrefab.transform.position -
+                            caster.entityPrefab.transform.position -
                             monster.entityPrefab.transform.position).First();
+
+                        targetFound.position = closestMonster.entityPrefab.transform.position;
+                        targetFound.target = closestMonster;
                     }
                     break;
+                /* Can be use by Spell */
                 case StartFrom.CursorTarget:
-                    return newSpellComponent.caster.entityPrefab.positionPointed;
+                    targetFound.position = caster.entityPrefab.positionPointed;
+                    break;
+                /* Can be use by ActionTriggered after area */
+                case StartFrom.AllAlliesInArea:
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
+                    {
+                        break;
+                    }
+                    
+                    targetFound.targets = lastSpellComponent.spellPrefabController.alliesTouchedBySpell;
+                    break;
+                /* Can be use by ActionTriggered after area */
+                case StartFrom.AllEnemiesInArea:
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
+                    {
+                        break;
+                    }
+
+                    targetFound.targets = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell;
+                    break;
             }
-            
-            return Vector3.one;
+
+            return targetFound;
         }
 
-        public static void CastSpellComponent(Entity entity, SpellComponent spellComponent, Entity target, SpellComponent originSpellComponent = null)
+        public static void CastSpellComponentFromTargetsFound(Entity caster, SpellComponent spellComponent, TargetsFound targetsFound, SpellComponent lastSpellComponent = null)
         {
-            spellComponent.caster = entity;
-            spellComponent.targetAtCast = target;
-
-            Vector3 initialPosition = FindStartPosition(spellComponent, originSpellComponent);
-
-            instance.spellInterpreter.StartSpellTreatment(spellComponent, initialPosition);
+            if (targetsFound.targets.Count > 0)
+            {
+                targetsFound.targets.ForEach(target => CastSpellComponent(caster, spellComponent, target, target.entityPrefab.transform.position, lastSpellComponent));
+            }
+            else if (targetsFound.target != null)
+            {
+                CastSpellComponent(caster, spellComponent, targetsFound.target, targetsFound.position, lastSpellComponent);
+            }
+            else if (targetsFound.position != Vector3.negativeInfinity)
+            {
+                CastSpellComponent(caster, spellComponent, caster.entityPrefab.target, targetsFound.position, lastSpellComponent);
+            }
         }
 
-        public static IEnumerator StartCooldown(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
+        public static SpellComponent CastSpellComponent(Entity caster, SpellComponent spellComponent, Entity target, Vector3 startPosition, SpellComponent lastSpellComponent = null)
+        {
+            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent);
+            caster.activeSpellComponents.Add(cloneSpellComponent);
+            
+            cloneSpellComponent.caster = caster;
+            cloneSpellComponent.targetAtCast = target;
+
+            if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_TARGET)
+            {
+                cloneSpellComponent.trajectory.objectToFollow = target.entityPrefab.transform;
+            } 
+            else if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_LAST_SPELL && lastSpellComponent != null && lastSpellComponent.spellPrefabController != null)
+            {
+                cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
+            }
+
+            SpellInterpreter.instance.StartSpellTreatment(spellComponent, startPosition);
+            return cloneSpellComponent;
+        }
+
+        public static IEnumerator StartCooldown(Entity caster, Spell spell, int spellSlotIfPlayer = 0)
         {
             GameObject bgTimer = null;
             Text timer = null;
             
             if (spellSlotIfPlayer > 0)
             {
-                PlayerPrefab playerPrefab = entity.entityPrefab as PlayerPrefab;
+                PlayerPrefab playerPrefab = caster.entityPrefab as PlayerPrefab;
 
                 switch (spellSlotIfPlayer)
                 {
@@ -269,9 +330,10 @@ namespace Games.Global.Spells.SpellsController
             spell.alreadyRecast = false;
         }
 
-        public static IEnumerator PlayCastTime(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
+        public static IEnumerator PlayCastTime(Entity caster, Spell spell, int spellSlotIfPlayer = 0)
         {
-            entity.ressource1 -= spell.cost;
+            TargetsFound targetsFound = GetTargetGetWithStartForm(caster, spell.startFrom);
+            caster.ressource1 -= spell.cost;
             
             float duration = spell.castTime;
 
@@ -289,8 +351,8 @@ namespace Games.Global.Spells.SpellsController
                 {
                     spell.wantToCastDuringCast = false;
                     spell.canCastDuringCast = false;
-                    
-                    CastSpellComponent(entity, spell.duringCastSpellComponent, entity.entityPrefab.target);
+
+                    CastSpellComponentFromTargetsFound(caster, spell.duringCastSpellComponent, targetsFound);
                     if (spell.interruptCurrentCast)
                     {
                         yield break;
@@ -302,9 +364,9 @@ namespace Games.Global.Spells.SpellsController
             {
                 yield break;
             }
-            
-            instance.StartCoroutine(StartCooldown(entity, spell, spellSlotIfPlayer));
-            CastSpellComponent(entity, spell.activeSpellComponent, entity.entityPrefab.target);
+
+            instance.StartCoroutine(StartCooldown(caster, spell, spellSlotIfPlayer));
+            CastSpellComponentFromTargetsFound(caster, spell.activeSpellComponent, targetsFound);
         }
 
         public static void CastPassiveSpell(Entity entity)
@@ -318,7 +380,8 @@ namespace Games.Global.Spells.SpellsController
             {
                 if (spell.passiveSpellComponent != null)
                 {
-                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.target);
+                    // TODO : Reimplement Passive spell
+//                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.target);
                 }
             }
         }

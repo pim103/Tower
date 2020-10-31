@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Players;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,6 +61,40 @@ namespace Games.Global
                 Color color = buffImage.color;
                 color.a = 0;
                 buffImage.color = color;
+            }
+        }
+
+        public static void DeleteEffectFromTargetsFound(Effect effect, TargetsFound targetsFound)
+        {
+            if (targetsFound.targets.Count > 0)
+            {
+                targetsFound.targets.ForEach(target =>
+                {
+                    if (target.underEffects.ContainsKey(effect.typeEffect))
+                    {
+                        StopCurrentEffect(target, target.underEffects[effect.typeEffect]);
+                    }
+                });
+            } 
+            else if (targetsFound.target != null)
+            {
+                if (targetsFound.target.underEffects.ContainsKey(effect.typeEffect))
+                {
+                    StopCurrentEffect(targetsFound.target, targetsFound.target.underEffects[effect.typeEffect]);
+                }
+            }
+        }
+
+        public static void ApplyEffectFromTargetsFound(Entity origin, Effect effect, TargetsFound targetsFound)
+        {
+            // TODO : IMPLEMENT CORRECT SRC OF DAMAGES
+            if (targetsFound.targets.Count > 0)
+            {
+                targetsFound.targets.ForEach(target => ApplyEffect(target, effect, origin, origin.entityPrefab.transform.position));
+            } 
+            else if (targetsFound.target != null)
+            {
+                ApplyEffect(targetsFound.target, effect, origin, origin.entityPrefab.transform.position);
             }
         }
 

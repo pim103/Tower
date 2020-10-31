@@ -18,7 +18,6 @@ namespace Games.Global.Spells
 
         public Geometry geometry { get; set; }
         public Vector3 scale { get; set; }
-        public OriginArea originArea { get; set; }
 
         public float damagesOnEnemiesOnInterval { get; set; }
         public float damagesOnAlliesOnInterval { get; set; }

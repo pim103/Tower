@@ -56,7 +56,7 @@ namespace Games.Players
             underEffects.Clear();
             damageDealExtraEffect.Clear();
             damageReceiveExtraEffect.Clear();
-            currentBuff.Clear();
+            activeSpellComponents.Clear();
 
             SpellController.CastPassiveSpell(this);
         }

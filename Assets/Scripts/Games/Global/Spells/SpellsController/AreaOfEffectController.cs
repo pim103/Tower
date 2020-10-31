@@ -150,64 +150,6 @@ namespace Games.Global.Spells.SpellsController
 //            }
         }
 
-        private void BasicAttack(Entity entity, Entity enemy, float extraDamage, AreaOfEffectSpell areaOfEffectSpell)
-        {
-//            AbilityParameters paramaters = new AbilityParameters { origin = entity };
-//
-//            bool damageIsNull = (enemy.isIntangible && areaOfEffectSpell.damageType == DamageType.Physical) ||
-//                                (enemy.hasAntiSpell && areaOfEffectSpell.damageType == DamageType.Magical) ||
-//                                entity.isBlind ||
-//                                enemy.isUntargeatable ||
-//                                entity.hasDivineShield;
-//
-//            if (entity.weapons.Count > 0)
-//            {
-//                Weapon weapon = entity.weapons[0];
-//                weapon.OnDamageDealt(paramaters);
-//                extraDamage += weapon.damage;
-//            }
-//
-//            foreach (Armor armor in entity.armors)
-//            {
-//                armor.OnDamageDealt(paramaters);
-//            }
-//
-//            List<Effect> effects = entity.damageDealExtraEffect.DistinctBy(currentEffect => currentEffect.typeEffect)
-//                .ToList();
-//            foreach (Effect effect in effects)
-//            {
-//                if (effect == null)
-//                {
-//                    continue;
-//                }
-//                EffectController.ApplyEffect(enemy, effect, entity, areaOfEffectSpell.startPosition);
-//            }
-//
-//            BuffController.EntityDealDamage(entity, enemy);
-//
-//            float damage = entity.att + extraDamage;
-//            if (entity.isWeak)
-//            {
-//                damage /= 2;
-//            }
-//            
-//            if (enemy.hasMirror && areaOfEffectSpell.damageType == DamageType.Magical)
-//            {
-//                AbilityParameters newAbility = new AbilityParameters { origin = entity };
-//                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
-//            }
-//
-//            if (enemy.hasThorn && areaOfEffectSpell.damageType == DamageType.Physical)
-//            {
-//                AbilityParameters newAbility = new AbilityParameters { origin = entity };
-//                entity.TakeDamage(damage * 0.4f, newAbility, DamageType.Magical, entity.canPierce);
-//            }
-//
-//            damage = damageIsNull ? 0 : damage;
-//
-//            enemy.TakeDamage(damage, paramaters, areaOfEffectSpell.damageType ,entity.canPierce);
-        }
-
         private void IntervalHitEnemies(Entity entity, AreaOfEffectSpell areaOfEffectSpell)
         {
 //            AbilityParameters paramaters = new AbilityParameters { origin = entity };

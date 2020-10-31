@@ -33,7 +33,7 @@ namespace Games.Defenses
                 inactiveState.SetActive(false);
                 activeState.SetActive(true);
                 playerEntity = other.gameObject.GetComponent<PlayerPrefab>().entity;
-                playerEntity.TakeDamage(20.0f, null, DamageType.Physical);
+                playerEntity.TakeDamage(20.0f, entity, DamageType.Physical);
             }
         }
     }

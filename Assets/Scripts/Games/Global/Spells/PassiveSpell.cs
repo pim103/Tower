@@ -1,4 +1,5 @@
 ﻿using System;
+using Games.Global.Spells.SpellsController;
 
 namespace Games.Global.Spells
 {
@@ -10,10 +11,22 @@ namespace Games.Global.Spells
             typeSpell = TypeSpell.Passive;
         }
 
-        public float interval { get; set; }
-        public SpellComponent linkedEffectOnInterval { get; set; }
+        public SpellComponent permanentSpellComponent { get; set; }
+        private SpellComponent permanentSpellComponentInstantiate;
 
-        public SpellComponent permanentLinkedEffect { get; set; }
-        public Spell newDefensiveSpell { get; set; }
+        public override void DuringInterval()
+        {
+            spellDuration = 99999;
+
+            if (caster.hasPassiveDeactivate && permanentSpellComponentInstantiate != null)
+            {
+                SpellInterpreter.EndSpellComponent(permanentSpellComponentInstantiate);
+                permanentSpellComponentInstantiate = null;
+            }
+            else if (permanentSpellComponentInstantiate == null)
+            {
+                permanentSpellComponentInstantiate = SpellController.CastSpellComponent(caster, permanentSpellComponent, caster, caster.entityPrefab.transform.position, this);
+            }
+        }
     }
 }
