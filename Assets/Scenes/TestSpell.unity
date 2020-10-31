@@ -214,13 +214,7 @@ GameObject:
   - component: {fileID: 52772915}
   - component: {fileID: 52772914}
   - component: {fileID: 52772913}
-  - component: {fileID: 52772912}
-  - component: {fileID: 52772911}
-  - component: {fileID: 52772910}
-  - component: {fileID: 52772909}
-  - component: {fileID: 52772908}
   - component: {fileID: 52772906}
-  - component: {fileID: 52772904}
   - component: {fileID: 52772903}
   m_Layer: 0
   m_Name: StateController
@@ -238,19 +232,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 52772902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbfff1e314089842a0b46c31ef1d8be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c20ca677c7f5a498816db6715b97b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 577d2e95782146f0aa5377136752201a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &52772906
@@ -265,66 +247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376bab91269ba4145961fb073a36bc97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &52772908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6668c5ada547de94f9fa0d75364337f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f19adcacad65ba418f68f57ea7d0e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b1a3b8251cd0841ab8b6b6770b9141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2f6b465601304428508bb7722eedb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52cf2837485cf7243aff047324efb0a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &52772913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,14 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e678bd072b57b438dcdcab638e3d86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffController: {fileID: 52772911}
-  areaOfEffectController: {fileID: 52772912}
-  movementController: {fileID: 52772910}
-  waveController: {fileID: 52772903}
-  projectileController: {fileID: 52772908}
-  summonController: {fileID: 52772906}
-  passiveController: {fileID: 52772909}
-  transformationController: {fileID: 52772904}
+  spellInterpreter: {fileID: 52772903}
 --- !u!114 &52772914
 MonoBehaviour:
   m_ObjectHideFlags: 0
