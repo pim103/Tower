@@ -113,10 +113,16 @@ namespace Games.Global.Spells.SpellsController
         
         public static void PlaySpellActions(SpellComponent spellComponent, Trigger trigger)
         {
-            List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
+            if (!spellComponent.actions.ContainsKey(trigger))
+            {
+                return;
+            }
 
+            List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
+            
             foreach (ActionTriggered action in actionsToPlay)
             {
+                Debug.Log(action.startFrom);
                 TargetsFound targetsFound =
                     SpellController.GetTargetGetWithStartForm(spellComponent.caster, action.startFrom,
                         spellComponent);
@@ -142,7 +148,7 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
 
-                if (action.damageDeal != 0)
+                if (action.damageDeal > 0)
                 {
                     int damageDeal = action.damageDeal;
 

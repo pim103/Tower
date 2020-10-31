@@ -83,7 +83,7 @@ namespace Games.Global.Weapons
                     {
                         Weapon loadedWeapon = equipmentJsonObject.ConvertToWeapon();
 
-                        if (equipmentGameObject != null && equipmentGameObject.Length > 0)
+                        if (equipmentGameObject != null && equipmentGameObject.Length > 0 && equipmentGameObject.ToList().Exists(go => go.name == loadedWeapon.modelName))
                         {
                             loadedWeapon.model = equipmentGameObject.First(go => go.name == loadedWeapon.modelName);
                         }
@@ -94,7 +94,7 @@ namespace Games.Global.Weapons
                     {
                         Armor loadedArmor = equipmentJsonObject.ConvertToArmor();
 
-                        if (equipmentGameObject != null && equipmentGameObject.Length > 0)
+                        if (equipmentGameObject != null && equipmentGameObject.Length > 0 && equipmentGameObject.ToList().Exists(go => go.name == loadedArmor.modelName))
                         {
                             loadedArmor.model = equipmentGameObject.First(go => go.name == loadedArmor.modelName);
                         }

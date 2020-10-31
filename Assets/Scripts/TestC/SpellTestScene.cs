@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Games;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -172,6 +174,8 @@ namespace TestC
             player.spell2.text = "";
             player.spell3.text = "";
 
+            CreateTestSpell();
+
             int countSpells = 0;
 //            foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
 //            {
@@ -198,6 +202,49 @@ namespace TestC
 //            }
 
             SpellController.CastPassiveSpell(player.entity);
+        }
+
+        private void CreateTestSpell()
+        {
+            Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
+            actions.Add(Trigger.ON_TRIGGER_ENTER, new List<ActionTriggered>());
+
+            ActionTriggered firstAction = new ActionTriggered
+            {
+                damageDeal = 100,
+                startFrom = StartFrom.AllEnemiesInArea
+            };
+            actions[Trigger.ON_TRIGGER_ENTER].Add(firstAction);
+            
+            MovementSpell firstSpellComponent = new MovementSpell
+            {
+                spellToInstantiate = new SpellToInstantiate
+                {
+                    geometry = Geometry.Sphere,
+                    scale = Vector3.one,
+                    incrementAmplitudeByTime = Vector3.one,
+                    passingThroughEntity = true
+                },
+                trajectory = new Trajectory
+                {
+                    speed = 5,
+                    spellPath = SpellPathSerializer.TryToImportVertexPath()
+                },
+                actions = actions,
+                spellDuration = 5,
+                spellInterval = 0.05f,
+                movementSpellType = MovementSpellType.Charge
+            };
+
+            Spell firstTestSpell = new Spell
+            {
+                cooldown = 0,
+                cost = 0,
+                activeSpellComponent = firstSpellComponent
+            };
+
+            player.spell1.text = "Test spell";
+            player.entity.spells.Add(firstTestSpell);
         }
     }
 }

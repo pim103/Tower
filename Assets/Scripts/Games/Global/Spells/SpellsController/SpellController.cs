@@ -258,7 +258,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static SpellComponent CastSpellComponent(Entity caster, SpellComponent spellComponent, Entity target, Vector3 startPosition, SpellComponent lastSpellComponent = null)
         {
-            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent);
+            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent as MovementSpell);
             caster.activeSpellComponents.Add(cloneSpellComponent);
             
             cloneSpellComponent.caster = caster;
@@ -273,7 +273,7 @@ namespace Games.Global.Spells.SpellsController
                 cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
             }
 
-            SpellInterpreter.instance.StartSpellTreatment(spellComponent, startPosition);
+            SpellInterpreter.instance.StartSpellTreatment(cloneSpellComponent, startPosition);
             return cloneSpellComponent;
         }
 

@@ -75,8 +75,7 @@ namespace Games.Global.Spells
                 else if (trajectory.spellPath != null)
                 {
                     distanceTravelled += trajectory.speed * spellInterval;
-                    caster.entityPrefab.transform.position = trajectory.spellPath.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
-                    caster.entityPrefab.transform.rotation = trajectory.spellPath.GetRotationAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
+                    caster.entityPrefab.transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
                 }
             }
         }

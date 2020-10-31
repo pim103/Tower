@@ -1,5 +1,6 @@
 ﻿using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
+using PathCreation;
 using UnityEngine;
 
 namespace Games.Global.Spells.SpellBehavior
@@ -15,47 +16,75 @@ namespace Games.Global.Spells.SpellBehavior
                 return;
             }
 
-            GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
-            genericSpellPrefab.transform.localScale = spellToInstantiate.scale;
-            genericSpellPrefab.transform.position = startPosition;
-
-            GameObject prefabWanted = null;
-            if (spellComponent.spellToInstantiate.idPoolObject != -1)
+            PathCreator pathCreator = null;
+            
+            // INIT SPELL PATH
+            if (spellComponent.trajectory != null && spellComponent.trajectory.followCategory == FollowCategory.NONE)
             {
-                prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(spellComponent.spellToInstantiate.idPoolObject);
-                prefabWanted.transform.parent = genericSpellPrefab.transform;
-                prefabWanted.transform.localPosition = Vector3.zero;
-                prefabWanted.transform.localEulerAngles = Vector3.zero;
-                prefabWanted.transform.localScale = Vector3.one;
-                prefabWanted.SetActive(true);   
+                GameObject spellPathCreator = ObjectPooler.SharedInstance.GetPooledObject(0);
+                spellPathCreator.transform.position = startPosition;
+                spellPathCreator.transform.position += Vector3.up * 2;
+                spellPathCreator.transform.rotation = spellComponent.caster.entityPrefab.transform.rotation;
+
+                spellPathCreator.SetActive(true);
+
+                pathCreator = spellPathCreator.GetComponent<PathCreator>();
+                pathCreator.bezierPath = spellComponent.trajectory.spellPath;
             }
 
-            SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
-            spellPrefabController.ActiveCollider(spellToInstantiate.geometry);
-            spellPrefabController.SetValues(spellComponent.caster, spellComponent, prefabWanted);
+            spellComponent.pathCreator = pathCreator;
 
-            spellComponent.spellPrefabController = spellPrefabController;
-            
-            genericSpellPrefab.SetActive(true);
+            if (spellComponent.spellToInstantiate != null)
+            {
+                // INIT GENERIC SPELL PREFAB
+                GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
+                genericSpellPrefab.transform.localScale = spellToInstantiate.scale;
+                genericSpellPrefab.transform.position = startPosition;
+
+                // INIT OBJECT CHILD OF GENERIC SPELL
+                GameObject prefabWanted = null;
+                if (spellComponent.spellToInstantiate.idPoolObject != -1)
+                {
+                    prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(spellComponent.spellToInstantiate.idPoolObject);
+                    prefabWanted.transform.parent = genericSpellPrefab.transform;
+                    prefabWanted.transform.localPosition = Vector3.zero;
+                    prefabWanted.transform.localEulerAngles = Vector3.zero;
+                    prefabWanted.transform.localScale = Vector3.one;
+                    prefabWanted.SetActive(true);   
+                }
+
+                SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
+                spellPrefabController.ActiveCollider(spellToInstantiate.geometry);
+                spellPrefabController.SetValues(spellComponent.caster, spellComponent, prefabWanted);
+
+                spellComponent.spellPrefabController = spellPrefabController;
+                
+                genericSpellPrefab.SetActive(true);
+            }
         }
 
         public static void DeactivateSpell(SpellComponent spellComponent)
         {
             SpellPrefabController spellPrefabController = spellComponent.spellPrefabController;
 
-            if (spellPrefabController == null)
+            if (spellComponent.pathCreator != null)
             {
-                return;
+                spellComponent.pathCreator.gameObject.SetActive(false);
             }
 
-            if (spellPrefabController.childrenGameObject != null)
+            if (spellPrefabController != null)
             {
-                spellPrefabController.childrenGameObject.SetActive(false);
-            }
+                if (spellPrefabController.childrenGameObject != null)
+                {
+                    spellPrefabController.childrenGameObject.SetActive(false);
+                }
 
-            spellPrefabController.transform.position = Vector3.zero;
-            spellPrefabController.transform.localScale = Vector3.zero;
-            spellPrefabController.ClearValues();
+                spellPrefabController.transform.position = Vector3.zero;
+                spellPrefabController.transform.localScale = Vector3.zero;
+                spellPrefabController.ClearValues();
+
+                spellPrefabController.gameObject.SetActive(false);
+            }
         }
     }
 }

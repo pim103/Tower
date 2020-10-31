@@ -12,7 +12,7 @@ namespace TestC
         [SerializeField] private PathCreator pathCreator;
         [SerializeField] private PathCreator emptyPathCreator;
 
-        private string folderName = "SpellPathTemp";
+        private static string folderName = "SpellPathTemp";
 
         private void Start()
         {
@@ -30,30 +30,43 @@ namespace TestC
             Debug.Log("EXPORT PATH");
 
             fsSerializer serializer = new fsSerializer();
-            serializer.TrySerialize(pathCreator.path.GetType(), pathCreator.path, out fsData data);
-            File.WriteAllText(Application.dataPath + "/Data/" + folderName + "/vertexPath.json", fsJsonPrinter.CompressedJson(data));
+            serializer.TrySerialize(pathCreator.path.GetType(), pathCreator.bezierPath, out fsData data);
+            File.WriteAllText(Application.dataPath + "/Data/" + folderName + "/bezierPath.json", fsJsonPrinter.CompressedJson(data));
         }
 
-        private void TryToImportVertexPath()
+        public static BezierPath TryToImportVertexPath()
         {
             Debug.Log("IMPORT PATH");
             
-            string jsonPath = File.ReadAllText(Application.dataPath + "/Data/" + folderName + "/vertexPath.json");
+            string jsonPath = File.ReadAllText(Application.dataPath + "/Data/" + folderName + "/bezierPath.json");
             
             fsSerializer serializer = new fsSerializer();
             fsData data = fsJsonParser.Parse(jsonPath);
 
-            VertexPath vertexPath = null;
-            serializer.TryDeserialize(data, ref vertexPath);
+            BezierPath bezierPath = null;
+            serializer.TryDeserialize(data, ref bezierPath);
 
-            emptyPathCreator.path = vertexPath;
+            return bezierPath;
+        }
+        
+        private void TryToImportVertexPathLocal()
+        {
+            string jsonPath = File.ReadAllText(Application.dataPath + "/Data/" + folderName + "/bezierPath.json");
+            
+            fsSerializer serializer = new fsSerializer();
+            fsData data = fsJsonParser.Parse(jsonPath);
+
+            BezierPath bezierPath = null;
+            serializer.TryDeserialize(data, ref bezierPath);
+
+            emptyPathCreator.bezierPath = bezierPath;
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                TryToImportVertexPath();
+                TryToImportVertexPathLocal();
             }
 
             if (Input.GetKeyDown(KeyCode.S))

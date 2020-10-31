@@ -9,7 +9,7 @@ namespace Games.Global.Spells.SpellParameter
         public Vector3 scale { get; set; }
 
         // If not null, set objetToPool at children of SpellPrefabController
-        public int idPoolObject { get; set; }
+        public int idPoolObject { get; set; } = -1;
 
         // Specific to Wave
         public Vector3 incrementAmplitudeByTime { get; set; }

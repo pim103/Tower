@@ -38,11 +38,11 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 transform.position = traj.objectToFollow.position;
             } 
-            else if (traj.spellPath != null)
+            else if (spellComponent.pathCreator != null)
             {
                 distanceTravelled += speed * Time.deltaTime;
-                transform.position = traj.spellPath.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
-                transform.rotation = traj.spellPath.GetRotationAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
+                transform.position = spellComponent.pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
+                transform.rotation = spellComponent.pathCreator.path.GetRotationAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
             }
 
             if (spellToInstantiate.incrementAmplitudeByTime != Vector3.zero)
@@ -133,9 +133,12 @@ namespace Games.Global.Spells.SpellBehavior
                 return false;
             }
 
-            if (other.gameObject.layer == wallLayer && !spellComponent.spellToInstantiate.passingThroughEntity)
+            if (other.gameObject.layer == wallLayer)
             {
-                SpellInterpreter.EndSpellComponent(spellComponent);
+                if (!spellComponent.spellToInstantiate.passingThroughEntity)
+                {
+                    SpellInterpreter.EndSpellComponent(spellComponent);
+                }
 
                 return false;
             }
@@ -154,7 +157,7 @@ namespace Games.Global.Spells.SpellBehavior
             }
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
-            
+
             if ( (casterOfSpell.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||
                  (casterOfSpell.typeEntity == TypeEntity.ALLIES && entityEnter.typeEntity == TypeEntity.MOB ))
             {
@@ -184,18 +187,23 @@ namespace Games.Global.Spells.SpellBehavior
 
         private void OnTriggerEnter(Collider other)
         {
-            if (OnTriggerCheckOtherType(other, true))
+            if (!OnTriggerCheckOtherType(other, true))
             {
                 return;
             }
 
             spellComponent.OnTriggerEnter(other.GetComponent<EntityPrefab>().entity);
             SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+
+            if (!spellComponent.spellToInstantiate.passingThroughEntity)
+            {
+                SpellInterpreter.EndSpellComponent(spellComponent);
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (OnTriggerCheckOtherType(other, false))
+            if (!OnTriggerCheckOtherType(other, false))
             {
                 return;
             }

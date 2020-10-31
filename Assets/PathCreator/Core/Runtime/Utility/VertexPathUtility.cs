@@ -9,7 +9,7 @@ namespace PathCreation.Utility
 		public static PathSplitData SplitBezierPathByAngleError(BezierPath bezierPath, float maxAngleError, float minVertexDst, float accuracy)
         {
 			PathSplitData splitData = new PathSplitData();
-
+			
             splitData.vertices.Add(bezierPath[0]);
             splitData.tangents.Add(CubicBezierUtility.EvaluateCurveDerivative(bezierPath.GetPointsInSegment(0), 0).normalized);
             splitData.cumulativeLength.Add(0);

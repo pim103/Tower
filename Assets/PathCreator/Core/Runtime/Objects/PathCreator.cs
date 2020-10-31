@@ -18,10 +18,6 @@ namespace PathCreation {
 
         // Vertex path created from the current bezier path
         public VertexPath path {
-            set
-            {
-                editorData.SetVertexPath(value);
-            }
             get {
                 if (!initialized) {
                     InitializeEditorData (false);

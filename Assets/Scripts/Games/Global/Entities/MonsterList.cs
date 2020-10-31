@@ -62,7 +62,7 @@ namespace Games.Global.Entities
                     {
                         Monster monster = mob.ConvertToMonster();
 
-                        if (monsterGameObjects != null)
+                        if (monsterGameObjects != null && monsterGameObjects.ToList().Exists(model => model.name == monster.modelName))
                         {
                             monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
                         }

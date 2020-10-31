@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellParameter;
+using PathCreation;
 using UnityEngine;
 
 namespace Games.Global.Spells
@@ -136,7 +137,7 @@ namespace Games.Global.Spells
         public DamageType damageType { get; set; }
 
         /* New var */
-        public Dictionary<Trigger, List<ActionTriggered>> actions { get; set; }
+        public Dictionary<Trigger, List<ActionTriggered>> actions { get; set; } = new Dictionary<Trigger, List<ActionTriggered>>();
         public float spellDuration { get; set; }
         public float spellInterval { get; set; }
 
@@ -167,6 +168,8 @@ namespace Games.Global.Spells
         public Entity targetAtCast;
 
         public Vector3 startAtPosition;
+
+        public PathCreator pathCreator;
     }
 
     [Serializable]

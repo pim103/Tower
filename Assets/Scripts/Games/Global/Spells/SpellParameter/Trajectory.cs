@@ -17,7 +17,7 @@ namespace Games.Global.Spells.SpellParameter
         public FollowCategory followCategory { get; set; }
         
         public Transform objectToFollow;
-        public VertexPath spellPath { get; set; }
+        public BezierPath spellPath { get; set; }
         public float speed { get; set; }
     }
 }
