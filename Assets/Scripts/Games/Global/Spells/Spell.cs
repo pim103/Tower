@@ -30,6 +30,7 @@ namespace Games.Global.Spells
 
     public enum TypeSpell
     {
+        Classic,
         Movement,
         Buff,
         AreaOfEffect,
@@ -37,7 +38,8 @@ namespace Games.Global.Spells
         Projectile,
         Summon,
         Passive,
-        Transformation
+        Transformation,
+        BasicAttack
     }
 
     public enum DamageType

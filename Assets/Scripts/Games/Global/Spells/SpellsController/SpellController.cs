@@ -145,6 +145,13 @@ namespace Games.Global.Spells.SpellsController
                         targetFound.position = lastSpellComponent.targetAtCast.entityPrefab.transform.position;
                         targetFound.target = lastSpellComponent.targetAtCast;
                     }
+
+                    if (targetFound.target != null && targetFound.target.hp <= 0)
+                    {
+                        targetFound.target = null;
+                        targetFound.position = Vector3.zero;
+                    }
+                    
                     break;
                 /* Can be use by ActionTriggered after area */
                 case StartFrom.RandomPositionInArea:
@@ -156,7 +163,7 @@ namespace Games.Global.Spells.SpellsController
                     SpellPrefabController spellPrefabController = lastSpellComponent.spellPrefabController;
                     SpellToInstantiate spellToInstantiate = lastSpellComponent.spellToInstantiate;
                     Vector3 currentPosition = spellPrefabController.transform.position;
-                    
+
                     if (lastSpellComponent.spellToInstantiate.geometry == Geometry.Sphere)
                     {
                         float t = 2 * Mathf.PI * Random.Range(0.0f, 1.0f);
@@ -182,15 +189,22 @@ namespace Games.Global.Spells.SpellsController
                     break;
                 /* Can be use by ActionTriggered after area */
                 case StartFrom.RandomEnemyInArea:
-                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null)
+                    if (lastSpellComponent == null || lastSpellComponent.spellPrefabController == null || lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.Count == 0)
                     {
                         break;
                     }
 
-                    int randEnemy = Random.Range(0, lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.Count);
-                    targetFound.position = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy].entityPrefab.transform
-                        .position;
-                    targetFound.target = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell[randEnemy];
+                    List<Entity> enemiesAlive =
+                        lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.FindAll(enemy => enemy.hp > 0);
+
+                    if (enemiesAlive.Count == 0)
+                    {
+                        break;
+                    }
+
+                    int randEnemy = Random.Range(0, enemiesAlive.Count);
+                    targetFound.position = enemiesAlive[randEnemy].entityPrefab.transform.position;
+                    targetFound.target = enemiesAlive[randEnemy];
                     break;
                 /* Can be use by ActionTriggered */
                 case StartFrom.LastSpellComponent:
@@ -205,7 +219,7 @@ namespace Games.Global.Spells.SpellsController
                 case StartFrom.ClosestEnemyFromCaster:
                     if (caster.isPlayer)
                     {
-                        Monster closestMonster = DataObject.monsterInScene.OrderByDescending(monster =>
+                        Monster closestMonster = DataObject.monsterInScene.FindAll(monster => monster.hp > 0).OrderByDescending(monster =>
                             caster.entityPrefab.transform.position -
                             monster.entityPrefab.transform.position).First();
 
@@ -233,7 +247,7 @@ namespace Games.Global.Spells.SpellsController
                         break;
                     }
 
-                    targetFound.targets = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell;
+                    targetFound.targets = lastSpellComponent.spellPrefabController.enemiesTouchedBySpell.FindAll(enemy => enemy.hp > 0);
                     break;
             }
 
@@ -256,21 +270,43 @@ namespace Games.Global.Spells.SpellsController
             }
         }
 
+        private static SpellComponent CloneCorrectSpellComponent(SpellComponent spellComponent)
+        {
+            switch (spellComponent.typeSpell)
+            {
+                case TypeSpell.Movement:
+                    return Tools.Clone(spellComponent as MovementSpell);
+                case TypeSpell.Transformation:
+                    return Tools.Clone(spellComponent as TransformationSpell);
+                case TypeSpell.Passive:
+                    return Tools.Clone(spellComponent as PassiveSpell);
+                case TypeSpell.BasicAttack:
+                    return Tools.Clone(spellComponent as BasicAttackSpell);
+                case TypeSpell.Summon:
+                    return Tools.Clone(spellComponent as SummonSpell);
+                default:
+                    return Tools.Clone(spellComponent);
+            }
+        } 
+
         public static SpellComponent CastSpellComponent(Entity caster, SpellComponent spellComponent, Entity target, Vector3 startPosition, SpellComponent lastSpellComponent = null)
         {
-            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent);
+            SpellComponent cloneSpellComponent = CloneCorrectSpellComponent(spellComponent);
             caster.activeSpellComponents.Add(cloneSpellComponent);
             
             cloneSpellComponent.caster = caster;
             cloneSpellComponent.targetAtCast = target;
 
-            if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_TARGET)
+            if (cloneSpellComponent.trajectory != null)
             {
-                cloneSpellComponent.trajectory.objectToFollow = target.entityPrefab.transform;
-            } 
-            else if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_LAST_SPELL && lastSpellComponent != null && lastSpellComponent.spellPrefabController != null)
-            {
-                cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
+                if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_TARGET)
+                {
+                    cloneSpellComponent.trajectory.objectToFollow = target.entityPrefab.transform;
+                } 
+                else if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_LAST_SPELL && lastSpellComponent != null && lastSpellComponent.spellPrefabController != null)
+                {
+                    cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
+                }
             }
 
             SpellInterpreter.instance.StartSpellTreatment(cloneSpellComponent, startPosition);

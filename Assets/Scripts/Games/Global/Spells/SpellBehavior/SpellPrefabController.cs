@@ -48,7 +48,7 @@ namespace Games.Global.Spells.SpellBehavior
                     SpellInterpreter.EndSpellComponent(spellComponent);
                 }
             }
-            else if (traj.objectToFollow != null)
+            else if (traj != null && traj.objectToFollow != null)
             {
                 transform.position = traj.objectToFollow.position;
             }
@@ -65,7 +65,11 @@ namespace Games.Global.Spells.SpellBehavior
             
             casterOfSpell = originEntity;
             spellComponent = originSpellComponent;
-            speed = originSpellComponent.trajectory.speed;
+
+            if (originSpellComponent.trajectory != null)
+            {
+                speed = originSpellComponent.trajectory.speed;
+            }
 
             if (enemiesTouchedBySpell == null)
             {

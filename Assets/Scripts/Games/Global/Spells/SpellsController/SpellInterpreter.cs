@@ -210,7 +210,7 @@ namespace Games.Global.Spells.SpellsController
             float spellInterval = spellComponent.spellInterval <= 0.00001 ? 1 : spellComponent.spellInterval;
             int originalSpellCharges = spellComponent.spellCharges;
             
-            while (spellDuration > 0 || (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || spellComponent.trajectory.disapearAtTheEndOfTrajectory)
+            while (spellDuration > 0 || (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || (spellComponent.trajectory != null && spellComponent.trajectory.disapearAtTheEndOfTrajectory))
             {   
                 DuringIntervalSpellBehavior(spellComponent);
                 yield return new WaitForSeconds(spellInterval);

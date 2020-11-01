@@ -22,7 +22,7 @@ namespace Games.Global.Spells.SpellBehavior
             newPosition.y = spellToInstantiate.height;
 
             // INIT SPELL PATH
-            if (spellComponent.trajectory.spellPath != null)
+            if (spellComponent.trajectory != null && spellComponent.trajectory.spellPath != null)
             {
                 GameObject spellPathCreator = ObjectPooler.SharedInstance.GetPooledObject(0);
                 

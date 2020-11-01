@@ -26,7 +26,6 @@ namespace Utils
         public static T Clone<T>(T origin) where T: new()
         {
             T clone = new T();
-            Debug.Log(clone.GetType());
             PropertyInfo[] propertyInfos = origin.GetType().GetProperties(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance);
 
             foreach (PropertyInfo propertyInfo in propertyInfos)
