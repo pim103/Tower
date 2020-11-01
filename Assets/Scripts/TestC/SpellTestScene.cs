@@ -11,6 +11,7 @@ using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
 using Games.Transitions;
+using PathCreation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -207,33 +208,32 @@ namespace TestC
         private void CreateTestSpell()
         {
             Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
-            actions.Add(Trigger.ON_TRIGGER_ENTER, new List<ActionTriggered>());
+            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());
 
             ActionTriggered firstAction = new ActionTriggered
             {
-                damageDeal = 100,
+                damageDeal = 15,
                 startFrom = StartFrom.AllEnemiesInArea
             };
-            actions[Trigger.ON_TRIGGER_ENTER].Add(firstAction);
-            
-            MovementSpell firstSpellComponent = new MovementSpell
+            actions[Trigger.INTERVAL].Add(firstAction);
+
+            SpellComponent firstSpellComponent = new SpellComponent
             {
                 spellToInstantiate = new SpellToInstantiate
                 {
                     geometry = Geometry.Sphere,
                     scale = Vector3.one,
-                    incrementAmplitudeByTime = Vector3.one,
-                    passingThroughEntity = true
+                    incrementAmplitudeByTime = Vector3.one
                 },
                 trajectory = new Trajectory
                 {
-                    speed = 5,
-                    spellPath = SpellPathSerializer.TryToImportVertexPath()
+                    followCategory = FollowCategory.FOLLOW_TARGET,
+//                    speed = 5,
+//                    spellPath = SpellPathSerializer.TryToImportVertexPath()
                 },
                 actions = actions,
                 spellDuration = 5,
-                spellInterval = 0.05f,
-                movementSpellType = MovementSpellType.Charge
+                spellInterval = 1
             };
 
             Spell firstTestSpell = new Spell
@@ -245,6 +245,38 @@ namespace TestC
 
             player.spell1.text = "Test spell";
             player.entity.spells.Add(firstTestSpell);
+            
+            /* ================================= 2ND SPELL ================================= */
+            SpellComponent secondSpellComponent = new SpellComponent
+            {
+                spellToInstantiate = new SpellToInstantiate
+                {
+                    geometry = Geometry.Sphere,
+                    scale = Vector3.one,
+                    height = 1,
+                    passingThroughEntity = true
+                },
+                trajectory = new Trajectory
+                {
+                    speed = 10,
+                    spellPath = SpellPathSerializer.TryToImportSecondVertexPath(),
+                    endOfPathInstruction = EndOfPathInstruction.Loop,
+                    followCategory = FollowCategory.FOLLOW_TARGET
+                },
+                actions = actions,
+                spellDuration = 10,
+                spellInterval = 0.05f
+            };
+
+            Spell secondTestSpell = new Spell
+            {
+                cooldown = 0,
+                cost = 0,
+                activeSpellComponent = secondSpellComponent
+            };
+
+            player.spell2.text = "spell 2";
+            player.entity.spells.Add(secondTestSpell);
         }
     }
 }

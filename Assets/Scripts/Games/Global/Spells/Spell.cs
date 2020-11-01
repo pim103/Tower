@@ -70,7 +70,7 @@ namespace Games.Global.Spells
         public List<Entity> targets = new List<Entity>();
         public Entity target = null;
 
-        public Vector3 position = Vector3.negativeInfinity;
+        public Vector3 position = Vector3.zero;
     }
 
     [Serializable]

@@ -18,18 +18,27 @@ namespace Games.Global.Spells.SpellBehavior
 
             PathCreator pathCreator = null;
             
+            Vector3 newPosition = startPosition;
+            newPosition.y = spellToInstantiate.height;
+
             // INIT SPELL PATH
-            if (spellComponent.trajectory != null && spellComponent.trajectory.followCategory == FollowCategory.NONE)
+            if (spellComponent.trajectory.spellPath != null)
             {
                 GameObject spellPathCreator = ObjectPooler.SharedInstance.GetPooledObject(0);
-                spellPathCreator.transform.position = startPosition;
-                spellPathCreator.transform.position += Vector3.up * 2;
+                
+                spellPathCreator.transform.position = newPosition;
                 spellPathCreator.transform.rotation = spellComponent.caster.entityPrefab.transform.rotation;
 
                 spellPathCreator.SetActive(true);
 
                 pathCreator = spellPathCreator.GetComponent<PathCreator>();
                 pathCreator.bezierPath = spellComponent.trajectory.spellPath;
+
+                spellComponent.trajectory.initialParent = spellPathCreator.transform.parent;
+                if (spellComponent.trajectory.objectToFollow != null)
+                {
+                    spellPathCreator.transform.parent = spellComponent.trajectory.objectToFollow;
+                }
             }
 
             spellComponent.pathCreator = pathCreator;
@@ -39,7 +48,7 @@ namespace Games.Global.Spells.SpellBehavior
                 // INIT GENERIC SPELL PREFAB
                 GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
                 genericSpellPrefab.transform.localScale = spellToInstantiate.scale;
-                genericSpellPrefab.transform.position = startPosition;
+                genericSpellPrefab.transform.position = newPosition;
 
                 // INIT OBJECT CHILD OF GENERIC SPELL
                 GameObject prefabWanted = null;
@@ -69,6 +78,7 @@ namespace Games.Global.Spells.SpellBehavior
 
             if (spellComponent.pathCreator != null)
             {
+                spellComponent.pathCreator.transform.parent = spellComponent.trajectory.initialParent;
                 spellComponent.pathCreator.gameObject.SetActive(false);
             }
 

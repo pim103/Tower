@@ -258,7 +258,7 @@ namespace Games.Global.Spells.SpellsController
 
         public static SpellComponent CastSpellComponent(Entity caster, SpellComponent spellComponent, Entity target, Vector3 startPosition, SpellComponent lastSpellComponent = null)
         {
-            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent as MovementSpell);
+            SpellComponent cloneSpellComponent = Tools.Clone(spellComponent);
             caster.activeSpellComponents.Add(cloneSpellComponent);
             
             cloneSpellComponent.caster = caster;

@@ -34,15 +34,23 @@ namespace Games.Global.Spells.SpellBehavior
             Trajectory traj = spellComponent.trajectory;
             SpellToInstantiate spellToInstantiate = spellComponent.spellToInstantiate;
 
-            if (traj.objectToFollow != null)
+            // Si il y a un path creator, on privilégie le follow de trajectoire - sinon, on cherche l'object to follow
+            if (spellComponent.pathCreator != null)
+            {
+                Vector3 lastPosition = transform.position;
+                
+                distanceTravelled += speed * Time.deltaTime;
+                transform.position = spellComponent.pathCreator.path.GetPointAtDistance(distanceTravelled, traj.endOfPathInstruction);
+                transform.rotation = spellComponent.pathCreator.path.GetRotationAtDistance(distanceTravelled, traj.endOfPathInstruction);
+
+                if (lastPosition == transform.position && traj.disapearAtTheEndOfTrajectory)
+                {
+                    SpellInterpreter.EndSpellComponent(spellComponent);
+                }
+            }
+            else if (traj.objectToFollow != null)
             {
                 transform.position = traj.objectToFollow.position;
-            } 
-            else if (spellComponent.pathCreator != null)
-            {
-                distanceTravelled += speed * Time.deltaTime;
-                transform.position = spellComponent.pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
-                transform.rotation = spellComponent.pathCreator.path.GetRotationAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
             }
 
             if (spellToInstantiate.incrementAmplitudeByTime != Vector3.zero)
@@ -148,8 +156,6 @@ namespace Games.Global.Spells.SpellBehavior
                 if (spellComponent.canStopProjectile)
                 {
                     SpellComponent otherSpellComponent = other.GetComponent<SpellPrefabController>().spellComponent;
-                        SpellInterpreter.EndSpellComponent(spellComponent);
-
                     SpellInterpreter.EndSpellComponent(otherSpellComponent);
                 }
 
@@ -193,9 +199,9 @@ namespace Games.Global.Spells.SpellBehavior
             }
 
             spellComponent.OnTriggerEnter(other.GetComponent<EntityPrefab>().entity);
-            SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+            bool hasFindindAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
 
-            if (!spellComponent.spellToInstantiate.passingThroughEntity)
+            if (hasFindindAction && !spellComponent.spellToInstantiate.passingThroughEntity)
             {
                 SpellInterpreter.EndSpellComponent(spellComponent);
             }

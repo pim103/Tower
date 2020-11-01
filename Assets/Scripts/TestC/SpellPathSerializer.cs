@@ -21,8 +21,6 @@ namespace TestC
                 // Subscribed to the pathUpdated event so that we're notified if the path changes during the game
                 pathCreator.pathUpdated += OnPathChanged;
             }
-
-            TryToExportVertexPath();
         }
 
         private void TryToExportVertexPath()
@@ -31,7 +29,7 @@ namespace TestC
 
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(pathCreator.path.GetType(), pathCreator.bezierPath, out fsData data);
-            File.WriteAllText(Application.dataPath + "/Data/" + folderName + "/bezierPath.json", fsJsonPrinter.CompressedJson(data));
+            File.WriteAllText(Application.dataPath + "/Data/" + folderName + "/bezierLoopPath.json", fsJsonPrinter.CompressedJson(data));
         }
 
         public static BezierPath TryToImportVertexPath()
@@ -39,6 +37,21 @@ namespace TestC
             Debug.Log("IMPORT PATH");
             
             string jsonPath = File.ReadAllText(Application.dataPath + "/Data/" + folderName + "/bezierPath.json");
+            
+            fsSerializer serializer = new fsSerializer();
+            fsData data = fsJsonParser.Parse(jsonPath);
+
+            BezierPath bezierPath = null;
+            serializer.TryDeserialize(data, ref bezierPath);
+
+            return bezierPath;
+        }
+
+        public static BezierPath TryToImportSecondVertexPath()
+        {
+            Debug.Log("IMPORT PATH");
+            
+            string jsonPath = File.ReadAllText(Application.dataPath + "/Data/" + folderName + "/bezierLoopPath.json");
             
             fsSerializer serializer = new fsSerializer();
             fsData data = fsJsonParser.Parse(jsonPath);

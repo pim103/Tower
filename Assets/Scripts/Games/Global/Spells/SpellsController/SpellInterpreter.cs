@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global.Spells.SpellBehavior;
+using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -77,7 +78,7 @@ namespace Games.Global.Spells.SpellsController
             PlaySpellActions(spellComponent, Trigger.ON_ENTITY_DIE);
         }
 
-        private static bool CheckActionConditions(Entity caster, ActionTriggered action, TargetsFound targetsFound)
+        private static bool CheckActionConditionsAndValidTarget(Entity caster, ActionTriggered action, TargetsFound targetsFound)
         {
             if (action.percentageToTrigger != 100)
             {
@@ -105,32 +106,48 @@ namespace Games.Global.Spells.SpellsController
                             targetsFound.targets.Remove(target);
                         }
                     });
+
+                    if (targetsFound.targets.Count == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                if (targetsFound.target == null && (targetsFound.targets == null || targetsFound.targets.Count == 0) &&
+                    targetsFound.position == Vector3.zero)
+                {
+                    return false;
                 }
             }
             
             return true;
         }
         
-        public static void PlaySpellActions(SpellComponent spellComponent, Trigger trigger)
+        public static bool PlaySpellActions(SpellComponent spellComponent, Trigger trigger)
         {
+            bool findAction = false;
+            
             if (!spellComponent.actions.ContainsKey(trigger))
             {
-                return;
+                return findAction;
             }
 
             List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
             
             foreach (ActionTriggered action in actionsToPlay)
-            {
-                Debug.Log(action.startFrom);
+            {   
                 TargetsFound targetsFound =
                     SpellController.GetTargetGetWithStartForm(spellComponent.caster, action.startFrom,
                         spellComponent);
 
-                if (!CheckActionConditions(spellComponent.caster, action, targetsFound))
+                if (!CheckActionConditionsAndValidTarget(spellComponent.caster, action, targetsFound))
                 {
                     continue;
                 }
+
+                findAction = true;
 
                 if (action.spellComponent != null)
                 {
@@ -178,6 +195,8 @@ namespace Games.Global.Spells.SpellsController
                     }
                 }
             }
+
+            return findAction;
         }
 
         private IEnumerator IntervallSpell(SpellComponent spellComponent)
@@ -188,11 +207,11 @@ namespace Games.Global.Spells.SpellsController
             AtTheStartSpellBehavior(spellComponent);
 
             float spellDuration = spellComponent.spellDuration;
-            float spellInterval = spellComponent.spellInterval;
+            float spellInterval = spellComponent.spellInterval <= 0.00001 ? 1 : spellComponent.spellInterval;
             int originalSpellCharges = spellComponent.spellCharges;
             
-            while (spellDuration > 0 || (originalSpellCharges != 0 && spellComponent.spellCharges > 0))
-            {
+            while (spellDuration > 0 || (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || spellComponent.trajectory.disapearAtTheEndOfTrajectory)
+            {   
                 DuringIntervalSpellBehavior(spellComponent);
                 yield return new WaitForSeconds(spellInterval);
                 spellDuration -= spellInterval;
