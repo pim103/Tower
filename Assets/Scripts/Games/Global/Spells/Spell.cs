@@ -32,10 +32,6 @@ namespace Games.Global.Spells
     {
         Classic,
         Movement,
-        Buff,
-        AreaOfEffect,
-        Wave,
-        Projectile,
         Summon,
         Passive,
         Transformation,
