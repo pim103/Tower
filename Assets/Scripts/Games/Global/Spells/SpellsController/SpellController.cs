@@ -74,53 +74,6 @@ namespace Games.Global.Spells.SpellsController
             return true;
         }
 
-//        private static void SetOriginalPosition(SpellComponent spellComponent, Vector3 startPosition, Entity caster, Entity target = null)
-//        {
-//            switch (spellComponent.OriginalPosition)
-//            {
-//                case OriginalPosition.Caster:
-//                    spellComponent.startPosition = caster.entityPrefab.transform.position;
-//                    if (spellComponent.needPositionToMidToEntity)
-//                    {
-//                        spellComponent.startPosition += Vector3.up * (caster.entityPrefab.transform.localScale.y / 2);
-//                    }
-//                    break;
-//                case OriginalPosition.Target:
-//                    if (target != null)
-//                    {
-//                        spellComponent.startPosition = target.entityPrefab.transform.position;
-//                        if (spellComponent.needPositionToMidToEntity)
-//                        {
-//                            spellComponent.startPosition += Vector3.up * (target.entityPrefab.transform.localScale.y / 2);
-//                        }
-//                    }
-//                    else
-//                    {
-//                        spellComponent.startPosition = startPosition;
-//                    }
-//                    break;
-//                case OriginalPosition.PositionInParameter:
-//                    spellComponent.startPosition = startPosition;
-//                    break;
-//            }
-//
-//            switch (spellComponent.OriginalDirection)
-//            {
-//                case OriginalDirection.Forward:
-//                    spellComponent.initialRotation = caster.entityPrefab.transform.localEulerAngles;
-//                    spellComponent.trajectoryNormalized = caster.entityPrefab.transform.forward;
-//                    break;
-//                case OriginalDirection.Random:
-//                    Vector3 rand = new Vector3();
-//                    rand.x = 0;
-//                    rand.y = Random.Range(0, 360);
-//                    rand.z = 0;
-//                    spellComponent.initialRotation = rand;
-//                    spellComponent.trajectoryNormalized = rand.normalized;
-//                    break;
-//            }
-//        }
-
         public static TargetsFound GetTargetGetWithStartForm(Entity caster, StartFrom startFromNewSpellComponent,
             SpellComponent lastSpellComponent = null)
         {

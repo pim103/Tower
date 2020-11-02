@@ -11,8 +11,6 @@ namespace Games.Global.Spells.SpellParameter
 
         // If not null, set objetToPool at children of SpellPrefabController
         public int idPoolObject { get; set; } = -1;
-
-        // Specific to Wave
         public Vector3 incrementAmplitudeByTime { get; set; }
 
         public bool passingThroughEntity { get; set; } = true;

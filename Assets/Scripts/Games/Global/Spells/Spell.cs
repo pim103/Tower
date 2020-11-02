@@ -74,6 +74,7 @@ namespace Games.Global.Spells
     [Serializable]
     public class ConditionToTrigger
     {
+        public string conditionName;
         public ConditionType conditionType { get; set; }
         public TypeEffect typeEffectNeeded { get; set; }
         public int valueNeeded { get; set; }
@@ -123,7 +124,7 @@ namespace Games.Global.Spells
         public Effect effect { get; set; }
         public SpellComponent spellComponent { get; set; }
         public int damageDeal { get; set; }
-        public int percentageToTrigger { get; set; }
+        public int percentageToTrigger { get; set; } = 100;
         public ConditionToTrigger conditionToTrigger { get; set; }
     }
 
@@ -131,7 +132,6 @@ namespace Games.Global.Spells
     public class SpellComponent
     {
         public string nameSpellComponent { get; set; }
-        public TypeSpell typeSpell { get; set; }
         public DamageType damageType { get; set; }
 
         /* New var */
@@ -144,7 +144,6 @@ namespace Games.Global.Spells
 
         public Trajectory trajectory { get; set; }
         public SpellToInstantiate spellToInstantiate { get; set; }
-        public SpellPrefabController spellPrefabController { get; set; }
 
         public int damageMultiplierOnDistance { get; set; }
 
@@ -168,6 +167,8 @@ namespace Games.Global.Spells
         public Vector3 startAtPosition;
 
         public PathCreator pathCreator;
+        public TypeSpell typeSpell { get; set; }
+        public SpellPrefabController spellPrefabController { get; set; }
     }
 
     [Serializable]
@@ -187,6 +188,8 @@ namespace Games.Global.Spells
 
         public bool canCastDuringCast { get; set; } = false;
         public bool wantToCastDuringCast { get; set; } = false;
+        
+        public Texture2D sprite { get; set; }
 
         // Active:
         public SpellComponent activeSpellComponent { get; set; }
