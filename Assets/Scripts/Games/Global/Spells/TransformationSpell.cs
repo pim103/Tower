@@ -5,6 +5,13 @@ using UnityEngine;
 namespace Games.Global.Spells
 {
     [Serializable]
+    public class ReplaceSpell
+    {
+        public int slotSpell { get; set; }
+        public Spell newSpell { get; set; }
+    }
+    
+    [Serializable]
     public class TransformationSpell : SpellComponent
     {
         public TransformationSpell()
@@ -13,7 +20,7 @@ namespace Games.Global.Spells
         }
 
         // int : spellSlot - Spell : newSpell
-        public Dictionary<int, Spell> newSpells { get; set; }
+        public List<ReplaceSpell> newSpells { get; set; } = new List<ReplaceSpell>();
         
         // Save original spell
         private List<Spell> originalSpell = new List<Spell>();
@@ -30,15 +37,15 @@ namespace Games.Global.Spells
             {
                 caster.spells.ForEach(spell => originalSpell.Add(spell));
 
-                foreach (KeyValuePair<int, Spell> newSpell in newSpells)
+                foreach (ReplaceSpell replaceSpell in newSpells)
                 {
-                    if (caster.spells.Count > newSpell.Key)
+                    if (caster.spells.Count > replaceSpell.slotSpell)
                     {
-                        caster.spells[newSpell.Key] = newSpell.Value;
+                        caster.spells[replaceSpell.slotSpell] = replaceSpell.newSpell;
                     }
                     else
                     {
-                        caster.spells.Add(newSpell.Value);
+                        caster.spells.Add(replaceSpell.newSpell);
                     }
                 }
             }

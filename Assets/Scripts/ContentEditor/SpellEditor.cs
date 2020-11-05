@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using ContentEditor.SpellEditorComposant;
+using FullSerializer;
 using Games.Global.Spells;
 using UnityEditor;
 using UnityEngine;
@@ -18,12 +19,16 @@ namespace ContentEditor
 
     public class SpellEditor : IEditorInterface
     {
-        private Spell currentSpellEdited;
-        private SpellComponent currentSpellComponentEdited;
+        public SpellEditor instance;
+        
+        private static Spell currentSpellEdited;
+        private static SpellComponent currentSpellComponentEdited;
 
         private SpellEditorCategory spellEditorCategory;
 
-        private List<Spell> spells = new List<Spell>();
+        public static List<Spell> spells = new List<Spell>();
+        public static List<string> spellStringList = new List<string>();
+        
         public static List<SpellComponent> spellComponents = new List<SpellComponent>();
         public static List<string> spellComponentStringList = new List<string>();
 
@@ -42,6 +47,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Paramètre des composants du sort", GUILayout.Height(50)))
             {
+                CreateSpellComponentList();
                 spellEditorCategory = SpellEditorCategory.EDIT_SPELL_COMPONENT;
             }
 
@@ -69,6 +75,13 @@ namespace ContentEditor
             {
                 spellComponentStringList.Add(spellCompo.nameSpellComponent);
             });
+            
+            spellStringList.Clear();
+            spellStringList.Add("Nothing");
+            spells.ForEach(spell =>
+            {
+                spellStringList.Add(spell.nameSpell);
+            });
         }
 
         public void DisplayBodyContent()
@@ -81,10 +94,15 @@ namespace ContentEditor
                 case SpellEditorCategory.EDIT_SPELL_COMPONENT:
                     if (currentSpellComponentEdited == null)
                     {
-                        currentSpellComponentEdited = new SpellComponent();
+                        DisplayChosenSpellComponentType();
+                        break;
                     }
 
                     SpellComponentEditor.DisplaySpellComponentEditor(currentSpellComponentEdited);
+                    if (GUILayout.Button("Reset spellComponent", GUILayout.Height(50)))
+                    {
+                        currentSpellComponentEdited = null;
+                    }
                     break;
                 case SpellEditorCategory.EDIT_TRAJECTORY:
                     SpellTrajectoryEditor.DisplaySpellComponentTrajectory(currentSpellComponentEdited);
@@ -93,6 +111,40 @@ namespace ContentEditor
                     SpellObjectEditor.DisplaySpellComponentObject(currentSpellComponentEdited);
                     break;
             }
+        }
+
+        private void DisplayChosenSpellComponentType()
+        {
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Classic", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new SpellComponent();
+            }
+            if (GUILayout.Button("Movement", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new MovementSpell();
+            }
+            if (GUILayout.Button("Transformation", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new TransformationSpell();
+            }
+            if (GUILayout.Button("Passive", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new PassiveSpell();
+            }
+            if (GUILayout.Button("Basic attack", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new BasicAttackSpell();
+            }
+            if (GUILayout.Button("Summon", GUILayout.Height(50)))
+            {
+                currentSpellComponentEdited = new SummonSpell();
+            }
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
         }
 
         private void DisplaySpellEditor()
@@ -187,29 +239,134 @@ namespace ContentEditor
                 }
             }
 
+            if (GUILayout.Button("Sauvegarder le spell"))
+            {
+                SaveSpell();
+            }
             GUILayout.FlexibleSpace();
         }
-        
-        private void DisplaySpellComponentEditor()
+
+        public static void SaveSpellComponent()
         {
-            
+            Debug.Log("Le spellComponent a été sauvegardé");
+            spellComponents.Add(currentSpellComponentEdited);
+            currentSpellComponentEdited = null;
         }
-        
-        private void DisplayTrajectoryEditor()
+
+        public static void SaveSpell()
         {
+            if (currentSpellEdited.activeSpellComponent == null &&
+                currentSpellEdited.passiveSpellComponent == null &&
+                currentSpellEdited.recastSpellComponent == null &&
+                currentSpellEdited.duringCastSpellComponent == null)
+            {
+                Debug.LogError("Le spell n'a pas d'effet au lancement");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(currentSpellEdited.nameSpell))
+            {
+                Debug.LogError("Le spell n'a pas de nom");
+                return;
+            }
             
-        }
-        
-        private void DisplaySpellInstanciation()
-        {
-            
+            Debug.Log("Le spell a été sauvegardé");
+            spells.Add(currentSpellEdited);
+            currentSpellEdited = null;
         }
 
         public void DisplayFooterContent()
         {
+            if (GUILayout.Button("Exporter les spells enregistré", GUILayout.Height(25)))
+            {
+                foreach (Spell spell in spells)
+                {
+                    fsSerializer serializer = new fsSerializer();
+                    serializer.TrySerialize(spell.GetType(), spell, out fsData data);
+                    File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + spell.nameSpell + ".json", fsJsonPrinter.CompressedJson(data));
+                }
+            }
             if (GUILayout.Button("Importer et modifier un spell", GUILayout.Height(25)))
             {
+                string path = null;
+                path = EditorUtility.OpenFilePanel("Choose your spell", Application.dataPath + "/Data/SpellsJson/",
+                    "json");
                 
+                if (path == null)
+                {
+                    return;
+                }
+
+                string jsonSpell = File.ReadAllText(path);
+
+                Spell spell = null;
+                fsSerializer serializer = new fsSerializer();
+                fsData data = fsJsonParser.Parse(jsonSpell);
+                serializer.TryDeserialize(data, ref spell);
+
+                if (spell != null)
+                {
+                    ParseSpell(spell);
+                }
+
+                currentSpellEdited = spell;
+                CreateSpellComponentList();
+                spellEditorCategory = SpellEditorCategory.EDIT_SPELL;
+            }
+        }
+
+        public void ParseSpell(Spell spell)
+        {
+            if (!spells.Contains(spell))
+            {
+                spells.Add(spell);
+            }
+            else
+            {
+                return;
+            }
+            
+            ParseSpellComponent(spell.activeSpellComponent);
+            ParseSpellComponent(spell.duringCastSpellComponent);
+            ParseSpellComponent(spell.recastSpellComponent);
+            ParseSpellComponent(spell.passiveSpellComponent);
+        }
+
+        public void ParseSpellComponent(SpellComponent spellComponent)
+        {
+            if (spellComponent != null && !spellComponents.Contains(spellComponent))
+            {
+                spellComponents.Add(spellComponent);
+            }
+            else
+            {
+                return;
+            }
+            
+            foreach (KeyValuePair<Trigger, List<ActionTriggered>> action in spellComponent.actions)
+            {
+                foreach (ActionTriggered actionTriggered in action.Value)
+                {
+                    if (actionTriggered.spellComponent != null)
+                    {
+                        ParseSpellComponent(actionTriggered.spellComponent);
+                    }
+                }
+            }
+
+            if (spellComponent.typeSpell == TypeSpell.Transformation)
+            {
+                TransformationSpell transformationSpell = spellComponent as TransformationSpell;
+                foreach (ReplaceSpell spell in transformationSpell.newSpells)
+                {
+                    ParseSpell(spell.newSpell);
+                }
+            }
+
+            if (spellComponent.typeSpell == TypeSpell.Passive)
+            {
+                PassiveSpell passiveSpell = spellComponent as PassiveSpell;
+                ParseSpellComponent(passiveSpell.permanentSpellComponent);
             }
         }
     }

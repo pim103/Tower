@@ -12,6 +12,8 @@ namespace Games.Global.Spells
         }
 
         public SpellComponent permanentSpellComponent { get; set; }
+        
+        // use in game
         private SpellComponent permanentSpellComponentInstantiate;
 
         public override void DuringInterval()

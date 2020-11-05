@@ -6,6 +6,11 @@ namespace Games.Global.Spells
 {
     public class BasicAttackSpell : SpellComponent
     {
+        public BasicAttackSpell()
+        {
+            typeSpell = TypeSpell.BasicAttack;
+        }
+        
         public override void OnTriggerEnter(Entity enemy)
         {
             bool damageIsNull = (enemy.isIntangible && damageType == DamageType.Physical) ||
