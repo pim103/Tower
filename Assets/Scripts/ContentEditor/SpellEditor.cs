@@ -34,6 +34,7 @@ namespace ContentEditor
 
         public void DisplayHeaderContent()
         {
+            EditorGUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -62,7 +63,51 @@ namespace ContentEditor
             
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
+
+            if (spellEditorCategory == SpellEditorCategory.EDIT_SPELL)
+            {
+                EditorGUI.BeginChangeCheck();
+                int selectedSpellIndex = currentSpellEdited != null ? spellStringList.IndexOf(currentSpellEdited.nameSpell) : -1;
+                selectedSpellIndex = EditorGUILayout.Popup("Editer un spell existant", selectedSpellIndex == -1 ? 0 : selectedSpellIndex, spellStringList.ToArray());
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (selectedSpellIndex == 0)
+                    {
+                        currentSpellEdited = null;
+                    }
+                    else
+                    {
+                        currentSpellEdited = spells[selectedSpellIndex - 1];
+                    }
+                }
+            }
+            else if (spellEditorCategory == SpellEditorCategory.EDIT_SPELL_COMPONENT)
+            {
+                EditorGUI.BeginChangeCheck();
+                int selectedSpellComponentIndex = currentSpellComponentEdited != null ? spellComponentStringList.IndexOf(currentSpellComponentEdited.nameSpellComponent) : -1;
+                selectedSpellComponentIndex = EditorGUILayout.Popup("Editer un spellComponent existant", selectedSpellComponentIndex == -1 ? 0 : selectedSpellComponentIndex, spellComponentStringList.ToArray());
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (selectedSpellComponentIndex == 0)
+                    {
+                        currentSpellComponentEdited = null;
+                    }
+                    else
+                    {
+                        currentSpellComponentEdited = spellComponents[selectedSpellComponentIndex - 1];
+                    }
+                }
+            }
+            
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndVertical();
         }
 
         public static void CreateSpellComponentList()
@@ -315,6 +360,16 @@ namespace ContentEditor
                 currentSpellEdited = spell;
                 CreateSpellComponentList();
                 spellEditorCategory = SpellEditorCategory.EDIT_SPELL;
+            }
+            if (GUILayout.Button("Clear le panel des spells (Toute données non sauvegardé sera perdu)", GUILayout.Height(25)))
+            {
+                spells.Clear();
+                spellComponents.Clear();
+
+                currentSpellEdited = null;
+                currentSpellComponentEdited = null;
+                
+                CreateSpellComponentList();
             }
         }
 

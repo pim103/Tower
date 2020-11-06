@@ -66,8 +66,6 @@ namespace ContentEditor
                 newWeapon.equipmentType = EquipmentType.WEAPON;
             }
             
-            GUILayout.FlexibleSpace();
-            
             DisplayOneWeaponEditor(newWeapon);
 
             if (GUILayout.Button("Sauvegarder la nouvelle arme"))
@@ -102,7 +100,11 @@ namespace ContentEditor
 
         private void DisplayOneWeaponEditor(Weapon weapon)
         {
-            EditorGUILayout.BeginVertical();
+            Color defaultColor = GUI.color;
+            
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

@@ -148,7 +148,11 @@ namespace ContentEditor
 
         private void DisplayOneMonsterEditor(Monster monster)
         {
-            EditorGUILayout.BeginVertical();
+            Color defaultColor = GUI.color;
+            
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -302,7 +306,11 @@ namespace ContentEditor
 
         private void DisplayOneMonsterInGroupEditor(MonstersInGroup monstersInGroup, int idGroup)
         {
-            EditorGUILayout.BeginVertical();
+            Color defaultColor = GUI.color;
+
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
 
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.IntField("ID", currentGroupMonsterEditing.id);

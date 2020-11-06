@@ -12,6 +12,7 @@ using Networking;
 using Networking.Client;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -44,6 +45,11 @@ namespace ContentEditor
             QUART_HEIGHT = HEIGHT / 4;
             EIGHTH_WIDTH = WIDTH / 8;
             EIGHTH_HEIGHT = HEIGHT / 8;
+
+            if (weaponSprite == null)
+            {
+                LoadTextures();
+            }
         }
 
         public static void LoadTextures()
@@ -72,8 +78,8 @@ namespace ContentEditor
         [MenuItem("Tools/Content generation")]
         public static void ShowWindow ()
         {
-            GetWindow<ContentGenerationEditor>("Content generation");
-            EditorConstant.LoadTextures();
+            Type gameType = Type.GetType("UnityEditor.GameView,UnityEditor.dll");
+            ContentGenerationEditor window = GetWindow<ContentGenerationEditor>("Content generation", new Type[]{gameType});
         }
 
         private void CheckInitEditor()
@@ -285,6 +291,10 @@ namespace ContentEditor
             if (GUILayout.Button("Save", GUILayout.Width(75), GUILayout.Height(25)))
             {
                 SaveChanges();
+            }
+            if (GUILayout.Button("Open test scene", GUILayout.Width(150), GUILayout.Height(25)))
+            {
+                EditorSceneManager.OpenScene(Application.dataPath + "/Scenes/TestSpell.unity");
             }
 
             GUILayout.FlexibleSpace();

@@ -66,8 +66,6 @@ namespace ContentEditor
                 newArmor.equipmentType = EquipmentType.ARMOR;
             }
             
-            GUILayout.FlexibleSpace();
-            
             DisplayOneArmorEditor(newArmor);
 
             if (GUILayout.Button("Sauvegarder la nouvelle armure"))
@@ -101,7 +99,11 @@ namespace ContentEditor
 
         private void DisplayOneArmorEditor(Armor armor)
         {
-            EditorGUILayout.BeginVertical();
+            Color defaultColor = GUI.color;
+            
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
