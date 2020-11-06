@@ -36,7 +36,6 @@ namespace ContentEditor
         {
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
             if (GUILayout.Button("Paramètre du sort", GUILayout.Height(50)))
@@ -86,6 +85,8 @@ namespace ContentEditor
 
         public void DisplayBodyContent()
         {
+            GUILayout.FlexibleSpace();
+
             switch (spellEditorCategory)
             {
                 case SpellEditorCategory.EDIT_SPELL:
@@ -111,6 +112,8 @@ namespace ContentEditor
                     SpellObjectEditor.DisplaySpellComponentObject(currentSpellComponentEdited);
                     break;
             }
+            
+            GUILayout.FlexibleSpace();
         }
 
         private void DisplayChosenSpellComponentType()

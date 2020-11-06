@@ -102,7 +102,12 @@ namespace ContentEditor
 
         public void DisplayHeader()
         {
-            GUILayout.FlexibleSpace();
+            Color defaultColor = GUI.color;
+            
+            GUI.color = Color.black;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
+            
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             
@@ -135,15 +140,19 @@ namespace ContentEditor
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
 
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Load data!"))
             {
                 LoadData();
             }
+            EditorGUILayout.EndHorizontal();
 
+            EditorGUILayout.BeginHorizontal();
             currentEditor?.DisplayHeaderContent();
+            EditorGUILayout.EndHorizontal();
 
+            EditorGUILayout.EndVertical();
             GUILayout.FlexibleSpace();
         }
         
@@ -257,9 +266,19 @@ namespace ContentEditor
 
         public void DisplayFooter()
         {
+            Color defaultColor = GUI.color;
             GUILayout.FlexibleSpace();
 
+            GUI.color = Color.black;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            
             currentEditor?.DisplayFooterContent();
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -270,6 +289,7 @@ namespace ContentEditor
 
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         private string GetSpritePath(Texture2D sprite)

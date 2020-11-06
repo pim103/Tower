@@ -33,7 +33,6 @@ namespace ContentEditor.SpellEditorComposant
 
         public static void DisplaySpellComponentEditor(SpellComponent spellComponentEdited)
         {
-            GUILayout.FlexibleSpace();
             if (currentSpellComponentEditor == CurrentSpellComponentEditor.SpellComponent)
             {
                 PrincipalSpellComponentEditor(spellComponentEdited);
@@ -47,13 +46,14 @@ namespace ContentEditor.SpellEditorComposant
 
         public static void PrincipalSpellComponentEditor(SpellComponent spellComponentEdited)
         {
-            EditorGUILayout.BeginVertical();
-
+            Color defaultColor = GUI.color;
+            
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
+            
             spellComponentEdited.nameSpellComponent = EditorGUILayout.TextField("Nom", spellComponentEdited.nameSpellComponent);
             spellComponentEdited.damageType = (DamageType) EditorGUILayout.EnumPopup("Type de dégat", spellComponentEdited.damageType);
-            
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
 
             if (spellComponentEdited.typeSpell != TypeSpell.Passive)
             {
@@ -84,15 +84,12 @@ namespace ContentEditor.SpellEditorComposant
 
                 spellComponentEdited.spellInterval =
                     EditorGUILayout.FloatField("Intervalle du spell", spellComponentEdited.spellInterval, GUILayout.Width(300));
-
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
             }
 
             if (spellComponentEdited.typeSpell == TypeSpell.Classic ||
                 spellComponentEdited.typeSpell == TypeSpell.BasicAttack)
             {
-                spellComponentEdited.damageMultiplierOnDistance = EditorGUILayout.IntField(
+                spellComponentEdited.damageMultiplierOnDistance = EditorGUILayout.FloatField(
                     "Multiplier de dégat en fct de la distance", spellComponentEdited.damageMultiplierOnDistance, GUILayout.Width(300));
                 spellComponentEdited.appliesPlayerOnHitEffect = EditorGUILayout.Toggle(
                     "Applique extra effet du joueur au toucher", spellComponentEdited.appliesPlayerOnHitEffect, GUILayout.Width(300));
@@ -105,7 +102,13 @@ namespace ContentEditor.SpellEditorComposant
                         "Le sort s'arrête en recevant des dégats", spellComponentEdited.stopSpellComponentAtDamageReceived, GUILayout.Width(300));
                 }
             }
-            
+
+            EditorGUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
+
+            GUI.color = Color.blue;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
             EditorGUILayout.LabelField("Spécific à " + spellComponentEdited.typeSpell);
 
             switch (spellComponentEdited.typeSpell)
@@ -208,12 +211,17 @@ namespace ContentEditor.SpellEditorComposant
                 case TypeSpell.Summon:
                     break;
             }
-            
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
 
+            EditorGUILayout.EndVertical();
+
+            GUI.color = Color.blue;
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
+            
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
+
             if (GUILayout.Button("Editer les actions"))
             {
                 InitChoiceList();
@@ -236,6 +244,7 @@ namespace ContentEditor.SpellEditorComposant
             }
 
             EditorGUILayout.EndVertical();
+            GUI.color = defaultColor;
         }
 
         private static void InitChoiceList()

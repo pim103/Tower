@@ -145,7 +145,7 @@ namespace Games.Global.Spells
         public Trajectory trajectory { get; set; }
         public SpellToInstantiate spellToInstantiate { get; set; }
 
-        public int damageMultiplierOnDistance { get; set; }
+        public float damageMultiplierOnDistance { get; set; }
 
         public bool appliesPlayerOnHitEffect { get; set; }
         public bool canStopProjectile { get; set; }

@@ -54,23 +54,21 @@ namespace ContentEditor
 
         public void DisplayHeaderContent()
         {
-            GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
-            if (GUILayout.Button("Monster Editor", GUILayout.Width(150), GUILayout.Height(75)))
+            if (GUILayout.Button("Monster Editor", GUILayout.Width(150), GUILayout.Height(50)))
             {
                 monsterEditorCategory = MonsterEditorCategory.MONSTER;
             }
 
-            if (GUILayout.Button("Group Editor", GUILayout.Width(150), GUILayout.Height(75)))
+            if (GUILayout.Button("Group Editor", GUILayout.Width(150), GUILayout.Height(50)))
             {
                 monsterEditorCategory = MonsterEditorCategory.GROUP;
             }
             
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
         }
 
         public void DisplayBodyContent()
@@ -180,7 +178,6 @@ namespace ContentEditor
                 monster.weaponOriginalId = weaponChoiceIds[selected];
             }
 
-//            monster.weaponOriginalId = EditorGUILayout.IntField("Original weapon id", monster.weaponOriginalId);
             EditorGUILayout.LabelField("Sprite");
 
             monster.sprite = (Texture2D)EditorGUILayout.ObjectField(monster.sprite, typeof(Texture2D), false);
