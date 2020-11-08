@@ -26,6 +26,8 @@ namespace Menus
         #endregion
         
         #region craft parameters
+        [SerializeField] 
+        private GameObject craftVisualizer;
         #endregion
         
         #region start and intialization functions
@@ -57,7 +59,8 @@ namespace Menus
 
             foreach (Card card in DataObject.CardList.GetCardsInCollection())
             {
-                
+                GameObject instantiateCard = Instantiate(cardPrefab, collectionGrid.transform);
+                cards.Add(instantiateCard);
             }
         }
         #endregion

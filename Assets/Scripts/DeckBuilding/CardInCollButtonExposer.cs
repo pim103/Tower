@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace DeckBuilding
 {
     public class CardInCollButtonExposer : MonoBehaviour
     {
-        [SerializeField] public Text name;
-        [SerializeField] public Text cost;
-        [SerializeField] public Text copies;
-        [SerializeField] public Text effect;
-        [SerializeField] public Text family;
+        [SerializeField] public TextMeshProUGUI cardName;
+        [SerializeField] public TextMeshProUGUI cardCost;
+        [SerializeField] public TextMeshProUGUI cardCopies;
+        [SerializeField] public TextMeshProUGUI cardEffect;
+        [SerializeField] public TextMeshProUGUI cardFamily;
         public Card card;
     }
 }

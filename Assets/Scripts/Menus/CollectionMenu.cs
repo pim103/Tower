@@ -66,22 +66,22 @@ namespace Menus
 
                 if (card.GroupsMonster != null)
                 {
-                    currentButtonExposer.name.text = card.GroupsMonster.name;
-                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
-                    currentButtonExposer.effect.text = "effet";
-                    currentButtonExposer.cost.text = card.GroupsMonster.cost.ToString();
-                    currentButtonExposer.family.text = card.GroupsMonster.family.ToString();
+                    currentButtonExposer.cardName.text = card.GroupsMonster.name;
+                    currentButtonExposer.cardCopies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.cardEffect.text = "effet";
+                    currentButtonExposer.cardCost.text = card.GroupsMonster.cost.ToString();
+                    currentButtonExposer.cardFamily.text = card.GroupsMonster.family.ToString();
                     currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
                     {
                     
                     });
                 } else if (card.Weapon != null)
                 {
-                    currentButtonExposer.name.text = card.Weapon.equipmentName;
-                    currentButtonExposer.copies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
-                    currentButtonExposer.effect.text = "effet";
-                    currentButtonExposer.cost.text = card.Weapon.cost.ToString();
-                    currentButtonExposer.family.text = card.Weapon.type.ToString();
+                    currentButtonExposer.cardName.text = card.Weapon.equipmentName;
+                    currentButtonExposer.cardCopies.text = "X" + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                    currentButtonExposer.cardEffect.text = "effet";
+                    currentButtonExposer.cardCost.text = card.Weapon.cost.ToString();
+                    currentButtonExposer.cardFamily.text = card.Weapon.type.ToString();
                     currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
                     {
                     
