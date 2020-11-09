@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+using UnityEditor;
 
 namespace Utilities
 {
@@ -10,3 +11,4 @@ namespace Utilities
         }
     }
 }
+#endif

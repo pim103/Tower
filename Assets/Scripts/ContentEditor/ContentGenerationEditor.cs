@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -316,11 +318,11 @@ namespace ContentEditor
             UnityWebRequest www;
             if (isNew)
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/equipment/add", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/add", form);
             }
             else
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/equipment/update", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/update", form);
             }
 
             void Lambda() => RequestLoadEquipment();
@@ -351,11 +353,11 @@ namespace ContentEditor
             UnityWebRequest www;
             if (isNew)
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/equipment/add", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/add", form);
             }
             else
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/equipment/update", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/update", form);
             }
 
             void Lambda() => RequestLoadEquipment();
@@ -385,11 +387,11 @@ namespace ContentEditor
             UnityWebRequest www;
             if (isNew)
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/monster/add", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/add", form);
             }
             else
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/monster/update", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/update", form);
             }
 
             void Lambda() => RequestLoadMonster();
@@ -430,11 +432,11 @@ namespace ContentEditor
             UnityWebRequest www;
             if (isNew)
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/group/monster/add", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/group/monster/add", form);
             }
             else
             {
-                www = UnityWebRequest.Post("https://www.towers.heolia.eu/api/v1/group/monster/update", form);
+                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/group/monster/update", form);
             }
 
             void Lambda() => RequestLoadMonster();
@@ -480,7 +482,7 @@ namespace ContentEditor
 
         public IEnumerator LoadEquipment()
         {
-            var www = UnityWebRequest.Get("https://www.towers.heolia.eu/api/v1/equipment/list");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/equipment/list");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -504,7 +506,7 @@ namespace ContentEditor
         
         private IEnumerator LoadMonster()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/group/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/group/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -520,3 +522,4 @@ namespace ContentEditor
         }
     }
 }
+#endif

@@ -116,7 +116,7 @@ namespace Menus
 
             TowersWebSocket.wsGame.OnClose += (sender, args) =>
             {
-                if (args.Code != 1000)
+                if (args.Code != 1000 || args.Code != 1005)
                 {
                     Debug.Log("Deconnexion : " + args.Code);
                     NetworkingController.AuthToken = "";
@@ -190,7 +190,7 @@ namespace Menus
             while (canStart == null)
             {
                 Debug.Log("Waiting");
-                TowersWebSocket.TowerSender("ONLY_ONE", NetworkingController.CurrentRoomToken,"null", "getRankedMatch", "null");
+                TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "getRankedMatch", "null");
                 yield return new WaitForSeconds(5f);
             }
             transitionMenuGame.InitGame();

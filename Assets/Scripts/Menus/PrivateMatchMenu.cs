@@ -96,7 +96,7 @@ namespace Menus
 
         IEnumerator LoadJsonRoom()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/room/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

@@ -258,7 +258,7 @@ namespace Menus
             form.AddField("deckName", deckName);
             form.AddField("isMonsterDeck", isMonsterDeck);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/add.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/deck/add.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -297,7 +297,7 @@ namespace Menus
             WWWForm form = new WWWForm();
             form.AddField("deckId", deckId);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/deleteAllCardsInDeck.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/deck/deleteAllCardsInDeck.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -337,7 +337,7 @@ namespace Menus
             form.AddField("cardId", cardId);
             form.AddField("numberOfCards", nbCards);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/addCardInDeck.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/deck/addCardInDeck.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.1f);
@@ -430,7 +430,7 @@ namespace Menus
                 form.AddField("deckOwner", "HZ0PUiJjDly8EDkyYUiP");
             }
             
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/card/listCardDeck.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/card/listCardDeck.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

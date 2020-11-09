@@ -120,7 +120,7 @@ namespace Menus
             WWWForm form = new WWWForm();
             form.AddField("deckId", deckId);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/deck/delete.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/deck/delete.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

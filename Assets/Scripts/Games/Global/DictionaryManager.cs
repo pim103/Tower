@@ -58,7 +58,7 @@ namespace Games.Global
 
         public IEnumerator GetWeapons()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/weapons/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/weapons/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -75,7 +75,7 @@ namespace Games.Global
 
         public IEnumerator GetGroupsMonster()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/group/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/group/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -97,7 +97,7 @@ namespace Games.Global
                 yield return new WaitForSeconds(0.5f);
             }
 
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/card/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/card/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -129,7 +129,7 @@ namespace Games.Global
                 form.AddField("collectionOwner", "HZ0PUiJjDly8EDkyYUiP");
             }
             
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/card/listAccountCollection.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/card/listAccountCollection.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -160,7 +160,7 @@ namespace Games.Global
                 form.AddField("deckOwner", "HZ0PUiJjDly8EDkyYUiP");
             }
             
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/game/card/listCardDeck.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/card/listCardDeck.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

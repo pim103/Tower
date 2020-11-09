@@ -92,7 +92,7 @@ namespace Menus
             form.AddField("accountEmail", emailField.text);
             form.AddField("accountPassword", passwordField.text);
             form.AddField("accountPasswordConfirmation", confirmPasswordField.text);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/add.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/account/add.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)

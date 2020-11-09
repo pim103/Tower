@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Weapons;
 using UnityEditor;
@@ -140,3 +141,4 @@ namespace ContentEditor
         }
     }
 }
+#endif
