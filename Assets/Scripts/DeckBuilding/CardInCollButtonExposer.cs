@@ -11,6 +11,7 @@ namespace DeckBuilding
         [SerializeField] public TextMeshProUGUI cardCopies;
         [SerializeField] public TextMeshProUGUI cardEffect;
         [SerializeField] public TextMeshProUGUI cardFamily;
+        [SerializeField] public Button cardButton;
         public Card card;
     }
 }
