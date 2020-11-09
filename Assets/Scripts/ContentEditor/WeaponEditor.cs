@@ -6,139 +6,121 @@ using UnityEditor;
 using UnityEngine;
 using Tools = Utils.Tools;
 
-namespace ContentEditor
-{
-public class WeaponEditor : IEditorInterface
-{
-public bool createNewWeapon;
-public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
-    public ContentGenerationEditor contentGenerationEditor;
+namespace ContentEditor {
+public class WeaponEditor : IEditorInterface {
+  public bool createNewWeapon;
+  public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
+  public ContentGenerationEditor contentGenerationEditor;
 
-    private Weapon newWeapon;
+  private Weapon newWeapon;
 
-    public void DisplayHeaderContent()
-    {
+  public void DisplayHeaderContent() {}
 
+  public void DisplayBodyContent() {
+    if (DataObject.EquipmentList == null) {
+      return;
     }
 
-    public void DisplayBodyContent()
-    {
-        if (DataObject.EquipmentList == null)
-        {
-            return;
-        }
+    if (!createNewWeapon) {
+      DisplayWeaponStat();
+    } else {
+      DisplayNewWeaponEditor();
+    }
+  }
 
-        if (!createNewWeapon)
-        {
-            DisplayWeaponStat();
-        }
-        else
-        {
-            DisplayNewWeaponEditor();
-        }
+  public void DisplayFooterContent() {
+    string buttonLabel = "Créer une nouvelle arme";
+
+    if (createNewWeapon) {
+      if (GUILayout.Button("Reset la nouvelle arme")) {
+        newWeapon = new Weapon();
+      }
+
+      buttonLabel = "Changer les armes existantes";
     }
 
-    public void DisplayFooterContent()
-    {
-        string buttonLabel = "Créer une nouvelle arme";
+    if (GUILayout.Button(buttonLabel)) {
+      createNewWeapon = !createNewWeapon;
+    }
+  }
 
-        if (createNewWeapon)
-        {
-            if (GUILayout.Button("Reset la nouvelle arme"))
-            {
-                newWeapon = new Weapon();
-            }
-
-            buttonLabel = "Changer les armes existantes";
-        }
-
-        if (GUILayout.Button(buttonLabel))
-        {
-            createNewWeapon = !createNewWeapon;
-        }
+  private void DisplayNewWeaponEditor() {
+    if (newWeapon == null) {
+      newWeapon = new Weapon();
+      newWeapon.equipmentType = EquipmentType.WEAPON;
     }
 
-    private void DisplayNewWeaponEditor()
-    {
-        if (newWeapon == null)
-        {
-            newWeapon = new Weapon();
-            newWeapon.equipmentType = EquipmentType.WEAPON;
-        }
+    GUILayout.FlexibleSpace();
 
-        GUILayout.FlexibleSpace();
+    DisplayOneWeaponEditor(newWeapon);
 
-        DisplayOneWeaponEditor(newWeapon);
-
-        if (GUILayout.Button("Sauvegarder la nouvelle arme"))
-        {
-            contentGenerationEditor.RequestSaveWeapon(newWeapon, true);
-            newWeapon = null;
-        }
-
-        GUILayout.FlexibleSpace();
+    if (GUILayout.Button("Sauvegarder la nouvelle arme")) {
+      contentGenerationEditor.RequestSaveWeapon(newWeapon, true);
+      newWeapon = null;
     }
 
-    private void DisplayWeaponStat()
-    {
-        EditorGUILayout.BeginHorizontal();
+    GUILayout.FlexibleSpace();
+  }
 
-        int loop = 0;
+  private void DisplayWeaponStat() {
+    EditorGUILayout.BeginHorizontal();
 
-        foreach (Weapon weapon in DataObject.EquipmentList.weapons)
-        {
-            DisplayOneWeaponEditor(weapon);
+    int loop = 0;
 
-            ++loop;
-            if (loop % 6 == 0)
-            {
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-            }
-        }
+    foreach (Weapon weapon in DataObject.EquipmentList.weapons) {
+      DisplayOneWeaponEditor(weapon);
 
+      ++loop;
+      if (loop % 6 == 0) {
         EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+      }
     }
 
-    private void DisplayOneWeaponEditor(Weapon weapon)
-    {
-        EditorGUILayout.BeginVertical();
+    EditorGUILayout.EndHorizontal();
+  }
 
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        GUILayout.Button(weapon.sprite, GUILayout.Width(75), GUILayout.Height(75));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+  private void DisplayOneWeaponEditor(Weapon weapon) {
+    EditorGUILayout.BeginVertical();
 
-        EditorGUI.BeginDisabledGroup(true);
-        EditorGUILayout.IntField("ID", weapon.id);
-        EditorGUI.EndDisabledGroup();
+    GUILayout.BeginHorizontal();
+    GUILayout.FlexibleSpace();
+    GUILayout.Button(weapon.sprite, GUILayout.Width(75), GUILayout.Height(75));
+    GUILayout.FlexibleSpace();
+    GUILayout.EndHorizontal();
 
-        weapon.equipmentName = EditorGUILayout.TextField("Name", weapon.equipmentName);
-        weapon.damage = EditorGUILayout.IntField("Damage", weapon.damage);
-        weapon.attSpeed = EditorGUILayout.FloatField("Attack speed", weapon.attSpeed);
-        weapon.type = (TypeWeapon) EditorGUILayout.EnumPopup("Type", weapon.type);
-        weapon.category = (CategoryWeapon) EditorGUILayout.EnumPopup("Category", weapon.category);
-        weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);
-        weapon.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", weapon.rarity);
-        weapon.lootRate = EditorGUILayout.IntField("Loot Rate", weapon.lootRate);
-        weapon.modelName = EditorGUILayout.TextField("Model Name", weapon.modelName);
-        EditorGUILayout.LabelField("Sprite");
+    EditorGUI.BeginDisabledGroup(true);
+    EditorGUILayout.IntField("ID", weapon.id);
+    EditorGUI.EndDisabledGroup();
 
-        weapon.sprite = (Texture2D)EditorGUILayout.ObjectField(weapon.sprite, typeof(Texture2D), false);
+    weapon.equipmentName =
+        EditorGUILayout.TextField("Name", weapon.equipmentName);
+    weapon.damage = EditorGUILayout.IntField("Damage", weapon.damage);
+    weapon.attSpeed =
+        EditorGUILayout.FloatField("Attack speed", weapon.attSpeed);
+    weapon.type = (TypeWeapon) EditorGUILayout.EnumPopup("Type", weapon.type);
+    weapon.category =
+        (CategoryWeapon) EditorGUILayout.EnumPopup("Category", weapon.category);
+    weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);
+    weapon.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", weapon.rarity);
+    weapon.lootRate = EditorGUILayout.IntField("Loot Rate", weapon.lootRate);
+    weapon.modelName =
+        EditorGUILayout.TextField("Model Name", weapon.modelName);
+    EditorGUILayout.LabelField("Sprite");
 
-        EditorGUILayout.EndVertical();
+    weapon.sprite = (Texture2D) EditorGUILayout.ObjectField(
+        weapon.sprite, typeof(Texture2D), false);
+
+    EditorGUILayout.EndVertical();
+  }
+
+  public void CloneWeaponDictionary() {
+    originalWeapon.Clear();
+
+    foreach (Weapon weapon in DataObject.EquipmentList.weapons) {
+      originalWeapon.Add(weapon.id, Tools.Clone(weapon));
     }
-
-    public void CloneWeaponDictionary()
-    {
-        originalWeapon.Clear();
-
-        foreach (Weapon weapon in DataObject.EquipmentList.weapons)
-        {
-            originalWeapon.Add(weapon.id, Tools.Clone(weapon));
-        }
-    }
+  }
 }
 }
 #endif
