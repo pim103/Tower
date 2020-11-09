@@ -57,6 +57,8 @@ namespace Games.Transitions
                             data = fsJsonParser.Parse(args.Data);
                             serializer.TryDeserialize(data, ref callbackMessage);
                             callbackMessage = Tools.Clone(callbackMessage);
+                            //Debug.Log(args.Data);
+                            
                             if (callbackMessage.callbackMessages.message == "LoadGame")
                             {
                                 CurrentRoom.loadGame = true;
@@ -68,6 +70,7 @@ namespace Games.Transitions
 
                             if (CurrentRoom.loadGame)
                             {
+                                //Debug.Log(callbackMessage.callbackMessages.roleTimer);
                                 if (callbackMessage.callbackMessages.roleTimer != -1)
                                 {
                                     waitingForStart = callbackMessage.callbackMessages.roleTimer;

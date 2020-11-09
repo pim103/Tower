@@ -130,7 +130,7 @@ namespace Menus
             form.AddField("accountEmail", loginField.text);
             form.AddField("accountPassword", passwordField.text);
             form.AddField("gameToken", NetworkingController.GameToken);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/account/logging.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/account/logging", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -144,7 +144,7 @@ namespace Menus
                 TowersWebSocket.InitializeWebsocketEndpoint();
                 TowersWebSocket.StartConnection();
                 accountInformationText.text = ConnectionMessage.Information[(int)InformationConnectionType.AuthentificationStep];
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(3.5f);
                 if (!NetworkingController.IsConnected)
                 {
                     accountInformationPanel.SetActive(false);

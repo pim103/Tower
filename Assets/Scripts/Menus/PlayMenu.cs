@@ -67,7 +67,7 @@ namespace Menus
             form.AddField("mode", "1v1");
             form.AddField("isRanked", 1);
             form.AddField("isPublic", 1);
-            var www = UnityWebRequest.Post("https://towers.heolia.eu/services/room/add.php", form);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/room/add.php", form);
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -92,7 +92,7 @@ namespace Menus
         
         IEnumerator LoadRoomRequest()
         {
-            var www = UnityWebRequest.Get("https://towers.heolia.eu/services/room/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/room/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);

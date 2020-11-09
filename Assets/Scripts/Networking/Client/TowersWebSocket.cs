@@ -34,12 +34,12 @@ namespace Networking.Client
         {
             if (NetworkingController.Environnement == "PROD")
             {
-                END_POINT_GAME = "wss://towers.heolia.eu/websocket";
+                END_POINT_GAME = "wss://www.towers.heolia.eu/websocket-v2";
                 END_POINT_CHAT = "wss://towers.heolia.eu/chat";
             }
             else if (NetworkingController.Environnement == "LOCAL")
             {
-                END_POINT_GAME = "ws://localhost:8081";
+                END_POINT_GAME = "ws://localhost:8091/websocket";
                 END_POINT_CHAT = "ws://localhost:8082";
             }
         }

@@ -255,7 +255,7 @@ namespace Games.Transitions
 
             stringToSend += "}";
             Debug.Log(stringToSend);
-            TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken,"GRID",stringToSend);
+            TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "GRID", stringToSend);
         }
     }
 }
