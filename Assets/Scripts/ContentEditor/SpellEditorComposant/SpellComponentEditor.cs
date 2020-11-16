@@ -21,14 +21,19 @@ namespace ContentEditor.SpellEditorComposant
         Actions
     }
 
+    [Serializable]
     public class SpellComponentEditor
     {
+        [SerializeField]
         private static SpellComponentDurationType spellComponentDurationType;
 
+        [SerializeField]
         private static CurrentSpellComponentEditor currentSpellComponentEditor;
 
+        [SerializeField]
         private static Trigger currentTriggerSelected;
 
+        [SerializeField]
         private static List<ActionTriggered> actionsInSpellComponent = new List<ActionTriggered>();
 
         public static void DisplaySpellComponentEditor(SpellComponent spellComponentEdited)

@@ -1,10 +1,12 @@
-﻿using Games.Global.Spells;
+﻿using System;
+using Games.Global.Spells;
 using Games.Global.Spells.SpellParameter;
 using UnityEditor;
 using UnityEngine;
 
 namespace ContentEditor.SpellEditorComposant
 {
+    [Serializable]
     public class SpellObjectEditor
     {
         public static void DisplaySpellComponentObject(SpellComponent spellComponentEdited)

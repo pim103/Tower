@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ContentEditor.SpellEditorComposant;
 using FullSerializer;
 using Games.Global.Spells;
 using UnityEditor;
 using UnityEngine;
+using WebSocketSharp;
 
 namespace ContentEditor
 {
@@ -17,20 +20,33 @@ namespace ContentEditor
         EDIT_SPELL_INSTANCIATION
     }
 
+    [Serializable]
     public class SpellEditor : IEditorInterface
     {
-        public SpellEditor instance;
-        
+        [SerializeField]
         private static Spell currentSpellEdited;
+        [SerializeField]
         private static SpellComponent currentSpellComponentEdited;
-
+        
+        [SerializeField]
         private SpellEditorCategory spellEditorCategory;
-
+        
+        [SerializeField]
+        public static Dictionary<string, Spell> spellsToExport = new Dictionary<string, Spell>();
+        [SerializeField]
         public static List<Spell> spells = new List<Spell>();
+        [SerializeField]
         public static List<string> spellStringList = new List<string>();
         
+        [SerializeField]
         public static List<SpellComponent> spellComponents = new List<SpellComponent>();
+        [SerializeField]
         public static List<string> spellComponentStringList = new List<string>();
+
+        [SerializeField]
+        private static string fileNameSpell;
+        [SerializeField]
+        private static int selectedSpellIndex;
 
         public void DisplayHeaderContent()
         {
@@ -70,18 +86,24 @@ namespace ContentEditor
             if (spellEditorCategory == SpellEditorCategory.EDIT_SPELL)
             {
                 EditorGUI.BeginChangeCheck();
-                int selectedSpellIndex = currentSpellEdited != null ? spellStringList.IndexOf(currentSpellEdited.nameSpell) : -1;
+                selectedSpellIndex = currentSpellEdited != null ? spellStringList.IndexOf(currentSpellEdited.nameSpell) : -1;
                 selectedSpellIndex = EditorGUILayout.Popup("Editer un spell existant", selectedSpellIndex == -1 ? 0 : selectedSpellIndex, spellStringList.ToArray());
 
                 if (EditorGUI.EndChangeCheck())
                 {
                     if (selectedSpellIndex == 0)
                     {
+                        fileNameSpell = "";
                         currentSpellEdited = null;
                     }
                     else
                     {
                         currentSpellEdited = spells[selectedSpellIndex - 1];
+
+                        if (spellsToExport.ContainsValue(currentSpellEdited))
+                        {
+                            fileNameSpell = spellsToExport.First(spell => spell.Value == currentSpellEdited).Key;
+                        }
                     }
                 }
             }
@@ -211,6 +233,7 @@ namespace ContentEditor
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
+            fileNameSpell = EditorGUILayout.TextField("Nom du fichier", fileNameSpell);
             currentSpellEdited.nameSpell = EditorGUILayout.TextField("Name", currentSpellEdited.nameSpell);
             currentSpellEdited.startFrom = (StartFrom) EditorGUILayout.EnumPopup("Le spell part de ", currentSpellEdited.startFrom);
             currentSpellEdited.cooldown = EditorGUILayout.FloatField("Cooldown", currentSpellEdited.cooldown);
@@ -317,21 +340,42 @@ namespace ContentEditor
                 Debug.LogError("Le spell n'a pas de nom");
                 return;
             }
+
+            if (!fileNameSpell.IsNullOrEmpty())
+            {
+                if (spellsToExport.ContainsKey(fileNameSpell) && selectedSpellIndex == 0)
+                {
+                    Debug.LogError("Le nom du fichier existe déjà");
+                    return;
+                }
+                else 
+                {
+                    if (selectedSpellIndex != 0)
+                    {
+                        Debug.Log("Ecrasement des données déjà existantes");
+                    }
+                    
+                    spellsToExport.Add(fileNameSpell, currentSpellEdited);
+                }
+            }
             
             Debug.Log("Le spell a été sauvegardé");
             spells.Add(currentSpellEdited);
             currentSpellEdited = null;
+            fileNameSpell = "";
         }
 
         public void DisplayFooterContent()
         {
             if (GUILayout.Button("Exporter les spells enregistré", GUILayout.Height(25)))
             {
-                foreach (Spell spell in spells)
+                foreach (KeyValuePair<string, Spell> spellData in spellsToExport)
                 {
                     fsSerializer serializer = new fsSerializer();
-                    serializer.TrySerialize(spell.GetType(), spell, out fsData data);
-                    File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + spell.nameSpell + ".json", fsJsonPrinter.CompressedJson(data));
+                    serializer.TrySerialize(spellData.Value.GetType(), spellData.Value, out fsData data);
+                    File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + spellData.Key + ".json", fsJsonPrinter.CompressedJson(data));
+                    
+                    
                 }
             }
             if (GUILayout.Button("Importer et modifier un spell", GUILayout.Height(25)))
@@ -358,11 +402,24 @@ namespace ContentEditor
                 }
 
                 currentSpellEdited = spell;
+
+                string extension = ".json";
+                string initialPath = Application.dataPath + "/Data/SpellsJson/";
+                int indexOfInitialPath = path.IndexOf(initialPath, StringComparison.Ordinal);
+                int indexOfExtension = path.IndexOf(extension, StringComparison.Ordinal);
+
+                if (indexOfInitialPath != -1 && indexOfExtension != -1)
+                {
+                    fileNameSpell = path.Substring(indexOfInitialPath + initialPath.Length, indexOfExtension - (indexOfInitialPath + initialPath.Length));
+                    spellsToExport.Add(fileNameSpell, spell);
+                }
+                
                 CreateSpellComponentList();
                 spellEditorCategory = SpellEditorCategory.EDIT_SPELL;
             }
             if (GUILayout.Button("Clear le panel des spells (Toute données non sauvegardé sera perdu)", GUILayout.Height(25)))
             {
+                spellsToExport.Clear();
                 spells.Clear();
                 spellComponents.Clear();
 

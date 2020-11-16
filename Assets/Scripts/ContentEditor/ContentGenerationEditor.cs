@@ -62,6 +62,7 @@ namespace ContentEditor
         }
     }
     
+    [Serializable]
     public class ContentGenerationEditor : EditorWindow
     {
         private enum Category
@@ -73,6 +74,7 @@ namespace ContentEditor
             PLAYER
         }
 
+        [SerializeField]
         private Category currentCategory;
 
         [MenuItem("Tools/Content generation")]

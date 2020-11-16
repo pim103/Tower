@@ -10,10 +10,14 @@ using UnityEngine.SceneManagement;
 
 namespace ContentEditor.SpellEditorComposant
 {
+    [Serializable]
     public class SpellTrajectoryEditor
     {
+        [SerializeField]
         private static Scene sceneOpened;
+        [SerializeField]
         private static PathCreator currentPathCreator;
+        [SerializeField]
         private static PathFollower currentPathFollower;
         
         public static void DisplaySpellComponentTrajectory(SpellComponent spellComponentEdited)
