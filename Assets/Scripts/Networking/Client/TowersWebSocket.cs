@@ -39,7 +39,7 @@ namespace Networking.Client
             }
             else if (NetworkingController.Environnement == "LOCAL")
             {
-                END_POINT_GAME = "ws://localhost:8091/websocket";
+                END_POINT_GAME = "ws://localhost:8093/websocket";
                 END_POINT_CHAT = "ws://localhost:8082";
             }
         }
