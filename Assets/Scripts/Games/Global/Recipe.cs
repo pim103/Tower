@@ -18,6 +18,11 @@ namespace Games.Global
             this.craftRecipe = craftRecipe;
         }
 
+        public Dictionary<Ingredient, int> GetIngredients()
+        {
+            return craftRecipe;
+        }
+
         public bool CanCraft(Dictionary<Ingredient, int> inventory)
         {
             foreach (var recipeIngredient in craftRecipe)

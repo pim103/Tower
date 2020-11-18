@@ -23,6 +23,8 @@ namespace Menus
         private GridLayoutGroup collectionGrid;
         [SerializeField] 
         private GameObject cardPrefab;
+        [SerializeField] 
+        private GameObject ingredientPrefab;
         private List<GameObject> cards;
         #endregion
         
@@ -55,7 +57,7 @@ namespace Menus
         {
             InitializeCollection();
         }
-
+        
         private void InitializeCollection()
         {
             if (cards != null)
@@ -78,24 +80,51 @@ namespace Menus
                 if (card.GroupsMonster != null)
                 {
                     cardExposer.cardName.text = card.GroupsMonster.name;
-                    cardExposer.cardCopies.text = "Copies possédées : " + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
-                    cardExposer.cardEffect.text = "Description de l'effet";
                     cardExposer.cardCost.text = card.GroupsMonster.cost.ToString();
                     cardExposer.cardFamily.text = card.GroupsMonster.family.ToString();
-                    cardExposer.cardButton.onClick.RemoveAllListeners();
-                    cardExposer.cardButton.onClick.AddListener(delegate { OpenCraft(card); });
                 } 
                 else if (card.Weapon != null)
                 {
                     cardExposer.cardName.text = card.Weapon.equipmentName;
-                    cardExposer.cardCopies.text = "Copies possédées : " + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
-                    cardExposer.cardEffect.text = "Description de l'effet";
                     cardExposer.cardCost.text = card.Weapon.cost.ToString();
                     cardExposer.cardFamily.text = card.Weapon.type.ToString();
-                    cardExposer.cardButton.onClick.RemoveAllListeners();
-                    cardExposer.cardButton.onClick.AddListener(delegate { OpenCraft(card); });
                 }
+                cardExposer.cardCopies.text = "Copies possédées : " + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                cardExposer.cardEffect.text = "Description de l'effet";
+                cardExposer.cardButton.onClick.RemoveAllListeners();
+                cardExposer.cardButton.onClick.AddListener(delegate { OpenCraft(card); });
+                cardExposer.card = card;
+                
+                InitializeCraftResources(card, cardExposer);
             }
+        }
+
+        private void InitializeCraftResources(Card card, CardInCollButtonExposer cardExposer)
+        {
+            foreach (var recipeIngredient in card.Recipe.GetIngredients())
+            {
+                GameObject instantiateIngredient = Instantiate(ingredientPrefab, cardExposer.cardCraftInfos.transform);
+
+                CraftIngredientExposer ingredientExposer = instantiateIngredient.GetComponent<CraftIngredientExposer>();
+
+                ingredientExposer.ingredientButton.interactable = false;
+                
+                //Create a sprite from texture2D in the ingredient class
+                Texture2D text = recipeIngredient.Key.sprite;
+                ingredientExposer.ingredientImage.sprite = Sprite.Create(text, 
+                    new Rect(0, 0, text.width, text.height), 
+                    new Vector2(0.5f, 0.5f), 
+                    100.0f);
+                ingredientExposer.ingredientImage.fillAmount =
+                    (float) DataObject.playerIngredients[recipeIngredient.Key] / recipeIngredient.Value;
+                
+                ingredientExposer.ingredient = recipeIngredient.Key;
+            }
+        }
+
+        private void ClearCraftResources()
+        {
+            //TODO : destroy all instantiated craft ingredients game objects in the craft infos for the cardExposer given in the parameters
         }
         #endregion
         
@@ -142,10 +171,37 @@ namespace Menus
             cardInCraftExposer.cardButton.onClick.AddListener(CloseCraft);
             cardInCraftExposer.craftButton.onClick.RemoveAllListeners();
             cardInCraftExposer.craftButton.onClick.AddListener(delegate { Craft(card, nbToCraft); });
+            cardInCraftExposer.card = card;
+            
+            InitializeCraftResources(card, cardInCraftExposer);
+        }
+        
+        private void InitializeCraftResources(Card card, CardInCraftButtonExposer cardExposer)
+        {
+            foreach (var recipeIngredient in card.Recipe.GetIngredients())
+            {
+                GameObject instantiateIngredient = Instantiate(ingredientPrefab, cardExposer.cardCraftInfos.transform);
+
+                CraftIngredientExposer ingredientExposer = instantiateIngredient.GetComponent<CraftIngredientExposer>();
+
+                ingredientExposer.ingredientButton.interactable = false;
+                
+                //Create a sprite from texture2D in the ingredient class
+                Texture2D text = recipeIngredient.Key.sprite;
+                ingredientExposer.ingredientImage.sprite = Sprite.Create(text, 
+                    new Rect(0, 0, text.width, text.height), 
+                    new Vector2(0.5f, 0.5f), 
+                    100.0f);
+                ingredientExposer.ingredientImage.fillAmount =
+                    (float) DataObject.playerIngredients[recipeIngredient.Key] / recipeIngredient.Value;
+                
+                ingredientExposer.ingredient = recipeIngredient.Key;
+            }
         }
 
         private void AddButton(Card card)
         {
+            //TODO : uncomment to check if there is enough ingredients in player inventory
             //if (!card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft + 1)) return;
             nbToCraft++;
             UpdateCraftNumber();
@@ -167,10 +223,11 @@ namespace Menus
         {
             
             AddCardsToCollection(card, nb);
+            //TODO : uncomment to check if there is enough ingredients in player inventory and remove the one's up
             //if (card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft))
             //{
             //    Debug.Log("Crafted !");
-            //    AddSeveralCardsToCollection(card, nb);
+            //    AddCardsToCollection(card, nb);
             //}
             //else
             //{
@@ -185,6 +242,7 @@ namespace Menus
             {
                 StartCoroutine(DataObject.CardList.AddCardToCollection(card));
             }
+            //TODO : crash/error to debug here
             DataObject.CardList = new CardList();
             StartCoroutine(DictionaryManager.GetCardCollection());
             InitializeCardInCraft(card);
