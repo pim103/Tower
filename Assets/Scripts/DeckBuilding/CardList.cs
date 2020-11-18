@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FullSerializer;
 using Games.Global;
+using Networking;
+using Networking.Client;
 using UnityEngine;
+using UnityEngine.Networking;
 using Utils;
 
 namespace DeckBuilding
@@ -68,16 +72,32 @@ namespace DeckBuilding
             return cardsInCollection.Count;
         }
 
-        public void AddCardToCollection(Card card)
+        public IEnumerator AddCardToCollection(Card card)
         {
-            
-        }
+            WWWForm form = new WWWForm();
+            form.AddField("gameToken", NetworkingController.GameToken);
+            form.AddField("accountToken", NetworkingController.AuthToken);
+            form.AddField("cardId", card.id);
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/account/update/cardCollection", form);
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
 
-        public void AddSeveralCardsToCollection(Card card, int nb)
-        {
-            for (int i = 0; i < nb; ++i)
+            if (www.responseCode == 201)
             {
-                AddCardToCollection(card);
+                Debug.Log("Card added to collection");
+            }
+            else if (www.responseCode == 406)
+            {
+                Debug.LogWarning("Card not added to collection");
+            }
+            else if (www.responseCode == 403)
+            {
+                Debug.LogWarning("Verify fields (error 403)");
+            }
+            else if (www.responseCode == 401)
+            {
+                Debug.LogWarning("Unauthorized (error 401)");
             }
         }
 

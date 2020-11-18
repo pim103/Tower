@@ -147,14 +147,14 @@ namespace Menus
 
         private void AddButton(Card card)
         {
-            if (!card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft + 1)) return;
+            //if (!card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft + 1)) return;
             nbToCraft++;
             UpdateCraftNumber();
         }
 
         private void RemoveButton()
         {
-            if (nbToCraft <= 1) return;
+            //if (nbToCraft <= 1) return;
             nbToCraft--;
             UpdateCraftNumber();
         }
@@ -166,21 +166,32 @@ namespace Menus
 
         private void Craft(Card card, int nb)
         {
-            if (card.Recipe.CanCraft(DataObject.playerIngredients))
+            
+            AddSeveralCardsToCollection(card, nb);
+            //if (card.Recipe.CanCraft(DataObject.playerIngredients))
+            //{
+            //    Debug.Log("Crafted !");
+            //    AddSeveralCardsToCollection(card, nb);
+            //}
+            //else
+            //{
+            //    Debug.Log("Can't craft");
+            //    //TODO : popup "can"t craft" + display which ingredient is missing and/or infos to find craft ingredients ?
+            //}
+        }
+        
+        private void AddSeveralCardsToCollection(Card card, int nb)
+        {
+            for (int i = 0; i < nb; ++i)
             {
-                Debug.Log("Crafted !");
-                DataObject.CardList.AddSeveralCardsToCollection(card, nb);
-            }
-            else
-            {
-                Debug.Log("Can't craft");
-                //TODO : popup "can"t craft" + display which ingredient is missing and/or infos to find craft ingredients ?
+                StartCoroutine(DataObject.CardList.AddCardToCollection(card));
             }
         }
 
         private void CloseCraft()
         {
             if (craftVisualizer) craftVisualizer.SetActive(false);
+            InitMenu();
         }
         
         #endregion
