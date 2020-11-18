@@ -53,7 +53,7 @@ namespace Games.Defenses
 
             if (currentLevel < maps.Length)
             {
-                currentMap = maps[currentLevel].mapsInLevel[(NetworkingController.CurrentRoomMapsLevel != null ? NetworkingController.CurrentRoomMapsLevel[currentLevel] : 0)];
+//                currentMap = maps[currentLevel].mapsInLevel[(NetworkingController.CurrentRoomMapsLevel != null ? NetworkingController.CurrentRoomMapsLevel[currentLevel] : 0)];
                 currentMap.SetActive(true);
                 currentMapStats = currentMap.GetComponent<MapStats>();
                 hoverDetector.dest = currentMapStats.endCube;

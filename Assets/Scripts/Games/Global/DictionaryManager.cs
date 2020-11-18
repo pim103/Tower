@@ -54,7 +54,7 @@ namespace Games.Global
 
         public IEnumerator GetWeapons()
         {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/weapons/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/equipment/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
@@ -66,6 +66,8 @@ namespace Games.Global
             else
             {
                 Debug.Log("Can't get weapons...");
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
             }
         }
 

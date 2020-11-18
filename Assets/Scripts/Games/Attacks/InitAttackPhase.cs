@@ -355,7 +355,7 @@ namespace Games.Attacks
                     groups.InitSpecificEquipment(monster, equipment);
                     if (shouldPutKey)
                     {
-                        monster.InitKey(initDefense.maps[initDefense.currentLevel-1].mapsInLevel[NetworkingController.CurrentRoomMapsLevel[initDefense.currentLevel-1]].GetComponent<MapStats>().keyParent);
+//                        monster.InitKey(initDefense.maps[initDefense.currentLevel-1].mapsInLevel[NetworkingController.CurrentRoomMapsLevel[initDefense.currentLevel-1]].GetComponent<MapStats>().keyParent);
                         hasAKey = true;
                         shouldPutKey = false;
                     }

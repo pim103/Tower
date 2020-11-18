@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR || UNITY_EDITOR_64
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global;
@@ -539,3 +541,5 @@ namespace ContentEditor.SpellEditorComposant
         }
     }
 }
+
+#endif

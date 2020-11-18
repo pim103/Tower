@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR || UNITY_EDITOR_64
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -486,3 +488,5 @@ namespace ContentEditor
         }
     }
 }
+
+#endif

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FullSerializer;
+using Games.Defenses;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
@@ -167,7 +168,6 @@ namespace Menus
                         if (callbackMessage.callbackMessages.room != null && callbackMessage.callbackMessages.message == "MatchStart")
                         {
                             NetworkingController.CurrentRoomToken = callbackMessage.callbackMessages.room;
-                            NetworkingController.CurrentRoomMapsLevel = callbackMessage.callbackMessages.maps;
                             canStart = args.Data;
                         } else if (callbackMessage.callbackMessages.message == "QuitMatchmaking")
                         {
@@ -183,7 +183,7 @@ namespace Menus
 
             searchingMatch = StartCoroutine(WaitingForCanStart());
         }
-        
+
         private IEnumerator WaitingForCanStart()
         {
             yield return new WaitForSeconds(2f);

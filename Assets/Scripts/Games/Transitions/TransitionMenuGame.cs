@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using FullSerializer;
 using Games.Defenses;
-using Games.Global;
 using Networking;
 using Networking.Client;
 using Networking.Client.Room;
@@ -78,6 +78,9 @@ namespace Games.Transitions
                                 }
                                 if (callbackMessage.callbackMessages.message == "StartDefense")
                                 {
+                                    GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
+                                    GameController.currentGameGrid.DisplayGridData();
+                                    
                                     CurrentRoom.loadGameDefense = true;
                                 }
                                 if (callbackMessage.callbackMessages.message == "StartAttack")
@@ -97,6 +100,9 @@ namespace Games.Transitions
                         catch (Exception e)
                         {
                             Debug.Log("Can't read callback : " + e.Message);
+                            Debug.Log("AFTER");
+                            Debug.Log(e.Message);
+                            Debug.Log(args.Data);
                         }
                     }
                 };
@@ -131,7 +137,14 @@ namespace Games.Transitions
             }
 
             waitingForStart = durationChooseDeckPhase;
-            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
+
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.classe.ToString());
+            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon.ToString());
+            dictionary.Add("equipmentDeck", ChooseDeckAndClass.equipmentDeckId.ToString());
+            dictionary.Add("monsterDeck", ChooseDeckAndClass.monsterDeckId.ToString());
+            
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "initGame", TowersWebSocket.FromDictToString(dictionary));
             while (!CurrentRoom.loadGameDefense)
             {
                 yield return new WaitForSeconds(0.5f);

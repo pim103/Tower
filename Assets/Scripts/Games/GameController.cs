@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using FullSerializer;
+using Games.Defenses;
 using Games.Global;
 using Games.Transitions;
 using Networking;
@@ -44,6 +45,8 @@ namespace Games {
 
         private bool otherPlayerDie = false;
         private CallbackMessages callbackHandlers;
+
+        public static GameGrid currentGameGrid;
 
         /*
          * Flag to skip defensePhase

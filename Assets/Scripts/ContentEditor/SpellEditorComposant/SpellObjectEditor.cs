@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR || UNITY_EDITOR_64
+
+using System;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellParameter;
 using UnityEditor;
@@ -37,3 +39,5 @@ namespace ContentEditor.SpellEditorComposant
         }
     }
 }
+
+#endif

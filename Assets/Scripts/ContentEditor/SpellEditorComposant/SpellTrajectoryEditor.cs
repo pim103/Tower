@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR || UNITY_EDITOR_64
+
+using System;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellParameter;
 using PathCreation;
@@ -86,3 +88,4 @@ namespace ContentEditor.SpellEditorComposant
         }
     }
 }
+#endif
