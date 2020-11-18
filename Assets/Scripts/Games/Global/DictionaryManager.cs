@@ -187,5 +187,7 @@ namespace Games.Global
         public static List<Entity> invocationsInScene = new List<Entity>();
 
         public static List<GameObject> objectInScene = new List<GameObject>();
+
+        public static Dictionary<Ingredient, int> playerIngredients = new Dictionary<Ingredient, int>();
     }
 }

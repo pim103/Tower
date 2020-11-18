@@ -37,4 +37,5 @@ public class Card
 
     public GroupsMonster GroupsMonster { get; set; }
     public Weapon Weapon { get; set; }
+    public Recipe Recipe { get; set; }
 }

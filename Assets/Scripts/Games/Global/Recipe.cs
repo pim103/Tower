@@ -11,6 +11,31 @@ namespace Games.Global
 
         public Texture2D Sprite { get; set; }
 
-        public List<Ingredient> CraftRecipe;
+        private readonly Dictionary<Ingredient, int> craftRecipe;
+
+        public Recipe(Dictionary<Ingredient, int> craftRecipe)
+        {
+            this.craftRecipe = craftRecipe;
+        }
+
+        public bool CanCraft(Dictionary<Ingredient, int> inventory)
+        {
+            foreach (var recipeIngredient in craftRecipe)
+            {
+                if (recipeIngredient.Value > inventory[recipeIngredient.Key])
+                    return false;
+            }
+            return true;
+        }
+
+        public bool CanCraft(Dictionary<Ingredient, int> inventory, int nb)
+        {
+            foreach (var recipeIngredient in craftRecipe)
+            {
+                if ((recipeIngredient.Value * nb) > inventory[recipeIngredient.Key])
+                    return false;
+            }
+            return true;
+        }
     }
 }

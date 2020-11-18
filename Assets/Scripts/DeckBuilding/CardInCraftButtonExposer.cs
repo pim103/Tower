@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Games.Global;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ namespace DeckBuilding
         [SerializeField] public TextMeshProUGUI cardFamily;
         [SerializeField] public Button cardButton;
         [SerializeField] public Button craftButton;
+        public Recipe cardRecipe;
         public Card card;
     }
 }

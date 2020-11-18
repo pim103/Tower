@@ -68,6 +68,19 @@ namespace DeckBuilding
             return cardsInCollection.Count;
         }
 
+        public void AddCardToCollection(Card card)
+        {
+            
+        }
+
+        public void AddSeveralCardsToCollection(Card card, int nb)
+        {
+            for (int i = 0; i < nb; ++i)
+            {
+                AddCardToCollection(card);
+            }
+        }
+
         public void InitCards(string json)
         {
             fsSerializer serializer = new fsSerializer();

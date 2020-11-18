@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,13 @@ namespace Menus
         private Button returnFromCraftButton;
         [SerializeField]
         private CardInCraftButtonExposer cardInCraftExposer;
+        [SerializeField] 
+        private TextMeshProUGUI howMuchToCraft;
+        [SerializeField] 
+        private Button lessButton;
+        [SerializeField] 
+        private Button moreButton;
+        private int nbToCraft;
         #endregion
         
         #region start and intialization functions
@@ -102,6 +110,19 @@ namespace Menus
             returnFromCraftButton.onClick.RemoveAllListeners();
             returnFromCraftButton.onClick.AddListener(CloseCraft);
             
+           InitializeCardInCraft(card);
+           
+           lessButton.onClick.RemoveAllListeners();
+           lessButton.onClick.AddListener(RemoveButton); 
+           moreButton.onClick.RemoveAllListeners();
+           moreButton.onClick.AddListener(delegate { AddButton(card); });
+
+           nbToCraft = 1;
+           howMuchToCraft.text = nbToCraft.ToString();
+        }
+
+        private void InitializeCardInCraft(Card card)
+        {
             if (card.GroupsMonster != null)
             {
                 cardInCraftExposer.cardName.text = card.GroupsMonster.name;
@@ -117,15 +138,44 @@ namespace Menus
             
             cardInCraftExposer.cardCopies.text = "Copies possédées : " + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
             cardInCraftExposer.cardEffect.text = "Description de l'effet";
+            cardInCraftExposer.cardRecipe = card.Recipe;
             cardInCraftExposer.cardButton.onClick.RemoveAllListeners();
             cardInCraftExposer.cardButton.onClick.AddListener(CloseCraft);
             cardInCraftExposer.craftButton.onClick.RemoveAllListeners();
-            cardInCraftExposer.craftButton.onClick.AddListener(delegate { Craft(card); });
+            cardInCraftExposer.craftButton.onClick.AddListener(delegate { Craft(card, nbToCraft); });
         }
 
-        private void Craft(Card card)
+        private void AddButton(Card card)
         {
-            
+            if (!card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft + 1)) return;
+            nbToCraft++;
+            UpdateCraftNumber();
+        }
+
+        private void RemoveButton()
+        {
+            if (nbToCraft <= 1) return;
+            nbToCraft--;
+            UpdateCraftNumber();
+        }
+
+        private void UpdateCraftNumber()
+        {
+            howMuchToCraft.text = nbToCraft.ToString();
+        }
+
+        private void Craft(Card card, int nb)
+        {
+            if (card.Recipe.CanCraft(DataObject.playerIngredients))
+            {
+                Debug.Log("Crafted !");
+                DataObject.CardList.AddSeveralCardsToCollection(card, nb);
+            }
+            else
+            {
+                Debug.Log("Can't craft");
+                //TODO : popup "can"t craft" + display which ingredient is missing and/or infos to find craft ingredients ?
+            }
         }
 
         private void CloseCraft()
