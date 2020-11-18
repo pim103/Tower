@@ -99,26 +99,5 @@ namespace Games.Global.Entities
                 monster.InitOriginalWeapon();
             }
         }
-
-//        public bool IsMonsterListDifferentToOtherList(List<MonstersInGroup> comparedMonstersInGroups)
-//        {
-//            if (monstersInGroupList.Count != comparedMonstersInGroups.Count)
-//            {
-//                return true;
-//            }
-//
-//            bool doesntFindMonster = false;
-//            foreach (MonstersInGroup monstersInGroup in monstersInGroupList)
-//            {
-//                doesntFindMonster = !comparedMonstersInGroups.Exists(monster => monster.GetMonsterId() == monstersInGroup.GetMonsterId());
-//                
-//                if (doesntFindMonster)
-//                {
-//                    break;
-//                }
-//            }
-//
-//            return doesntFindMonster;
-//        }
     }
 }
