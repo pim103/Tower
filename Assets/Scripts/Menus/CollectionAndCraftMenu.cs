@@ -31,7 +31,7 @@ namespace Menus
         [SerializeField] 
         private Button returnFromCraftButton;
         [SerializeField]
-        private CardInCollButtonExposer cardInCraftExposer;
+        private CardInCraftButtonExposer cardInCraftExposer;
         #endregion
         
         #region start and intialization functions
@@ -119,6 +119,8 @@ namespace Menus
             cardInCraftExposer.cardEffect.text = "Description de l'effet";
             cardInCraftExposer.cardButton.onClick.RemoveAllListeners();
             cardInCraftExposer.cardButton.onClick.AddListener(CloseCraft);
+            cardInCraftExposer.craftButton.onClick.RemoveAllListeners();
+            cardInCraftExposer.craftButton.onClick.AddListener(delegate { Craft(card); });
         }
 
         private void Craft(Card card)
