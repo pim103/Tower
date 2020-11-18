@@ -110,7 +110,7 @@ namespace Games.Global
             }
         }
 
-        public IEnumerator GetCardCollection()
+        public static IEnumerator GetCardCollection()
         {
             while (!hasCardsLoad || !wasConnected)
             {

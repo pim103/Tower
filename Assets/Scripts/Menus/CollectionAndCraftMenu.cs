@@ -53,7 +53,6 @@ namespace Menus
         
         public void InitMenu()
         {
-            Debug.Log("CollectionAndCraft Menu");
             InitializeCollection();
         }
 
@@ -154,7 +153,7 @@ namespace Menus
 
         private void RemoveButton()
         {
-            //if (nbToCraft <= 1) return;
+            if (nbToCraft <= 1) return;
             nbToCraft--;
             UpdateCraftNumber();
         }
@@ -167,8 +166,8 @@ namespace Menus
         private void Craft(Card card, int nb)
         {
             
-            AddSeveralCardsToCollection(card, nb);
-            //if (card.Recipe.CanCraft(DataObject.playerIngredients))
+            AddCardsToCollection(card, nb);
+            //if (card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft))
             //{
             //    Debug.Log("Crafted !");
             //    AddSeveralCardsToCollection(card, nb);
@@ -180,18 +179,21 @@ namespace Menus
             //}
         }
         
-        private void AddSeveralCardsToCollection(Card card, int nb)
+        private void AddCardsToCollection(Card card, int nb)
         {
             for (int i = 0; i < nb; ++i)
             {
                 StartCoroutine(DataObject.CardList.AddCardToCollection(card));
             }
+            DataObject.CardList = new CardList();
+            StartCoroutine(DictionaryManager.GetCardCollection());
+            InitializeCardInCraft(card);
         }
 
         private void CloseCraft()
         {
             if (craftVisualizer) craftVisualizer.SetActive(false);
-            InitMenu();
+            InitializeCollection();
         }
         
         #endregion

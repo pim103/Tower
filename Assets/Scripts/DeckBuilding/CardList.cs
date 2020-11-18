@@ -85,19 +85,23 @@ namespace DeckBuilding
 
             if (www.responseCode == 201)
             {
-                Debug.Log("Card added to collection");
+                Debug.LogFormat("Card added (id : {0}) to collection", card.id);
+                //TODO : add popup for feedback
             }
             else if (www.responseCode == 406)
             {
                 Debug.LogWarning("Card not added to collection");
+                //TODO : add popup for feedback and eventually handle error
             }
             else if (www.responseCode == 403)
             {
                 Debug.LogWarning("Verify fields (error 403)");
+                //TODO : add popup for feedback and eventually handle error
             }
             else if (www.responseCode == 401)
             {
                 Debug.LogWarning("Unauthorized (error 401)");
+                //TODO : add popup for feedback and eventually handle error
             }
         }
 
