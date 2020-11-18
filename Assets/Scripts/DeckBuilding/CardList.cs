@@ -21,6 +21,8 @@ namespace DeckBuilding
         // int : IdCard - int : number of this card
         private Dictionary<int, int> cardsInCollection;
 
+        public static bool collectionIsLoaded;
+
         public CardList()
         {
             Debug.Log("init cardList");
@@ -103,6 +105,11 @@ namespace DeckBuilding
                 Debug.LogWarning("Unauthorized (error 401)");
                 //TODO : add popup for feedback and eventually handle error
             }
+            else
+            {
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+            }
         }
 
         public void InitCards(string json)
@@ -168,6 +175,8 @@ namespace DeckBuilding
         {
             fsSerializer serializer = new fsSerializer();
             fsData data;
+            
+            cardsInCollection.Clear();
 
             try
             {
@@ -190,6 +199,8 @@ namespace DeckBuilding
                 Debug.Log(e.Message);
                 Debug.Log(e.Data);
             }
+
+            collectionIsLoaded = true;
         }
     }
 }

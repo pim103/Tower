@@ -23,17 +23,7 @@ namespace Games.Global
             return craftRecipe;
         }
 
-        public bool CanCraft(Dictionary<Ingredient, int> inventory)
-        {
-            foreach (var recipeIngredient in craftRecipe)
-            {
-                if (recipeIngredient.Value > inventory[recipeIngredient.Key])
-                    return false;
-            }
-            return true;
-        }
-
-        public bool CanCraft(Dictionary<Ingredient, int> inventory, int nb)
+        public bool CanCraft(Dictionary<Ingredient, int> inventory, int nb = 1)
         {
             foreach (var recipeIngredient in craftRecipe)
             {

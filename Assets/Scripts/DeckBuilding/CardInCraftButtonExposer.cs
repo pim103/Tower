@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//TODO : make a child of CardInCollButtonExposer
+
 namespace DeckBuilding
 {
     public class CardInCraftButtonExposer : MonoBehaviour

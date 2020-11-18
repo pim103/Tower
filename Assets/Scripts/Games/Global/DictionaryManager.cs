@@ -117,6 +117,8 @@ namespace Games.Global
                 yield return new WaitForSeconds(0.5f);
             }
 
+            CardList.collectionIsLoaded = false;
+            
             WWWForm form = new WWWForm();
             if (NetworkingController.AuthToken != "")
             {

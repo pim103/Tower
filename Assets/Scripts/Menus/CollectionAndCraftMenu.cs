@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
 using TMPro;
@@ -6,6 +7,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //Author : Attika
+
+//TODO : ajouter le craft "inverse" = transformer une carte en ingrédients
+    //ça veut dire qu'il faut une fonction pour enlever une carte de la collection
+    //et une autre pour ajouter des ingrédients à l'inventaire du joueur
 
 namespace Menus
 {
@@ -95,7 +100,7 @@ namespace Menus
                 cardExposer.cardButton.onClick.AddListener(delegate { OpenCraft(card); });
                 cardExposer.card = card;
                 
-                InitializeCraftResources(card, cardExposer);
+                //InitializeCraftResources(card, cardExposer);
             }
         }
 
@@ -120,11 +125,6 @@ namespace Menus
                 
                 ingredientExposer.ingredient = recipeIngredient.Key;
             }
-        }
-
-        private void ClearCraftResources()
-        {
-            //TODO : destroy all instantiated craft ingredients game objects in the craft infos for the cardExposer given in the parameters
         }
         #endregion
         
@@ -173,9 +173,10 @@ namespace Menus
             cardInCraftExposer.craftButton.onClick.AddListener(delegate { Craft(card, nbToCraft); });
             cardInCraftExposer.card = card;
             
-            InitializeCraftResources(card, cardInCraftExposer);
+            //InitializeCraftResources(card, cardInCraftExposer);
         }
         
+        //TODO : when CardInCraftButtonExposer will be child of CardInCollButtonExposer, cast as CardInCraftButtonExposer the 'cardExposer' to access its properties
         private void InitializeCraftResources(Card card, CardInCraftButtonExposer cardExposer)
         {
             foreach (var recipeIngredient in card.Recipe.GetIngredients())
@@ -203,6 +204,7 @@ namespace Menus
         {
             //TODO : uncomment to check if there is enough ingredients in player inventory
             //if (!card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft + 1)) return;
+            //TODO : add a check => ne pas dépasser le nombre maximal de cartes autorisé par deck (si t'en as plus elles servent à rien)
             nbToCraft++;
             UpdateCraftNumber();
         }
@@ -242,10 +244,8 @@ namespace Menus
             {
                 StartCoroutine(DataObject.CardList.AddCardToCollection(card));
             }
-            //TODO : crash/error to debug here
-            DataObject.CardList = new CardList();
             StartCoroutine(DictionaryManager.GetCardCollection());
-            InitializeCardInCraft(card);
+            StartCoroutine(WaitCollectionLoad(card));
         }
 
         private void CloseCraft()
@@ -253,7 +253,21 @@ namespace Menus
             if (craftVisualizer) craftVisualizer.SetActive(false);
             InitializeCollection();
         }
+
+        private void ClearCraftResources()
+        {
+            //TODO : destroy all instantiated craft ingredients game objects in the craft infos for the cardExposer given in the parameters
+        }
         
         #endregion
+
+        private IEnumerator WaitCollectionLoad(Card card)
+        {
+            while (CardList.collectionIsLoaded)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            InitializeCardInCraft(card);
+        }
     }
 }
