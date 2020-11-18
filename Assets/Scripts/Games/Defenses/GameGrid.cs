@@ -27,6 +27,15 @@
         public CellType cellType { get; set; }
         public int x { get; set; }
         public int y { get; set; }
+
+        public int idNeeded { get; set; }
+        public Vector3 rotation { get; set; }
+
+        public int idMeleeWeapon { get; set; }
+        public int idDistanceWeapon { get; set; }
+        public int idHelmetArmor { get; set; }
+        public int idChestplateArmor { get; set; }
+        public int idLeggingsArmor { get; set; }
     }
 
     [Serializable]
