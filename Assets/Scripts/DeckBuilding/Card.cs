@@ -12,11 +12,21 @@ public class CardJsonList
 }
 
 [Serializable]
+public class IngredientJson
+{
+    public string id { get; set; }
+    public string name { get; set; }
+    public string nbRessources { get; set; }
+}
+
+[Serializable]
 public class CardJsonObject
 {
     public string id { get; set; }
     public string monsterGroupId { get; set; }
     public string weaponId { get; set; }
+
+    public List<IngredientJson> recipes;
 
     public Card ConvertToCard()
     {
@@ -24,7 +34,8 @@ public class CardJsonObject
         {
             id = Int32.Parse(id),
             GroupsMonster = monsterGroupId != null ? DataObject.MonsterList.GetGroupsMonsterById(Int32.Parse(monsterGroupId)) : null,
-            Weapon = weaponId != null ? DataObject.EquipmentList.GetWeaponWithId(Int32.Parse(weaponId)) : null
+            Weapon = weaponId != null ? DataObject.EquipmentList.GetWeaponWithId(Int32.Parse(weaponId)) : null,
+            Recipe = new Recipe(recipes)
         };
 
         return card;

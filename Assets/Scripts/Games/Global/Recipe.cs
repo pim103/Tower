@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 //Author : Attika
@@ -13,6 +14,20 @@ namespace Games.Global
 
         private readonly Dictionary<Ingredient, int> craftRecipe;
 
+        public Recipe(List<IngredientJson> ingredients)
+        {
+            craftRecipe = new Dictionary<Ingredient, int>();
+            
+            foreach (IngredientJson ij in ingredients)
+            {
+                craftRecipe.Add(new Ingredient
+                {
+                    id = Int32.Parse(ij.id),
+                    IngName = ij.name
+                }, Int32.Parse(ij.nbRessources));
+            }
+        }
+        
         public Recipe(Dictionary<Ingredient, int> craftRecipe)
         {
             this.craftRecipe = craftRecipe;

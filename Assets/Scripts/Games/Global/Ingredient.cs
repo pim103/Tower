@@ -4,7 +4,7 @@
 
 namespace Games.Global
 {
-    public abstract class Ingredient : Item
+    public class Ingredient : Item
     {
         public string IngName;
     }

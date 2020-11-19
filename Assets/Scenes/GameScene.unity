@@ -1149,9 +1149,9 @@ MonoBehaviour:
   transitionMenuGame: {fileID: 194075441}
   transitionDefenseAttack: {fileID: 194075446}
   initAttackPhase: {fileID: 1495904576}
-  initDefensePhase: {fileID: 0}
+  initDefensePhase: {fileID: 934534610}
   gameGridController: {fileID: 979748978}
-  endCube: {fileID: 0}
+  endCube: {fileID: 1248472977}
   endGameMenu: {fileID: 1448107119}
   endGameText: {fileID: 1448107121}
   roomId: okBoomer
@@ -4849,6 +4849,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 979748977}
     m_Modifications:
+    - target: {fileID: 5349134419850912762, guid: a65ca85574463ea42a5af1e306c7a3ac,
+        type: 3}
+      propertyPath: objectsInScene
+      value: 
+      objectReference: {fileID: 194075444}
+    - target: {fileID: 5349134419850912762, guid: a65ca85574463ea42a5af1e306c7a3ac,
+        type: 3}
+      propertyPath: initDefense
+      value: 
+      objectReference: {fileID: 934534610}
     - target: {fileID: 6942331883085425749, guid: a65ca85574463ea42a5af1e306c7a3ac,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4934,6 +4944,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1248472973}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1248472977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5349134419850912762, guid: a65ca85574463ea42a5af1e306c7a3ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 1248472973}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248472975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48bdef1c663571940a83b8c3778a2c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1290225983
 GameObject:
   m_ObjectHideFlags: 0
