@@ -193,6 +193,7 @@ namespace Menus
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "getRankedMatch", "null");
                 yield return new WaitForSeconds(5f);
             }
+
             transitionMenuGame.InitGame();
         }
 

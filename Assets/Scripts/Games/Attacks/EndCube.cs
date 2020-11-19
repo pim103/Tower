@@ -19,7 +19,7 @@ namespace Games.Attacks
         [SerializeField] 
         private InitDefense initDefense;
 
-        private void DesactiveAllGameObject()
+        public void DesactiveAllGameObject()
         {
             foreach (GameObject go in DataObject.objectInScene)
             {
@@ -43,29 +43,13 @@ namespace Games.Attacks
             objectsInScene.mainCamera.SetActive(true);
         }
 
-        public IEnumerator WaitingForDefensePhase()
-        {
-            DesactiveAllGameObject();
-            while (!CurrentRoom.loadGameDefense)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            objectsInScene.containerAttack.SetActive(false);
-            objectsInScene.containerDefense.SetActive(true);
-            initDefense.Init();
-        }
-        
         private void OnTriggerEnter(Collider other)
         {
-            CurrentRoom.loadGameDefense = false;
-            CurrentRoom.loadGameAttack = false;
             Cursor.lockState = CursorLockMode.None;
             
             if (initDefense.currentLevel < initDefense.maps.Length)
             {
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
-                StartCoroutine(WaitingForDefensePhase());
             }
             else
             {

@@ -59,18 +59,10 @@ namespace Games.Defenses
                 hoverDetector.dest = currentMapStats.endCube;
                 hoverDetector.startPos = currentMapStats.startPos;
 
-                if (!se.gameController.byPassDefense)
-                {
-                    Generate();
-                    defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
-                    defenseUIController.enabled = true;
-                    transitionDefenseAttack.StartDefenseCounter();
-                }
-                else
-                {
-                    se.initAttackPhase.StartAttackPhase();
-                }
-
+                Generate();
+                defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
+                defenseUIController.enabled = true;
+    
                 currentLevel++;
             }
         }

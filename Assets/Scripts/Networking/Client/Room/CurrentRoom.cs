@@ -6,5 +6,6 @@ namespace Networking.Client.Room
         public static bool loadRoleAndDeck = false;
         public static bool loadGameDefense = false;
         public static bool loadGameAttack = false;
+        public static bool generateAttackGrid = false;
     }
 }

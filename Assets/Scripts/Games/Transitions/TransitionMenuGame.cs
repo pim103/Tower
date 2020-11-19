@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FullSerializer;
 using Games.Defenses;
 using Networking;
@@ -22,7 +23,7 @@ namespace Games.Transitions
         [SerializeField] 
         private InitDefense initDefense;
 
-        private static int waitingForStart;
+        public static int waitingForStart;
         public static int timerAttack = Int32.MaxValue;
 
         private string waitingGameStartText;
@@ -40,73 +41,10 @@ namespace Games.Transitions
         {
             CurrentRoom.loadGameDefense = false;
             CurrentRoom.loadGameAttack = false;
+            CurrentRoom.generateAttackGrid = false;
 
             StartCoroutine(LoadGame());
             TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setGameLoaded", "null");
-            if (TowersWebSocket.wsGame != null)
-            {
-                TowersWebSocket.wsGame.OnMessage += (sender, args) =>
-                {
-                    if (args.Data.Contains("callbackMessages"))
-                    {
-                        fsSerializer serializer = new fsSerializer();
-                        fsData data;
-                        CallbackMessages callbackMessage = null;
-                        try
-                        {
-                            data = fsJsonParser.Parse(args.Data);
-                            serializer.TryDeserialize(data, ref callbackMessage);
-                            callbackMessage = Tools.Clone(callbackMessage);
-                            //Debug.Log(args.Data);
-                            
-                            if (callbackMessage.callbackMessages.message == "LoadGame")
-                            {
-                                CurrentRoom.loadGame = true;
-                            }
-                            if (callbackMessage.callbackMessages.message == "setGameLoaded")
-                            {
-                                Debug.Log("En attente de l'adversaire");
-                            }
-
-                            if (CurrentRoom.loadGame)
-                            {
-                                //Debug.Log(callbackMessage.callbackMessages.roleTimer);
-                                if (callbackMessage.callbackMessages.roleTimer != -1)
-                                {
-                                    waitingForStart = callbackMessage.callbackMessages.roleTimer;
-                                    CurrentRoom.loadRoleAndDeck = true;
-                                }
-                                if (callbackMessage.callbackMessages.message == "StartDefense")
-                                {
-                                    GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
-                                    GameController.currentGameGrid.DisplayGridData();
-                                    
-                                    CurrentRoom.loadGameDefense = true;
-                                }
-                                if (callbackMessage.callbackMessages.message == "StartAttack")
-                                {
-                                    CurrentRoom.loadGameAttack = true;
-                                }
-                                if (CurrentRoom.loadGameAttack)
-                                {
-                                    if (callbackMessage.callbackMessages.attackTimer != -1)
-                                    {
-                                        timerAttack = callbackMessage.callbackMessages.attackTimer;
-                                    }
-                                }
-                            }
-                            
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log("Can't read callback : " + e.Message);
-                            Debug.Log("AFTER");
-                            Debug.Log(e.Message);
-                            Debug.Log(args.Data);
-                        }
-                    }
-                };
-            }
 
             return true;
         }
@@ -120,43 +58,20 @@ namespace Games.Transitions
             SceneManager.LoadScene("GameScene");
         }
 
-        public IEnumerator WaitingForStart()
+        public async Task SelectCharacter()
         {
-            while (!CurrentRoom.loadRoleAndDeck)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
             chooseRoleAndDeckGameObject.SetActive(true);
-            
+
+            waitingGameStartText = "La partie commence dans     secondes";
             while (waitingForStart > 0 && !ChooseDeckAndClass.isValidate)
             {
                 objectsInScene.waitingText.text = waitingGameStartText;
                 objectsInScene.counterText.text = waitingForStart.ToString();
-                yield return new WaitForSeconds(0.5f);
+
+                await Task.Delay(500);
             }
 
             waitingForStart = durationChooseDeckPhase;
-
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.classe.ToString());
-            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon.ToString());
-            dictionary.Add("equipmentDeck", ChooseDeckAndClass.equipmentDeckId.ToString());
-            dictionary.Add("monsterDeck", ChooseDeckAndClass.monsterDeckId.ToString());
-            
-            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "initGame", TowersWebSocket.FromDictToString(dictionary));
-            while (!CurrentRoom.loadGameDefense)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-            // TODO : Need RPC to launch game
-            StartGameWithDefense();
-        }
-
-        public void WantToStartGame()
-        {
-            waitingGameStartText = "La partie commence dans     secondes";
-            StartCoroutine(WaitingForStart());
         }
 
         public void StartGameWithDefense()

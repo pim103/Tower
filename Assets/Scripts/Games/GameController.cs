@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using FullSerializer;
+using Games.Attacks;
 using Games.Defenses;
 using Games.Global;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
 using Networking.Client.Room;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,6 +24,16 @@ namespace Games {
         [SerializeField]
         private TransitionMenuGame transitionMenuGame;
 
+        [SerializeField]
+        private TransitionDefenseAttack transitionDefenseAttack;
+
+        [SerializeField]
+        private InitAttackPhase initAttackPhase;
+
+        [SerializeField]
+        private EndCube endCube;
+
+        [SerializeField] private GameObject endGameMenu;
         [SerializeField] private Text endGameText;
 
         [SerializeField]
@@ -30,21 +43,16 @@ namespace Games {
         [SerializeField] 
         private string roomId;
 
-        [SerializeField] private GameObject endGameMenu;
         [SerializeField] private Button backToMenu;
 
         public static GameObject mainCamera;
 
         public static string staticRoomId;
-        
         private string canStart = null;
-
         public static int PlayerIndex;
-
         private bool idAssigned = false;
 
-        private bool otherPlayerDie = false;
-        private CallbackMessages callbackHandlers;
+        public static bool otherPlayerDie = false;
 
         public static GameGrid currentGameGrid;
 
@@ -52,27 +60,6 @@ namespace Games {
          * Flag to skip defensePhase
          */
         public bool byPassDefense = true;
-
-        public static string mapReceived;
-
-        private IEnumerator CheckEndInit()
-        {
-            yield return new WaitForSeconds(0.1f);
-            transitionMenuGame.WantToStartGame();
-        }
-
-        private IEnumerator WaitingDeathOtherPlayer()
-        {
-            while (!otherPlayerDie)
-            {
-                yield return new WaitForSeconds(1f);
-            }
-
-            Cursor.lockState = CursorLockMode.None;
-            DataObject.playerInScene.Remove(PlayerIndex);
-            objectsInScene.mainCamera.SetActive(true);
-            endGameMenu.SetActive(true);
-        }
 
         private void LoadMainMenu()
         {
@@ -93,71 +80,87 @@ namespace Games {
             
             // TODO : change index
             PlayerIndex = 0;
-            if (TowersWebSocket.wsGame != null)
-            {
-                TowersWebSocket.wsGame.OnMessage += (sender, args) =>
-                {
-                    if (args.Data.Contains("callbackMessages"))
-                    {
-                        fsSerializer serializer = new fsSerializer();
-                        fsData data;
-                        CallbackMessages callbackMessage = null; 
-                        try
-                        {
-                            data = fsJsonParser.Parse(args.Data);
-                            serializer.TryDeserialize(data, ref callbackMessage);
-                            callbackMessage = Tools.Clone(callbackMessage);
-                            if (callbackMessage.callbackMessages.message == "WON")
-                            {
-                                CurrentRoom.loadGameDefense = false;
-                                CurrentRoom.loadGameAttack = false;
-                                Debug.Log("Un autre joueur a gagné");
-                                otherPlayerDie = true;
-                                endGameText.text = "Vous avez perdu...";
-                            }
-                            if (callbackMessage.callbackMessages.message == "DEATH")
-                            {
-                                CurrentRoom.loadGameDefense = false;
-                                CurrentRoom.loadGameAttack = false;
-                                Debug.Log("Vous avez gagné");
-                                otherPlayerDie = true;
-                                endGameText.text = "Vous avez gagné !";
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log("Can't read callback : " + e.Message);
-                        }
-                    }
-                    if (args.Data.Contains("GRID"))
-                    {
-                        mapReceived = args.Data;
-                        Debug.Log(args.Data);
-                    }
-                };
-                TowersWebSocket.wsGame.OnClose += (sender, args) =>
-                {
-                    if (args.Code != 1000)
-                    {
-                        NetworkingController.AuthToken = "";
-                        NetworkingController.CurrentRoomToken = "";
-                        NetworkingController.AuthRole = "";
-                        NetworkingController.IsConnected = false;
-                        NetworkingController.ConnectionClosed = args.Code;
-                        NetworkingController.ConnectionStart = false;
-                        SceneManager.LoadScene("MenuScene");
-                    }
-                };
-            }
+            
+            GameControllerNetwork.InitGameControllerNetwork(this);
 
             if (byPassDefense)
             {
                 canStart = "{\"CanStartHandler\":[{\"message\":\"true\"}]}";
             }
 
-            StartCoroutine(WaitingDeathOtherPlayer());
-            StartCoroutine(CheckEndInit());
+            StartWithSelectCharacter();
         }
-        // TODO : Control player's movement here and not in PlayerMovement
+
+        private async Task StartWithSelectCharacter()
+        {
+            while (!CurrentRoom.loadRoleAndDeck)
+            {
+                await Task.Delay(500);
+            }
+
+            await transitionMenuGame.SelectCharacter();
+            GameControllerNetwork.SendRoleAndClasses();
+            await PlayGame();
+        }
+
+        private async Task PlayGame()
+        {
+            while (!otherPlayerDie)
+            {
+                while (!CurrentRoom.loadGameDefense)
+                {
+                    await Task.Delay(500);
+                }
+
+                transitionMenuGame.StartGameWithDefense();
+                await transitionDefenseAttack.PlayDefensePhase();
+                GameControllerNetwork.SendGridData();
+
+                while (!CurrentRoom.generateAttackGrid)
+                {
+                    await Task.Delay(500); 
+                }
+
+                await initAttackPhase.StartAttackPhase();
+                GameControllerNetwork.SendSetAttackReady();
+
+                while (!CurrentRoom.loadGameAttack)
+                {
+                    await Task.Delay(500);
+                }
+
+                await initAttackPhase.ActivePlayer();
+                endCube.DesactiveAllGameObject();
+            }
+        }
+
+        private void SetEndGameText(string text)
+        {
+            otherPlayerDie = true;
+            endGameText.text = text;
+        }
+
+        public void EndGame(bool hasWon)
+        {
+            CurrentRoom.loadGameDefense = false;
+            CurrentRoom.loadGameAttack = false;
+            CurrentRoom.generateAttackGrid = false;
+
+            Cursor.lockState = CursorLockMode.None;
+            DataObject.playerInScene.Remove(PlayerIndex);
+            objectsInScene.mainCamera.SetActive(true);
+            endGameMenu.SetActive(true);
+
+            if (hasWon)
+            {
+                Debug.Log("Vous avez gagné");
+                SetEndGameText("Vous avez gagné !");
+            }
+            else
+            {
+                Debug.Log("Un autre joueur a gagné");
+                SetEndGameText("Vous avez perdu...");
+            }
+        }
     }
 }
