@@ -33,16 +33,7 @@ namespace Games.Attacks
         [SerializeField] private HoverDetector hoverDetector;
         [SerializeField] private GameGridController gameGridController;
 
-        private string[,] tempMap1;
-        private string[,] tempMap2;
-
-        private Monster monster2;
-
-        private bool endOfGeneration = false;
-
-        private string currentMap;
-
-        private void DesactiveDefenseMap()
+        public async Task Init()
         {
             if (hoverDetector.objectInHand != null)
             {
@@ -63,20 +54,8 @@ namespace Games.Attacks
             }
         }
 
-        public async Task StartAttackPhase()
+        public async Task PlayAttackPhase()
         {
-            DesactiveDefenseMap();
-
-            objectsInScene.containerDefense.SetActive(false);
-            objectsInScene.containerAttack.SetActive(true);
-
-            endOfGeneration = true;
-        }
-
-        public async Task ActivePlayer()
-        {
-            objectsInScene.mainCamera.SetActive(false);
-
             objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
             objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 

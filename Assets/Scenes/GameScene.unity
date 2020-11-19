@@ -674,7 +674,7 @@ PrefabInstance:
         type: 3}
       propertyPath: se
       value: 
-      objectReference: {fileID: 194075448}
+      objectReference: {fileID: 0}
     - target: {fileID: 7401777425161430227, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_Name
@@ -1096,7 +1096,7 @@ GameObject:
   - component: {fileID: 194075441}
   - component: {fileID: 194075446}
   - component: {fileID: 194075444}
-  - component: {fileID: 194075448}
+  - component: {fileID: 194075445}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -1149,15 +1149,14 @@ MonoBehaviour:
   transitionMenuGame: {fileID: 194075441}
   transitionDefenseAttack: {fileID: 194075446}
   initAttackPhase: {fileID: 1495904576}
+  initDefensePhase: {fileID: 0}
   gameGridController: {fileID: 979748978}
   endCube: {fileID: 0}
   endGameMenu: {fileID: 1448107119}
   endGameText: {fileID: 1448107121}
-  se: {fileID: 194075448}
-  endPoint: wss://towers.heolia.eu/websocket
   roomId: okBoomer
   backToMenu: {fileID: 1448107120}
-  byPassDefense: 0
+  byPassDefense: 1
 --- !u!114 &194075444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,6 +1179,22 @@ MonoBehaviour:
   - {fileID: 1674103329}
   - {fileID: 1542544456}
   - {fileID: 1506020115}
+--- !u!114 &194075445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194075440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00dc265f46524f6ebae31cece9d0a21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1017092482}
+  selectCharMenu: {fileID: 316028838}
+  defenseContainer: {fileID: 1884199763}
+  attackContainer: {fileID: 409050599}
 --- !u!114 &194075446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,21 +1216,6 @@ MonoBehaviour:
   validateButton: {fileID: 1136751695}
   waitingOtherPlayerPanel: {fileID: 1232415499}
   defenseUI: {fileID: 1923144408}
---- !u!114 &194075448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194075440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4523cab1aad5b4a4db2a281a9e845a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initAttackPhase: {fileID: 1495904576}
-  dm: {fileID: 0}
-  gameController: {fileID: 194075443}
 --- !u!1 &200499149
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,7 +2280,7 @@ PrefabInstance:
         type: 3}
       propertyPath: se
       value: 
-      objectReference: {fileID: 194075448}
+      objectReference: {fileID: 0}
     - target: {fileID: 7401777425161430227, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_Name
@@ -3592,15 +3592,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b195bf34b0b4174d8d6c14f5f2ef110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  se: {fileID: 194075448}
-  transitionDefenseAttack: {fileID: 194075446}
   defenseUIController: {fileID: 934534611}
-  gameGridController: {fileID: 0}
   currentLevel: 0
   gridCell: {fileID: 6078987784092374643, guid: edf50361f6ea3074d909cb16ced37c40,
     type: 3}
   defenseCamera: {fileID: 83993298}
-  hoverDetector: {fileID: 83993302}
   gridCellList: []
 --- !u!114 &934534611
 MonoBehaviour:
@@ -4507,7 +4503,7 @@ PrefabInstance:
         type: 3}
       propertyPath: se
       value: 
-      objectReference: {fileID: 194075448}
+      objectReference: {fileID: 0}
     - target: {fileID: 7401777425161430227, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_Name
@@ -5720,7 +5716,7 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   initDefense: {fileID: 934534610}
   hoverDetector: {fileID: 83993302}
-  gameGridController: {fileID: 0}
+  gameGridController: {fileID: 979748978}
 --- !u!114 &1495904577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5767,7 +5763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1515287155
 Transform:
   m_ObjectHideFlags: 0
@@ -15376,7 +15372,7 @@ PrefabInstance:
         type: 3}
       propertyPath: se
       value: 
-      objectReference: {fileID: 194075448}
+      objectReference: {fileID: 0}
     - target: {fileID: 6587678624017533089, guid: d4c010c5899cffe4a81036732de267a8,
         type: 3}
       propertyPath: m_IsActive

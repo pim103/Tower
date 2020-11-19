@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Attacks;
 using Games.Defenses.Traps;
 using Games.Global;
@@ -32,6 +33,44 @@ namespace Games.Defenses
 
         private List<GameObject> currentMap = new List<GameObject>();
 
+        private GameGrid GenerateGrid()
+        {
+            GameGrid grid = new GameGrid();
+            grid.gridCellDataList = new GridCellDataList();
+            grid.gridCellDataList.gridCellDatas = new List<GridCellData>();
+            
+            grid.size = 20;
+            for (int i = 0; i < grid.size; ++i)
+            {
+                for (int j = 0; j < grid.size; ++j)
+                {
+                    CellType cellType = CellType.None;
+
+                    if (i == 1 && j == 1)
+                    {
+                        cellType = CellType.Spawn;
+                    } else if (i == 18 && j == 18)
+                    {
+                        cellType = CellType.End;
+                    }
+                    
+                    grid.gridCellDataList.gridCellDatas.Add(new GridCellData
+                    {
+                        x = i,
+                        y = j,
+                        cellType = (int)cellType
+                    });
+                }
+            }
+
+            return grid;
+        }
+
+        public void GenerateAndInitFakeGrid()
+        {
+            InitGridData(GenerateGrid());
+        }
+        
         public void InitGridData(GameGrid grid)
         {
             DataObject.playerInScene.Clear();

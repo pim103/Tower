@@ -61,8 +61,6 @@ namespace Games.Transitions
 
         public async Task SelectCharacter()
         {
-            chooseRoleAndDeckGameObject.SetActive(true);
-
             waitingGameStartText = "La partie commence dans     secondes";
             while (waitingForStart > 0 && !ChooseDeckAndClass.isValidate)
             {
@@ -73,16 +71,6 @@ namespace Games.Transitions
             }
 
             waitingForStart = durationChooseDeckPhase;
-        }
-
-        public void StartGameWithDefense()
-        {
-            chooseRoleAndDeckGameObject.SetActive(false);
-            objectsInScene.mainCamera.SetActive(false);
-
-            objectsInScene.containerAttack.SetActive(false);
-            objectsInScene.containerDefense.SetActive(true);
-            initDefense.Init();
         }
     }
 }

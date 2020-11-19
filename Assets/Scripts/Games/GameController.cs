@@ -9,6 +9,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Games {
+    public enum Phase
+    {
+        RoleAndDeck,
+        Defense,
+        Attack
+    }
+    
     public class GameController : MonoBehaviour
     {
         [SerializeField]
@@ -24,6 +31,9 @@ namespace Games {
         private InitAttackPhase initAttackPhase;
 
         [SerializeField]
+        private InitDefense initDefensePhase;
+
+        [SerializeField]
         private GameGridController gameGridController;
 
         [SerializeField]
@@ -32,10 +42,6 @@ namespace Games {
         [SerializeField] private GameObject endGameMenu;
         [SerializeField] private Text endGameText;
 
-        [SerializeField]
-        private ScriptsExposer se;
-        [SerializeField] 
-        private string endPoint;
         [SerializeField] 
         private string roomId;
 
@@ -80,11 +86,20 @@ namespace Games {
             // TODO : change index
             PlayerIndex = 0;
 
-            StartWithSelectCharacter();
+            if (byPassDefense)
+            {
+                gameGridController.GenerateAndInitFakeGrid();
+                AttackPhase();
+            }
+            else
+            {
+                StartWithSelectCharacter();
+            }
         }
 
         private async Task StartWithSelectCharacter()
         {
+            ContainerController.ActiveContainerOfCurrentPhase(Phase.RoleAndDeck);
             while (!CurrentRoom.loadRoleAndDeck)
             {
                 await Task.Delay(500);
@@ -104,12 +119,13 @@ namespace Games {
                     await Task.Delay(500);
                 }
 
+                ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 gameGridController.InitGridData(currentGameGrid);
-                transitionMenuGame.StartGameWithDefense();
+                initDefensePhase.Init();
                 await transitionDefenseAttack.PlayDefensePhase();
-                
+            
                 gameGridController.DesactiveMap();
-                
+            
                 GameControllerNetwork.SendGridData();
 
                 while (!CurrentRoom.generateAttackGrid)
@@ -117,7 +133,7 @@ namespace Games {
                     await Task.Delay(500); 
                 }
 
-                await initAttackPhase.StartAttackPhase();
+                await initAttackPhase.Init();
                 gameGridController.InitGridData(currentGameGrid);
                 GameControllerNetwork.SendSetAttackReady();
 
@@ -126,11 +142,17 @@ namespace Games {
                     await Task.Delay(500);
                 }
 
-                await initAttackPhase.ActivePlayer();
-
-                endCube.DesactiveAllGameObject();
-                gameGridController.DesactiveMap();
+                await AttackPhase();
             }
+        }
+
+        private async Task AttackPhase()
+        {
+            ContainerController.ActiveContainerOfCurrentPhase(Phase.Attack);
+            await initAttackPhase.PlayAttackPhase();
+
+            endCube.DesactiveAllGameObject();
+            gameGridController.DesactiveMap();
         }
 
         private void SetEndGameText(string text)
