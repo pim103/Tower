@@ -89,21 +89,24 @@ namespace DeckBuilding
                 {
                     monster = monstersInGroup.GetMonster();
 
-                    GameObject monsterGameObject = Instantiate(monster.model, pGroupParent, true);
-                    Rigidbody monsterRigidBody = monsterGameObject.GetComponent<Rigidbody>();
-                    monsterRigidBody.useGravity = false;
-                    monsterRigidBody.isKinematic = true;
-                    monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
-                    monsterGameObject.GetComponent<NavMeshAgent>().enabled = false;
-                    MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                    monsterPrefab.enabled = false;
-                    monsterGameObject.transform.localPosition = position;
+                    if (monster.model != null)
+                    {
+                        GameObject monsterGameObject = Instantiate(monster.model, pGroupParent, true);
+                        Rigidbody monsterRigidBody = monsterGameObject.GetComponent<Rigidbody>();
+                        monsterRigidBody.useGravity = false;
+                        monsterRigidBody.isKinematic = true;
+                        monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
+                        monsterGameObject.GetComponent<NavMeshAgent>().enabled = false;
+                        MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
+                        monsterPrefab.enabled = false;
+                        monsterGameObject.transform.localPosition = position;
+
+                        monster.InitMonster(monsterPrefab);
+                    }
                     
                     monster.IdEntity = idMobInit;
                     idMobInit++;
                     nbMonsterInit++;
-
-                    monster.InitMonster(monsterPrefab);
 
                     position = origPos + GroupsPosition.position[nbMonsterInit];
 

@@ -216,7 +216,6 @@ namespace Games.Transitions
         {
             playerDecks = DataObject.CardList.GetDecks();
 
-            Debug.Log(playerDecks.Count);
             foreach (Deck deck in playerDecks)
             {
                 if (deck.type == Decktype.Monsters)
@@ -232,7 +231,6 @@ namespace Games.Transitions
 
                     if (monsterDeckId == 0)
                     {
-                        Debug.Log("default monster deck = " + deck.id);
                         monsterDeckId = deck.id;
                     }
                 }
@@ -250,7 +248,6 @@ namespace Games.Transitions
 
                     if (equipmentDeckId == 0)
                     {
-                        Debug.Log("default weapon deck = " + deck.id);
                         equipmentDeckId = deck.id;
                     }
                 }

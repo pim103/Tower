@@ -11,16 +11,7 @@ namespace Games.Defenses
     public class InitDefense : MonoBehaviour
     {
         [SerializeField] 
-        private ScriptsExposer se;
-        
-        [SerializeField]
-        private TransitionDefenseAttack transitionDefenseAttack;
-
-        [SerializeField] 
         public DefenseUIController defenseUIController;
-
-        [SerializeField] 
-        public GameGridController gameGridController;
 
         public int currentLevel = 0;
         
@@ -30,10 +21,7 @@ namespace Games.Defenses
 
         [SerializeField] 
         private GameObject defenseCamera;
-        
-        [SerializeField]
-        private HoverDetector hoverDetector;
-
+     
         public List<GameObject> gridCellList;
         
         public void Init()
@@ -43,13 +31,13 @@ namespace Games.Defenses
                 return;
             }
 
-            hoverDetector.dest = gameGridController.endZone;
-            hoverDetector.startPos = gameGridController.startZone;
-
             Generate(GameController.currentGameGrid.size);
             Vector3 pos = defenseCamera.transform.position;
             pos.x = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
             pos.z = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
+
+            defenseCamera.transform.position = pos;
+            
             defenseUIController.enabled = true;
 
             currentLevel++;

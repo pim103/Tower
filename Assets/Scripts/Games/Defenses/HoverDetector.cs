@@ -34,8 +34,10 @@ namespace Games.Defenses
         public bool canPutItHere;
         private GridTileController currentTileController;
         
+        [SerializeField]
         public GameObject startPos;
-        
+
+        [SerializeField]
         public GameObject dest;
 
         private NavMeshPath pathToEnd;

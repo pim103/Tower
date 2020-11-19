@@ -43,6 +43,7 @@ namespace Games.Transitions
             CurrentRoom.loadGameAttack = false;
             CurrentRoom.generateAttackGrid = false;
 
+            GameControllerNetwork.InitGameControllerNetwork();
             StartCoroutine(LoadGame());
             TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setGameLoaded", "null");
 

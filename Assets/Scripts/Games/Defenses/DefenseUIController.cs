@@ -198,9 +198,6 @@ namespace Games.Defenses
                     {
                         Debug.Log("Pas plus de cartes");
                     }
-                    Debug.Log(selectedCard.id);
-                    Debug.Log(selectedCard.GroupsMonster);
-                    Debug.Log(selectedCard.Weapon);
 
                     InitCard(cardContainer, selectedCard);
                 }

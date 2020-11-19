@@ -44,10 +44,10 @@ namespace Games.Defenses
 
             foreach (GridCellData gridCellData in gridCellDatas)
             {
-                switch (gridCellData.cellType)
+                switch ((CellType) gridCellData.cellType)
                 {
                     case CellType.ObjectToInstantiate:
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdWall, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdWall, Vector3.zero);
                         if (gridCellData.groupsMonster != null)
                         {
                             if (InitGroups(gridCellData.groupsMonster, gridCellData.x, gridCellData.y, TileOffset))
@@ -68,10 +68,10 @@ namespace Games.Defenses
 
                         endZone.transform.position = pos;
                         endZone.SetActive(true);
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         break;
                     case CellType.Hole:
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdOnlyRoof, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdOnlyRoof, Vector3.zero);
                         break;
                     case CellType.Spawn:
                         startZone.transform.position = new Vector3
@@ -80,10 +80,10 @@ namespace Games.Defenses
                             y = 1,
                             z = gridCellData.y * TileOffset,
                         };
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         break;
                     case CellType.Wall:
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdPlaceableWall, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdPlaceableWall, Vector3.zero);
                         break;
                     case CellType.None:
                         int x = gridCellData.x;
@@ -107,7 +107,7 @@ namespace Games.Defenses
                             idPoolObject = MapThemePrefab.IdBasic;
                         }
 
-                        PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, idPoolObject, rot);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, idPoolObject, rot);
                         break;
                 }
             }

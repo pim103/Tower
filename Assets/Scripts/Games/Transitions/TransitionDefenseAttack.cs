@@ -70,7 +70,7 @@ namespace Games.Transitions
                     hoverDetector.defenseUiController.keyButton.transform.GetComponent<Image>().color = new Color(1,defenseTimer%2,defenseTimer%2,1);
                 }
 
-                await Task.Delay(500);
+                await Task.Delay(1000);
             }
 
             defenseUI.SetActive(false);

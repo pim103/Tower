@@ -37,7 +37,7 @@ namespace Games
             return Tools.Clone(callbackMessage);
         }
         
-        public static void InitGameControllerNetwork(GameController gameController)
+        public static void InitGameControllerNetwork()
         {   
             if (TowersWebSocket.wsGame != null)
             {
@@ -54,11 +54,11 @@ namespace Games
 
                         if (callbackMessage.callbackMessages.message == "WON")
                         {
-                            gameController.EndGame(false);
+                            GameController.EndGame(false);
                         }
                         if (callbackMessage.callbackMessages.message == "DEATH")
                         {
-                            gameController.EndGame(true);
+                            GameController.EndGame(true);
                         }
                         if (callbackMessage.callbackMessages.message == "LoadGame")
                         {
@@ -102,8 +102,8 @@ namespace Games
             if (callbackMessage.callbackMessages.message == "StartDefense")
             {
                 GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
-                GameController.currentGameGrid.DisplayGridData();
-                                
+//                GameController.currentGameGrid.DisplayGridData();
+
                 CurrentRoom.loadGameDefense = true;
             }
 
@@ -154,7 +154,7 @@ namespace Games
             Dictionary<string, string> args = new Dictionary<string, string>();
             args.Add("gameGrid", fsJsonPrinter.CompressedJson(data));
 
-            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "waitingForAttackGrid", TowersWebSocket.FromDictToString(args));
+            TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "waitingForAttackGrid", TowersWebSocket.FromDictToString(args, true));
         }
 
         public static void SendSetAttackReady()

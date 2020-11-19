@@ -76,6 +76,8 @@ namespace Networking.Client
             {
                 json += "\"_ARGS\":" + args;
             }
+            
+            Debug.Log(json.TrimEnd(',', ' ') + "}");
 
             wsGame.Send(json.TrimEnd(',', ' ') + "}");
         }
@@ -92,15 +94,16 @@ namespace Networking.Client
             wsChat.Send(json.TrimEnd(',', ' ') + "}");
         }
 
-        public static string FromDictToString(Dictionary<string, string> dict)
+        public static string FromDictToString(Dictionary<string, string> dict, bool isObject = false)
         {
             string fromDict = "[{";
             foreach(KeyValuePair <string, string> keyValues in dict) {  
-                fromDict += "\"" + keyValues.Key + "\":" + "\"" + keyValues.Value + "\"" + ", ";  
+                fromDict += "\"" + keyValues.Key + "\":" + (isObject ? "" : "\"") + keyValues.Value + (isObject ? "" : "\"") + ", ";  
             }
             
             return fromDict.TrimEnd(',', ' ') + "}]";
         }
+
         public static string FromDictToString(Dictionary<string, int> dict)
         {
             string fromDict = "[{";

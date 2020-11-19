@@ -30,7 +30,8 @@
     [Serializable]
     public class GridCellData
     {
-        public CellType cellType { get; set; }
+        // En vrai, c'est un cellType mais le serveur tu vois
+        public int cellType { get; set; }
         public int x { get; set; }
         public int y { get; set; }
 
@@ -46,7 +47,8 @@
         public int size { get; set; }
         public GridCellDataList gridCellDataList { get; set; }
 
-        public ThemeGrid theme { get; set; } = ThemeGrid.Dungeon;
+        // En vrai, c'est un Theme mais le serveur tu vois
+        public int theme { get; set; } = (int)ThemeGrid.Dungeon;
 
         public void DisplayGridData()
         {

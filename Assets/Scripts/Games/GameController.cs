@@ -51,6 +51,8 @@ namespace Games {
 
         public static GameGrid currentGameGrid;
 
+        public static GameController instance;
+
         /*
          * Flag to skip defensePhase
          */
@@ -66,6 +68,8 @@ namespace Games {
         // Start is called before the first frame update
         void Start()
         {
+            instance = this;
+            
             mainCamera = objectsInScene.mainCamera;
             endGameMenu.SetActive(false);
             backToMenu.onClick.AddListener(LoadMainMenu);
@@ -75,8 +79,6 @@ namespace Games {
             
             // TODO : change index
             PlayerIndex = 0;
-            
-            GameControllerNetwork.InitGameControllerNetwork(this);
 
             StartWithSelectCharacter();
         }
@@ -102,6 +104,7 @@ namespace Games {
                     await Task.Delay(500);
                 }
 
+                gameGridController.InitGridData(currentGameGrid);
                 transitionMenuGame.StartGameWithDefense();
                 await transitionDefenseAttack.PlayDefensePhase();
                 
@@ -136,7 +139,7 @@ namespace Games {
             endGameText.text = text;
         }
 
-        public void EndGame(bool hasWon)
+        public static void EndGame(bool hasWon)
         {
             CurrentRoom.loadGameDefense = false;
             CurrentRoom.loadGameAttack = false;
@@ -144,18 +147,18 @@ namespace Games {
 
             Cursor.lockState = CursorLockMode.None;
             DataObject.playerInScene.Remove(PlayerIndex);
-            objectsInScene.mainCamera.SetActive(true);
-            endGameMenu.SetActive(true);
+            instance.objectsInScene.mainCamera.SetActive(true);
+            instance.endGameMenu.SetActive(true);
 
             if (hasWon)
             {
                 Debug.Log("Vous avez gagné");
-                SetEndGameText("Vous avez gagné !");
+                instance.SetEndGameText("Vous avez gagné !");
             }
             else
             {
                 Debug.Log("Un autre joueur a gagné");
-                SetEndGameText("Vous avez perdu...");
+                instance.SetEndGameText("Vous avez perdu...");
             }
         }
     }
