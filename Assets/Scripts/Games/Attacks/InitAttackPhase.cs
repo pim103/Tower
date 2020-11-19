@@ -78,12 +78,6 @@ namespace Games.Attacks
 
             objectsInScene.containerDefense.SetActive(false);
             objectsInScene.containerAttack.SetActive(true);
-            
-            DataObject.playerInScene.Clear();
-            DataObject.monsterInScene.Clear();
-            DataObject.objectInScene.Clear();
-            
-            GameController.currentGameGrid.InitGridData();
 
             endOfGeneration = true;
         }
@@ -115,50 +109,6 @@ namespace Games.Attacks
 
                 await Task.Delay(500);
             }
-        }
-
-        public bool InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
-        {
-            InstantiateParameters param;
-            Monster monster;
-            int nbMonsterInit = 0;
-            bool shouldPutKey = false;
-            bool hasAKey = false;
-            Vector3 origPos = position;
-            if (equipment[5] != 0)
-            {
-                shouldPutKey = true;
-            }
-            foreach (MonstersInGroup monstersInGroup in groups.monstersInGroupList)
-            {
-                for (int i = 0; i < monstersInGroup.nbMonster; i++)
-                {
-                    monster = monstersInGroup.GetMonster();
-
-                    GameObject monsterGameObject = Instantiate(monster.model);
-                    monsterGameObject.transform.position = position;
-                    
-                    monster.IdEntity = DataObject.nbEntityInScene;
-                    DataObject.nbEntityInScene++;
-                    nbMonsterInit++;
-
-                    MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
-                    monster.InitMonster(monsterPrefab);
-
-                    groups.InitSpecificEquipment(monster, equipment);
-                    if (shouldPutKey)
-                    {
-//                        monster.InitKey(initDefense.maps[initDefense.currentLevel-1].mapsInLevel[NetworkingController.CurrentRoomMapsLevel[initDefense.currentLevel-1]].GetComponent<MapStats>().keyParent);
-                        hasAKey = true;
-                        shouldPutKey = false;
-                    }
-                    position = origPos + GroupsPosition.position[nbMonsterInit];
-
-                    DataObject.monsterInScene.Add(monster);
-                }
-            }
-
-            return hasAKey;
         }
     }
 }

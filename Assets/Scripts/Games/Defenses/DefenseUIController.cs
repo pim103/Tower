@@ -72,7 +72,7 @@ namespace Games.Defenses
             foreach (var button in trapButtons)
             {
                 button.transform.GetChild(0).GetComponent<Text>().text =
-                    button.gameObject.GetComponent<TrapBehavior>().mainType.ToString();
+                    button.gameObject.GetComponent<TrapBehavior>().trapData.mainType.ToString();
                 button.onClick.AddListener(delegate
                 {
                     PutTrapInHand(button.gameObject.GetComponent<TrapBehavior>());
@@ -164,7 +164,7 @@ namespace Games.Defenses
             if (!hoverDetector.objectInHand)
             {
                 GameObject trap = defensePooler.GetPooledObject(0);
-                trap.GetComponent<TrapBehavior>().CopyBehavior(trapBehavior);
+                trap.GetComponent<TrapBehavior>().SetAndActiveTraps(trapBehavior.trapData);
                 hoverDetector.objectInHand = trap;
                 trap.SetActive(true);
                 hoverDetector.currentResource -= 1;

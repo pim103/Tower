@@ -31,6 +31,9 @@ namespace Games {
         private InitAttackPhase initAttackPhase;
 
         [SerializeField]
+        private GameGridController gameGridController;
+
+        [SerializeField]
         private EndCube endCube;
 
         [SerializeField] private GameObject endGameMenu;
@@ -65,7 +68,7 @@ namespace Games {
         {
             SceneManager.LoadScene("MenuScene");
         }
-        
+
         // ================================== BASIC METHODS ======================================
 
         // Start is called before the first frame update
@@ -122,6 +125,7 @@ namespace Games {
                 }
 
                 await initAttackPhase.StartAttackPhase();
+                gameGridController.InitGridData(currentGameGrid);
                 GameControllerNetwork.SendSetAttackReady();
 
                 while (!CurrentRoom.loadGameAttack)

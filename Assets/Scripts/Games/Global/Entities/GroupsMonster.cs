@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Games.Global.Weapons;
-using Unity.Collections;
 using UnityEngine;
 using Utils;
 
@@ -60,6 +58,7 @@ namespace Games.Global.Entities
         public int cost { get; set; }
         public string name { get; set; }
         public int radius { get; set; } = DEFAULT_RADIUS;
+        public bool hasKey { get; set; }
 
         public List<MonstersInGroup> monstersInGroupList { get; set; } = new List<MonstersInGroup>();
         public Texture2D sprite { get; set; }
