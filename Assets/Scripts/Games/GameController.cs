@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
-using FullSerializer;
+﻿using System.Threading.Tasks;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global;
 using Games.Transitions;
-using Networking;
-using Networking.Client;
 using Networking.Client.Room;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Utils;
 
 namespace Games {
     public class GameController : MonoBehaviour
@@ -51,7 +44,6 @@ namespace Games {
         public static GameObject mainCamera;
 
         public static string staticRoomId;
-        private string canStart = null;
         public static int PlayerIndex;
         private bool idAssigned = false;
 
@@ -86,11 +78,6 @@ namespace Games {
             
             GameControllerNetwork.InitGameControllerNetwork(this);
 
-            if (byPassDefense)
-            {
-                canStart = "{\"CanStartHandler\":[{\"message\":\"true\"}]}";
-            }
-
             StartWithSelectCharacter();
         }
 
@@ -117,6 +104,9 @@ namespace Games {
 
                 transitionMenuGame.StartGameWithDefense();
                 await transitionDefenseAttack.PlayDefensePhase();
+                
+                gameGridController.DesactiveMap();
+                
                 GameControllerNetwork.SendGridData();
 
                 while (!CurrentRoom.generateAttackGrid)
@@ -134,7 +124,9 @@ namespace Games {
                 }
 
                 await initAttackPhase.ActivePlayer();
+
                 endCube.DesactiveAllGameObject();
+                gameGridController.DesactiveMap();
             }
         }
 

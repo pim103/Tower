@@ -86,8 +86,9 @@ namespace Games.Defenses
         {
             keyAlreadyPut = false;
             keyObject.SetActive(true);
-            currentWallNumber = initDefense.currentMapStats.wallNumber;
-            currentWallType = initDefense.currentMapStats.wallType;
+            
+            // TODO : set currentWallNumber (in GameGrid)
+            currentWallNumber = 30;
             wallButtonText.text = "Mur x" + currentWallNumber;
 
             if (monsterDeck == null)

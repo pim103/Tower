@@ -21,15 +21,16 @@ namespace Games.Defenses
     
     public class GameGridController : MonoBehaviour
     {
-        [SerializeField] private GameObject endZone;
+        [SerializeField] public GameObject endZone;
+        [SerializeField] public GameObject startZone;
         [SerializeField] private KeyBehavior keyBehaviorEndZone;
 
         [SerializeField] private ObjectPooler dungeonObjectPooler;
         [SerializeField] private ObjectPooler trapPooler;
         
-        private const int TileOffset = 4;
+        public const int TileOffset = 4;
 
-        public static Vector3 spawnPos;
+        private List<GameObject> currentMap = new List<GameObject>();
 
         public void InitGridData(GameGrid grid)
         {
@@ -73,7 +74,7 @@ namespace Games.Defenses
                         PoolGameObject(gridCellData.x, gridCellData.y, grid.theme, MapThemePrefab.IdOnlyRoof, Vector3.zero);
                         break;
                     case CellType.Spawn:
-                        spawnPos = new Vector3
+                        startZone.transform.position = new Vector3
                         {
                             x = gridCellData.x * TileOffset,
                             y = 1,
@@ -216,6 +217,14 @@ namespace Games.Defenses
 
             trapBehavior.SetAndActiveTraps(trap);
             goTrap.SetActive(true);
+        }
+
+        public void DesactiveMap()
+        {
+            foreach (GameObject go in currentMap)
+            {
+                go.SetActive(false);
+            }
         }
     }
 }

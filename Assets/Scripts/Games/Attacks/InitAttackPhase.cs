@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
-using Games.Global.Weapons;
-using Games.Players;
 using Games.Transitions;
-using Networking;
-using Networking.Client;
 using Networking.Client.Room;
 using UnityEngine;
-using Utils;
-using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace Games.Attacks
 {
@@ -41,6 +31,7 @@ namespace Games.Attacks
         [SerializeField] private ObjectsInScene objectsInScene;
         [SerializeField] private InitDefense initDefense;
         [SerializeField] private HoverDetector hoverDetector;
+        [SerializeField] private GameGridController gameGridController;
 
         private string[,] tempMap1;
         private string[,] tempMap2;
@@ -90,8 +81,7 @@ namespace Games.Attacks
             objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
             objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
-            MapStats mapStats = initDefense.currentMap.GetComponent<MapStats>();
-            objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = mapStats.spawnPosition.transform.position;
+            objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = gameGridController.startZone.transform.position;
             
             Cursor.lockState = CursorLockMode.Locked;
 

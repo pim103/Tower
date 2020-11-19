@@ -46,8 +46,11 @@ namespace Games.Attacks
         private void OnTriggerEnter(Collider other)
         {
             Cursor.lockState = CursorLockMode.None;
+
+            int mapPlayed = 3;
             
-            if (initDefense.currentLevel < initDefense.maps.Length)
+            // TODO : set nb map played
+            if (initDefense.currentLevel < mapPlayed)
             {
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
             }

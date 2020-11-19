@@ -3595,25 +3595,8 @@ MonoBehaviour:
   se: {fileID: 194075448}
   transitionDefenseAttack: {fileID: 194075446}
   defenseUIController: {fileID: 934534611}
-  maps:
-  - mapsInLevel:
-    - {fileID: 0}
-    - {fileID: 0}
-  - mapsInLevel:
-    - {fileID: 0}
-    - {fileID: 0}
-  - mapsInLevel:
-    - {fileID: 0}
-    - {fileID: 0}
-  - mapsInLevel:
-    - {fileID: 0}
-    - {fileID: 0}
-  - mapsInLevel:
-    - {fileID: 0}
-    - {fileID: 0}
+  gameGridController: {fileID: 0}
   currentLevel: 0
-  currentMap: {fileID: 0}
-  currentMapStats: {fileID: 0}
   gridCell: {fileID: 6078987784092374643, guid: edf50361f6ea3074d909cb16ced37c40,
     type: 3}
   defenseCamera: {fileID: 83993298}
@@ -3713,6 +3696,7 @@ Transform:
   m_Children:
   - {fileID: 1248472974}
   - {fileID: 1517899867}
+  - {fileID: 1515287155}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3729,6 +3713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endZone: {fileID: 1248472975}
+  startZone: {fileID: 1515287154}
   keyBehaviorEndZone: {fileID: 1517899868}
   dungeonObjectPooler: {fileID: 979748979}
   trapPooler: {fileID: 934534612}
@@ -4906,7 +4891,7 @@ PrefabInstance:
     - target: {fileID: 6942331883085425749, guid: a65ca85574463ea42a5af1e306c7a3ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6942331883085425749, guid: a65ca85574463ea42a5af1e306c7a3ac,
         type: 3}
@@ -5735,6 +5720,7 @@ MonoBehaviour:
   objectsInScene: {fileID: 194075444}
   initDefense: {fileID: 934534610}
   hoverDetector: {fileID: 83993302}
+  gameGridController: {fileID: 0}
 --- !u!114 &1495904577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5766,6 +5752,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e229a923f1ae9248884a5f8cf924a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1515287154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1515287155}
+  m_Layer: 0
+  m_Name: StartZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1515287155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515287154}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 979748977}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1517899866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5831,7 +5847,7 @@ PrefabInstance:
     - target: {fileID: 7105068309209196475, guid: 2166d8b8e84eec94aa429bc872063fc9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7105068309209196475, guid: 2166d8b8e84eec94aa429bc872063fc9,
         type: 3}

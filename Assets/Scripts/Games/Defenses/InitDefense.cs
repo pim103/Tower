@@ -18,19 +18,11 @@ namespace Games.Defenses
 
         [SerializeField] 
         public DefenseUIController defenseUIController;
-        
-        [System.Serializable]
-        public class MapsArrayClass
-        {
-            public GameObject[] mapsInLevel;
-        }
-        
+
         [SerializeField] 
-        public MapsArrayClass[] maps;
+        public GameGridController gameGridController;
 
         public int currentLevel = 0;
-        public GameObject currentMap;
-        public MapStats currentMapStats;
         
         [SerializeField] 
         private GameObject gridCell;
@@ -46,37 +38,33 @@ namespace Games.Defenses
         
         public void Init()
         {
-            if (currentMap)
+            if (GameController.currentGameGrid == null)
             {
-                currentMap.SetActive(false);
+                return;
             }
 
-            if (currentLevel < maps.Length)
-            {
-//                currentMap = maps[currentLevel].mapsInLevel[(NetworkingController.CurrentRoomMapsLevel != null ? NetworkingController.CurrentRoomMapsLevel[currentLevel] : 0)];
-                currentMap.SetActive(true);
-                currentMapStats = currentMap.GetComponent<MapStats>();
-                hoverDetector.dest = currentMapStats.endCube;
-                hoverDetector.startPos = currentMapStats.startPos;
+            hoverDetector.dest = gameGridController.endZone;
+            hoverDetector.startPos = gameGridController.startZone;
 
-                Generate();
-                defenseCamera.transform.position = currentMapStats.cameraPosition.transform.position;
-                defenseUIController.enabled = true;
-    
-                currentLevel++;
-            }
+            Generate(GameController.currentGameGrid.size);
+            Vector3 pos = defenseCamera.transform.position;
+            pos.x = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
+            pos.z = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
+            defenseUIController.enabled = true;
+
+            currentLevel++;
         }
 
-        private void Generate()
+        private void Generate(int size)
         {
             gridCellList = new List<GameObject>();
 
-            for (int i = currentMapStats.mapWidth*-1; i < currentMapStats.mapWidth; i+=2)
+            for (int i = 0; i < size; ++i)
             {
-                for (int j = currentMapStats.mapHeight*-1; j < currentMapStats.mapHeight; j+=2)
+                for (int j = 0; j < size; ++j)
                 {
-                    currentCell = Instantiate(gridCell, new Vector3( i+currentMap.transform.localPosition.x+1,  3f, j+currentMap.transform.localPosition.z+1), Quaternion.Euler(90,0,0));
-                    currentCell.transform.parent = currentMap.transform;
+                    currentCell = Instantiate(gridCell, new Vector3( i * GameGridController.TileOffset,  3f, j * GameGridController.TileOffset), Quaternion.Euler(90,0,0));
+
                     GridTileController currentTileController = currentCell.GetComponent<GridTileController>();
                     currentTileController.coordinates.x = (i+1)/2;
                     currentTileController.coordinates.y = (j+1)/2;
