@@ -16,6 +16,7 @@ namespace Games.Defenses
         public void SetAndActiveTraps(TrapData trapData)
         {
             this.trapData = trapData;
+            trapData.mainType = 0;
             trapModels[(int)trapData.mainType].SetActive(true);
         }
     }

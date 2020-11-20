@@ -171,6 +171,8 @@ namespace Games.Global
             else
             {
                 Debug.Log("Can't get Cards decks...");
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }

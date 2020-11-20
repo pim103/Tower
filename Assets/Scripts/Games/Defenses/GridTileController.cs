@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Games.Defenses.Traps;
+using Games.Global.Entities;
+using UnityEngine;
 
 namespace Games.Defenses
 {
@@ -16,7 +18,7 @@ namespace Games.Defenses
         public GameObject content;
         public TypeData contentType = TypeData.Empty;
         public bool isTooCloseFromAMob;
-        
+
         public void ChangeColorToGreen()
         {
             GetComponent<Renderer>().material.color = Color.green;
@@ -28,7 +30,7 @@ namespace Games.Defenses
 
         public void ChangeColorToCyan()
         {
-            GetComponent<Renderer>().material.color = new Color(0,255,255,100);
+            GetComponent<Renderer>().material.color = new Color(0,0,0,0);
         }
     }
 }

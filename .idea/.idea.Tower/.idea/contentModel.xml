@@ -195,18 +195,15 @@
             </e>
             <e p="WeaponEditor.cs" t="Include" />
           </e>
-          <e p="Craft" t="Include">
-            <e p="CraftingRecipe.cs" t="Include" />
-            <e p="CraftingRecipeUI.cs" t="Include" />
-            <e p="CraftingWindow.cs" t="Include" />
-          </e>
           <e p="DeckBuilding" t="Include">
             <e p="Card.cs" t="Include" />
             <e p="CardBehaviorInGame.cs" t="Include" />
             <e p="CardInCollButtonExposer.cs" t="Include" />
+            <e p="CardInCraftButtonExposer.cs" t="Include" />
             <e p="CardInDeckButtonExposer.cs" t="Include" />
             <e p="CardInListBehavior.cs" t="Include" />
             <e p="CardList.cs" t="Include" />
+            <e p="CraftIngredientExposer.cs" t="Include" />
             <e p="Deck.cs" t="Include" />
             <e p="DeckButtonExposer.cs" t="Include" />
             <e p="DeckListExposer.cs" t="Include" />
@@ -216,6 +213,7 @@
             <e p="MobDecklist.cs" t="Include" />
             <e p="ScrollButtonController.cs" t="Include" />
           </e>
+          <e p="GameControllerTest.cs" t="Include" />
           <e p="Games" t="Include">
             <e p="Attacks" t="Include">
               <e p="EndCube.cs" t="Include" />
@@ -267,6 +265,7 @@
               <e p="Entity.cs" t="Include" />
               <e p="EntityPrefab.cs" t="Include" />
               <e p="Equipement.cs" t="Include" />
+              <e p="Ingredient.cs" t="Include" />
               <e p="Item.cs" t="Include" />
               <e p="ItemModel.cs" t="Include" />
               <e p="Materials" t="Include">
@@ -276,6 +275,7 @@
                 <e p="MovementPatternController.cs" t="Include" />
                 <e p="Pattern.cs" t="Include" />
               </e>
+              <e p="Recipe.cs" t="Include" />
               <e p="Spells" t="Include">
                 <e p="BasicAttackSpell.cs" t="Include" />
                 <e p="GenericSummonSpell.cs" t="Include" />
@@ -334,12 +334,6 @@
               <e p="TransitionMenuGame.cs" t="Include" />
             </e>
           </e>
-          <e p="Item" t="Include">
-            <e p="BaseItemSlot.cs" t="Include" />
-            <e p="IItemContainer.cs" t="Include" />
-            <e p="Item.cs" t="Include" />
-            <e p="ItemContainer.cs" t="Include" />
-          </e>
           <e p="Managers" t="Include">
             <e p="AccountManager.cs" t="Include" />
             <e p="ChatBoxManager.cs" t="Include" />
@@ -350,6 +344,7 @@
             <e p="UIManager.cs" t="Include" />
           </e>
           <e p="Menus" t="Include">
+            <e p="CollectionAndCraftMenu.cs" t="Include" />
             <e p="CollectionMenu.cs" t="Include" />
             <e p="ConnectionMenu.cs" t="Include" />
             <e p="CraftMenu.cs" t="Include" />
@@ -383,7 +378,7 @@
             </e>
             <e p="NetworkingController.cs" t="Include" />
           </e>
-          <e p="Resource" t="Include">
+          <e p="Resource_TO_DO_DELETE" t="Include">
             <e p="Resource.cs" t="Include" />
             <e p="ResourceInfo.cs" t="Include" />
             <e p="ResourceSlot.cs" t="Include" />
@@ -439,6 +434,37 @@
           <e p="ElectricityTest.shader" t="Include" />
         </e>
         <e p="TestPopup_TO_DO_DELETE.cs" t="Include" />
+        <e p="TextMesh Pro" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="LiberationSans - OFL.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+            <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+            <e p="TMP_Bitmap.shader" t="Include" />
+            <e p="TMP_SDF Overlay.shader" t="Include" />
+            <e p="TMP_SDF SSD.shader" t="Include" />
+            <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+            <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+            <e p="TMP_SDF-Mobile SSD.shader" t="Include" />
+            <e p="TMP_SDF-Mobile.shader" t="Include" />
+            <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+            <e p="TMP_SDF-Surface.shader" t="Include" />
+            <e p="TMP_SDF.shader" t="Include" />
+            <e p="TMP_Sprite.shader" t="Include" />
+            <e p="TMPro.cginc" t="Include" />
+            <e p="TMPro_Mobile.cginc" t="Include" />
+            <e p="TMPro_Properties.cginc" t="Include" />
+            <e p="TMPro_Surface.cginc" t="Include" />
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
         <e p="UMA" t="Include">
           <e p="Content" t="Include">
             <e p="HumanMale2" t="Include">

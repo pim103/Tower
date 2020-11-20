@@ -1,5 +1,6 @@
 ﻿﻿using System;
  using System.Collections.Generic;
+ using System.Linq;
  using Games.Defenses.Traps;
  using Games.Global.Entities;
  using UnityEngine;
@@ -56,6 +57,16 @@
             {
                 Debug.Log(" x : " + g.x + " y : " + g.y + " type : " + g.cellType);
             }
+        }
+
+        public GridCellData GetGridCellDataFromCoordinates(int x, int y)
+        {
+            if (gridCellDataList == null)
+            {
+                return null;
+            }
+
+            return gridCellDataList.gridCellDatas.First(data => data.x == x && data.y == y);
         }
     }
 }

@@ -164,7 +164,7 @@ namespace Utils
             {
                 id = Int32.Parse(id),
                 cost = Int32.Parse(cost),
-                family = (Family) Int32.Parse(family),
+                family = Int32.Parse(family),
                 radius = Int32.Parse(radius),
                 name = groupName,
                 sprite = Resources.Load<Texture2D>(spritePath),

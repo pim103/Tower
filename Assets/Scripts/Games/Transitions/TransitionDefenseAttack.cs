@@ -73,6 +73,8 @@ namespace Games.Transitions
                 await Task.Delay(1000);
             }
 
+            initDefense.FillGameGrid();
+
             defenseUI.SetActive(false);
             waitingOtherPlayerPanel.SetActive(true);
             defenseTimer = durationDefensePhase;

@@ -27,7 +27,7 @@ namespace Games.Defenses.Traps
     [Serializable]
     public class TrapData
     {
-        public TrapType mainType { get; set; }
+        public int mainType { get; set; }
         public List<AdditionalEffects> trapEffects { get; set; }
     }
 }

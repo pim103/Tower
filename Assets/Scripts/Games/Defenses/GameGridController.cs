@@ -6,6 +6,7 @@ using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
 using UnityEngine;
+using UnityEngine.AI;
 using Utils;
 
 namespace Games.Defenses
@@ -28,6 +29,7 @@ namespace Games.Defenses
 
         [SerializeField] private ObjectPooler dungeonObjectPooler;
         [SerializeField] private ObjectPooler trapPooler;
+        [SerializeField] private NavMeshSurface navMeshSurface;
         
         public const int TileOffset = 4;
 
@@ -49,7 +51,7 @@ namespace Games.Defenses
                     if (i == 1 && j == 1)
                     {
                         cellType = CellType.Spawn;
-                    } else if (i == 18 && j == 18)
+                    } else if (i == grid.size-2 && j == grid.size-2)
                     {
                         cellType = CellType.End;
                     }
@@ -68,7 +70,8 @@ namespace Games.Defenses
 
         public void GenerateAndInitFakeGrid()
         {
-            InitGridData(GenerateGrid());
+            GameController.currentGameGrid = GenerateGrid();
+            InitGridData(GameController.currentGameGrid);
         }
         
         public void InitGridData(GameGrid grid)
@@ -81,19 +84,23 @@ namespace Games.Defenses
             
             bool foundKey;
 
+            Debug.Log("==================================== START ====================================");
+            navMeshSurface.enabled = false;
             foreach (GridCellData gridCellData in gridCellDatas)
             {
+                Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
+                
                 switch ((CellType) gridCellData.cellType)
                 {
                     case CellType.ObjectToInstantiate:
-                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdWall, Vector3.zero);
+                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         if (gridCellData.groupsMonster != null)
                         {
                             if (InitGroups(gridCellData.groupsMonster, gridCellData.x, gridCellData.y, TileOffset))
                             {
                                 foundKey = true;
                             }
-                        } 
+                        }
                         else if (gridCellData.trap != null)
                         {
                             InitTrap(gridCellData.trap, gridCellData.x, gridCellData.y, gridCellData.rotationY, TileOffset);
@@ -150,6 +157,10 @@ namespace Games.Defenses
                         break;
                 }
             }
+
+            Debug.Log("==================================== END ====================================");
+            navMeshSurface.enabled = true;
+            navMeshSurface.BuildNavMesh();
         }
 
         private Vector3 FindRotation(int x, int y, int size)
@@ -200,6 +211,7 @@ namespace Games.Defenses
                 objectPooled.transform.localEulerAngles = rot;
             }
 
+            currentMap.Add(objectPooled);
             objectPooled.SetActive(true);
         }
         
@@ -208,20 +220,20 @@ namespace Games.Defenses
             Monster monster;
             int nbMonsterInit = 0;
 
-            Vector3 position = Vector3.zero;
-            position.x = x * offset;
-            position.z = y * offset;
-
             foreach (MonstersInGroup monstersInGroup in groups.monstersInGroupList)
             {
                 nbMonsterInit = 0;
                 
                 for (int i = 0; i < monstersInGroup.nbMonster; i++)
                 {
+                    Vector3 position = Vector3.zero;
+                    position.x = x * offset;
+                    position.y = 1.5f;
+                    position.z = y * offset;
+                    
                     monster = monstersInGroup.GetMonster();
 
-                    GameObject monsterGameObject = Instantiate(monster.model);
-                    monsterGameObject.transform.position = position;
+                    GameObject monsterGameObject = Instantiate(DataObject.MonsterList.GetMonsterById(monster.id).model);
                     
                     monster.IdEntity = DataObject.nbEntityInScene;
                     DataObject.nbEntityInScene++;
@@ -232,8 +244,11 @@ namespace Games.Defenses
                     monster.InitOriginalWeapon();
 
                     position += GroupsPosition.position[nbMonsterInit];
+                    monsterGameObject.transform.position = position;
+                    Debug.Log(monsterGameObject.transform.position);
 
                     DataObject.monsterInScene.Add(monster);
+                    currentMap.Add(monsterGameObject);
                 }
             }
 
@@ -248,7 +263,9 @@ namespace Games.Defenses
 
             Vector3 pos = Vector3.zero;
             pos.x = x * offset;
+            pos.y = 0.5f;
             pos.z = y * offset;
+            goTrap.transform.position = pos;
 
             Vector3 rot = goTrap.transform.localEulerAngles;
             rot.y = rotY;
@@ -256,6 +273,7 @@ namespace Games.Defenses
 
             trapBehavior.SetAndActiveTraps(trap);
             goTrap.SetActive(true);
+            currentMap.Add(goTrap);
         }
 
         public void DesactiveMap()

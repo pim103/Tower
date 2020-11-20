@@ -144,7 +144,7 @@ namespace TestC
                     MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();
                     monster.InitMonster(monsterPrefab);
 
-                    groups.InitSpecificEquipment(monster, equipment);
+//                    groups.InitSpecificEquipment(monster, equipment);
 
                     position = origPos + GroupsPosition.position[nbMonsterInit];
 

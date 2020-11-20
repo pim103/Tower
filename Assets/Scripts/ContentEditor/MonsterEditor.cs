@@ -247,7 +247,14 @@ namespace ContentEditor
             group.name = EditorGUILayout.TextField("Name", group.name);
             group.cost = EditorGUILayout.IntField("Cost", group.cost);
             group.radius = EditorGUILayout.IntField("Radius", group.radius);
-            group.family = (Family) EditorGUILayout.EnumPopup("Family", group.family);
+            
+            EditorGUI.BeginChangeCheck();
+            Family family = (Family) EditorGUILayout.EnumPopup("Family", (Family)group.family);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                group.family = (int) family;
+            }
 
             EditorGUILayout.LabelField("Sprite");
             group.sprite = (Texture2D)EditorGUILayout.ObjectField(group.sprite, typeof(Texture2D), false);

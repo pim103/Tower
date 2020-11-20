@@ -8,6 +8,7 @@ using Utils;
 
 namespace Games.Global.Entities
 {
+    [Serializable]
     public class Monster: Entity
     {
         public int id { get; set; }
@@ -15,7 +16,7 @@ namespace Games.Global.Entities
         public int nbWeapon { get; set; }
         public int weaponOriginalId { get; set; }
 
-        public Family family { get; set; }
+        public int family { get; set; }
 
         public TypeWeapon constraint { get; set; }
 
@@ -45,6 +46,7 @@ namespace Games.Global.Entities
 
         public void InitMonster(MonsterPrefab newMonsterPrefab)
         {
+            InitEntityList();
             monsterPrefab = newMonsterPrefab;
             monsterPrefab.SetMonster(this);
 
@@ -107,7 +109,7 @@ namespace Games.Global.Entities
                 }
                 else
                 {
-                    Debug.Log("Doesnt find spell " + spellName.name);
+//                    Debug.Log("Doesnt find spell " + spellName.name);
                 }
             }
         }

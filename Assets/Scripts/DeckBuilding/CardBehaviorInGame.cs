@@ -57,21 +57,27 @@ namespace DeckBuilding
 
             if (card.GroupsMonster != null)
             {
+                equipement = null;
                 group = card.GroupsMonster;
                 nameText.text = group.name;
                 costText.text = group.cost + " RP";
                 effectText.text = "effet";
+                groupRangeCollider.enabled = true;
                 groupRangeCollider.radius = group.radius*2;
+                rangeSphere.SetActive(true);
                 rangeSphere.transform.localScale = new Vector3(group.radius*4,group.radius*4,group.radius*4);
                 InstantiateGroupsMonster(group, Vector3.zero, groupParent.transform);
             }
             else if(card.Weapon != null)
             {
+                group = null;
                 equipement = card.Weapon;
                 nameText.text = equipement.equipmentName;
                 costText.text = equipement.cost+" RP";
                 effectText.text = "effet";
+                rangeSphere.SetActive(false);
                 equipementModel = Instantiate(equipement.model, groupParent.transform);
+                groupRangeCollider.enabled = false;
             }
         }
 
@@ -87,7 +93,7 @@ namespace DeckBuilding
             {
                 for (int i = 0; i < monstersInGroup.nbMonster; i++)
                 {
-                    monster = monstersInGroup.GetMonster();
+                    monster = DataObject.MonsterList.GetMonsterById(monstersInGroup.GetMonster().id);
 
                     if (monster.model != null)
                     {
