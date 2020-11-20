@@ -18,13 +18,23 @@ namespace Games.Global.Entities
 
         public int family { get; set; }
 
-        public TypeWeapon constraint { get; set; }
+        private TypeWeapon constraint { get; set; }
 
         private MonsterPrefab monsterPrefab;
 
         public List<SpellList> spellsName { get; set; }
 
         public Texture2D sprite { get; set; }
+
+        public void SetConstraint(TypeWeapon nconstraint)
+        {
+            constraint = nconstraint;
+        }
+
+        public TypeWeapon GetConstraint()
+        {
+            return constraint;
+        }
 
         public override void BasicAttack()
         {
@@ -52,13 +62,13 @@ namespace Games.Global.Entities
 
             if (constraint == TypeWeapon.Distance)
             {
-                BehaviorType = BehaviorType.Distance;
+                SetBehaviorType(BehaviorType.Distance);
             } else if (constraint == TypeWeapon.Cac)
             {
-                BehaviorType = BehaviorType.Melee;
+                SetBehaviorType(BehaviorType.Melee);
             }
 
-            AttackBehaviorType = AttackBehaviorType.Random;
+            SetAttackBehaviorType(AttackBehaviorType.Random);
         }
 
         public bool InitWeapon(int idWeapon)

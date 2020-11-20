@@ -395,7 +395,7 @@ namespace Games.Players
         {
             if (entity.isFeared)
             {
-                Entity launcher = entity.underEffects[TypeEffect.Fear].launcher;
+                Entity launcher = entity.TryGetEffectInUnderEffect(TypeEffect.Fear).launcher;
                 transform.LookAt(launcher.entityPrefab.transform);
                 transform.Rotate(Vector3.up * 180);
                 return;
@@ -403,7 +403,7 @@ namespace Games.Players
             
             if(entity.isCharmed)
             {
-                Entity launcher = entity.underEffects[TypeEffect.Charm].launcher;
+                Entity launcher = entity.TryGetEffectInUnderEffect(TypeEffect.Charm).launcher;
                 transform.LookAt(launcher.entityPrefab.transform);
                 return;
             }
@@ -457,7 +457,7 @@ namespace Games.Players
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
                 {
                     EntityPrefab entityPrefab = hit.collider.GetComponent<EntityPrefab>();
-                    if (entityPrefab.entity.typeEntity == TypeEntity.MOB)
+                    if (entityPrefab.entity.GetTypeEntity() == TypeEntity.MOB)
                     {
                         target = entityPrefab.entity;
                     }

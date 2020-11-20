@@ -57,7 +57,7 @@ namespace Games.Global
 
         private void FixedUpdate()
         {
-            if (entity.BehaviorType == BehaviorType.Player)
+            if (entity.GetBehaviorType() == BehaviorType.Player)
             {
                 return;
             }
@@ -72,12 +72,12 @@ namespace Games.Global
 
             if (canMove)
             {
-                if (entity.BehaviorType == BehaviorType.Melee ||
-                    entity.BehaviorType == BehaviorType.MoveOnTargetAndDie)
+                if (entity.GetBehaviorType() == BehaviorType.Melee ||
+                    entity.GetBehaviorType() == BehaviorType.MoveOnTargetAndDie)
                 {
                     MoveToTarget(1);
                 }
-                else if (entity.BehaviorType == BehaviorType.Distance)
+                else if (entity.GetBehaviorType() == BehaviorType.Distance)
                 {
                     MoveToTarget(10);
                 }
@@ -176,7 +176,7 @@ namespace Games.Global
                 return false;
             }
             
-            switch (entity.AttackBehaviorType)
+            switch (entity.GetAttackBehaviorType())
             {
                 case AttackBehaviorType.AllSpellsIFirst:
                     foreach (Spell spell in entity.spells)
@@ -207,7 +207,7 @@ namespace Games.Global
 
             if (!CastSpell())
             {
-                switch (entity.BehaviorType)
+                switch (entity.GetBehaviorType())
                 {
                     // TODO : adapt range of weapon for attack
                     case BehaviorType.Distance:
@@ -255,7 +255,7 @@ namespace Games.Global
             float dist = 10000;
             float minDistAggro = 100;
 
-            switch (entity.typeEntity)
+            switch (entity.GetTypeEntity())
             {
                 case TypeEntity.MOB:
                     foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
@@ -348,7 +348,7 @@ namespace Games.Global
         
         public void EntityDie()
         {
-            if (entity.typeEntity == TypeEntity.MOB)
+            if (entity.GetTypeEntity() == TypeEntity.MOB)
             {
                 if (!entity.isSummon)
                 {
@@ -365,7 +365,7 @@ namespace Games.Global
                     DataObject.invocationsInScene.Remove(entity);
                 }
             }
-            else if (entity.typeEntity == TypeEntity.ALLIES)
+            else if (entity.GetTypeEntity() == TypeEntity.ALLIES)
             {
                 if (entity.isPlayer)
                 {

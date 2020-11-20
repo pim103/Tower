@@ -12,10 +12,12 @@ namespace Games.Defenses.Traps
         {
             entity = new Entity
             {
-                entityPrefab = gameObject.AddComponent<EntityPrefab>(), 
-                BehaviorType = BehaviorType.Player,
-                typeEntity = TypeEntity.MOB
+                entityPrefab = gameObject.AddComponent<EntityPrefab>()
             };
+
+            entity.SetBehaviorType(BehaviorType.Player);
+            entity.SetTypeEntity(TypeEntity.MOB);
+
             entity.entityPrefab.entity = entity;
         }
         

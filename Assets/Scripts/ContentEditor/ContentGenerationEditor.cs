@@ -402,7 +402,7 @@ namespace ContentEditor
         {
             WWWForm form = new WWWForm();
             form.AddField("id", monster.id);
-            form.AddField("typeWeapon", (int) monster.constraint);
+            form.AddField("typeWeapon", (int) monster.GetConstraint());
             form.AddField("name", monster.mobName);
             form.AddField("hp", (int) monster.hp);
             form.AddField("def", monster.def);

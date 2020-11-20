@@ -53,7 +53,7 @@ namespace Games.Players
                 spell.isOnCooldown = false;
             }
 
-            underEffects.Clear();
+            ClearUnderEffect();
             damageDealExtraEffect.Clear();
             damageReceiveExtraEffect.Clear();
             activeSpellComponents.Clear();
@@ -113,7 +113,7 @@ namespace Games.Players
         public void InitPlayerStats(Classes classe)
         {
             mainClass = classe;
-            typeEntity = TypeEntity.ALLIES;
+            SetTypeEntity(TypeEntity.ALLIES);
 
             IdEntity = DataObject.nbEntityInScene;
             DataObject.nbEntityInScene++;

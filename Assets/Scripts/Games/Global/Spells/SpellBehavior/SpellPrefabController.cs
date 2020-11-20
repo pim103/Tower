@@ -168,8 +168,8 @@ namespace Games.Global.Spells.SpellBehavior
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
 
-            if ( (casterOfSpell.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||
-                 (casterOfSpell.typeEntity == TypeEntity.ALLIES && entityEnter.typeEntity == TypeEntity.MOB ))
+            if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
+                 (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))
             {
                 if (isEnter)
                 {

@@ -84,10 +84,11 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 nbWeapon = Int32.Parse(nbWeapon),
                 weaponOriginalId = Int32.Parse(weaponId),
-                constraint = (TypeWeapon) Int32.Parse(typeWeapon),
                 spellsName = skillListId,
                 modelName = model
             };
+            
+            monster.SetConstraint((TypeWeapon) Int32.Parse(typeWeapon));
 
             return monster;
         }

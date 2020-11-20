@@ -31,12 +31,12 @@ namespace Games.Global.Entities
                 monster.InitEntityList();
                 monster.weaponOriginalId = 1;
                 //TODO : change to monster
-                monster.BehaviorType = BehaviorType.Player;
-                monster.AttackBehaviorType = AttackBehaviorType.AllSpellsIFirst;
+                monster.SetBehaviorType(BehaviorType.Player);
+                monster.SetAttackBehaviorType(AttackBehaviorType.AllSpellsIFirst);
                 
                 entity = monster;
                 entity.entityPrefab = this;
-                entity.typeEntity = TypeEntity.MOB;
+                entity.SetTypeEntity(TypeEntity.MOB);
 
                 monster.InitOriginalWeapon();
 

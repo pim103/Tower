@@ -35,7 +35,7 @@ namespace Games.Global
         {
             Sprite buffSprite = EffectControllerInstance.spritesEffect.Find(sprite => sprite.name == effect.typeEffect.ToString());
             PlayerPrefab playerPrefab = DataObject.playerInScene[GameController.PlayerIndex];
-            int indexBuff = playerPrefab.entity.underEffects.Count;
+            int indexBuff = playerPrefab.entity.GetNbUnderEffect();
             
             if (buffSprite != null)
             {
@@ -70,17 +70,17 @@ namespace Games.Global
             {
                 targetsFound.targets.ForEach(target =>
                 {
-                    if (target.underEffects.ContainsKey(effect.typeEffect))
+                    if (target.EntityIsUnderEffect(effect.typeEffect))
                     {
-                        StopCurrentEffect(target, target.underEffects[effect.typeEffect]);
+                        StopCurrentEffect(target, target.TryGetEffectInUnderEffect(effect.typeEffect));
                     }
                 });
             } 
             else if (targetsFound.target != null)
             {
-                if (targetsFound.target.underEffects.ContainsKey(effect.typeEffect))
+                if (targetsFound.target.EntityIsUnderEffect(effect.typeEffect))
                 {
-                    StopCurrentEffect(targetsFound.target, targetsFound.target.underEffects[effect.typeEffect]);
+                    StopCurrentEffect(targetsFound.target, targetsFound.target.TryGetEffectInUnderEffect(effect.typeEffect));
                 }
             }
         }
@@ -122,9 +122,9 @@ namespace Games.Global
                 }
             }
 
-            if (entityAffected.underEffects.ContainsKey(effect.typeEffect))
+            if (entityAffected.EntityIsUnderEffect(effect.typeEffect))
             {
-                Effect effectInList = entityAffected.underEffects[effect.typeEffect];
+                Effect effectInList = entityAffected.TryGetEffectInUnderEffect(effect.typeEffect);
                 effectInList.UpdateEffect(entityAffected, effect);
 
                 return;
@@ -138,7 +138,7 @@ namespace Games.Global
             Effect cloneEffect = Tools.Clone(effect);
             cloneEffect.launcher = origin;
             cloneEffect.positionSrcDamage = srcDamage;
-            entity.underEffects.Add(effect.typeEffect, cloneEffect);
+            entity.AddEffectInUnderEffect(cloneEffect);
             Coroutine currentCoroutine = EffectControllerInstance.StartCoroutine(PlayEffectOnTime(entity, cloneEffect));
 
             cloneEffect.currentCoroutine = currentCoroutine;
@@ -201,7 +201,7 @@ namespace Games.Global
             {
                 RemoveEffectSprite(effect);
             }
-            entity.underEffects.Remove(effect.typeEffect);
+            entity.RemoveUnderEffect(effect.typeEffect);
         }
     }
 }

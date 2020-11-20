@@ -72,12 +72,12 @@ namespace Games.Global.Entities
             {
                 Monster monster = monstersInGroup.GetMonster();
 
-                if (monster.constraint == TypeWeapon.Cac && meleeWeaponId > 0)
+                if (monster.GetConstraint() == TypeWeapon.Cac && meleeWeaponId > 0)
                 {
                     monster.weaponOriginalId = meleeWeaponId;
                     monstersInGroup.SetMonster(monster);
                 } 
-                else if (monster.constraint == TypeWeapon.Distance && rangeWeaponId > 0)
+                else if (monster.GetConstraint() == TypeWeapon.Distance && rangeWeaponId > 0)
                 {
                     monster.weaponOriginalId = rangeWeaponId;
                     monstersInGroup.SetMonster(monster);

@@ -170,7 +170,7 @@ namespace ContentEditor
             monster.att = EditorGUILayout.FloatField("Attack", monster.att);
             monster.attSpeed = EditorGUILayout.FloatField("Attack speed", monster.attSpeed);
             monster.speed = EditorGUILayout.FloatField("Speed", monster.speed);
-            monster.constraint = (TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.constraint);
+            monster.SetConstraint((TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.GetConstraint()));
             monster.modelName = EditorGUILayout.TextField("Model Name", monster.modelName);
             
             EditorGUI.BeginChangeCheck();

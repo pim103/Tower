@@ -55,15 +55,15 @@ namespace Games.Global.Spells
                 att = summonSpell.attackDamage,
                 initialSpeed = summonSpell.moveSpeed,
                 speed = summonSpell.moveSpeed,
-                typeEntity = summoner.typeEntity,
                 isUntargeatable = !summonSpell.isTargetable,
                 basicAttack = (summonSpell.basicAttack != null ? Tools.Clone(summonSpell.basicAttack) : null),
-                BehaviorType = summonSpell.BehaviorType,
-                AttackBehaviorType = summonSpell.AttackBehaviorType,
                 isSummon = true,
                 IdEntity = DataObject.nbEntityInScene
             };
 
+            entity.SetBehaviorType(summonSpell.BehaviorType);
+            entity.SetTypeEntity(summoner.GetTypeEntity());
+            entity.SetAttackBehaviorType(summonSpell.AttackBehaviorType);
             entity = summon;
             entity.InitEntityList();
             entity.entityPrefab = this;

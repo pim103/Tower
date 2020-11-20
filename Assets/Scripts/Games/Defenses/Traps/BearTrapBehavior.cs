@@ -20,9 +20,10 @@ namespace Games.Defenses
             entity = new Entity
             {
                 entityPrefab = gameObject.AddComponent<EntityPrefab>(), 
-                BehaviorType = BehaviorType.Player,
-                typeEntity = TypeEntity.MOB
             };
+            entity.SetBehaviorType(BehaviorType.Player);
+            entity.SetTypeEntity(TypeEntity.MOB);
+
             entity.entityPrefab.entity = entity;
         }
         

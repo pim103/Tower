@@ -86,10 +86,10 @@ namespace Games.Global.Spells
             switch (conditionType)
             {
                 case ConditionType.IfCasterHasEffect:
-                    conditionIsValid = caster.underEffects.ContainsKey(typeEffectNeeded);
+                    conditionIsValid = caster.EntityIsUnderEffect(typeEffectNeeded);
                     break;
                 case ConditionType.IfTargetHasEffect:
-                    conditionIsValid = target.underEffects.ContainsKey(typeEffectNeeded);
+                    conditionIsValid = target.EntityIsUnderEffect(typeEffectNeeded);
                     break;
                 case ConditionType.MinEnemiesInArea:
                     conditionIsValid = caster.entityInRange.Count >= valueNeeded;
