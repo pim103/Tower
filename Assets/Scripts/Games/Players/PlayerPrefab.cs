@@ -26,10 +26,7 @@ namespace Games.Players
         [SerializeField] public Transform playerTransform;
         [SerializeField] private Rigidbody playerRigidbody;
         
-        [SerializeField] public GameObject cameraPoint;
         [SerializeField] public Camera camera;
-        [SerializeField] public GameObject cameraGameObject;
-        [SerializeField] private GameObject originalCameraPosition;
         [SerializeField] private SkinnedMeshRenderer[] skins;
         
         private Material[] materialBackUpForSkin;
@@ -431,6 +428,8 @@ namespace Games.Players
 
             playerGameObject.transform.Rotate(0, horizontal, 0);
 
+            GameObject cameraPoint = camera.gameObject;
+            
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
             
@@ -443,7 +442,7 @@ namespace Games.Players
 
             float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.x);
 
-            angleX = Mathf.Clamp (angleX, -25, 30);
+            angleX = Mathf.Clamp (angleX, -75, 55);
             q.x = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleX);
 
             cameraPoint.transform.localRotation = q;
@@ -468,15 +467,15 @@ namespace Games.Players
                 positionPointed = Vector3.positiveInfinity;
             }
 
-            if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))
-            {
-                camera.transform.position = hit.point;
-                camera.transform.position += camera.transform.forward * 0.2f;
-            }
-            else
-            {
-                camera.transform.position = originalCameraPosition.transform.position;
-            }
+            // if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))
+            // {
+            //     camera.transform.position = hit.point;
+            //     camera.transform.position += camera.transform.forward * 0.2f;
+            // }
+            // else
+            // {
+            //     camera.transform.position = originalCameraPosition.transform.position;
+            // }
         }
 
         public override void SetInvisibility()

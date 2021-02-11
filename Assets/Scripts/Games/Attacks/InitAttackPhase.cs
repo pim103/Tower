@@ -59,7 +59,7 @@ namespace Games.Attacks
             objectsInScene.playerPrefab[GameController.PlayerIndex].playerGameObject.SetActive(true);
             objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
-            objectsInScene.playerPrefab[GameController.PlayerIndex].cameraGameObject.SetActive(true);
+            objectsInScene.playerPrefab[GameController.PlayerIndex].camera.gameObject.SetActive(true);
             objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = gameGridController.startZone.transform.position;
             
             Cursor.lockState = CursorLockMode.Locked;
