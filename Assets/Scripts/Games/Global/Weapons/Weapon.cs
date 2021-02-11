@@ -102,6 +102,11 @@ namespace Games.Global.Weapons
         {
             Entity wielder = weaponPrefab.GetWielder();
 
+            if (spellsToFind == null)
+            {
+                return;
+            }
+            
             foreach (string spellString in spellsToFind)
             {
                 Spell spell = SpellController.LoadSpellByName(spellString);

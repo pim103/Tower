@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
@@ -123,9 +124,9 @@ namespace Games.Global
             
             if (entity.basicAttack != null)
             {
-                if (entity.weapons.Count > 0)
+                if (entity.weapon != null)
                 {
-                    WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+                    WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
                     weaponPrefab.BasicAttack();    
                 }
             }
@@ -133,9 +134,9 @@ namespace Games.Global
 
         public void CancelBasicAttack()
         {
-            if (entity.weapons.Count > 0)
+            if (entity.weapon != null)
             {
-                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+                WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
                 weaponPrefab.DeactivateBoolAttack();    
             }
         }
@@ -151,6 +152,11 @@ namespace Games.Global
                 hand = leftHand;
                 position = positionInLeftHand;
                 angle = angleWithOneLeft;
+            }
+
+            if (entity.weapon != null && entity.weapon.weaponPrefab)
+            {
+                Destroy(entity.weapon.weaponPrefab.gameObject);
             }
 
             GameObject weaponGameObject = Instantiate(weapon.model, hand.transform, true);

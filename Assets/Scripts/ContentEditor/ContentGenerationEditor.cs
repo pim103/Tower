@@ -522,7 +522,7 @@ namespace ContentEditor
             
             if (www.responseCode == 200)
             {
-                DataObject.EquipmentList = new EquipmentList(null, www.downloadHandler.text);
+                DataObject.EquipmentList = new EquipmentList(www.downloadHandler.text);
                 weaponEditor.CloneWeaponDictionary();
                 armorEditor.CloneArmorDictionary();
                 monsterEditor.CreateWeaponChoiceList();

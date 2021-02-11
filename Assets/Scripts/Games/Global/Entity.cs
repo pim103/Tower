@@ -74,7 +74,7 @@ namespace Games.Global
         public List<int> playerInBack { get; set; }
         
         // If needed, create WeaponExposer to get all scripts of a weapon
-        public List<Weapon> weapons { get; set; }
+        public Weapon weapon { get; set; }
         public List<Armor> armors { get; set; }
 
         private TypeEntity typeEntity { get; set; }
@@ -227,7 +227,6 @@ namespace Games.Global
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
-            weapons = new List<Weapon>();
             armors = new List<Armor>();
             underEffects = new List<Effect>();
             damageDealExtraEffect = new List<Effect>();

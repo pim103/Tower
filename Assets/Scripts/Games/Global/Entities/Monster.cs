@@ -73,20 +73,15 @@ namespace Games.Global.Entities
 
         public bool InitWeapon(int idWeapon)
         {
-            if (weapons.Count < nbWeapon)
+            Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
+
+            if (constraint != weapon.type)
             {
-                Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
-
-                if (constraint != weapon.type)
-                {
-                    return false;
-                }
-
-                monsterPrefab.AddItemInHand(weapon);
-                weapons.Add(weapon);
-
-                return true;
+                return false;
             }
+
+            monsterPrefab.AddItemInHand(weapon);
+            this.weapon = weapon;
 
             SpellController.CastPassiveSpell(this);
 
@@ -104,7 +99,7 @@ namespace Games.Global.Entities
 
             monsterPrefab.AddItemInHand(weapon);
 
-            weapons.Add(weapon);
+            this.weapon = weapon;
         }
 
         public void InitSpells()

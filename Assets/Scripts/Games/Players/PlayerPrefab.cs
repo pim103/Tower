@@ -69,7 +69,7 @@ namespace Games.Players
             pressDefenseButton = false;
 
             Player player = entity as Player;
-            player.ResetStats();
+            player?.ResetStats();
         }
         
         private void Start()

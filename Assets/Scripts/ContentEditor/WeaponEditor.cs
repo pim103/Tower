@@ -1,9 +1,13 @@
 ﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
 using System.Collections.Generic;
+using System.Diagnostics;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Tools = Utils.Tools;
 
 namespace ContentEditor
@@ -13,7 +17,7 @@ namespace ContentEditor
         public bool createNewWeapon;
         public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
         public ContentGenerationEditor contentGenerationEditor;
-        
+
         private Weapon newWeapon;
 
         public void DisplayHeaderContent()
@@ -128,6 +132,20 @@ namespace ContentEditor
             EditorGUILayout.LabelField("Sprite");
                 
             weapon.sprite = (Texture2D)EditorGUILayout.ObjectField(weapon.sprite, typeof(Texture2D), false);
+
+            if (GUILayout.Button("Instantiate weapon") && UtilEditor.IsTestScene())
+            {
+                Player player = UtilEditor.GetPlayerFromSceneTest();
+
+                if (player == null)
+                {
+                    Debug.LogError("Can't find player object in current scene");
+                }
+                else
+                {
+                    player.InitWeapon(weapon);
+                }
+            }
 
             EditorGUILayout.EndVertical();
         }

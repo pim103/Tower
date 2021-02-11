@@ -4,6 +4,7 @@ using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
+using UnityEngine;
 
 namespace Games.Players
 {
@@ -171,40 +172,19 @@ namespace Games.Players
             initialPhysicalDef = physicalDef;
 
             InitEntityList();
-            int idWeapon = GetIdWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
-            InitWeapon(idWeapon);
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
+            InitWeapon(weapon);
 
             SpellController.CastPassiveSpell(this);
         }
 
-        private int GetIdWeaponFromCategory(CategoryWeapon categoryWeapon)
+        public void InitWeapon(Weapon weapon)
         {
-            switch(categoryWeapon)
-            {
-                case CategoryWeapon.SHORT_SWORD:
-                    return 1;
-                case CategoryWeapon.BOW:
-                    return 2;
-                case CategoryWeapon.SPEAR:
-                    return 3;
-                case CategoryWeapon.DAGGER:
-                    return 4;
-                case CategoryWeapon.STAFF:
-                    return 5;
-            }
-
-            return 0;
-        }
-
-        public void InitWeapon(int idWeapon)
-        {
-            Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
-
             playerPrefab.AddItemInHand(weapon);
             weapon.InitPlayerSkill(mainClass);
             // TODO : Add init weapon => change basic attack spell
 
-            weapons.Add(weapon);
+            this.weapon = weapon;
         }
     }
 }
