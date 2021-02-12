@@ -15,7 +15,7 @@ namespace Games.Global
 {
     public class DictionaryManager: MonoBehaviour
     {
-        [SerializeField] private GameObject[] monsterGameObjects;
+        // [SerializeField] private GameObject[] monsterGameObjects;
         // [SerializeField] private GameObject[] weaponsGameObject;
         [SerializeField] private Material[] effectMaterials;
 
@@ -80,7 +80,7 @@ namespace Games.Global
             if (www.responseCode == 200)
             {
                 Debug.Log(www.downloadHandler.text);
-                DataObject.MonsterList = new MonsterList(monsterGameObjects, www.downloadHandler.text);
+                DataObject.MonsterList = new MonsterList(www.downloadHandler.text);
             }
             else
             {

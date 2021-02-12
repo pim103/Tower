@@ -128,9 +128,11 @@ namespace ContentEditor
             weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);
             weapon.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", weapon.rarity);
             weapon.lootRate = EditorGUILayout.IntField("Loot Rate", weapon.lootRate);
-            weapon.modelName = EditorGUILayout.TextField("Model Name", weapon.modelName);
+
+            EditorGUILayout.LabelField("Model");
+            weapon.model = (GameObject)EditorGUILayout.ObjectField(weapon.model, typeof(GameObject), false);
+
             EditorGUILayout.LabelField("Sprite");
-                
             weapon.sprite = (Texture2D)EditorGUILayout.ObjectField(weapon.sprite, typeof(Texture2D), false);
 
             if (GUILayout.Button("Instantiate weapon") && UtilEditor.IsTestScene())

@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Armors;
 using Games.Global.Entities;
@@ -304,31 +305,6 @@ namespace ContentEditor
             GUILayout.EndVertical();
         }
 
-        private string GetSpritePath(Texture2D sprite)
-        {
-            string spritePath = AssetDatabase.GetAssetPath(sprite);
-            const string resourcesFolder = "Resources/";
-
-            if (spritePath.Contains(resourcesFolder))
-            {
-                int indexOfResources = spritePath.IndexOf(resourcesFolder, StringComparison.CurrentCulture);
-                spritePath = spritePath.Substring(indexOfResources + resourcesFolder.Length);
-
-                int indexOfExtension = spritePath.IndexOf(".", StringComparison.CurrentCulture);
-                if (indexOfExtension != -1)
-                {
-                    spritePath = spritePath.Substring(0, indexOfExtension);
-                }
-            }
-            else
-            {
-                Debug.Log("L'image n'est pas dans Resource !");
-                spritePath = "";
-            }
-
-            return spritePath;
-        }
-
         public void RequestSaveWeapon(Weapon weapon, bool isNew)
         {
             WWWForm form = new WWWForm();
@@ -343,9 +319,9 @@ namespace ContentEditor
             form.AddField("attSpeed", (int)weapon.attSpeed);
             form.AddField("onDamageDealt", "");
             form.AddField("onDamageReceive", "");
-            form.AddField("model", weapon.modelName);
+            form.AddField("model", weapon.model ? UtilEditor.GetObjectInRessourcePath(weapon.model) : "");
             form.AddField("equipmentType", (int)weapon.equipmentType);
-            form.AddField("spritePath", weapon.sprite != null ? GetSpritePath(weapon.sprite) : "");
+            form.AddField("spritePath", weapon.sprite ? UtilEditor.GetObjectInRessourcePath(weapon.sprite) : "");
             form.AddField("gameToken", NetworkingController.GameToken);
 
             UnityWebRequest www;
@@ -375,9 +351,9 @@ namespace ContentEditor
             form.AddField("damage", armor.def);
             form.AddField("onDamageDealt", "");
             form.AddField("onDamageReceive", "");
-            form.AddField("model", armor.modelName);
+            form.AddField("model", armor.model ? UtilEditor.GetObjectInRessourcePath(armor.model) : "");
             form.AddField("equipmentType", (int)armor.equipmentType);
-            form.AddField("spritePath", armor.sprite != null ? GetSpritePath(armor.sprite) : "");
+            form.AddField("spritePath", armor.sprite ? UtilEditor.GetObjectInRessourcePath(armor.sprite) : "");
             form.AddField("gameToken", NetworkingController.GameToken);
             // Use for weapon
             form.AddField("type", 0);
@@ -411,10 +387,10 @@ namespace ContentEditor
             form.AddField("nbWeapon", monster.nbWeapon);
             form.AddField("onDamageDealt", "");
             form.AddField("onDamageReceive", "");
-            form.AddField("model", monster.modelName);
+            form.AddField("model", monster.model ? UtilEditor.GetObjectInRessourcePath(monster.model) : "");
             form.AddField("weaponId", monster.weaponOriginalId);
             form.AddField("attSpeed", (int) monster.attSpeed);
-            form.AddField("spritePath", monster.sprite != null ? GetSpritePath(monster.sprite) : "");
+            form.AddField("spritePath", monster.sprite ? UtilEditor.GetObjectInRessourcePath(monster.sprite) : "");
             form.AddField("gameToken", NetworkingController.GameToken);
 
             UnityWebRequest www;
@@ -440,7 +416,7 @@ namespace ContentEditor
             form.AddField("cost", group.cost);
             form.AddField("radius", group.radius);
             form.AddField("groupName", group.name);
-            form.AddField("spritePath", group.sprite != null ? GetSpritePath(group.sprite) : "");
+            form.AddField("spritePath", group.sprite ? UtilEditor.GetObjectInRessourcePath(group.sprite) : "");
             form.AddField("gameToken", NetworkingController.GameToken);
 
             if (isNew)
@@ -546,7 +522,7 @@ namespace ContentEditor
             yield return new WaitForSeconds(0.5f);
             if (www.responseCode == 200)
             {
-                DataObject.MonsterList = new MonsterList(null, www.downloadHandler.text);
+                DataObject.MonsterList = new MonsterList(www.downloadHandler.text);
             }
             else
             {

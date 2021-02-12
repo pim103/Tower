@@ -12,9 +12,6 @@ namespace Games.Global.Weapons
 {
     public class EquipmentList
     {
-        private const string WeaponRessourceFolder = "Items/Weapons/";
-        private const string ArmorRessourceFolder = "Items/Armors/";
-
         public List<Weapon> weapons;
         public List<Armor> armors;
 
@@ -87,7 +84,7 @@ namespace Games.Global.Weapons
                     {
                         Weapon loadedWeapon = equipmentJsonObject.ConvertToWeapon();
 
-                        GameObject weaponModel = Resources.Load(WeaponRessourceFolder + loadedWeapon.modelName) as GameObject;
+                        GameObject weaponModel = Resources.Load(loadedWeapon.modelName) as GameObject;
                         if (weaponModel)
                         {
                             loadedWeapon.model = weaponModel;
@@ -99,7 +96,7 @@ namespace Games.Global.Weapons
                     {
                         Armor loadedArmor = equipmentJsonObject.ConvertToArmor();
 
-                        GameObject armorModel = Resources.Load(ArmorRessourceFolder + loadedArmor.modelName) as GameObject;
+                        GameObject armorModel = Resources.Load(loadedArmor.modelName) as GameObject;
                         if (armorModel)
                         {
                             loadedArmor.model = armorModel;

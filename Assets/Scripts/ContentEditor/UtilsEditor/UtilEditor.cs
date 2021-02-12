@@ -1,6 +1,9 @@
-﻿using Games.Players;
+﻿using System;
+using Games.Players;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace ContentEditor.UtilsEditor
 {
@@ -25,6 +28,31 @@ namespace ContentEditor.UtilsEditor
             }
 
             return player;
+        }
+        
+        public static string GetObjectInRessourcePath(Object objectToFindPath)
+        {
+            string spritePath = AssetDatabase.GetAssetPath(objectToFindPath);
+            const string resourcesFolder = "Resources/";
+
+            if (spritePath.Contains(resourcesFolder))
+            {
+                int indexOfResources = spritePath.IndexOf(resourcesFolder, StringComparison.CurrentCulture);
+                spritePath = spritePath.Substring(indexOfResources + resourcesFolder.Length);
+
+                int indexOfExtension = spritePath.IndexOf(".", StringComparison.CurrentCulture);
+                if (indexOfExtension != -1)
+                {
+                    spritePath = spritePath.Substring(0, indexOfExtension);
+                }
+            }
+            else
+            {
+                Debug.Log("L'image n'est pas dans Resource !");
+                spritePath = "";
+            }
+
+            return spritePath;
         }
     }
 }

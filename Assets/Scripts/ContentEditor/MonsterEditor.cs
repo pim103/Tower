@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
 using System.Collections.Generic;
 using System.Linq;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
@@ -171,8 +172,10 @@ namespace ContentEditor
             monster.attSpeed = EditorGUILayout.FloatField("Attack speed", monster.attSpeed);
             monster.speed = EditorGUILayout.FloatField("Speed", monster.speed);
             monster.SetConstraint((TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.GetConstraint()));
-            monster.modelName = EditorGUILayout.TextField("Model Name", monster.modelName);
-            
+
+            EditorGUILayout.LabelField("Model");
+            monster.model = (GameObject)EditorGUILayout.ObjectField(monster.model, typeof(GameObject), false);
+
             EditorGUI.BeginChangeCheck();
             int selected = weaponChoiceIds.IndexOf(monster.weaponOriginalId);
             selected = EditorGUILayout.Popup("Original weapon", selected == -1 ? 0 : selected, weaponChoice.ToArray());
@@ -185,6 +188,11 @@ namespace ContentEditor
             EditorGUILayout.LabelField("Sprite");
 
             monster.sprite = (Texture2D)EditorGUILayout.ObjectField(monster.sprite, typeof(Texture2D), false);
+
+            if (GUILayout.Button("Instantiate monster") && UtilEditor.IsTestScene())
+            {
+                Debug.Log("Need to instantiate monster");
+            }
 
             EditorGUILayout.EndVertical();
         }
@@ -265,6 +273,11 @@ namespace ContentEditor
                 monsterEditorCategory = MonsterEditorCategory.MONSTER_IN_GROUP;
 
                 CreateChoiceMonsterList();
+            }
+
+            if (GUILayout.Button("Instantiate group") && UtilEditor.IsTestScene())
+            {
+                Debug.Log("Need to instantiate group");
             }
 
             EditorGUILayout.EndVertical();

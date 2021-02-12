@@ -1,7 +1,9 @@
 ﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
 using System.Collections.Generic;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Armors;
+using Games.Players;
 using UnityEditor;
 using UnityEngine;
 using Tools = Utils.Tools;
@@ -121,10 +123,26 @@ namespace ContentEditor
             armor.cost = EditorGUILayout.IntField("Cost", armor.cost);
             armor.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", armor.rarity);
             armor.lootRate = EditorGUILayout.IntField("Loot Rate", armor.lootRate);
-            armor.modelName = EditorGUILayout.TextField("Model Name", armor.modelName);
+
+            EditorGUILayout.LabelField("Model");
+            armor.model = (GameObject)EditorGUILayout.ObjectField(armor.model, typeof(GameObject), false);
+
             EditorGUILayout.LabelField("Sprite");
-                
             armor.sprite = (Texture2D)EditorGUILayout.ObjectField(armor.sprite, typeof(Texture2D), false);
+            
+            if (GUILayout.Button("Instantiate armor") && UtilEditor.IsTestScene())
+            {
+                Player player = UtilEditor.GetPlayerFromSceneTest();
+
+                if (player == null)
+                {
+                    Debug.LogError("Can't find player object in current scene");
+                }
+                else
+                {
+                    Debug.Log("NEED TO IMPLEMENT ARMOR LOAD");
+                }
+            }
 
             EditorGUILayout.EndVertical();
         }
