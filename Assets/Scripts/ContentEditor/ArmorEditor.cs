@@ -72,7 +72,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder la nouvelle armure"))
             {
-                contentGenerationEditor.RequestSaveArmor(newArmor, true);
+                PrepareSaveRequest.RequestSaveArmor(newArmor, true);
                 newArmor = null;
             }
 

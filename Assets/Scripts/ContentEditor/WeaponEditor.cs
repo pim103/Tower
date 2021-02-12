@@ -74,7 +74,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder la nouvelle arme"))
             {
-                contentGenerationEditor.RequestSaveWeapon(newWeapon, true);
+                PrepareSaveRequest.RequestSaveWeapon(newWeapon, true);
                 newWeapon = null;
             }
 

@@ -211,7 +211,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder le nouveau monstre"))
             {
-                contentGenerationEditor.RequestSaveMonster(newMonster, true);
+                PrepareSaveRequest.RequestSaveMonster(newMonster, true);
                 newMonster = null;
             }
 
@@ -278,8 +278,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Instantiate group") && UtilEditor.IsTestScene())
             {
-                GameGridController.InitGroups(group, 0, 0);
-                Debug.Log("Need to instantiate group");
+                GameGridController.InitGroups(group, 1, 1);
             }
 
             EditorGUILayout.EndVertical();
@@ -298,7 +297,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder le nouveau groupe"))
             {
-                contentGenerationEditor.RequestSaveGroupMonster(newGroup, true, null);
+                PrepareSaveRequest.RequestSaveGroupMonster(newGroup, true, null);
                 newGroup = null;
             }
 

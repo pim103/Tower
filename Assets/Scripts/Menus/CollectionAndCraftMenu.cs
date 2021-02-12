@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
+using Networking;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -244,7 +245,7 @@ namespace Menus
             {
                 StartCoroutine(DataObject.CardList.AddCardToCollection(card));
             }
-            StartCoroutine(DictionaryManager.GetCardCollection());
+            StartCoroutine(DatabaseManager.GetCardCollection());
             StartCoroutine(WaitCollectionLoad(card));
         }
 
