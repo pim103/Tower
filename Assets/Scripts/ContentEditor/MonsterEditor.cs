@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ContentEditor.UtilsEditor;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
@@ -277,6 +278,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Instantiate group") && UtilEditor.IsTestScene())
             {
+                GameGridController.InitGroups(group, 0, 0);
                 Debug.Log("Need to instantiate group");
             }
 
