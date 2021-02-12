@@ -270,6 +270,14 @@ namespace Games.Players
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                wantToJump = true;
+            } else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                wantToJump = false;
+            }
+
             if (!canMove)
             {
                 wantToGoBack = false;
@@ -341,6 +349,7 @@ namespace Games.Players
         public void Movement()
         {
             Rigidbody rigidbody = playerRigidbody;
+            int jumpForce = 6;
 
             int horizontalMove = 0;
             int verticalMove = 0;
@@ -382,7 +391,13 @@ namespace Games.Players
                 locVel.z = verticalMove * currentSpeed;
             }
 
-            if (grounded && !ejected)
+
+            if (grounded && wantToJump)
+            {
+                locVel.y = jumpForce;
+            }
+
+            if (!ejected)
             {
                 rigidbody.velocity = transform.TransformDirection(locVel);
             }
