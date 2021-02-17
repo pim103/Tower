@@ -16,8 +16,8 @@ namespace Games.Global
     {
         public static bool hasWeaponsLoad;
         public static bool hasMonstersLoad;
+        public static bool hasClassesLoad;
         public static bool hasCardsLoad;
-        public static bool hasClassesLoaded;
         public static bool wasConnected;
 
         private static bool wasInit;
@@ -66,6 +66,7 @@ namespace Games.Global
         public static MonsterList MonsterList;
         public static EquipmentList EquipmentList;
         public static CardList CardList;
+        public static ClassesList ClassesList;
         
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();

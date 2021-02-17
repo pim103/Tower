@@ -29,7 +29,7 @@ namespace TestC
         void Awake()
         {
             Identity classe = new Identity();
-            classe.classe = Classes.Warrior;
+            classe.classe = new Classes();
 
             Identity weapon = new Identity();
             weapon.categoryWeapon = CategoryWeapon.SHORT_SWORD;

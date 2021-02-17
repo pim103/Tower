@@ -54,7 +54,6 @@ namespace Games.Transitions
         private void Start()
         {
             isValidate = false;
-            SetAvailableWeaponForClass();
             IdentityOfButton = new Dictionary<Button, Identity>();
 
             Button activeButton = null;
@@ -89,7 +88,7 @@ namespace Games.Transitions
         private void LaunchGame()
         {
             Dictionary<string, int> argsDict = new Dictionary<string, int>();
-            argsDict.Add("class", (int)currentRoleIdentity.classe);
+            argsDict.Add("class", currentRoleIdentity.classe.id);
             argsDict.Add("weapon", (int)currentWeaponIdentity.categoryWeapon);
 
             if (!gameController.byPassDefense)
@@ -118,8 +117,6 @@ namespace Games.Transitions
                 currentRoleImage = buttonImage;
                 currentWeaponIdentity = null;
                 currentWeaponImage = null;
-
-                ActiveButtonForSpecificRole(identity.classe);
             }
             else if (identity.identityType == IdentityType.CategoryWeapon)
             {
@@ -134,84 +131,6 @@ namespace Games.Transitions
             }
         }
 
-        private void ActiveButtonForSpecificRole(Classes classe)
-        {
-            List<CategoryWeapon> weaponForClass = avalaibleWeaponForClass[classe];
-            Button weaponToChoose = null;
-
-            foreach (KeyValuePair<Button, Identity> pair in IdentityOfButton)
-            {
-                if (pair.Value.identityType == IdentityType.CategoryWeapon)
-                {
-                    if (weaponForClass.Contains(pair.Value.categoryWeapon))
-                    {
-                        if (weaponToChoose == null)
-                        {
-                            weaponToChoose = pair.Key;
-                        }
-
-                        pair.Key.interactable = true;
-                        pair.Key.gameObject.GetComponent<Image>().color =
-                            new Color(greyColor[0], greyColor[1], greyColor[2]);
-                    }
-                    else
-                    {
-                        pair.Key.interactable = false;
-                        pair.Key.gameObject.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f);
-                    }
-                }
-            }
-
-            if (weaponToChoose != null)
-            {
-                weaponToChoose.onClick.Invoke();
-            }
-        }
-
-        private void SetAvailableWeaponForClass()
-        {
-            avalaibleWeaponForClass = new Dictionary<Classes, List<CategoryWeapon>>();
-
-            List<CategoryWeapon> categoryWeaponsWarrior = new List<CategoryWeapon>();
-            categoryWeaponsWarrior.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsWarrior.Add(CategoryWeapon.BOW);
-//            categoryWeaponsWarrior.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsWarrior.Add(CategoryWeapon.STAFF);
-            categoryWeaponsWarrior.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Warrior, categoryWeaponsWarrior);
-
-            List<CategoryWeapon> categoryWeaponsRanger = new List<CategoryWeapon>();
-
-            categoryWeaponsRanger.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsRanger.Add(CategoryWeapon.BOW);
-//            categoryWeaponsRanger.Add(CategoryWeapon.SPEAR);
-            categoryWeaponsRanger.Add(CategoryWeapon.STAFF);
-            categoryWeaponsRanger.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Ranger, categoryWeaponsRanger);
-
-            List<CategoryWeapon> categoryWeaponsMage = new List<CategoryWeapon>();
-
-            categoryWeaponsMage.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsMage.Add(CategoryWeapon.BOW);
-//            categoryWeaponsMage.Add(CategoryWeapon.SPEAR);
-//            categoryWeaponsMage.Add(CategoryWeapon.STAFF);
-            categoryWeaponsMage.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Mage, categoryWeaponsMage);
-
-            List<CategoryWeapon> categoryWeaponsRogue = new List<CategoryWeapon>();
-
-            categoryWeaponsRogue.Add(CategoryWeapon.SHORT_SWORD);
-            categoryWeaponsRogue.Add(CategoryWeapon.BOW);
-//            categoryWeaponsRogue.Add(CategoryWeapon.SPEAR);
-//            categoryWeaponsRogue.Add(CategoryWeapon.STAFF);
-            categoryWeaponsRogue.Add(CategoryWeapon.DAGGER);
-
-            avalaibleWeaponForClass.Add(Classes.Rogue, categoryWeaponsRogue);
-        }
-        
         private void FetchDecks()
         {
             playerDecks = DataObject.CardList.GetDecks();
