@@ -8,14 +8,6 @@ using UnityEngine;
 
 namespace Games.Players
 {
-    public enum Classes
-    {
-        Warrior,
-        Ranger,
-        Rogue,
-        Mage
-    }
-
     public class Player : Entity
     {
         public HelmetArmor helmetArmor { get; set; }
@@ -46,9 +38,16 @@ namespace Games.Players
 
         public void ResetSpellCooldownAndStatus()
         {
-            basicAttack.isOnCooldown = false;
-            basicDefense.isOnCooldown = false;
-            
+            if (basicAttack != null)
+            {
+                basicAttack.isOnCooldown = false;
+            }
+
+            if (basicDefense != null)
+            {
+                basicDefense.isOnCooldown = false;
+            }
+    
             foreach (Spell spell in spells)
             {
                 spell.isOnCooldown = false;
@@ -64,115 +63,42 @@ namespace Games.Players
 
         public void ResetStats()
         {
-            switch(mainClass)
+            Debug.Log("You play a " + mainClass.name);
+            
+            if (mainClass != null)
             {
-                case Classes.Mage:
-                    att = initialAtt;
-                    def = initialDef;
-                    speed = initialSpeed;
-                    hp = initialHp;
-                    ressource1 = initialRessource1;
-                    attSpeed = initialAttSpeed;
-                    physicalDef = initialPhysicalDef;
-                    magicalDef = initialMagicalDef;
-                    break;
-                case Classes.Warrior:
-                    att = initialAtt;
-                    def = initialDef;
-                    speed = initialSpeed;
-                    hp = initialHp;
-                    ressource1 = initialRessource1;
-                    attSpeed = initialAttSpeed;
-                    physicalDef = initialPhysicalDef;
-                    magicalDef = initialMagicalDef;
-                    break;
-                case Classes.Rogue:
-                    att = initialAtt;
-                    def = initialDef;
-                    speed = initialSpeed;
-                    hp = initialHp;
-                    ressource1 = initialRessource1;
-                    attSpeed = initialAttSpeed;
-                    physicalDef = initialPhysicalDef;
-                    magicalDef = initialMagicalDef;
-                    break;
-                case Classes.Ranger:
-                    att = initialAtt;
-                    def = initialDef;
-                    speed = initialSpeed;
-                    hp = initialHp;
-                    ressource1 = initialRessource1;
-                    attSpeed = initialAttSpeed;
-                    physicalDef = initialPhysicalDef;
-                    magicalDef = initialMagicalDef;
-                    break;
+                initialAtt = mainClass.att;
+                initialDef = mainClass.def;
+                initialSpeed = mainClass.speed;
+                initialHp = mainClass.hp;
+                initialAttSpeed = mainClass.attSpeed;
+                initialRessource1 = mainClass.ressource;
+
+                basicDefense = SpellController.LoadSpellByName(mainClass.defenseSpell);
             }
+
+            initialMagicalDef = magicalDef;
+            initialPhysicalDef = physicalDef;
 
             ResetSpellCooldownAndStatus();
         }
         
-        public void InitPlayerStats(Classes classe)
+        public void InitPlayer(int idClasses)
         {
+            InitEntityList();
+
+            Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
+            
             mainClass = classe;
             SetTypeEntity(TypeEntity.ALLIES);
 
             IdEntity = DataObject.nbEntityInScene;
             DataObject.nbEntityInScene++;
             isPlayer = true;
+            
+            ResetStats();
 
-            switch(classe)
-            {
-                case Classes.Mage:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    basicDefense = SpellController.LoadSpellByName("BasicDefenseMage");
-                    break;
-                case Classes.Warrior:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    nbCharges = 4;
-                    basicDefense = SpellController.LoadSpellByName("BasicDefenseWarrior");
-                    break;
-                case Classes.Rogue:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    basicDefense = SpellController.LoadSpellByName("BasicDefenseRogue");
-                    break;
-                case Classes.Ranger:
-                    att = 0;
-                    def = 2;
-                    speed = 10;
-                    hp = 50;
-                    ressource1 = 50;
-                    attSpeed = 0;
-                    basicDefense = SpellController.LoadSpellByName("BasicDefenseRanger");
-                    break;
-            }
-
-            initialAtt = att;
-            initialDef = def;
-            initialHp = hp;
-            initialSpeed = speed;
-            initialAttSpeed = attSpeed;
-            initialRessource1 = ressource1;
-            initialRessource2 = ressource2;
-            initialMagicalDef = magicalDef;
-            initialPhysicalDef = physicalDef;
-
-            InitEntityList();
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId());
             InitWeapon(weapon);
 
             SpellController.CastPassiveSpell(this);

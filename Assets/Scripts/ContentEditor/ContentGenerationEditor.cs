@@ -2,20 +2,14 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using ContentEditor.UtilsEditor;
 using Games.Global;
-using Games.Global.Armors;
-using Games.Global.Entities;
-using Games.Global.Weapons;
 using Networking;
-using Networking.Client;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace ContentEditor
 {
@@ -35,6 +29,7 @@ namespace ContentEditor
         public static Texture2D monsterSprite;
         public static Texture2D armorSprite;
         public static Texture2D playerSprite;
+        public static Texture2D spellGeneratorSprite;
 
         public static void ResetConst()
         {
@@ -72,7 +67,8 @@ namespace ContentEditor
             ARMOR,
             SPELL,
             MONSTER,
-            PLAYER
+            PLAYER,
+            SPELL_GENERATOR
         }
 
         [SerializeField]
@@ -112,6 +108,7 @@ namespace ContentEditor
         public static MonsterEditor monsterEditor = new MonsterEditor();
         public static PlayerEditor playerEditor = new PlayerEditor();
         public static SpellEditor spellEditor = new SpellEditor();
+        public static SpellGeneratorEditor spellGenerator = new SpellGeneratorEditor();
         public static IEditorInterface currentEditor;
 
         public static ContentGenerationEditor instance;
@@ -153,6 +150,12 @@ namespace ContentEditor
                 currentCategory = Category.SPELL;
                 currentEditor = spellEditor;
             }
+            else if (GUILayout.Button(EditorConstant.spellGeneratorSprite, GUILayout.Width(75), GUILayout.Height(75)))
+            {
+                currentCategory = Category.SPELL_GENERATOR;
+                spellGenerator.OpenTrajectorySceneMode();
+                currentEditor = spellGenerator;
+            }
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
@@ -171,7 +174,7 @@ namespace ContentEditor
             EditorGUILayout.EndVertical();
             GUILayout.FlexibleSpace();
         }
-        
+
         void OnGUI ()
         {
             GUILayout.Label("Test custom editor", EditorStyles.boldLabel);

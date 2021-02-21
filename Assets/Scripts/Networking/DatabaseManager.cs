@@ -4,6 +4,7 @@ using DeckBuilding;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Weapons;
+using Games.Players;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,11 +15,11 @@ namespace Networking
     {
         public static IEnumerator GetWeapons()
         {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/equipment/list");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/equipment/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
-            
+
             if (www.responseCode == 200)
             {
                 DataObject.EquipmentList = new EquipmentList(www.downloadHandler.text);
@@ -35,6 +36,7 @@ namespace Networking
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
+
             if (www.responseCode == 200)
             {
                 DataObject.MonsterList = new MonsterList(www.downloadHandler.text);
@@ -55,6 +57,25 @@ namespace Networking
             else
             {
                 Debug.Log("Can't get Monsters...");
+            }
+        }
+
+        public static IEnumerator GetClasses() {
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/classes/list.php");
+            www.certificateHandler = new AcceptCertificate();
+
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+
+            if (www.responseCode == 200)
+            {
+                DataObject.ClassesList = new ClassesList(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get Cards decks...");
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
             }
         }
 
@@ -129,29 +150,12 @@ namespace Networking
                 Debug.Log(www.downloadHandler.text);
             }
         }
-    
-        public static IEnumerator GetClasses() {
-            // var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/classes/listClasses.php");
-            // www.certificateHandler = new AcceptCertificate();
-            // yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            // if (www.responseCode == 200)
-            // {
-            //     DataObject.CardList.InitDeck(www.downloadHandler.text);
-            // }
-            // else
-            // {
-            //     Debug.Log("Can't get Cards decks...");
-            //     Debug.Log(www.responseCode);
-            //     Debug.Log(www.downloadHandler.text);
-            // }
-        }
 
         public static IEnumerator SendData(UnityWebRequest www)
         {
             yield return SendData(www, null);
         }
-        
+
         public static IEnumerator SendData(UnityWebRequest www, Action successEndCallback)
         {
             www.certificateHandler = new AcceptCertificate();

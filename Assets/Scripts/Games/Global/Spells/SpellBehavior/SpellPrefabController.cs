@@ -167,6 +167,7 @@ namespace Games.Global.Spells.SpellBehavior
             }
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
+            Debug.Log(entityEnter.GetTypeEntity());
 
             if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
                  (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))
@@ -203,9 +204,9 @@ namespace Games.Global.Spells.SpellBehavior
             }
 
             spellComponent.OnTriggerEnter(other.GetComponent<EntityPrefab>().entity);
-            bool hasFindindAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+            bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
 
-            if (hasFindindAction && !spellComponent.spellToInstantiate.passingThroughEntity)
+            if (hasFindingAction && !spellComponent.spellToInstantiate.passingThroughEntity)
             {
                 SpellInterpreter.EndSpellComponent(spellComponent);
             }

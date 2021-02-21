@@ -62,18 +62,18 @@ namespace Games.Global.Weapons
         {
             switch (classe)
             {
-                case Classes.Warrior:
-                    InitWeaponSpellWithJson(warriorSpells);
-                    break;
-                case Classes.Mage:
-                    InitWeaponSpellWithJson(mageSpells);
-                    break;
-                case Classes.Rogue:
-                    InitWeaponSpellWithJson(rogueSpells);
-                    break;
-                case Classes.Ranger:
-                    InitWeaponSpellWithJson(rangerSpells);
-                    break;
+//                case Classes.Warrior:
+//                    InitWeaponSpellWithJson(warriorSpells);
+//                    break;
+//                case Classes.Mage:
+//                    InitWeaponSpellWithJson(mageSpells);
+//                    break;
+//                case Classes.Rogue:
+//                    InitWeaponSpellWithJson(rogueSpells);
+//                    break;
+//                case Classes.Ranger:
+//                    InitWeaponSpellWithJson(rangerSpells);
+//                    break;
             }
         }
 

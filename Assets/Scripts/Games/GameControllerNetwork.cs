@@ -138,8 +138,8 @@ namespace Games
         public static void SendRoleAndClasses()
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.classe.ToString());
-            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon.ToString());
+            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.GetIdentityId().ToString());
+            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId().ToString());
             dictionary.Add("equipmentDeck", ChooseDeckAndClass.equipmentDeckId.ToString());
             dictionary.Add("monsterDeck", ChooseDeckAndClass.monsterDeckId.ToString());
             

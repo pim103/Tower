@@ -18,6 +18,7 @@ namespace Games.Global.Entities
             groupsList = new List<GroupsMonster>();
             monsterList = new List<Monster>();
 
+            Debug.Log(json);
             InitMonsterList(json);
         }
 
