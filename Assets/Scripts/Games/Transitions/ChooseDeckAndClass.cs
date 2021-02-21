@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
 using Games.Global.Weapons;
@@ -8,17 +6,17 @@ using Games.Players;
 using Networking;
 using Networking.Client;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Utils;
 
 namespace Games.Transitions
 {
     public class ChooseDeckAndClass : MonoBehaviour
     {
         [SerializeField] private GameController gameController;
-        
-        [SerializeField] private Button[] buttonsOfChoice;
+
+        [SerializeField] private GameObject characterSelectionParent;
+        [SerializeField] private GameObject buttonCharTemplate;
+        [SerializeField] private GameObject buttonWeaponTemplate;
 
         [SerializeField] private Button validateChoices;
 
@@ -34,7 +32,6 @@ namespace Games.Transitions
         private Image currentRoleImage;
         private Image currentWeaponImage;
 
-        private Dictionary<Classes, List<CategoryWeapon>> avalaibleWeaponForClass;
         private Dictionary<Button, Identity> IdentityOfButton;
 
         private readonly float[] greyColor = {0.3962264f, 0.3962264f, 0.3962264f};
@@ -56,28 +53,30 @@ namespace Games.Transitions
             isValidate = false;
             IdentityOfButton = new Dictionary<Button, Identity>();
 
-            Button activeButton = null;
-
-            foreach (Button button in buttonsOfChoice)
-            {
-                Identity identity = button.GetComponent<Identity>();
-                button.onClick.AddListener(delegate { GetIdentityOfButton(button); });
-
-                IdentityOfButton.Add(button, identity);
-                if (identity.identityType == IdentityType.Role && activeButton == null)
-                {
-                    activeButton = button;
-                }
-                else if (identity.identityType == IdentityType.CategoryWeapon)
-                {
-                    button.interactable = false;
-                }
-            }
-
-            if (activeButton != null)
-            {
-                activeButton.onClick.Invoke();
-            }
+            InstantiateCharButtons();
+            InstantiateWeaponButtons();
+            // Button activeButton = null;
+            //
+            // foreach (Button button in buttonsOfChoice)
+            // {
+            //     Identity identity = button.GetComponent<Identity>();
+            //     button.onClick.AddListener(delegate { GetIdentityOfButton(button); });
+            //
+            //     IdentityOfButton.Add(button, identity);
+            //     if (identity.identityType == IdentityType.Role && activeButton == null)
+            //     {
+            //         activeButton = button;
+            //     }
+            //     else if (identity.identityType == IdentityType.CategoryWeapon)
+            //     {
+            //         button.interactable = false;
+            //     }
+            // }
+            //
+            // if (activeButton != null)
+            // {
+            //     activeButton.onClick.Invoke();
+            // }
 
             validateChoices.onClick.AddListener(LaunchGame);
             monsterDeckId = 0;
@@ -85,11 +84,31 @@ namespace Games.Transitions
             FetchDecks();
         }
 
+        private void InstantiateCharButtons()
+        {
+            foreach (Classes classes in DataObject.ClassesList.classes)
+            {
+                GameObject charSelector = Instantiate(buttonCharTemplate, characterSelectionParent.transform);
+                Identity charIdentity = charSelector.GetComponent<Identity>();
+                Button charButton = charSelector.GetComponent<Button>();
+                
+                charIdentity.InitIdentityData(IdentityType.Role, classes.id);
+                charButton.onClick.AddListener(delegate { GetIdentityOfButton(charButton); });
+
+                IdentityOfButton.Add(charButton, charIdentity);
+            }
+        }
+
+        private void InstantiateWeaponButtons()
+        {
+            
+        }
+        
         private void LaunchGame()
         {
             Dictionary<string, int> argsDict = new Dictionary<string, int>();
-            argsDict.Add("class", currentRoleIdentity.classe.id);
-            argsDict.Add("weapon", (int)currentWeaponIdentity.categoryWeapon);
+            argsDict.Add("class", currentRoleIdentity.GetIdentityId());
+            argsDict.Add("weapon", currentWeaponIdentity.GetIdentityId());
 
             if (!gameController.byPassDefense)
             {

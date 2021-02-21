@@ -135,7 +135,7 @@ namespace Games.Global.Spells.SpellsController
             }
 
             List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
-            
+
             foreach (ActionTriggered action in actionsToPlay)
             {   
                 TargetsFound targetsFound =

@@ -1,7 +1,10 @@
 ﻿using System;
+using Games.Global.Weapons;
 using Games.Players;
+using TestC;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
@@ -28,6 +31,20 @@ namespace ContentEditor.UtilsEditor
             }
 
             return player;
+        }
+
+        public static SpellTestScene GetSpellTestSceneScriptFromSceneTest()
+        {
+            SpellTestScene spellTestScene = null;
+            
+            GameObject go = GameObject.Find("TestController");
+
+            if (go)
+            {
+                spellTestScene = go.GetComponent<SpellTestScene>();
+            }
+
+            return spellTestScene;
         }
         
         public static string GetObjectInRessourcePath(Object objectToFindPath)

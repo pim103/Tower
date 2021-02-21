@@ -22,10 +22,13 @@ namespace Games.Global
 
         private static bool wasInit;
 
+        private static DictionaryManager instance;
+
         public void Awake()
         {
             if (!wasInit)
             {
+                instance = this;
                 GroupsPosition.InitPosition();
                 
                 DataObject.CardList = new CardList();
@@ -38,24 +41,24 @@ namespace Games.Global
 
         public static IEnumerator InitializeDataObject()
         {
-            DatabaseManager.GetWeapons();
-            DatabaseManager.GetGroupsMonster();
-            DatabaseManager.GetClasses();
-            
+            instance.StartCoroutine(DatabaseManager.GetWeapons());
+            instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
+            instance.StartCoroutine(DatabaseManager.GetClasses());
+
             while (!hasMonstersLoad || !hasWeaponsLoad)
             {
                 yield return new WaitForSeconds(0.5f);
             }
 
-            DatabaseManager.GetCards();
+            instance.StartCoroutine(DatabaseManager.GetCards());
 
             while (!hasCardsLoad || !wasConnected)
             {
                 yield return new WaitForSeconds(0.5f);
             }
 
-            DatabaseManager.GetCardCollection();
-            DatabaseManager.GetDecks();
+            instance.StartCoroutine(DatabaseManager.GetCardCollection());
+            instance.StartCoroutine(DatabaseManager.GetDecks());
         }
     }
 

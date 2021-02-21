@@ -1,6 +1,4 @@
-﻿using Games.Defenses.Traps;
-using Games.Global.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Games.Defenses
 {

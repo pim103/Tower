@@ -82,7 +82,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayer(ChooseDeckAndClass.currentRoleIdentity.classe);
+            player.InitPlayer(ChooseDeckAndClass.currentRoleIdentity.GetIdentityId());
 
             wantToGoBack = false;
             wantToGoForward = false;

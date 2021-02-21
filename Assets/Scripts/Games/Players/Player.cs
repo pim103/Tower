@@ -38,9 +38,16 @@ namespace Games.Players
 
         public void ResetSpellCooldownAndStatus()
         {
-            basicAttack.isOnCooldown = false;
-            basicDefense.isOnCooldown = false;
-            
+            if (basicAttack != null)
+            {
+                basicAttack.isOnCooldown = false;
+            }
+
+            if (basicDefense != null)
+            {
+                basicDefense.isOnCooldown = false;
+            }
+    
             foreach (Spell spell in spells)
             {
                 spell.isOnCooldown = false;
@@ -56,7 +63,8 @@ namespace Games.Players
 
         public void ResetStats()
         {
-
+            Debug.Log("You play a " + mainClass.name);
+            
             if (mainClass != null)
             {
                 initialAtt = mainClass.att;
@@ -75,8 +83,12 @@ namespace Games.Players
             ResetSpellCooldownAndStatus();
         }
         
-        public void InitPlayer(Classes classe)
+        public void InitPlayer(int idClasses)
         {
+            InitEntityList();
+
+            Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
+            
             mainClass = classe;
             SetTypeEntity(TypeEntity.ALLIES);
 
@@ -86,8 +98,7 @@ namespace Games.Players
             
             ResetStats();
 
-            InitEntityList();
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromCategory(ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon);
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId());
             InitWeapon(weapon);
 
             SpellController.CastPassiveSpell(this);

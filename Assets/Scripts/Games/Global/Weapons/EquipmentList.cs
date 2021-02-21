@@ -50,9 +50,11 @@ namespace Games.Global.Weapons
             return cloneWeapon;
         }
 
-        public Weapon GetFirstWeaponFromCategory(CategoryWeapon categoryWeapon)
+        public Weapon GetFirstWeaponFromIdCategory(int idCategory)
         {
-            return Tools.Clone(weapons.Find(weapon => weapon.category == categoryWeapon));
+            // TODO : use typeWeapon
+            // return Tools.Clone(weapons.Find(weapon => weapon.category == categoryWeapon));
+            return Tools.Clone(weapons.First());
         }
 
         public void PrintDictionnary()

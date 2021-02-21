@@ -46,7 +46,7 @@ namespace Games.Global.Spells.SpellsController
             }
             
 //            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack && entity.weapons.Count > 0))
-            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && entity.weapon!= null))
+            if (!spell.isOnCooldown && spell.nbUse != 0)
             {
                 Debug.Log("Launch spell " + spell.nameSpell);
                 if (spell.nbUse > 0)

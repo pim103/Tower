@@ -36,13 +36,13 @@ namespace Games.Global.Entities
                 
                 entity = monster;
                 entity.entityPrefab = this;
-                entity.SetTypeEntity(TypeEntity.MOB);
 
                 monster.InitOriginalWeapon();
 
                 DataObject.monsterInScene.Add(monster);
             }
 
+            entity.SetTypeEntity(TypeEntity.MOB);
             entity.playerInBack = new List<int>();
         }
 

@@ -15,11 +15,11 @@ namespace Networking
     {
         public static IEnumerator GetWeapons()
         {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/equipment/list");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/equipment/list.php");
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
-            
+
             if (www.responseCode == 200)
             {
                 DataObject.EquipmentList = new EquipmentList(www.downloadHandler.text);
@@ -36,6 +36,7 @@ namespace Networking
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
+
             if (www.responseCode == 200)
             {
                 DataObject.MonsterList = new MonsterList(www.downloadHandler.text);
@@ -154,7 +155,7 @@ namespace Networking
         {
             yield return SendData(www, null);
         }
-        
+
         public static IEnumerator SendData(UnityWebRequest www, Action successEndCallback)
         {
             www.certificateHandler = new AcceptCertificate();

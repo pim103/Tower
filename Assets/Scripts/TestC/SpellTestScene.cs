@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using ContentEditor;
 using FullSerializer;
 using Games;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -28,14 +30,6 @@ namespace TestC
         // Start is called before the first frame update
         void Awake()
         {
-            Identity classe = new Identity();
-            classe.classe = new Classes();
-
-            Identity weapon = new Identity();
-            weapon.categoryWeapon = CategoryWeapon.SHORT_SWORD;
-
-            ChooseDeckAndClass.currentRoleIdentity = classe;
-            ChooseDeckAndClass.currentWeaponIdentity = weapon;
             backToEditor.onClick.AddListener(BackToEditorAction);
             player.gameObject.SetActive(false);
 
@@ -160,11 +154,23 @@ namespace TestC
 
         private IEnumerator Waiting()
         {
-            while (!DictionaryManager.hasWeaponsLoad || !DictionaryManager.hasMonstersLoad || !DictionaryManager.hasCardsLoad)
+            while (!DictionaryManager.hasWeaponsLoad || 
+                   !DictionaryManager.hasMonstersLoad || 
+                   !DictionaryManager.hasCardsLoad ||
+                   !DictionaryManager.hasClassesLoad)
             {
                 yield return new WaitForSeconds(0.1f);
             }
             
+            Identity classe = new Identity();
+            classe.InitIdentityData(IdentityType.Role, DataObject.ClassesList.GetFirstClasses().id);
+
+            Identity weapon = new Identity();
+            weapon.InitIdentityData(IdentityType.CategoryWeapon, 0);
+
+            ChooseDeckAndClass.currentRoleIdentity = classe;
+            ChooseDeckAndClass.currentWeaponIdentity = weapon;
+
             player.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
 
@@ -176,45 +182,52 @@ namespace TestC
             CreateTestSpell();
 
             int countSpells = 0;
-//            foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
-//            {
-//                Spell copySpell = Tools.Clone(pair.Value);
-//                player.entity.spells.Add(copySpell);
-//
-//                if (countSpells == 0)
-//                {
-//                    player.spell1.text = copySpell.nameSpell;
-//                } else if (countSpells == 1)
-//                {
-//                    player.spell2.text = copySpell.nameSpell;
-//                } else if (countSpells == 2)
-//                {
-//                    player.spell3.text = copySpell.nameSpell;
-//                }
-//                else
-//                {
-//                    extraSpellText[countSpells].gameObject.SetActive(true);
-//                    extraSpellText[countSpells].transform.GetChild(0).GetComponent<Text>().text = copySpell.nameSpell;
-//                }
-//                
-//                countSpells++;
-//            }
+            // foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
+            // {
+            //     Spell copySpell = Tools.Clone(pair.Value);
+            //     player.entity.spells.Add(copySpell);
+            //
+            //     if (countSpells == 0)
+            //     {
+            //         player.spell1.text = copySpell.nameSpell;
+            //     } else if (countSpells == 1)
+            //     {
+            //         player.spell2.text = copySpell.nameSpell;
+            //     } else if (countSpells == 2)
+            //     {
+            //         player.spell3.text = copySpell.nameSpell;
+            //     }
+            //     else
+            //     {
+            //         extraSpellText[countSpells].gameObject.SetActive(true);
+            //         extraSpellText[countSpells].transform.GetChild(0).GetComponent<Text>().text = copySpell.nameSpell;
+            //     }
+            //     
+            //     countSpells++;
+            // }
 
             SpellController.CastPassiveSpell(player.entity);
+        }
+
+        public void LoadSpell(Spell spell)
+        {
+            player.spell1.text = spell.nameSpell;
+            player.entity.spells.Clear();
+            player.entity.spells.Add(spell);
         }
 
         private void CreateTestSpell()
         {
             string jsonSpell = File.ReadAllText(Application.dataPath + "/Data/SpellsJson/FirstTrajSpell.json");
-
+            
             Spell spell = null;
             fsSerializer serializer = new fsSerializer();
             fsData data = fsJsonParser.Parse(jsonSpell);
             serializer.TryDeserialize(data, ref spell);
-
+            
             player.spell1.text = spell.nameSpell;
             player.entity.spells.Add(spell);
-            
+
 //            Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
 //            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());
 //

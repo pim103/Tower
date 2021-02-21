@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FullSerializer;
 using Games.Global;
 using UnityEngine;
@@ -43,6 +44,16 @@ namespace Games.Players
                 Debug.Log(e.Message);
                 Debug.Log(e.Data);
             }
+        }
+
+        public Classes GetClassesFromId(int id)
+        {
+            return classes.Find(classe => classe.id == id);
+        }
+
+        public Classes GetFirstClasses()
+        {
+            return classes.First();
         }
     }
 }

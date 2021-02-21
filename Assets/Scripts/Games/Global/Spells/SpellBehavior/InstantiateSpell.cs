@@ -49,6 +49,7 @@ namespace Games.Global.Spells.SpellBehavior
                 GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
                 genericSpellPrefab.transform.localScale = spellToInstantiate.scale;
                 genericSpellPrefab.transform.position = newPosition;
+                genericSpellPrefab.transform.rotation = spellComponent.caster.entityPrefab.transform.rotation;
 
                 // INIT OBJECT CHILD OF GENERIC SPELL
                 GameObject prefabWanted = null;
