@@ -218,15 +218,10 @@ namespace TestC
 
         private void CreateTestSpell()
         {
-            string jsonSpell = File.ReadAllText(Application.dataPath + "/Data/SpellsJson/FirstTrajSpell.json");
-            
-            Spell spell = null;
-            fsSerializer serializer = new fsSerializer();
-            fsData data = fsJsonParser.Parse(jsonSpell);
-            serializer.TryDeserialize(data, ref spell);
-            
-            player.spell1.text = spell.nameSpell;
-            player.entity.spells.Add(spell);
+            // Spell spell = SpellController.LoadSpellByName("FirstTrajSpell");
+            //
+            // player.spell1.text = spell.nameSpell;
+            // player.entity.spells.Add(spell);
 
 //            Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
 //            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());

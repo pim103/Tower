@@ -118,15 +118,15 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 case Geometry.Cone:
                     meshCollider.enabled = true;
-                    cone.SetActive(true);
+                    // cone.SetActive(true);
                     break;
                 case Geometry.Sphere:
                     sphereCollider.enabled = true;
-                    sphere.SetActive(true);
+                    // sphere.SetActive(true);
                     break;
                 case Geometry.Square:
                     boxCollider.enabled = true;
-                    square.SetActive(true);
+                    // square.SetActive(true);
                     break;
             }
         }
@@ -167,7 +167,6 @@ namespace Games.Global.Spells.SpellBehavior
             }
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
-            Debug.Log(entityEnter.GetTypeEntity());
 
             if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
                  (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))

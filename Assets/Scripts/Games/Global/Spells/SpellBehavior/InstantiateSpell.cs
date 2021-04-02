@@ -1,7 +1,9 @@
-﻿using Games.Global.Spells.SpellParameter;
+﻿using System;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using PathCreation;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Games.Global.Spells.SpellBehavior
 {
@@ -53,10 +55,13 @@ namespace Games.Global.Spells.SpellBehavior
 
                 // INIT OBJECT CHILD OF GENERIC SPELL
                 GameObject prefabWanted = null;
-                if (spellComponent.spellToInstantiate.idPoolObject != -1)
+                Debug.Log("Search : " + spellComponent.spellToInstantiate.pathGameObjectToInstantiate);
+                if (!String.IsNullOrEmpty(spellComponent.spellToInstantiate.pathGameObjectToInstantiate))
                 {
-                    prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(spellComponent.spellToInstantiate.idPoolObject);
-                    prefabWanted.transform.parent = genericSpellPrefab.transform;
+                    GameObject wantedGo =
+                        Resources.Load<GameObject>(spellComponent.spellToInstantiate.pathGameObjectToInstantiate);
+                    // prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(spellComponent.spellToInstantiate.idPoolObject);
+                    prefabWanted = Object.Instantiate(wantedGo, genericSpellPrefab.transform, true);
                     prefabWanted.transform.localPosition = Vector3.zero;
                     prefabWanted.transform.localEulerAngles = Vector3.zero;
                     prefabWanted.transform.localScale = Vector3.one;

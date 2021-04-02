@@ -84,19 +84,34 @@ namespace ContentEditor
         private void DisplayWeaponStat()
         {
             EditorGUILayout.BeginHorizontal();
+            int offsetX = 5;
+            int offsetY = 0;
 
             int loop = 0;
 
             foreach (Weapon weapon in DataObject.EquipmentList.weapons)
             {
-                DisplayOneWeaponEditor(weapon);
+                GUILayout.BeginArea(new Rect(offsetX, offsetY, 300, 500));
 
-                ++loop;
-                if (loop % 6 == 0)
+                offsetX += 305;
+
+                if (offsetX + 305 > EditorConstant.WIDTH)
                 {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
+                    offsetX = 0;
+                    offsetY += 300;
                 }
+
+                DisplayOneWeaponEditor(weapon);
+
+                GUILayout.EndArea();
+                // ++loop;
+                // if (loop % 6 == 0)
+                // {
+                //     EditorGUILayout.EndHorizontal();
+                //     EditorGUILayout.BeginHorizontal();
+                // }
             }
 
             EditorGUILayout.EndHorizontal();

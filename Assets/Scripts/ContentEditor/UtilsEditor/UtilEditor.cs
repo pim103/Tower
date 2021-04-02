@@ -47,7 +47,7 @@ namespace ContentEditor.UtilsEditor
             return spellTestScene;
         }
         
-        public static string GetObjectInRessourcePath(Object objectToFindPath)
+        public static string GetObjectPathInRessourceFolder(Object objectToFindPath)
         {
             string spritePath = AssetDatabase.GetAssetPath(objectToFindPath);
             const string resourcesFolder = "Resources/";

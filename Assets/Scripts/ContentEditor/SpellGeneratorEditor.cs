@@ -1,5 +1,6 @@
 ﻿using ContentEditor.UtilsEditor;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 using Games.Global.Spells.SpellsGenerator;
 using Games.Players;
 using PathCreation;
@@ -54,6 +55,7 @@ namespace ContentEditor
             }
         }
 
+        int nbInput = 0;
         public void DisplayBodyContent()
         {
             Color basicColor = GUI.backgroundColor;
@@ -155,7 +157,17 @@ namespace ContentEditor
 
             if (GUILayout.Button("Generate spell", GUILayout.Width(200), GUILayout.Height(75)))
             {
-                spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
+                nbInput++;
+                if (nbInput == 1)
+                {
+                    spellGenerated = SpellController.LoadSpellByName("spellGenerated1");
+                }
+                else
+                {
+                    spellGenerated = SpellController.LoadSpellByName("spellGenerated2");
+                }
+
+                // spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
             }
             
             GUILayout.FlexibleSpace();

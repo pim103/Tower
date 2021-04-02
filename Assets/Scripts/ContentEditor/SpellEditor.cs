@@ -124,6 +124,15 @@ namespace ContentEditor
                     else
                     {
                         currentSpellComponentEdited = spellComponents[selectedSpellComponentIndex - 1];
+
+                        if (currentSpellComponentEdited.spellToInstantiate != null &&
+                            !String.IsNullOrEmpty(currentSpellComponentEdited.spellToInstantiate.pathGameObjectToInstantiate))
+                        {
+                            SpellObjectEditor.spellComponentObject =
+                                Resources.Load<GameObject>(currentSpellComponentEdited.spellToInstantiate.pathGameObjectToInstantiate);
+                            
+                            Debug.Log(SpellObjectEditor.spellComponentObject);
+                        }
                     }
                 }
             }
@@ -376,8 +385,6 @@ namespace ContentEditor
                     fsSerializer serializer = new fsSerializer();
                     serializer.TrySerialize(spellData.Value.GetType(), spellData.Value, out fsData data);
                     File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + spellData.Key + ".json", fsJsonPrinter.CompressedJson(data));
-                    
-                    
                 }
             }
             if (GUILayout.Button("Importer et modifier un spell", GUILayout.Height(25)))
@@ -459,7 +466,7 @@ namespace ContentEditor
             {
                 return;
             }
-            
+
             foreach (KeyValuePair<Trigger, List<ActionTriggered>> action in spellComponent.actions)
             {
                 foreach (ActionTriggered actionTriggered in action.Value)

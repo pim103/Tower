@@ -382,7 +382,7 @@ namespace Games.Global.Spells.SpellsController
 
             if (spell == null)
             {
-//                Debug.Log("Pas de spells");
+                Debug.Log("Pas de spells");
             }
 
             return spell;

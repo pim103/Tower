@@ -79,24 +79,33 @@ namespace Games.Players
 
             initialMagicalDef = magicalDef;
             initialPhysicalDef = physicalDef;
-
             ResetSpellCooldownAndStatus();
+        }
+
+        private void InitClasses(int idClasses)
+        {
+            Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
+            InitClasses(classe);
+        }
+
+        public void InitClasses(Classes classes)
+        {
+            mainClass = classes;
+            
+            ResetStats();
         }
         
         public void InitPlayer(int idClasses)
         {
             InitEntityList();
 
-            Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
-            
-            mainClass = classe;
+            InitClasses(idClasses);
+
             SetTypeEntity(TypeEntity.ALLIES);
 
             IdEntity = DataObject.nbEntityInScene;
             DataObject.nbEntityInScene++;
             isPlayer = true;
-            
-            ResetStats();
 
             Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId());
             InitWeapon(weapon);
