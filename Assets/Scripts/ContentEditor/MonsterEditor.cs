@@ -108,42 +108,49 @@ namespace ContentEditor
 
         public void DisplayFooterContent()
         {
-            if (monsterEditorCategory == MonsterEditorCategory.MONSTER)
+            switch (monsterEditorCategory)
             {
-                string buttonLabel = "Créer un nouveau monstre";
-
-                if (isCreatingNewMonster)
+                case MonsterEditorCategory.MONSTER:
                 {
-                    if (GUILayout.Button("Reset le nouveau monstre"))
+                    string buttonLabel = "Créer un nouveau monstre";
+
+                    if (isCreatingNewMonster)
                     {
-                        newMonster = new Monster();
-                    }
+                        if (GUILayout.Button("Reset le nouveau monstre"))
+                        {
+                            newMonster = new Monster();
+                        }
                     
-                    buttonLabel = "Changer les monstres existants";
-                }
-
-                if (GUILayout.Button(buttonLabel))
-                {
-                    isCreatingNewMonster = !isCreatingNewMonster;
-                }
-            }
-            else if (monsterEditorCategory == MonsterEditorCategory.GROUP)
-            {
-                string buttonLabel = "Créer un nouveau groupe";
-
-                if (isCreatingNewGroup)
-                {
-                    if (GUILayout.Button("Reset le nouveau groupe"))
-                    {
-                        newGroup = new GroupsMonster();
+                        buttonLabel = "Changer les monstres existants";
                     }
 
-                    buttonLabel = "Changer les groupes existants";
-                }
+                    if (GUILayout.Button(buttonLabel))
+                    {
+                        isCreatingNewMonster = !isCreatingNewMonster;
+                    }
 
-                if (GUILayout.Button(buttonLabel))
+                    break;
+                }
+                case MonsterEditorCategory.GROUP:
                 {
-                    isCreatingNewGroup = !isCreatingNewGroup;
+                    string buttonLabel = "Créer un nouveau groupe";
+
+                    if (isCreatingNewGroup)
+                    {
+                        if (GUILayout.Button("Reset le nouveau groupe"))
+                        {
+                            newGroup = new GroupsMonster();
+                        }
+
+                        buttonLabel = "Changer les groupes existants";
+                    }
+
+                    if (GUILayout.Button(buttonLabel))
+                    {
+                        isCreatingNewGroup = !isCreatingNewGroup;
+                    }
+
+                    break;
                 }
             }
         }
