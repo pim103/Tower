@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using PathCreation;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Games.Global.Spells.SpellBehavior
 {
@@ -50,7 +52,7 @@ namespace Games.Global.Spells.SpellBehavior
             }
             else if (traj != null && traj.objectToFollow != null)
             {
-                transform.position = traj.objectToFollow.position;
+                SetPosition(traj.objectToFollow.position, traj.objectToFollow);
             }
 
             if (spellToInstantiate.incrementAmplitudeByTime != Vector3.zero)
@@ -59,12 +61,35 @@ namespace Games.Global.Spells.SpellBehavior
             }
         }
 
-        public void SetValues(Entity originEntity, SpellComponent originSpellComponent, GameObject children)
+        public void SetPosition(Vector3 startPosition, Transform transformMarker)
         {
-            childrenGameObject = children;
+            Vector3 offset = spellComponent.spellToInstantiate.offsetStartPosition;
+            Vector3 forward = Vector3.forward;
+            Vector3 position = startPosition;
+
+            if (transformMarker)
+            {
+                forward = transformMarker.forward;
+                position += forward * offset.z + forward * offset.x +
+                            Vector3.up * offset.y;
+            }
+            else
+            {
+                position += offset;
+            }
             
-            casterOfSpell = originEntity;
+            transform.position = position;
+            transform.forward = forward;
+            
+        }
+
+        public void SetSpellParameter(SpellComponent originSpellComponent, Vector3 startPosition, bool initChild = true)
+        {
+            casterOfSpell = originSpellComponent.caster;
             spellComponent = originSpellComponent;
+
+            transform.localScale = originSpellComponent.spellToInstantiate.scale;
+            SetPosition(startPosition, null);
 
             if (originSpellComponent.trajectory != null)
             {
@@ -79,6 +104,34 @@ namespace Games.Global.Spells.SpellBehavior
             if (alliesTouchedBySpell == null)
             {
                 alliesTouchedBySpell = new List<Entity>();
+            }
+
+            ActiveCollider(originSpellComponent.spellToInstantiate.geometry);
+
+            if (initChild)
+            {
+                InitChildObject();
+            }
+        }
+
+        private void InitChildObject()
+        {
+            if (!String.IsNullOrEmpty(spellComponent.spellToInstantiate.pathGameObjectToInstantiate) && !childrenGameObject)
+            {
+                GameObject wantedGo =
+                    Resources.Load<GameObject>(spellComponent.spellToInstantiate.pathGameObjectToInstantiate);
+
+                childrenGameObject = Object.Instantiate(wantedGo, transform, true);
+
+                Vector3 parentScale = transform.localScale;
+                Vector3 offset = spellComponent.spellToInstantiate.offsetObjectToInstantiate;
+                offset.x /= parentScale.x;
+                offset.y /= parentScale.y;
+                offset.z /= parentScale.z;
+                childrenGameObject.transform.localPosition = offset;
+                childrenGameObject.transform.localEulerAngles = Vector3.zero;
+                childrenGameObject.transform.localScale = Vector3.one;
+                childrenGameObject.SetActive(true);   
             }
         }
 

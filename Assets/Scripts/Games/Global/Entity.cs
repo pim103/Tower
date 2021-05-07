@@ -68,7 +68,7 @@ namespace Games.Global
         public int magicalDef { get; set; } = 0;
         public int physicalDef { get; set; } = 0;
 
-        public float ressource1 { get; set; } = DEFAULT_RESSOURCE;
+        public float ressource { get; set; } = DEFAULT_RESSOURCE;
         public float ressource2 { get; set; } = 0;
 
         public List<int> playerInBack { get; set; }

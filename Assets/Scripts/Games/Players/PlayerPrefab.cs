@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
-using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -101,9 +98,9 @@ namespace Games.Players
                 yield return new WaitForSeconds(0.1f);
                 count += 0.1f;
 
-                if (entity.ressource1 < entity.initialRessource1)
+                if (entity.ressource < entity.initialRessource1)
                 {
-                    entity.ressource1 += 0.1f;
+                    entity.ressource += 0.1f;
                 }
 
                 if (entity.nbCharges < 4 && count >= 0.5f)
@@ -125,10 +122,55 @@ namespace Games.Players
             float diff = (float) entity.hp / (float) entity.initialHp;
             hpBar.value = diff;
 
-            diff = (float) entity.ressource1 / (float) entity.initialRessource1;
+            diff = (float) entity.ressource / (float) entity.initialRessource1;
             ressourcesBar.value = diff;
+
+            UpdateCooldown();
         }
 
+        private void UpdateCooldown()
+        {
+            int slot = 0;
+            foreach (Spell spell in entity.spells)
+            {
+                GameObject bgTimer = null;
+                Text timer = null;
+             
+                ++slot;
+                
+                switch (slot)
+                {
+                    case 1:
+                        bgTimer = bgTimer1;
+                        timer = timer1;
+                        break;
+                    case 2:
+                        bgTimer = bgTimer2;
+                        timer = timer2;
+                        break;
+                    case 3:
+                        bgTimer = bgTimer3;
+                        timer = timer3;
+                        break;
+                }
+
+                if (spell.isOnCooldown)
+                {
+                    if (timer != null && bgTimer != null)
+                    {
+                        bgTimer.SetActive(true);
+                    }
+                    if (timer != null)
+                    {
+                        timer.text = spell.currentCooldown.ToString();
+                    }
+                } else if (bgTimer != null && bgTimer.activeSelf)
+                {
+                    bgTimer.SetActive(false);
+                }
+            }
+        }
+        
         private void FixedUpdate()
         {
             if (isFakePlayer)
@@ -326,19 +368,37 @@ namespace Games.Players
                     {
                     }
 
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        wantToCastSpell1 = true;
+                        SpellController.CastSpell(entity, entity.spells[0]);
+                    }
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        SpellController.CastSpell(entity, entity.spells[0], 1);
+                        wantToCastSpell1 = false;
+                        SpellController.InterruptSpell(entity.spells[0]);
                     }
 
-                    if (Input.GetKeyUp(KeyCode.Alpha2))
+                    if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
-                        SpellController.CastSpell(entity, entity.spells[1], 2);
+                        wantToCastSpell2 = true;
+                        SpellController.CastSpell(entity, entity.spells[1]);
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Alpha2))
+                    {
+                        wantToCastSpell2 = false;
+                        SpellController.InterruptSpell(entity.spells[1]);
                     }
 
-                    if (Input.GetKeyUp(KeyCode.Alpha3))
+                    if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
-                        SpellController.CastSpell(entity, entity.spells[2], 3);
+                        wantToCastSpell3 = true;
+                        SpellController.CastSpell(entity, entity.spells[2]);
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Alpha3))
+                    {
+                        wantToCastSpell3 = false;
+                        SpellController.InterruptSpell(entity.spells[2]);
                     }
                 }
             }

@@ -149,6 +149,7 @@ namespace ContentEditor
             {
                 currentCategory = Category.SPELL;
                 currentEditor = spellEditor;
+                spellEditor.InitSpellEditor();
             }
             else if (GUILayout.Button(EditorConstant.spellGeneratorSprite, GUILayout.Width(75), GUILayout.Height(75)))
             {

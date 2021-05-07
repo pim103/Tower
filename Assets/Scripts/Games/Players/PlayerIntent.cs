@@ -13,5 +13,9 @@ namespace Games.Players
         public Vector3 mousePosition;
 
         public bool pressDefenseButton;
+
+        public bool wantToCastSpell1;
+        public bool wantToCastSpell2;
+        public bool wantToCastSpell3;
     }
 }

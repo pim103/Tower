@@ -20,6 +20,7 @@ namespace Games.Players
 
         public void SetPlayerPrefab(PlayerPrefab playerPrefab)
         {
+            entityPrefab = playerPrefab;
             this.playerPrefab = playerPrefab;
         }
 

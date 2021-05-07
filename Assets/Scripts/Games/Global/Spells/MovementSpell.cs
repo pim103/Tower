@@ -17,7 +17,7 @@ namespace Games.Global.Spells
     {
         public MovementSpell()
         {
-            typeSpell = TypeSpell.Movement;
+            TypeSpellComponent = TypeSpellComponent.Movement;
         }
 
         public bool isFollowingMouse { get; set; }

@@ -160,7 +160,7 @@ namespace ContentEditor
                 nbInput++;
                 if (nbInput == 1)
                 {
-                    spellGenerated = SpellController.LoadSpellByName("spellGenerated1");
+                    spellGenerated = SpellController.LoadSpellByName("Hold");
                 }
                 else
                 {

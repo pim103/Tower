@@ -170,9 +170,9 @@ namespace Games.Global
                 yield return new WaitForSeconds(0.1f);
                 if (effect.launcher != null && effect.ressourceCost > 0)
                 {
-                    effect.launcher.ressource1 -= effect.ressourceCost;
+                    effect.launcher.ressource -= effect.ressourceCost;
 
-                    if (effect.launcher.ressource1 <= 0)
+                    if (effect.launcher.ressource <= 0)
                     {
                         StopCurrentEffect(entity, effect);
                         yield break;

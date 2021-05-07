@@ -7,7 +7,8 @@ namespace Games.Global.Spells.SpellParameter
     {
         public Geometry geometry { get; set; }
         public Vector3 scale { get; set; }
-        public float height { get; set; }
+        public Vector3 offsetStartPosition { get; set; }
+        public Vector3 offsetObjectToInstantiate { get; set; }
 
         public string pathGameObjectToInstantiate { get; set; }
         public Vector3 incrementAmplitudeByTime { get; set; }

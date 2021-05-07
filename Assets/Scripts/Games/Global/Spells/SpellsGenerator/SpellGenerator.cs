@@ -22,7 +22,7 @@ namespace Games.Global.Spells.SpellsGenerator
             
             Spell spell = new Spell
             {
-                activeSpellComponent = activeSpellComponent,
+                spellComponentFirstActivation = activeSpellComponent,
                 cooldown = Random.Range(1, 4),
                 cost = Random.Range(1, 4),
                 castTime = 0,
@@ -85,7 +85,7 @@ namespace Games.Global.Spells.SpellsGenerator
             return new SpellToInstantiate
             {
                 geometry = (Geometry) Random.Range(0, 3),
-                height = 1,
+                offsetStartPosition = Vector3.zero,
                 scale = new Vector3(scaleX, 1, scaleZ),
                 passingThroughEntity = false
             };

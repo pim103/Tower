@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Spells;
 using UnityEditor;
@@ -13,6 +14,7 @@ namespace ContentEditor.SpellEditorComposant
 {
     public enum SpellComponentDurationType
     {
+        HOLDING,
         DURATION,
         CHARGES
     }
@@ -26,17 +28,34 @@ namespace ContentEditor.SpellEditorComposant
     [Serializable]
     public class SpellComponentEditor
     {
-        [SerializeField]
         private static SpellComponentDurationType spellComponentDurationType;
-
-        [SerializeField]
         private static CurrentSpellComponentEditor currentSpellComponentEditor;
-
-        [SerializeField]
         private static Trigger currentTriggerSelected;
 
-        [SerializeField]
         private static List<ActionTriggered> actionsInSpellComponent = new List<ActionTriggered>();
+        
+        // Transformation selectors
+        private static CreateOrSelectComponent<Spell> attackSpellSelector;
+        private static CreateOrSelectComponent<Spell> defenseSpellSelector;
+        private static Dictionary<ReplaceSpell, CreateOrSelectComponent<Spell>> replaceSpellSelector;
+
+        // Passive Selectors
+        private static CreateOrSelectComponent<SpellComponent> passiveComponentSelector;
+        
+        
+        private static bool dropdownEffectIsOpen;
+        private static bool dropdownConditionIsOpen;
+        private static Dictionary<ActionTriggered, CreateOrSelectComponent<SpellComponent>> componentChooseOrSelects;
+
+        public static void InitSpellComponentEditor()
+        {
+            componentChooseOrSelects = new Dictionary<ActionTriggered, CreateOrSelectComponent<SpellComponent>>();
+            actionsInSpellComponent = new List<ActionTriggered>();
+            replaceSpellSelector = new Dictionary<ReplaceSpell, CreateOrSelectComponent<Spell>>();
+            passiveComponentSelector = null;
+            attackSpellSelector = null;
+            defenseSpellSelector = null;
+        }
 
         public static void DisplaySpellComponentEditor(SpellComponent spellComponentEdited)
         {
@@ -62,9 +81,16 @@ namespace ContentEditor.SpellEditorComposant
             spellComponentEdited.nameSpellComponent = EditorGUILayout.TextField("Nom", spellComponentEdited.nameSpellComponent);
             spellComponentEdited.damageType = (DamageType) EditorGUILayout.EnumPopup("Type de dégat", spellComponentEdited.damageType);
 
-            if (spellComponentEdited.typeSpell != TypeSpell.Passive)
+            if (spellComponentEdited.TypeSpellComponent != TypeSpellComponent.Passive)
             {
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Paramètre holding spell", GUILayout.Height(20)))
+                {
+                    spellComponentDurationType = SpellComponentDurationType.HOLDING;
+                }
+
                 if (GUILayout.Button("Paramètre de la durée", GUILayout.Height(20)))
                 {
                     spellComponentDurationType = SpellComponentDurationType.DURATION;
@@ -75,8 +101,13 @@ namespace ContentEditor.SpellEditorComposant
                     spellComponentDurationType = SpellComponentDurationType.CHARGES;
                 }
                 EditorGUILayout.EndHorizontal();
-            
-                if (spellComponentDurationType == SpellComponentDurationType.DURATION)
+
+                if (spellComponentDurationType == SpellComponentDurationType.HOLDING)
+                {
+                    spellComponentEdited.spellDuration = 0;
+                    spellComponentEdited.spellCharges = 0;
+                }
+                else if (spellComponentDurationType == SpellComponentDurationType.DURATION)
                 {
                     spellComponentEdited.spellCharges = 0;
                     spellComponentEdited.spellDuration =
@@ -93,15 +124,17 @@ namespace ContentEditor.SpellEditorComposant
                     EditorGUILayout.FloatField("Intervalle du spell", spellComponentEdited.spellInterval, GUILayout.Width(300));
             }
 
-            if (spellComponentEdited.typeSpell == TypeSpell.Classic ||
-                spellComponentEdited.typeSpell == TypeSpell.BasicAttack)
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            if (spellComponentEdited.TypeSpellComponent == TypeSpellComponent.Classic ||
+                spellComponentEdited.TypeSpellComponent == TypeSpellComponent.BasicAttack)
             {
                 spellComponentEdited.damageMultiplierOnDistance = EditorGUILayout.FloatField(
                     "Multiplier de dégat en fct de la distance", spellComponentEdited.damageMultiplierOnDistance, GUILayout.Width(300));
                 spellComponentEdited.appliesPlayerOnHitEffect = EditorGUILayout.Toggle(
                     "Applique extra effet du joueur au toucher", spellComponentEdited.appliesPlayerOnHitEffect, GUILayout.Width(300));
 
-                if (spellComponentEdited.typeSpell != TypeSpell.BasicAttack)
+                if (spellComponentEdited.TypeSpellComponent != TypeSpellComponent.BasicAttack)
                 {
                     spellComponentEdited.canStopProjectile = EditorGUILayout.Toggle(
                         "Peut stopper les projectiles", spellComponentEdited.canStopProjectile);
@@ -116,108 +149,9 @@ namespace ContentEditor.SpellEditorComposant
             GUI.color = Color.blue;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             GUI.color = defaultColor;
-            EditorGUILayout.LabelField("Spécific à " + spellComponentEdited.typeSpell);
+            EditorGUILayout.LabelField("Spécific à " + spellComponentEdited.TypeSpellComponent);
 
-            switch (spellComponentEdited.typeSpell)
-            {
-                case TypeSpell.Movement:
-                    MovementSpell currentSpell = spellComponentEdited as MovementSpell;
-                    currentSpell.isFollowingMouse = EditorGUILayout.Toggle("Is follow mouse", currentSpell.isFollowingMouse);
-                    currentSpell.movementSpellType =
-                        (MovementSpellType) EditorGUILayout.EnumPopup("Movement spell type", currentSpell.movementSpellType);
-                    break;
-                case TypeSpell.Transformation:
-                    TransformationSpell currentTransformationSpellComponent = spellComponentEdited as TransformationSpell;
-                    EditorGUI.BeginChangeCheck();
-                    int selectedNewAttack = currentTransformationSpellComponent.newBasicAttack != null ? SpellEditor.spellStringList.IndexOf(currentTransformationSpellComponent.newBasicAttack.nameSpell) : -1;
-                    selectedNewAttack = EditorGUILayout.Popup("Nouvelle attaque de base", selectedNewAttack == -1 ? 0 : selectedNewAttack, SpellEditor.spellStringList.ToArray());
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        if (selectedNewAttack == 0)
-                        {
-                            currentTransformationSpellComponent.newBasicAttack = null;
-                        }
-                        else
-                        {
-                            currentTransformationSpellComponent.newBasicAttack = SpellEditor.spells[selectedNewAttack - 1];
-                        }
-                    }
-
-                    EditorGUI.BeginChangeCheck();
-                    int selectedNewDefense = currentTransformationSpellComponent.newBasicDefense != null ? SpellEditor.spellStringList.IndexOf(currentTransformationSpellComponent.newBasicDefense.nameSpell) : -1;
-                    selectedNewDefense = EditorGUILayout.Popup("Nouvelle défense", selectedNewDefense == -1 ? 0 : selectedNewDefense, SpellEditor.spellStringList.ToArray());
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        if (selectedNewDefense == 0)
-                        {
-                            currentTransformationSpellComponent.newBasicDefense = null;
-                        }
-                        else
-                        {
-                            currentTransformationSpellComponent.newBasicDefense = SpellEditor.spells[selectedNewDefense - 1];
-                        }
-                    }
-
-                    EditorGUILayout.BeginHorizontal();
-                    foreach (ReplaceSpell replaceSpell in currentTransformationSpellComponent.newSpells.ToList())
-                    {
-                        EditorGUILayout.BeginVertical();
-                        replaceSpell.slotSpell = EditorGUILayout.IntField("Slot spell", replaceSpell.slotSpell);
-                        
-                        int selectedNewSpell = replaceSpell.newSpell != null ? SpellEditor.spellStringList.IndexOf(replaceSpell.newSpell.nameSpell) : -1;
-                        selectedNewSpell = EditorGUILayout.Popup("Nouveau spell", selectedNewSpell == -1 ? 0 : selectedNewSpell, SpellEditor.spellStringList.ToArray());
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            if (selectedNewSpell == 0)
-                            {
-                                replaceSpell.newSpell = null;
-                            }
-                            else
-                            {
-                                replaceSpell.newSpell = SpellEditor.spells[selectedNewSpell - 1];
-                            }
-                        }
-
-                        if (GUILayout.Button("Supprimer ce spell"))
-                        {
-                            currentTransformationSpellComponent.newSpells.Remove(replaceSpell);
-                        }
-                        EditorGUILayout.EndVertical();
-                    }
-
-                    if (GUILayout.Button("Ajouter un nouveau spell"))
-                    {
-                        currentTransformationSpellComponent.newSpells.Add(new ReplaceSpell());
-                    }
-                    
-                    EditorGUILayout.EndHorizontal();
-                    break;
-                case TypeSpell.Passive:
-                    PassiveSpell currentPassiveSpellComponent = spellComponentEdited as PassiveSpell;
-                    EditorGUI.BeginChangeCheck();
-                    int selected = currentPassiveSpellComponent.permanentSpellComponent != null ? SpellEditor.spellComponentStringList.IndexOf(currentPassiveSpellComponent.permanentSpellComponent.nameSpellComponent) : -1;
-                    selected = EditorGUILayout.Popup("Permanent spellComponent", selected == -1 ? 0 : selected, SpellEditor.spellComponentStringList.ToArray());
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        if (selected == 0)
-                        {
-                            currentPassiveSpellComponent.permanentSpellComponent = null;
-                        }
-                        else
-                        {
-                            currentPassiveSpellComponent.permanentSpellComponent = SpellEditor.spellComponents[selected - 1];
-                        }
-                    }
-                    break;
-                case TypeSpell.BasicAttack:
-                    break;
-                case TypeSpell.Summon:
-                    break;
-            }
+            DisplaySpecificComponentOptions(spellComponentEdited);
 
             EditorGUILayout.EndVertical();
 
@@ -231,7 +165,6 @@ namespace ContentEditor.SpellEditorComposant
 
             if (GUILayout.Button("Editer les actions"))
             {
-                InitChoiceList();
                 currentSpellComponentEditor = CurrentSpellComponentEditor.Actions;
             }
             if (spellComponentEdited.spellToInstantiate != null && GUILayout.Button("Supprimer l'objet à instancier"))
@@ -254,16 +187,90 @@ namespace ContentEditor.SpellEditorComposant
             GUI.color = defaultColor;
         }
 
-        private static void InitChoiceList()
+        private static void DisplaySpecificComponentOptions(SpellComponent spellComponentEdited)
         {
-            SpellEditor.CreateSpellComponentList();
+            switch (spellComponentEdited.TypeSpellComponent)
+            {
+                case TypeSpellComponent.Movement:
+                    MovementSpell currentSpell = spellComponentEdited as MovementSpell;
+                        currentSpell.isFollowingMouse = EditorGUILayout.Toggle("Is follow mouse", currentSpell.isFollowingMouse);
+                    currentSpell.movementSpellType =
+                        (MovementSpellType) EditorGUILayout.EnumPopup("Movement spell type", currentSpell.movementSpellType);
+                    break;
+                case TypeSpellComponent.Transformation:
+                    if (!(spellComponentEdited is TransformationSpell currentTransformationSpellComponent))
+                    {
+                        return;
+                    }
+                    
+                    attackSpellSelector ??= new CreateOrSelectComponent<Spell>(SpellEditor.GetSpells(), currentTransformationSpellComponent.newBasicAttack, "Attack spell", null);
+                    defenseSpellSelector ??= new CreateOrSelectComponent<Spell>(SpellEditor.GetSpells(), currentTransformationSpellComponent.newBasicDefense, "Defense spell", null);
+                    replaceSpellSelector ??= new Dictionary<ReplaceSpell, CreateOrSelectComponent<Spell>>();
+
+                    currentTransformationSpellComponent.newBasicAttack = attackSpellSelector.DisplayOptions();
+                    currentTransformationSpellComponent.newBasicDefense = defenseSpellSelector.DisplayOptions();
+
+                    EditorGUILayout.BeginHorizontal();
+                    int idx = 0;
+                    foreach (ReplaceSpell replaceSpell in currentTransformationSpellComponent.newSpells.ToList())
+                    {
+                        idx++;
+                        EditorGUILayout.BeginVertical();
+                        replaceSpell.slotSpell = EditorGUILayout.IntField("Slot spell", replaceSpell.slotSpell);
+
+                        if (!replaceSpellSelector.ContainsKey(replaceSpell))
+                        {
+                            replaceSpellSelector.Add(replaceSpell, 
+                                new CreateOrSelectComponent<Spell>(SpellEditor.GetSpells(), replaceSpell.newSpell, "Replace spell " + idx, null));
+                        }
+
+                        replaceSpell.newSpell = replaceSpellSelector[replaceSpell].DisplayOptions();
+
+                        if (GUILayout.Button("Supprimer ce spell"))
+                        {
+                            currentTransformationSpellComponent.newSpells.Remove(replaceSpell);
+                            replaceSpellSelector.Remove(replaceSpell);
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+            
+                    if (GUILayout.Button("Ajouter un nouveau spell"))
+                    {
+                        ReplaceSpell replaceSpell = new ReplaceSpell();
+                        currentTransformationSpellComponent.newSpells.Add(replaceSpell);
+                        replaceSpellSelector.Add(replaceSpell, new CreateOrSelectComponent<Spell>(SpellEditor.GetSpells(), null, "Replace spell " + currentTransformationSpellComponent.newSpells.Count, null));
+                    }
+                    
+                    EditorGUILayout.EndHorizontal();
+                    break;
+                case TypeSpellComponent.Passive:
+                    if (!(spellComponentEdited is PassiveSpell currentPassiveSpellComponent))
+                    {
+                        return;
+                    }
+                    
+                    passiveComponentSelector ??= new CreateOrSelectComponent<SpellComponent>(
+                        SpellEditor.spellComponents, 
+                        currentPassiveSpellComponent.permanentSpellComponent, 
+                        "Passive component", 
+                        null);
+
+                    currentPassiveSpellComponent.permanentSpellComponent = passiveComponentSelector.DisplayOptions();
+                    break;
+                case TypeSpellComponent.BasicAttack:
+                    break;
+                case TypeSpellComponent.Summon:
+                    break;
+            }
         }
 
-        private static bool dropdownEffectIsOpen;
-        private static bool dropdownConditionIsOpen;
-        
         private static void DisplayOneAction(Trigger trigger, ActionTriggered actionTriggered)
         {
+            Color defaultColor = GUI.color;
+            GUI.color = Color.red;
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUI.color = defaultColor;
+            
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("Trigger type", trigger.ToString());
             EditorGUI.EndDisabledGroup();
@@ -272,21 +279,13 @@ namespace ContentEditor.SpellEditorComposant
             actionTriggered.percentageToTrigger = EditorGUILayout.IntField("Pourcentage de chance ", actionTriggered.percentageToTrigger);
             actionTriggered.damageDeal = EditorGUILayout.IntField("Damage ", actionTriggered.damageDeal);
 
-            EditorGUI.BeginChangeCheck();
-            int selected = actionTriggered.spellComponent != null ? SpellEditor.spellComponentStringList.IndexOf(actionTriggered.spellComponent.nameSpellComponent) : -1;
-            selected = EditorGUILayout.Popup("SpellComponent", selected == -1 ? 0 : selected, SpellEditor.spellComponentStringList.ToArray());
-
-            if (EditorGUI.EndChangeCheck())
+            if (!componentChooseOrSelects.ContainsKey(actionTriggered))
             {
-                if (selected == 0)
-                {
-                    actionTriggered.spellComponent = null;
-                }
-                else
-                {
-                    actionTriggered.spellComponent = SpellEditor.spellComponents[selected - 1];
-                }
+                componentChooseOrSelects.Add(actionTriggered, 
+                    new CreateOrSelectComponent<SpellComponent>(SpellEditor.spellComponents, actionTriggered.spellComponent, "Spellcomponent for action ", null));
             }
+
+            actionTriggered.spellComponent = componentChooseOrSelects[actionTriggered].DisplayOptions();
             
             EditorGUILayout.Space();
             EditorGUILayout.Space();
@@ -361,6 +360,7 @@ namespace ContentEditor.SpellEditorComposant
                         actionTriggered.conditionToTrigger.typeEffectNeeded);
                 }
             }
+            EditorGUILayout.EndVertical();
         }
 
         public static void DisplayActionsInSpellComponent(SpellComponent spellComponentEdited)
@@ -391,6 +391,7 @@ namespace ContentEditor.SpellEditorComposant
                     if (GUILayout.Button("Supprimer cette action"))
                     {
                         spellComponentEdited.actions[currentTriggerSelected].Remove(actionTriggered);
+                        componentChooseOrSelects.Remove(actionTriggered);
                     }
             
                     GUILayout.FlexibleSpace();
@@ -417,6 +418,7 @@ namespace ContentEditor.SpellEditorComposant
                 }
 
                 ActionTriggered newAction = new ActionTriggered();
+                componentChooseOrSelects.Add(newAction, new CreateOrSelectComponent<SpellComponent>(SpellEditor.spellComponents, null, "Spellcomponent for action", null));
                 spellComponentEdited.actions[currentTriggerSelected].Add(newAction);
                 actionsInSpellComponent.Add(newAction);
             }
@@ -475,7 +477,7 @@ namespace ContentEditor.SpellEditorComposant
                 return;
             }
 
-            if (spellComponent.typeSpell == TypeSpell.Movement)
+            if (spellComponent.TypeSpellComponent == TypeSpellComponent.Movement)
             {
                 MovementSpell movSpell = spellComponent as MovementSpell;
                 if (movSpell == null)
@@ -495,7 +497,7 @@ namespace ContentEditor.SpellEditorComposant
                 }
             }
             
-            if (spellComponent.typeSpell == TypeSpell.Passive)
+            if (spellComponent.TypeSpellComponent == TypeSpellComponent.Passive)
             {
                 PassiveSpell passSpell = spellComponent as PassiveSpell;
                 if (passSpell == null)
@@ -510,7 +512,7 @@ namespace ContentEditor.SpellEditorComposant
                 }
             }
             
-            if (spellComponent.typeSpell == TypeSpell.Summon)
+            if (spellComponent.TypeSpellComponent == TypeSpellComponent.Summon)
             {
                 SummonSpell summonSpell = spellComponent as SummonSpell;
                 if (summonSpell == null)
@@ -520,7 +522,7 @@ namespace ContentEditor.SpellEditorComposant
                 }
             }
 
-            if (spellComponent.typeSpell == TypeSpell.Transformation)
+            if (spellComponent.TypeSpellComponent == TypeSpellComponent.Transformation)
             {
                 TransformationSpell transSpell = spellComponent as TransformationSpell;
                 if (transSpell == null)

@@ -9,7 +9,7 @@ namespace Games.Global.Spells
     {
         public SummonSpell()
         {
-            typeSpell = TypeSpell.Summon;
+            TypeSpellComponent = TypeSpellComponent.Summon;
         }
 
         public int idPoolObject { get; set; }
