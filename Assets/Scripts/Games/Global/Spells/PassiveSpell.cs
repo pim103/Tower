@@ -27,7 +27,7 @@ namespace Games.Global.Spells
             }
             else if (permanentSpellComponentInstantiate == null)
             {
-                permanentSpellComponentInstantiate = SpellController.CastSpellComponent(caster, permanentSpellComponent, caster, caster.entityPrefab.transform.position, null, this);
+                permanentSpellComponentInstantiate = SpellController.CastSpellComponent(caster, permanentSpellComponent, caster, caster.entityPrefab.transform.position, originSpell, this);
             }
         }
     }

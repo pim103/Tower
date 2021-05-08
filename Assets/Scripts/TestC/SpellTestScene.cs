@@ -218,8 +218,8 @@ namespace TestC
 
         private void CreateTestSpell()
         {
-            Spell spell = SpellController.LoadSpellByName("Hold");
-            LoadSpell(spell);
+            // Spell spell = SpellController.LoadSpellByName("Hold");
+            // LoadSpell(spell);
             
 //            Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
 //            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());

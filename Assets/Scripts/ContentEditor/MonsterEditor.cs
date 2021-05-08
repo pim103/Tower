@@ -173,6 +173,7 @@ namespace ContentEditor
             EditorGUILayout.IntField("ID", monster.id);
             EditorGUI.EndDisabledGroup();
 
+            monster.monsterType = (MonsterType) EditorGUILayout.EnumPopup("Monster type", monster.monsterType);
             monster.mobName = EditorGUILayout.TextField("Name", monster.mobName);
             monster.hp = EditorGUILayout.FloatField("Hp", monster.hp);
             monster.def = EditorGUILayout.IntField("Defense", monster.def);

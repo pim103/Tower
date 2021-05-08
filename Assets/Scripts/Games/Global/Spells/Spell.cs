@@ -196,9 +196,24 @@ namespace Games.Global.Spells
         }
     }
 
+    public enum SpellTag
+    {
+        MeleeDamage,
+        DistanceDamage,
+        HealHimself,
+        HealOther,
+        HealArea,
+        MeleeControl,
+        DistanceControl,
+        DefensiveBuff,
+        OffensiveBuff
+    }
+
     [Serializable]
     public class Spell
     {
+        public int id { get; set; } = -1;
+        public SpellTag spellTag { get; set; }
         public TypeSpell TypeSpell { get; set; }
         public StartFrom startFrom { get; set; }
         public string nameSpell { get; set; }

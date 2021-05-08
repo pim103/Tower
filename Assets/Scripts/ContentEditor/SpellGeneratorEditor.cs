@@ -158,14 +158,14 @@ namespace ContentEditor
             if (GUILayout.Button("Generate spell", GUILayout.Width(200), GUILayout.Height(75)))
             {
                 nbInput++;
-                if (nbInput == 1)
-                {
-                    spellGenerated = SpellController.LoadSpellByName("Hold");
-                }
-                else
-                {
-                    spellGenerated = SpellController.LoadSpellByName("spellGenerated2");
-                }
+                // if (nbInput == 1)
+                // {
+                //     spellGenerated = SpellController.LoadSpellByName("Hold");
+                // }
+                // else
+                // {
+                //     spellGenerated = SpellController.LoadSpellByName("spellGenerated2");
+                // }
 
                 // spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
             }

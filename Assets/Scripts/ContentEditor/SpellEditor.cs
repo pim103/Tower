@@ -7,6 +7,7 @@ using System.Linq;
 using ContentEditor.SpellEditorComposant;
 using ContentEditor.UtilsEditor;
 using FullSerializer;
+using Games.Global;
 using Games.Global.Spells;
 using UnityEditor;
 using UnityEngine;
@@ -153,14 +154,21 @@ namespace ContentEditor
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
-            foreach (Spell spell in spells)
+            if (DataObject.SpellList != null)
             {
-                if (GUILayout.Button(spell.nameSpell, GUILayout.Height(50)))
+                foreach (SpellList.SpellInfo spellInfo in DataObject.SpellList.SpellInfos)
                 {
-                    currentSpellEdited = spell;
-                    typeSpellSelected = spell.TypeSpell;
-                    InitTypeSpellParameters();
-                    editedSpell = true;
+                    Spell spell = spellInfo.spell;
+
+                    if (GUILayout.Button(spell.nameSpell, GUILayout.Height(50)))
+                    {
+                        currentSpellEdited = spell;
+                        typeSpellSelected = spell.TypeSpell;
+                        InitTypeSpellParameters();
+                        editedSpell = true;
+
+                        fileNameSpell = spellInfo.filename;
+                    }
                 }
             }
             
@@ -219,6 +227,7 @@ namespace ContentEditor
 
             fileNameSpell = EditorGUILayout.TextField("Nom du fichier", fileNameSpell);
             currentSpellEdited.nameSpell = EditorGUILayout.TextField("Name", currentSpellEdited.nameSpell);
+            currentSpellEdited.spellTag = (SpellTag) EditorGUILayout.EnumPopup("Tag", currentSpellEdited.spellTag);
             currentSpellEdited.startFrom = (StartFrom) EditorGUILayout.EnumPopup("Le spell part de ", currentSpellEdited.startFrom);
             currentSpellEdited.cooldown = EditorGUILayout.FloatField("Cooldown", currentSpellEdited.cooldown);
             currentSpellEdited.cost = EditorGUILayout.FloatField("Cout en ressource", currentSpellEdited.cost);
@@ -409,16 +418,9 @@ namespace ContentEditor
                     return;
                 }
 
-                if (editedSpell)
-                {
-                    Debug.Log("Ecrasement des données déjà existantes");
-                }
-                else
-                {
-                    Debug.Log("Le spell a été sauvegardé");
-                    GetSpells().Add(currentSpellEdited);
-                    spellsToExport.Add(fileNameSpell, currentSpellEdited);
-                }
+                Debug.Log("Le spell a été sauvegardé");
+                GetSpells().Add(currentSpellEdited);
+                spellsToExport.Add(fileNameSpell, currentSpellEdited);
             }
             
             currentSpellEdited = null;
@@ -429,48 +431,7 @@ namespace ContentEditor
         {
             if (GUILayout.Button("Exporter les spells enregistré", GUILayout.Height(25)))
             {
-                foreach (KeyValuePair<string, Spell> spellData in spellsToExport)
-                {
-                    fsSerializer serializer = new fsSerializer();
-                    serializer.TrySerialize(spellData.Value.GetType(), spellData.Value, out fsData data);
-                    File.WriteAllText(Application.dataPath + "/Data/SpellsJson/" + spellData.Key + ".json", fsJsonPrinter.CompressedJson(data));
-                }
-            }
-            if (GUILayout.Button("Importer et modifier un spell", GUILayout.Height(25)))
-            {
-                string path = null;
-                path = EditorUtility.OpenFilePanel("Choose your spell", Application.dataPath + "/Data/SpellsJson/",
-                    "json");
-                
-                if (path == null)
-                {
-                    return;
-                }
-
-                string jsonSpell = File.ReadAllText(path);
-
-                Spell spell = null;
-                fsSerializer serializer = new fsSerializer();
-                fsData data = fsJsonParser.Parse(jsonSpell);
-                serializer.TryDeserialize(data, ref spell);
-
-                if (spell != null)
-                {
-                    ParseSpell(spell);
-                }
-
-                string extension = ".json";
-                string initialPath = Application.dataPath + "/Data/SpellsJson/";
-                int indexOfInitialPath = path.IndexOf(initialPath, StringComparison.Ordinal);
-                int indexOfExtension = path.IndexOf(extension, StringComparison.Ordinal);
-
-                if (indexOfInitialPath != -1 && indexOfExtension != -1)
-                {
-                    fileNameSpell = path.Substring(indexOfInitialPath + initialPath.Length, indexOfExtension - (indexOfInitialPath + initialPath.Length));
-                    spellsToExport.Add(fileNameSpell, spell);
-                }
-                
-                spellEditorCategory = SpellEditorCategory.EDIT_SPELL;
+                PrepareSaveRequest.SaveSpell(spellsToExport);
             }
             if (GUILayout.Button("Clear le panel des spells (Toute données non sauvegardé sera perdu)", GUILayout.Height(25)))
             {

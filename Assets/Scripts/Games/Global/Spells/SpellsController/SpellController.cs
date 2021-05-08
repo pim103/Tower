@@ -404,41 +404,5 @@ namespace Games.Global.Spells.SpellsController
 
             return targetFound;
         }
-
-        public static Spell LoadSpellByName(string nameSpell)
-        {
-            string path = "Assets/Data/SpellsJson/" + nameSpell + ".json";
-            Spell spell = FindSpellWithPath(path);
-
-            if (spell == null)
-            {
-                Debug.Log("Pas de spells");
-            }
-
-            return spell;
-        }
-        
-        private static Spell FindSpellWithPath(string tempPath)
-        {
-            fsSerializer serializer = new fsSerializer();
-            fsData data;
-            Spell spell = null;
-            string jsonSpell;
-
-            try
-            {
-                jsonSpell = File.ReadAllText(tempPath);
-                data = fsJsonParser.Parse(jsonSpell);
-                serializer.TryDeserialize(data, ref spell);
-                spell = Tools.Clone(spell);
-            }
-            catch (Exception e)
-            {
-//                Debug.Log("Cant import spell for path : " + tempPath);
-//                Debug.Log(e.Message);
-            }
-
-            return spell;
-        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using DeckBuilding;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using Networking.Client;
@@ -13,6 +14,23 @@ namespace Networking
 {
     public class DatabaseManager
     {
+        public static IEnumerator GetSpells()
+        {
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/skill/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+
+            if (www.responseCode == 200)
+            {
+                DataObject.SpellList = new SpellList(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get weapons...");
+            }
+        }
+        
         public static IEnumerator GetWeapons()
         {
             var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/equipment/list.php");
@@ -164,7 +182,7 @@ namespace Networking
             
             if (www.responseCode == 201)
             {
-                successEndCallback();
+                successEndCallback?.Invoke();
                 Debug.Log("Request was send");
                 Debug.Log(www.responseCode);
                 Debug.Log(www.downloadHandler.text);

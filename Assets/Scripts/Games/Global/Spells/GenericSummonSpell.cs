@@ -12,22 +12,13 @@ namespace Games.Global.Spells
         public Entity summoner;
         public Entity summon;
 
-        public SpellComponent linkedSpellOnEnable;
-        public SpellComponent linkedSpellOnDisapear;
-
-        public SpellComponent spellWhenPlayerCall;
-
         public GameObject selfGameObject;
 
         public void SummonEntity(Entity newSummoner, SummonSpell summonSpell, GameObject newGameObject)
         {
             summoner = newSummoner;
-
-            spellWhenPlayerCall = summonSpell.spellWhenPlayerCall;
-            linkedSpellOnEnable = summonSpell.linkedSpellOnEnable;
-            linkedSpellOnDisapear = summonSpell.linkedSpellOnDisapear;
-
             selfGameObject = newGameObject;
+            canMove = summonSpell.canMove;
 
             List<Spell> spellsClone = new List<Spell>(); 
 
@@ -69,11 +60,6 @@ namespace Games.Global.Spells
             entity.entityPrefab = this;
             entity.spells = spellsClone;
 
-            if (linkedSpellOnEnable != null)
-            {
-//                SpellController.CastSpellComponent(summon, linkedSpellOnEnable, target);
-            }
-
             SpellController.CastPassiveSpell(entity);
 
             DataObject.invocationsInScene.Add(summon);
@@ -82,21 +68,8 @@ namespace Games.Global.Spells
 
         public void DestroySummon()
         {
-            if (linkedSpellOnDisapear != null)
-            {
-//                SpellController.CastSpellComponent(summoner, linkedSpellOnDisapear, target);
-            }
-
             DataObject.invocationsInScene.Remove(summon);
             selfGameObject.SetActive(false);
-        }
-
-        public void TriggerSpellWhenPlayerCall()
-        {
-            if (spellWhenPlayerCall != null)
-            {
-//                SpellController.CastSpellComponent(entity, spellWhenPlayerCall, target);
-            }
         }
     }
 }

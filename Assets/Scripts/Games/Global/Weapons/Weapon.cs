@@ -89,7 +89,7 @@ namespace Games.Global.Weapons
 
         public void InitBasicAttack()
         {
-            Spell spell = SpellController.LoadSpellByName(spellOfBasicAttack);
+            Spell spell = DataObject.SpellList.GetSpellByName(spellOfBasicAttack);
             Entity wielder = weaponPrefab.GetWielder();
             
             if (spell != null)
@@ -109,7 +109,7 @@ namespace Games.Global.Weapons
             
             foreach (string spellString in spellsToFind)
             {
-                Spell spell = SpellController.LoadSpellByName(spellString);
+                Spell spell = DataObject.SpellList.GetSpellByName(spellString);
 
                 if (spell == null)
                 {

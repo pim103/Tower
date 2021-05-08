@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Global.Weapons;
+using TestC;
 using UnityEngine;
 
 namespace Utils
@@ -16,13 +17,6 @@ namespace Utils
     public class RawMonsterList
     {
         public List<MobJsonObject> monsters;
-    }
-
-    [Serializable]
-    public class SpellList
-    {
-        public string id;
-        public string name;
     }
 
     [Serializable]
@@ -42,8 +36,9 @@ namespace Utils
         public string weaponId { get; set; } = "0";
 
         public string typeWeapon { get; set; } = "0";
+        public int monsterType { get; set; } = 0;
 
-        public List<SpellList> skillListId;
+        public List<SpellJsonObject> skillListId;
 
         public string onDamageDealt { get; set; }
         public string onDamageReceive { get; set; }
@@ -53,12 +48,12 @@ namespace Utils
 
         public void PrintAttribute()
         {
-            Debug.Log("Object id : " + id + " name : " + name);
+            Debug.Log("Object id : " + id + " name : " + name + " type " + (MonsterType) monsterType);
             Debug.Log("Stats => dmg : " + att + " speed : " + speed + " hp : " + hp + " def : " + def + " nbWeapon : " + nbWeapon);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
             Debug.Log("Model Name : " + model);
             Debug.Log("skills : ");
-            foreach (SpellList skill in skillListId)
+            foreach (SpellJsonObject skill in skillListId)
             {
                 Debug.Log("Cast : " + skill.name);
             }
@@ -84,8 +79,9 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 nbWeapon = Int32.Parse(nbWeapon),
                 weaponOriginalId = Int32.Parse(weaponId),
-                spellsName = skillListId,
-                modelName = model
+                // spellsName = skillListId,
+                modelName = model,
+                monsterType = (MonsterType) monsterType
             };
             
             monster.SetConstraint((TypeWeapon) Int32.Parse(typeWeapon));
@@ -181,7 +177,6 @@ namespace Utils
                 monstersInGroup.SetMonster(mob.ConvertToMonster());
                 
                 groupsMonster.monstersInGroupList.Add(monstersInGroup);
-//                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));
             }
 
             return groupsMonster;

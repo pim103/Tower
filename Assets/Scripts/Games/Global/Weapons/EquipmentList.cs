@@ -57,16 +57,6 @@ namespace Games.Global.Weapons
             return Tools.Clone(weapons.First());
         }
 
-        public void PrintDictionnary()
-        {
-            foreach (Weapon weapon in weapons)
-            {
-                Debug.Log(weapon);
-                Debug.Log(weapon.category);
-                Debug.Log(weapon.damage);
-            }
-        }
-
         private void InitEquipmentDictionnary(string json)
         {
             fsSerializer serializer = new fsSerializer();

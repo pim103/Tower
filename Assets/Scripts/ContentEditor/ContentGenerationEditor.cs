@@ -246,9 +246,21 @@ namespace ContentEditor
 
         void LoadData()
         {
+            this.StartCoroutine(RequestLoadSpell());
             this.StartCoroutine(RequestLoadClasses());
             this.StartCoroutine(RequestLoadEquipment());
             this.StartCoroutine(RequestLoadMonster());
+        }
+
+        public static IEnumerator RequestLoadSpell()
+        {
+            DictionaryManager.hasSpellsLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetSpells());
+
+            while (!DictionaryManager.hasSpellsLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
         }
 
         public static IEnumerator RequestLoadClasses()

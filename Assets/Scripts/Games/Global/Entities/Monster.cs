@@ -8,6 +8,14 @@ using Utils;
 
 namespace Games.Global.Entities
 {
+    public enum MonsterType
+    {
+        Tank,
+        Support,
+        Distance,
+        Cac
+    }
+
     [Serializable]
     public class Monster: Entity
     {
@@ -25,6 +33,8 @@ namespace Games.Global.Entities
         public List<SpellList> spellsName { get; set; }
 
         public Texture2D sprite { get; set; }
+        
+        public MonsterType monsterType { get; set; }
 
         public void SetConstraint(TypeWeapon nconstraint)
         {
@@ -104,19 +114,19 @@ namespace Games.Global.Entities
 
         public void InitSpells()
         {
-            foreach (SpellList spellName in spellsName)
-            {
-                Spell spell = SpellController.LoadSpellByName(spellName.name);
-
-                if (spell != null)
-                {
-                    spells.Add(spell);
-                }
-                else
-                {
-//                    Debug.Log("Doesnt find spell " + spellName.name);
-                }
-            }
+//             foreach (SpellList spellName in spellsName)
+//             {
+//                 Spell spell = DataObject.SpellList.GetSpellByName(spellName.);
+//
+//                 if (spell != null)
+//                 {
+//                     spells.Add(spell);
+//                 }
+//                 else
+//                 {
+// //                    Debug.Log("Doesnt find spell " + spellName.name);
+//                 }
+//             }
         }
 
         public void InitKey(GameObject keyObject)

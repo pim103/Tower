@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using FullSerializer;
 using Games.Global;
 using Games.Global.Armors;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Networking;
 using Unity.EditorCoroutines.Editor;
@@ -162,6 +167,7 @@ namespace ContentEditor.UtilsEditor
             WWWForm form = new WWWForm();
             form.AddField("id", monster.id);
             form.AddField("typeWeapon", (int) monster.GetConstraint());
+            form.AddField("monsterType", (int) monster.monsterType);
             form.AddField("name", monster.mobName);
             form.AddField("hp", (int) monster.hp);
             form.AddField("def", monster.def);
@@ -233,6 +239,82 @@ namespace ContentEditor.UtilsEditor
 
             void Lambda() => ContentGenerationEditor.RequestLoadMonster();
             ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
+        public static void SaveSpell(Dictionary<string, Spell> spellsToExport)
+        {
+            
+            foreach (KeyValuePair<string, Spell> spellData in spellsToExport)
+            {
+                Spell currentSpell = spellData.Value;
+                string pathNewSpell = Application.dataPath + "/Data/SpellsJson/" + spellData.Key + ".json";
+                
+                fsSerializer serializer = new fsSerializer();
+                serializer.TrySerialize(currentSpell.GetType(), currentSpell, out fsData data);
+                File.WriteAllText(pathNewSpell, fsJsonPrinter.CompressedJson(data));
+
+                DeleteFtpFile(pathNewSpell);
+                UploadFtpFile(pathNewSpell);
+                
+                WWWForm form = new WWWForm();
+                form.AddField("id", currentSpell.id);
+                form.AddField("name", spellData.Key);
+                form.AddField("gameToken", NetworkingController.GameToken);
+
+                UnityWebRequest www;
+                if (currentSpell.id == -1)
+                {
+                    www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/skill/add", form);
+                }
+                else
+                {
+                    www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/skill/update", form);
+                }
+
+                ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www));
+            }
+        }
+
+        private static void UploadFtpFile(string filename)
+        {
+            FtpWebRequest request;
+            
+            request = WebRequest.Create(new Uri($@"ftp://{"heolia.eu"}/{"www/data/spell"}/{Path.GetFileName(filename)}")) as FtpWebRequest;
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.UseBinary = true;
+            request.UsePassive = true;
+            request.KeepAlive = true;
+            request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");    
+
+            using (FileStream fs = File.OpenRead(filename))
+            {
+                byte[] buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, buffer.Length);
+                fs.Close();
+
+                Stream stream = request.GetRequestStream();
+                stream.Write(buffer, 0, buffer.Length);
+                stream.Flush();
+                stream.Close();
+            }
+        }
+
+        private static bool DeleteFtpFile(string filename){
+            FtpWebRequest request;
+
+            request = WebRequest.Create(new Uri($@"ftp://{"heolia.eu"}/{"www/data/spell"}/{Path.GetFileName(filename)}")) as FtpWebRequest;
+            request.Method = WebRequestMethods.Ftp.DeleteFile;
+            request.UseBinary = true;
+            request.UsePassive = true;
+            request.KeepAlive = true;
+            request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");
+
+            if (request.GetResponse() is FtpWebResponse response)
+            {
+                return response.StatusCode == FtpStatusCode.CommandOK;
+            }
+
+            return false;
         }
     }
 }

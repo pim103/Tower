@@ -86,17 +86,17 @@ namespace ContentEditor.SpellEditorComposant
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("Paramètre holding spell", GUILayout.Height(20)))
+                if (spellComponentEdited.TypeSpellComponent != TypeSpellComponent.Summon && GUILayout.Button("Paramètre holding spell", GUILayout.Height(20)))
                 {
                     spellComponentDurationType = SpellComponentDurationType.HOLDING;
                 }
 
-                if (GUILayout.Button("Paramètre de la durée", GUILayout.Height(20)))
+                if (spellComponentEdited.TypeSpellComponent == TypeSpellComponent.Summon || GUILayout.Button("Paramètre de la durée", GUILayout.Height(20)))
                 {
                     spellComponentDurationType = SpellComponentDurationType.DURATION;
                 }
 
-                if (GUILayout.Button("Paramètre des charges", GUILayout.Height(20)))
+                if (spellComponentEdited.TypeSpellComponent != TypeSpellComponent.Summon && GUILayout.Button("Paramètre des charges", GUILayout.Height(20)))
                 {
                     spellComponentDurationType = SpellComponentDurationType.CHARGES;
                 }
@@ -187,6 +187,8 @@ namespace ContentEditor.SpellEditorComposant
             GUI.color = defaultColor;
         }
 
+        private static GameObject summonSpellObject;
+        
         private static void DisplaySpecificComponentOptions(SpellComponent spellComponentEdited)
         {
             switch (spellComponentEdited.TypeSpellComponent)
@@ -260,6 +262,46 @@ namespace ContentEditor.SpellEditorComposant
                 case TypeSpellComponent.BasicAttack:
                     break;
                 case TypeSpellComponent.Summon:
+                    if (!(spellComponentEdited is SummonSpell currentSummonSpellComponent))
+                    {
+                        return;
+                    }
+
+                    if (!summonSpellObject && !String.IsNullOrEmpty(currentSummonSpellComponent.pathObjectToInstantiate))
+                    {
+                        summonSpellObject =
+                            (GameObject) Resources.Load(currentSummonSpellComponent.pathObjectToInstantiate);
+                    }
+
+                    EditorGUI.BeginChangeCheck();
+                    summonSpellObject = (GameObject) EditorGUILayout.ObjectField("Summon object", summonSpellObject, typeof(GameObject));
+
+                    if (EditorGUI.EndChangeCheck() && summonSpellObject)
+                    {
+                        currentSummonSpellComponent.pathObjectToInstantiate =
+                            UtilEditor.GetObjectPathInRessourceFolder(summonSpellObject);
+                    }
+                    
+                    currentSummonSpellComponent.hp =
+                        EditorGUILayout.FloatField("Hp", currentSummonSpellComponent.hp);
+                    currentSummonSpellComponent.attackDamage =
+                        EditorGUILayout.FloatField("Attack Damage", currentSummonSpellComponent.attackDamage);
+                    currentSummonSpellComponent.attackSpeed =
+                        EditorGUILayout.FloatField("Attack Speed", currentSummonSpellComponent.attackSpeed);
+                    currentSummonSpellComponent.moveSpeed =
+                        EditorGUILayout.FloatField("Move Speed", currentSummonSpellComponent.moveSpeed);
+
+                    currentSummonSpellComponent.canMove =
+                        EditorGUILayout.Toggle("Can Move", currentSummonSpellComponent.canMove);
+                    currentSummonSpellComponent.isTargetable =
+                        EditorGUILayout.Toggle("Is Targetable", currentSummonSpellComponent.isTargetable);
+                    currentSummonSpellComponent.isUnique =
+                        EditorGUILayout.Toggle("Is Unique", currentSummonSpellComponent.isUnique);
+                    currentSummonSpellComponent.nbUseSpells =
+                        EditorGUILayout.IntField("Nb use spell", currentSummonSpellComponent.nbUseSpells);
+                    currentSummonSpellComponent.summonNumber =
+                        EditorGUILayout.IntField("Nb summon", currentSummonSpellComponent.summonNumber);
+
                     break;
             }
         }

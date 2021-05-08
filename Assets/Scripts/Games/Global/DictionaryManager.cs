@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using Networking;
@@ -14,6 +15,7 @@ namespace Games.Global
 {
     public class DictionaryManager: MonoBehaviour
     {
+        public static bool hasSpellsLoad;
         public static bool hasWeaponsLoad;
         public static bool hasMonstersLoad;
         public static bool hasClassesLoad;
@@ -41,6 +43,13 @@ namespace Games.Global
 
         public static IEnumerator InitializeDataObject()
         {
+            instance.StartCoroutine(DatabaseManager.GetSpells());
+
+            while (!hasSpellsLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            
             instance.StartCoroutine(DatabaseManager.GetWeapons());
             instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
             instance.StartCoroutine(DatabaseManager.GetClasses());
@@ -70,6 +79,7 @@ namespace Games.Global
         public static EquipmentList EquipmentList;
         public static CardList CardList;
         public static ClassesList ClassesList;
+        public static SpellList SpellList;
         
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
