@@ -28,6 +28,7 @@ namespace ContentEditor
         public static Texture2D spellSprite;
         public static Texture2D monsterSprite;
         public static Texture2D armorSprite;
+        public static Texture2D categorySprite;
         public static Texture2D playerSprite;
         public static Texture2D spellGeneratorSprite;
 
@@ -55,6 +56,7 @@ namespace ContentEditor
             playerSprite = Resources.Load<Texture2D>("Editor/Warrior");
             monsterSprite = Resources.Load<Texture2D>("Editor/monster");
             armorSprite = Resources.Load<Texture2D>("Editor/armor");
+            categorySprite = armorSprite;
         }
     }
     
@@ -65,6 +67,7 @@ namespace ContentEditor
         {
             WEAPON,
             ARMOR,
+            CATEGORY,
             SPELL,
             MONSTER,
             PLAYER,
@@ -109,6 +112,7 @@ namespace ContentEditor
         public static PlayerEditor playerEditor = new PlayerEditor();
         public static SpellEditor spellEditor = new SpellEditor();
         public static SpellGeneratorEditor spellGenerator = new SpellGeneratorEditor();
+        public static CategoryEditor categoryEditor = new CategoryEditor();
         public static IEditorInterface currentEditor;
 
         public static ContentGenerationEditor instance;
@@ -133,6 +137,11 @@ namespace ContentEditor
             {
                 currentCategory = Category.ARMOR;
                 currentEditor = armorEditor;
+            }
+            else if (GUILayout.Button(EditorConstant.categorySprite, GUILayout.Width(75), GUILayout.Height(75)))
+            {
+                currentCategory = Category.CATEGORY;
+                currentEditor = categoryEditor;
             }
             else if (GUILayout.Button(EditorConstant.monsterSprite, GUILayout.Width(75), GUILayout.Height(75)))
             {

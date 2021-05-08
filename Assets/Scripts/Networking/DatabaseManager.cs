@@ -91,7 +91,27 @@ namespace Networking
             }
             else
             {
-                Debug.Log("Can't get Cards decks...");
+                Debug.Log("Can't get classes...");
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+
+        public static IEnumerator GetCategoryWeapon()
+        {
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/category/list.php");
+            www.certificateHandler = new AcceptCertificate();
+            
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            
+            if (www.responseCode == 200)
+            {
+                DataObject.CategoryWeaponList = new CategoryWeaponList(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get categories...");
                 Debug.Log(www.responseCode);
                 Debug.Log(www.downloadHandler.text);
             }

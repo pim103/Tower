@@ -1,4 +1,6 @@
-﻿namespace Games.Players
+﻿using Games.Global.Spells;
+
+namespace Games.Players
 {   
     public class Classes
     {
@@ -12,6 +14,6 @@
         public int attSpeed { get; set; }
         public int ressource { get; set; }
 
-        public string defenseSpell { get; set; }
+        public Spell defenseSpell { get; set; }
     }
 }

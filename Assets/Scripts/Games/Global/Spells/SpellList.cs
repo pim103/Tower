@@ -37,7 +37,7 @@ namespace Games.Global.Spells
         public Spell GetSpellByName(string name)
         {
             SpellInfo spellInfo;
-            if ((spellInfo = SpellInfos.Find(info => info.spellName == name)) != null)
+            if (String.IsNullOrEmpty(name) || (spellInfo = SpellInfos.Find(info => info.spellName == name)) == null)
             {
                 return null;
             }

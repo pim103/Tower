@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using FullSerializer;
 using Games.Global;
+using Games.Global.Spells;
+using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
 
 namespace Games.Players
 {
+    public class ClassesWeaponSpell
+    {
+        public Classes classes;
+        public CategoryWeapon categoryWeapon;
+        public Spell spell1;
+        public Spell spell2;
+        public Spell spell3;
+    }
+    
     public class ClassesList
     {
         public List<Classes> classes;
@@ -42,7 +53,6 @@ namespace Games.Players
                 Debug.Log("Error");
                 Debug.Log(classesJson);
                 Debug.Log(e.Message);
-                Debug.Log(e.Data);
             }
         }
 

@@ -17,6 +17,8 @@ namespace ContentEditor
         public bool createNewWeapon;
         public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
         public ContentGenerationEditor contentGenerationEditor;
+        
+        private CreateOrSelectComponent<CategoryWeapon> categoryWeaponSelector;
 
         private Weapon newWeapon;
 
@@ -139,7 +141,15 @@ namespace ContentEditor
             weapon.damage = EditorGUILayout.IntField("Damage", weapon.damage);
             weapon.attSpeed = EditorGUILayout.FloatField("Attack speed", weapon.attSpeed);
             weapon.type = (TypeWeapon) EditorGUILayout.EnumPopup("Type", weapon.type);
-            weapon.category = (CategoryWeapon) EditorGUILayout.EnumPopup("Category", weapon.category);
+
+            if (DictionaryManager.hasCategoriesLoad)
+            {
+                categoryWeaponSelector ??= new CreateOrSelectComponent<CategoryWeapon>(DataObject.CategoryWeaponList.categories,
+                        weapon.category, "Categorie", null);
+
+                weapon.category = categoryWeaponSelector.DisplayOptions();
+            }
+
             weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);
             weapon.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", weapon.rarity);
             weapon.lootRate = EditorGUILayout.IntField("Loot Rate", weapon.lootRate);

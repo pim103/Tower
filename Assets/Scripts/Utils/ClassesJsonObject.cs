@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global;
 using Games.Players;
 
 namespace Utils
@@ -28,7 +29,7 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 attSpeed = Int32.Parse(attSpeed),
                 ressource = Int32.Parse(ressource),
-                defenseSpell = defenseSpell
+                defenseSpell = DataObject.SpellList.GetSpellByName(defenseSpell)
             };
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ContentEditor.UtilsEditor;
 using Games.Global;
-using Games.Global.Weapons;
+using Games.Global.Spells;
 using Games.Players;
 using UnityEditor;
 using UnityEngine;
@@ -15,6 +15,8 @@ namespace ContentEditor
         public Dictionary<int, Classes> ClassesMap = new Dictionary<int, Classes>();
 
         private Classes currentClasses;
+
+        private Dictionary<Classes, CreateOrSelectComponent<Spell>> defensesSpellSelector = new Dictionary<Classes, CreateOrSelectComponent<Spell>>();
 
         public void DisplayHeaderContent()
         {
@@ -35,7 +37,29 @@ namespace ContentEditor
 
         public void DisplayFooterContent()
         {
+            if (!createNewClasses && GUILayout.Button("Créer une nouvelle classe"))
+            {
+                createNewClasses = true;
+            }
             
+            if (createNewClasses && GUILayout.Button("Annuler"))
+            {
+                createNewClasses = false;
+                currentClasses = null;
+            }
+
+            if (GUILayout.Button("Sauvegarder les classes"))
+            {
+                if (currentClasses != null)
+                {
+                    PrepareSaveRequest.SaveClasses(currentClasses, true);
+                }
+
+                foreach (KeyValuePair<int, Classes> classes in ClassesMap)
+                {
+                    PrepareSaveRequest.SaveClasses(classes.Value, false);
+                }
+            }
         }
 
         private void DisplayNewClassesForm()
@@ -76,12 +100,6 @@ namespace ContentEditor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             GUI.color = defaultColor;
 
-            // GUILayout.BeginHorizontal();
-            // GUILayout.FlexibleSpace();
-            // GUILayout.Button(weapon.sprite, GUILayout.Width(75), GUILayout.Height(75));
-            // GUILayout.FlexibleSpace();
-            // GUILayout.EndHorizontal();
-
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.IntField("ID", classes.id);
             EditorGUI.EndDisabledGroup();
@@ -94,15 +112,15 @@ namespace ContentEditor
             classes.ressource = EditorGUILayout.IntField("Ressource", classes.ressource);
             classes.speed = EditorGUILayout.IntField("Speed", classes.speed);
             
-            EditorGUI.BeginDisabledGroup(true);
-            classes.defenseSpell = EditorGUILayout.TextField("Defense spell (soon)", classes.defenseSpell);
-            EditorGUI.EndDisabledGroup();
-            
-            // EditorGUILayout.LabelField("Model");
-            // weapon.model = (GameObject)EditorGUILayout.ObjectField(weapon.model, typeof(GameObject), false);
+            if (DictionaryManager.hasSpellsLoad)
+            {
+                if (!defensesSpellSelector.ContainsKey(classes))
+                {
+                    defensesSpellSelector.Add(classes, new CreateOrSelectComponent<Spell>(DataObject.SpellList.SpellInfos.ConvertAll(s => s.spell), classes.defenseSpell, "Defense spell", null));
+                }
 
-            // EditorGUILayout.LabelField("Sprite");
-            // weapon.sprite = (Texture2D)EditorGUILayout.ObjectField(weapon.sprite, typeof(Texture2D), false);
+                classes.defenseSpell = defensesSpellSelector[classes].DisplayOptions();
+            }
 
             if (GUILayout.Button("Play Classes") && UtilEditor.IsTestScene())
             {
@@ -114,7 +132,7 @@ namespace ContentEditor
                 }
                 else
                 {
-                    player.InitClasses(currentClasses);
+                    player.InitClasses(classes);
                 }
             }
 

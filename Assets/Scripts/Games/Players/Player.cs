@@ -75,7 +75,7 @@ namespace Games.Players
                 initialAttSpeed = mainClass.attSpeed;
                 initialRessource1 = mainClass.ressource;
 
-                basicDefense = DataObject.SpellList.GetSpellByName(mainClass.defenseSpell);
+                basicDefense = mainClass.defenseSpell;
             }
 
             initialMagicalDef = magicalDef;

@@ -8,6 +8,7 @@ using Games.Global.Armors;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Weapons;
+using Games.Players;
 using Networking;
 using Unity.EditorCoroutines.Editor;
 using UnityEngine;
@@ -98,7 +99,7 @@ namespace ContentEditor.UtilsEditor
             WWWForm form = new WWWForm();
             form.AddField("id", weapon.id);
             form.AddField("name", weapon.equipmentName);
-            form.AddField("category", (int)weapon.category);
+            form.AddField("category", weapon.category.id);
             form.AddField("type", (int)weapon.type);
             form.AddField("rarity", (int)weapon.rarity);
             form.AddField("lootRate", weapon.lootRate);
@@ -238,6 +239,46 @@ namespace ContentEditor.UtilsEditor
             }
 
             void Lambda() => ContentGenerationEditor.RequestLoadMonster();
+            ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
+        public static void SaveClasses(Classes classes, bool isNew)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("id", classes.id);
+            form.AddField("name", classes.name);
+            form.AddField("hp", classes.hp);
+            form.AddField("def", classes.def);
+            form.AddField("att", classes.att);
+            form.AddField("speed", classes.speed);
+            form.AddField("attSpeed", classes.attSpeed);
+            form.AddField("ressource", classes.ressource);
+            form.AddField("spellDefense", classes.defenseSpell?.id ?? -1);
+            form.AddField("gameToken", NetworkingController.GameToken);
+
+            var www = isNew ? 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/classes/add.php", form) : 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/classes/update.php", form);
+
+            void Lambda() => ContentGenerationEditor.RequestLoadClasses();
+
+            ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
+        public static void SaveCategoryWeapon(CategoryWeapon category, bool isNew)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("id", category.id);
+            form.AddField("name", category.name);
+            form.AddField("spellAttack", category.spellAttack?.id ?? -1);
+            form.AddField("gameToken", NetworkingController.GameToken);
+
+            var www = isNew ? 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/category/add.php", form) : 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/category/update.php", form);
+
+            void Lambda() => ContentGenerationEditor.RequestLoadClasses();
+
             ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
         }
 

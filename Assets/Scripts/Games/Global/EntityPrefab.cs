@@ -147,7 +147,7 @@ namespace Games.Global
             Transform position = positionInRightHand;
             Transform angle = angleWithOneRight;
 
-            if (weapon.category == CategoryWeapon.BOW)
+            if (weapon.category.name == "BOW")
             {
                 hand = leftHand;
                 position = positionInLeftHand;

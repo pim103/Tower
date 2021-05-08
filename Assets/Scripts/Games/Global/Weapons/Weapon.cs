@@ -17,26 +17,6 @@ namespace Games.Global.Weapons
         Distance,
         Cac
     }
-    
-    public enum CategoryWeapon
-    {
-        SHORT_SWORD,
-        LONG_SWORD,
-        SPEAR,
-        AXE,
-        TWO_HAND_AXE,
-        HAMMER,
-        HALBERD,
-        MACE,
-        BOW,
-        STAFF,
-        DAGGER,
-        TRIDENT,
-        RIFLE,
-        CROSSBOW,
-        SLING,
-        HANDGUN
-    }
 
     public class Weapon : Equipement
     {
@@ -49,12 +29,6 @@ namespace Games.Global.Weapons
         public float attSpeed { get; set; }
 
         public string animationToPlay { get; set; }
-        public string spellOfBasicAttack { get; set; }
-
-        public List<string> warriorSpells { get; set; }
-        public List<string> mageSpells { get; set; }
-        public List<string> rogueSpells { get; set; }
-        public List<string> rangerSpells { get; set; }
 
         public Spell basicAttack { get; set; }
 
@@ -77,24 +51,18 @@ namespace Games.Global.Weapons
             }
         }
 
-        public virtual void FixAngleAttack(bool isFirstIteration, Entity wielder)
-        {
-            
-        }
-
         public void InitWeapon()
         {
             InitBasicAttack();
         }
 
-        public void InitBasicAttack()
+        private void InitBasicAttack()
         {
-            Spell spell = DataObject.SpellList.GetSpellByName(spellOfBasicAttack);
             Entity wielder = weaponPrefab.GetWielder();
             
-            if (spell != null)
+            if (category.spellAttack != null)
             {
-                wielder.basicAttack = spell;
+                wielder.basicAttack = category.spellAttack;
             }
         }
 

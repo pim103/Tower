@@ -19,6 +19,7 @@ namespace Games.Global
         public static bool hasWeaponsLoad;
         public static bool hasMonstersLoad;
         public static bool hasClassesLoad;
+        public static bool hasCategoriesLoad;
         public static bool hasCardsLoad;
         public static bool wasConnected;
 
@@ -50,10 +51,15 @@ namespace Games.Global
                 yield return new WaitForSeconds(0.5f);
             }
             
-            instance.StartCoroutine(DatabaseManager.GetWeapons());
-            instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
             instance.StartCoroutine(DatabaseManager.GetClasses());
+            instance.StartCoroutine(DatabaseManager.GetCategoryWeapon());
+            instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
 
+            while (!hasCategoriesLoad)
+            {
+                instance.StartCoroutine(DatabaseManager.GetWeapons());
+            }
+            
             while (!hasMonstersLoad || !hasWeaponsLoad)
             {
                 yield return new WaitForSeconds(0.5f);
@@ -80,6 +86,7 @@ namespace Games.Global
         public static CardList CardList;
         public static ClassesList ClassesList;
         public static SpellList SpellList;
+        public static CategoryWeaponList CategoryWeaponList;
         
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();
