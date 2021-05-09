@@ -107,8 +107,27 @@ namespace Networking
             
             if (www.responseCode == 200)
             {
-                Debug.Log(www.downloadHandler.text);
                 DataObject.CategoryWeaponList = new CategoryWeaponList(www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Can't get categories...");
+                Debug.Log(www.responseCode);
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+
+        public static IEnumerator GetClassesCategoryWeapon()
+        {
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/classesCategory/list");
+            www.certificateHandler = new AcceptCertificate();
+
+            yield return www.SendWebRequest();
+            yield return new WaitForSeconds(0.5f);
+            
+            if (www.responseCode == 200)
+            {
+                DataObject.ClassesList.InitClassesCategorySpells(www.downloadHandler.text);
             }
             else
             {

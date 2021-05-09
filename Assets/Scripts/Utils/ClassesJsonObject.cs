@@ -36,6 +36,34 @@ namespace Utils
     
     public class ClassesListJsonObject
     {
-        public List<ClassesJsonObject> classes;
+        public List<ClassesJsonObject> classes { get; set; }
+    }
+    
+    public class ClassesWeaponSpellJson
+    {
+        public int id { get; set; }
+        public int classes { get; set; }
+        public int categoryWeapon { get; set; }
+        public int spell1 { get; set; }
+        public int spell2 { get; set; }
+        public int spell3 { get; set; }
+
+        public ClassesWeaponSpell Convert()
+        {
+            return new ClassesWeaponSpell
+            {
+                id = id,
+                classes = DataObject.ClassesList.GetClassesFromId(classes),
+                categoryWeapon = DataObject.CategoryWeaponList.GetCategoryFromId(categoryWeapon),
+                spell1 = DataObject.SpellList.GetSpellById(spell1),
+                spell2 = DataObject.SpellList.GetSpellById(spell2),
+                spell3 = DataObject.SpellList.GetSpellById(spell3)
+            };
+        }
+    }
+
+    public class ClassesWeaponSpellJsonList
+    {
+        public List<ClassesWeaponSpellJson> classesCategory { get; set; }
     }
 }

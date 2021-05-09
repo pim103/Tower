@@ -257,8 +257,28 @@ namespace ContentEditor.UtilsEditor
             form.AddField("gameToken", NetworkingController.GameToken);
 
             var www = isNew ? 
-                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/classes/add.php", form) : 
-                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/classes/update.php", form);
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/classes/add", form) : 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/classes/update", form);
+
+            void Lambda() => ContentGenerationEditor.RequestLoadClasses();
+
+            ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
+        public static void SaveSpellForClasses(ClassesWeaponSpell classesWeaponSpell, bool isNew)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("id", classesWeaponSpell.id);
+            form.AddField("categoryWeapon", classesWeaponSpell.categoryWeapon.id);
+            form.AddField("classes", classesWeaponSpell.classes.id);
+            form.AddField("spell1", classesWeaponSpell.spell1?.id ?? -1);
+            form.AddField("spell2", classesWeaponSpell.spell2?.id ?? -1);
+            form.AddField("spell3", classesWeaponSpell.spell3?.id ?? -1);
+            form.AddField("gameToken", NetworkingController.GameToken);
+
+            var www = isNew ? 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/classesCategory/add", form) : 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/classesCategory/update", form);
 
             void Lambda() => ContentGenerationEditor.RequestLoadClasses();
 

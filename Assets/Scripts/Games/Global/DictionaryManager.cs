@@ -57,8 +57,17 @@ namespace Games.Global
 
             while (!hasCategoriesLoad)
             {
-                instance.StartCoroutine(DatabaseManager.GetWeapons());
+                yield return new WaitForSeconds(0.5f);
             }
+            
+            instance.StartCoroutine(DatabaseManager.GetWeapons());
+
+            while (!hasClassesLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            instance.StartCoroutine(DatabaseManager.GetClassesCategoryWeapon());
             
             while (!hasMonstersLoad || !hasWeaponsLoad)
             {

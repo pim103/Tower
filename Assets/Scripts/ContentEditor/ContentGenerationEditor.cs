@@ -255,22 +255,35 @@ namespace ContentEditor
 
         void LoadData()
         {
-            this.StartCoroutine(RequestLoadSpell());
-            this.StartCoroutine(RequestLoadCategory());
-            this.StartCoroutine(RequestLoadClasses());
-            this.StartCoroutine(RequestLoadEquipment());
-            this.StartCoroutine(RequestLoadMonster());
+            this.StartCoroutine(LoadDataAsync());
         }
 
-        public static IEnumerator RequestLoadSpell()
+        private IEnumerator LoadDataAsync()
         {
-            DictionaryManager.hasSpellsLoad = false;
-            instance.StartCoroutine(DatabaseManager.GetSpells());
+            RequestLoadSpell();
 
             while (!DictionaryManager.hasSpellsLoad)
             {
                 yield return new WaitForSeconds(0.5f);
             }
+
+            instance.StartCoroutine(RequestLoadClasses());
+            instance.StartCoroutine(RequestLoadCategory());
+            
+            while (!DictionaryManager.hasClassesLoad && !DictionaryManager.hasCategoriesLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            instance.StartCoroutine(RequestLoadClassesCategory());
+            instance.StartCoroutine(RequestLoadEquipment());
+            instance.StartCoroutine(RequestLoadMonster());
+        }
+
+        public static void RequestLoadSpell()
+        {
+            DictionaryManager.hasSpellsLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetSpells());
         }
 
         public static IEnumerator RequestLoadClasses()
@@ -295,6 +308,13 @@ namespace ContentEditor
             {
                 yield return new WaitForSeconds(0.5f);
             }
+        }
+
+        public static IEnumerator RequestLoadClassesCategory()
+        {
+            instance.StartCoroutine(DatabaseManager.GetClassesCategoryWeapon());
+
+            yield break;
         }
 
         public static IEnumerator RequestLoadEquipment()
