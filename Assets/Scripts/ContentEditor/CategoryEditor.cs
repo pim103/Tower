@@ -11,7 +11,7 @@ namespace ContentEditor
 {
     public class CategoryEditor : IEditorInterface
     {
-        public bool createNewClasses = false;
+        public bool createNewCategory = false;
 
         private CategoryWeapon currentCategory;
 
@@ -24,30 +24,30 @@ namespace ContentEditor
 
         public void DisplayBodyContent()
         {
-            if (createNewClasses)
+            if (createNewCategory)
             {
-                DisplayNewClassesForm();
+                DisplayNewCategoryForm();
             }
             else
             {
-                DisplayClassesFormList();
+                DisplayCategoryFormList();
             }
         }
 
         public void DisplayFooterContent()
         {
-            if (!createNewClasses && GUILayout.Button("Créer une nouvelle classe"))
+            if (!createNewCategory && GUILayout.Button("Créer une nouvelle catégorie"))
             {
-                createNewClasses = true;
+                createNewCategory = true;
             }
             
-            if (createNewClasses && GUILayout.Button("Annuler"))
+            if (createNewCategory && GUILayout.Button("Annuler"))
             {
-                createNewClasses = false;
+                createNewCategory = false;
                 currentCategory = null;
             }
 
-            if (GUILayout.Button("Sauvegarder les classes"))
+            if (GUILayout.Button("Sauvegarder les catégories"))
             {
                 if (currentCategory != null)
                 {
@@ -64,14 +64,14 @@ namespace ContentEditor
             
         }
 
-        private void DisplayNewClassesForm()
+        private void DisplayNewCategoryForm()
         {
             currentCategory ??= new CategoryWeapon();
             
             DisplayOneCategoryForm(currentCategory);
         }
 
-        private void DisplayClassesFormList()
+        private void DisplayCategoryFormList()
         {
             int offsetX = 5;
             int offsetY = 0;
@@ -115,9 +115,10 @@ namespace ContentEditor
             
             if (DictionaryManager.hasSpellsLoad)
             {
-                if (attackSpellSelectors.ContainsKey(categoryWeapon))
+                if (!attackSpellSelectors.ContainsKey(categoryWeapon))
                 {
-                    attackSpellSelectors.Add(categoryWeapon, new CreateOrSelectComponent<Spell>(DataObject.SpellList.SpellInfos.ConvertAll(s => s.spell), categoryWeapon.spellAttack, "Defense spell", null));
+                    attackSpellSelectors.Add(categoryWeapon, 
+                        new CreateOrSelectComponent<Spell>(DataObject.SpellList.SpellInfos.ConvertAll(s => s.spell), categoryWeapon.spellAttack, "Attack spell", null));
                 }
 
                 categoryWeapon.spellAttack = attackSpellSelectors[categoryWeapon].DisplayOptions();
