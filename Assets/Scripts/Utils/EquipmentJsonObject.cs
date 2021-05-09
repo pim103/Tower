@@ -104,7 +104,7 @@ namespace Utils
             {
                 id = Int32.Parse(id),
                 damage = Int32.Parse(damage),
-                category = DataObject.CategoryWeaponList?.GetCategoryFromId(Int32.Parse(category)),
+                category = DataObject.CategoryWeaponList?.GetCategoryFromId(category != null ? Int32.Parse(category) : -1),
                 type = (TypeWeapon) Int32.Parse(type),
                 rarity = (Rarity) Int32.Parse(rarity),
                 lootRate = Int32.Parse(lootRate),

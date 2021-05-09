@@ -46,22 +46,6 @@ namespace ContentEditor
                 createNewCategory = false;
                 currentCategory = null;
             }
-
-            if (GUILayout.Button("Sauvegarder les catégories"))
-            {
-                if (currentCategory != null)
-                {
-                    PrepareSaveRequest.SaveCategoryWeapon(currentCategory, true);
-                }
-
-                if (DataObject.CategoryWeaponList == null) return;
-
-                foreach (CategoryWeapon categoryWeapon in DataObject.CategoryWeaponList.categories)
-                {
-                    PrepareSaveRequest.SaveCategoryWeapon(categoryWeapon, false);
-                }
-            }
-            
         }
 
         private void DisplayNewCategoryForm()
@@ -123,6 +107,16 @@ namespace ContentEditor
 
                 categoryWeapon.spellAttack = attackSpellSelectors[categoryWeapon].DisplayOptions();
             }
+            
+            Color currentColor = GUI.color;
+            GUI.color = Color.green;
+
+            if (GUILayout.Button("Sauvegarder la catégorie"))
+            {
+                PrepareSaveRequest.SaveCategoryWeapon(categoryWeapon, createNewCategory);
+                createNewCategory = false;
+            }
+            GUI.color = currentColor;
 
             EditorGUILayout.EndVertical();
         }

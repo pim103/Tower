@@ -44,6 +44,13 @@ namespace Games.Global.Spells
 
             return Tools.Clone(spellInfo.spell);
         }
+
+        public Spell GetSpellById(int id)
+        {
+            SpellInfo spellInfo = SpellInfos.Find(info => info.id == id);
+
+            return spellInfo != null ? Tools.Clone(spellInfo.spell) : null;
+        }
         
         private void InitSpellDictionnary(string json)
         {

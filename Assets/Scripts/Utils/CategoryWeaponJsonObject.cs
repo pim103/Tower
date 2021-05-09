@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global;
 using Games.Global.Weapons;
 
@@ -8,7 +9,7 @@ namespace Utils
     {
         public int id { get; set; }
         public string name { get; set; }
-        public string spellAttack { get; set; }
+        public int spellAttack { get; set; }
 
         public CategoryWeapon ConvertToCategoryWeapon()
         {
@@ -16,7 +17,7 @@ namespace Utils
             {
                 id = id,
                 name = name,
-                spellAttack = DataObject.SpellList.GetSpellByName(spellAttack)
+                spellAttack = DataObject.SpellList.GetSpellById(spellAttack)
             };
         }
     }

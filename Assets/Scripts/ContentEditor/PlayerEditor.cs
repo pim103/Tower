@@ -47,19 +47,6 @@ namespace ContentEditor
                 createNewClasses = false;
                 currentClasses = null;
             }
-
-            if (GUILayout.Button("Sauvegarder les classes"))
-            {
-                if (currentClasses != null)
-                {
-                    PrepareSaveRequest.SaveClasses(currentClasses, true);
-                }
-
-                foreach (KeyValuePair<int, Classes> classes in ClassesMap)
-                {
-                    PrepareSaveRequest.SaveClasses(classes.Value, false);
-                }
-            }
         }
 
         private void DisplayNewClassesForm()
@@ -121,6 +108,16 @@ namespace ContentEditor
 
                 classes.defenseSpell = defensesSpellSelector[classes].DisplayOptions();
             }
+
+            Color currentColor = GUI.color;
+            GUI.color = Color.green;
+
+            if (GUILayout.Button("Sauvegarder la classe"))
+            {
+                PrepareSaveRequest.SaveClasses(classes, createNewClasses);
+                createNewClasses = false;
+            }
+            GUI.color = currentColor;
 
             if (GUILayout.Button("Play Classes") && UtilEditor.IsTestScene())
             {

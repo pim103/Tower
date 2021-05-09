@@ -274,8 +274,8 @@ namespace ContentEditor.UtilsEditor
             form.AddField("gameToken", NetworkingController.GameToken);
 
             var www = isNew ? 
-                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/category/add.php", form) : 
-                UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/category/update.php", form);
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/category/add", form) : 
+                UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/category/update", form);
 
             void Lambda() => ContentGenerationEditor.RequestLoadClasses();
 

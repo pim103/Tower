@@ -256,6 +256,7 @@ namespace ContentEditor
         void LoadData()
         {
             this.StartCoroutine(RequestLoadSpell());
+            this.StartCoroutine(RequestLoadCategory());
             this.StartCoroutine(RequestLoadClasses());
             this.StartCoroutine(RequestLoadEquipment());
             this.StartCoroutine(RequestLoadMonster());
@@ -283,6 +284,17 @@ namespace ContentEditor
             }
 
             playerEditor.CloneOriginalClasses();
+        }
+        
+        public static IEnumerator RequestLoadCategory()
+        {
+            DictionaryManager.hasCategoriesLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetCategoryWeapon());
+
+            while (!DictionaryManager.hasCategoriesLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
         }
 
         public static IEnumerator RequestLoadEquipment()

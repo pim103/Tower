@@ -39,7 +39,7 @@ namespace Games.Global.Weapons
                 {
                     categories.Add(categoryWeaponJsonObject.ConvertToCategoryWeapon());
                 }
-                
+
                 DictionaryManager.hasCategoriesLoad = true;
             }
             catch (Exception e)

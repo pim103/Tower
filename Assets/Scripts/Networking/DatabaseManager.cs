@@ -99,7 +99,7 @@ namespace Networking
 
         public static IEnumerator GetCategoryWeapon()
         {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/category/list.php");
+            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/category/list");
             www.certificateHandler = new AcceptCertificate();
             
             yield return www.SendWebRequest();
@@ -107,6 +107,7 @@ namespace Networking
             
             if (www.responseCode == 200)
             {
+                Debug.Log(www.downloadHandler.text);
                 DataObject.CategoryWeaponList = new CategoryWeaponList(www.downloadHandler.text);
             }
             else
@@ -199,7 +200,7 @@ namespace Networking
             www.certificateHandler = new AcceptCertificate();
             yield return www.SendWebRequest();
             yield return new WaitForSeconds(0.5f);
-            
+
             if (www.responseCode == 201)
             {
                 successEndCallback?.Invoke();
