@@ -270,7 +270,7 @@ namespace ContentEditor
             instance.StartCoroutine(RequestLoadClasses());
             instance.StartCoroutine(RequestLoadCategory());
             
-            while (!DictionaryManager.hasClassesLoad && !DictionaryManager.hasCategoriesLoad)
+            while (!DictionaryManager.hasClassesLoad || !DictionaryManager.hasCategoriesLoad)
             {
                 yield return new WaitForSeconds(0.5f);
             }

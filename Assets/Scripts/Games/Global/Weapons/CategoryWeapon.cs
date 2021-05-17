@@ -57,5 +57,10 @@ namespace Games.Global.Weapons
         public int id { get; set; }
         public string name { get; set; }
         public Spell spellAttack { get; set; }
+        
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
