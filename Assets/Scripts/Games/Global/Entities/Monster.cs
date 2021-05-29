@@ -38,6 +38,13 @@ namespace Games.Global.Entities
         {
             constraint = nconstraint;
         }
+        
+        
+        public bool IsFacingProjectile()
+        {
+            // TODO :  Implementing Projectile Handler (look hard)
+            return false;
+        }
 
         public TypeWeapon GetConstraint()
         {
