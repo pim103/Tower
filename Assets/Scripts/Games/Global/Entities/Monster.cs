@@ -30,8 +30,6 @@ namespace Games.Global.Entities
 
         private MonsterPrefab monsterPrefab;
 
-        public List<SpellList> spellsName { get; set; }
-
         public Texture2D sprite { get; set; }
         
         public MonsterType monsterType { get; set; }

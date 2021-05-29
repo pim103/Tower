@@ -5,6 +5,7 @@ using ContentEditor.UtilsEditor;
 using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,8 @@ namespace ContentEditor
     {
         MONSTER,
         GROUP,
-        MONSTER_IN_GROUP
+        MONSTER_IN_GROUP,
+        EDIT_SPELL
     }
 
     public enum TreatmentInDatabase
@@ -44,6 +46,7 @@ namespace ContentEditor
         private MonsterEditorCategory monsterEditorCategory = MonsterEditorCategory.MONSTER;
 
         private Monster newMonster;
+        private Monster currentMonster;
         private GroupsMonster newGroup;
         private GroupsMonster currentGroupMonsterEditing;
         private MonstersInGroup monstersInGroup;
@@ -53,6 +56,9 @@ namespace ContentEditor
 
         private List<string> weaponChoice = new List<string>();
         private List<int> weaponChoiceIds = new List<int>();
+        
+        private Dictionary<Spell, CreateOrSelectComponent<Spell>> spellSelectors = new Dictionary<Spell, CreateOrSelectComponent<Spell>>();
+        private CreateOrSelectComponent<Spell> newSelector;
 
         public void DisplayHeaderContent()
         {
@@ -102,6 +108,9 @@ namespace ContentEditor
                 else if (monsterEditorCategory == MonsterEditorCategory.MONSTER_IN_GROUP)
                 {
                     DisplayMonsterInGroupEditor();
+                } else if (monsterEditorCategory == MonsterEditorCategory.EDIT_SPELL)
+                {
+                    DisplaySpellForMonster();
                 }
             }
         }
@@ -195,8 +204,16 @@ namespace ContentEditor
             }
 
             EditorGUILayout.LabelField("Sprite");
-
             monster.sprite = (Texture2D)EditorGUILayout.ObjectField(monster.sprite, typeof(Texture2D), false);
+
+            if (!isCreatingNewMonster && GUILayout.Button("Editer les spells"))
+            {
+                currentMonster = monster;
+                monsterEditorCategory = MonsterEditorCategory.EDIT_SPELL;
+                
+                spellSelectors.Clear();
+                newSelector = null;
+            }
 
             if (GUILayout.Button("Instantiate monster") && UtilEditor.IsTestScene())
             {
@@ -390,6 +407,78 @@ namespace ContentEditor
             EditorGUILayout.EndHorizontal();
         }
 
+        private void DisplaySpellForMonster()
+        {
+            GUILayout.BeginHorizontal();
+            int loop = 0;
+            List<Spell> existingSpell = DataObject.SpellList.SpellInfos.ConvertAll(s => s.spell);
+
+            foreach (Spell spell in currentMonster.spells)
+            {
+                if (!spellSelectors.ContainsKey(spell))
+                {
+                    spellSelectors.Add(spell, new CreateOrSelectComponent<Spell>(existingSpell, spell, "Spell", null));
+                }
+            }
+
+            foreach (KeyValuePair<Spell, CreateOrSelectComponent<Spell>> selector in spellSelectors)
+            {
+                Spell currentSpell = selector.Value.DisplayOptions();
+
+                GUILayout.BeginVertical();
+                Color defaultC = GUI.color;
+                GUI.color = Color.green;
+                if (GUILayout.Button("Save Spell"))
+                {
+                    PrepareSaveRequest.SaveSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUI.color = Color.red;
+                if (GUILayout.Button("Delete Spell"))
+                {
+                    PrepareSaveRequest.DeleteSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUILayout.EndVertical();
+
+                ++loop;
+                if (loop % 6 == 0)
+                {
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.BeginHorizontal();
+                }
+            }
+
+            if (newSelector != null)
+            {
+                Spell currentSpell = newSelector.DisplayOptions();
+
+                GUILayout.BeginVertical();
+                Color defaultC = GUI.color;
+                GUI.color = Color.green;
+                if (GUILayout.Button("Save Spell"))
+                {
+                    spellSelectors.Add(currentSpell, newSelector);
+                    PrepareSaveRequest.SaveSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUI.color = Color.red;
+                if (GUILayout.Button("Delete Spell"))
+                {
+                    newSelector = null;
+                }
+                GUI.color = defaultC;
+                GUILayout.EndVertical();
+            }
+            
+            EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("Ajouter un spell"))
+            {
+                newSelector = new CreateOrSelectComponent<Spell>(existingSpell, null, "Spell", null);
+            }
+        }
+
         private void CreateChoiceMonsterList()
         {
             monsterChoice.Clear();
@@ -411,13 +500,13 @@ namespace ContentEditor
             {
                 return;
             }
-            
+
             weaponChoice.Clear();
             weaponChoiceIds.Clear();
-            
+
             weaponChoice.Add("Nothing");
             weaponChoiceIds.Add(-1);
-            
+
             DataObject.EquipmentList.weapons.ForEach(weapon =>
             {
                 weaponChoice.Add(weapon.id + " : " + weapon.equipmentName);

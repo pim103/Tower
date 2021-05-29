@@ -241,7 +241,7 @@ namespace Games.Global.Spells.SpellBehavior
                 }
                 else
                 {
-                    enemiesTouchedBySpell.Remove(entityEnter);
+                    alliesTouchedBySpell.Remove(entityEnter);
                 }
             }
 
