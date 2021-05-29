@@ -398,9 +398,15 @@ namespace ContentEditor.UtilsEditor
             request.KeepAlive = true;
             request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");
 
-            if (request.GetResponse() is FtpWebResponse response)
+            try
             {
-                return response.StatusCode == FtpStatusCode.CommandOK;
+                if (request.GetResponse() is FtpWebResponse response)
+                {
+                    return response.StatusCode == FtpStatusCode.CommandOK;
+                }
+            }
+            catch (WebException e)
+            {
             }
 
             return false;

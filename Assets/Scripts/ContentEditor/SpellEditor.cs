@@ -433,6 +433,42 @@ namespace ContentEditor
             {
                 PrepareSaveRequest.SaveSpell(spellsToExport);
             }
+            if (GUILayout.Button("Importer et modifier un spell", GUILayout.Height(25)))
+            {
+                string path = null;
+                path = EditorUtility.OpenFilePanel("Choose your spell", Application.dataPath + "/Data/SpellsJson/",
+                    "json");
+                
+                if (path == null)
+                {
+                    return;
+                }
+
+                string jsonSpell = File.ReadAllText(path);
+
+                Spell spell = null;
+                fsSerializer serializer = new fsSerializer();
+                fsData data = fsJsonParser.Parse(jsonSpell);
+                serializer.TryDeserialize(data, ref spell);
+
+                if (spell != null)
+                {
+                    ParseSpell(spell);
+                }
+
+                string extension = ".json";
+                string initialPath = Application.dataPath + "/Data/SpellsJson/";
+                int indexOfInitialPath = path.IndexOf(initialPath, StringComparison.Ordinal);
+                int indexOfExtension = path.IndexOf(extension, StringComparison.Ordinal);
+
+                if (indexOfInitialPath != -1 && indexOfExtension != -1)
+                {
+                    fileNameSpell = path.Substring(indexOfInitialPath + initialPath.Length, indexOfExtension - (indexOfInitialPath + initialPath.Length));
+                    spellsToExport.Add(fileNameSpell, spell);
+                }
+
+                spellEditorCategory = SpellEditorCategory.EDIT_SPELL;
+            }
             if (GUILayout.Button("Clear le panel des spells (Toute données non sauvegardé sera perdu)", GUILayout.Height(25)))
             {
                 spellsToExport.Clear();
