@@ -206,7 +206,8 @@ namespace Games.Global.Spells
         MeleeControl,
         DistanceControl,
         DefensiveBuff,
-        OffensiveBuff
+        OffensiveBuff,
+        Movement
     }
 
     [Serializable]
