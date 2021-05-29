@@ -34,7 +34,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private TreeNode CreateBehavior()
         {
-            Sequence seq = new Sequence(new CheckHPPercentage(0.7f,true),new CheckHeal(SpellTag.HealHimself), new LaunchHeal(SpellTag.HealHimself));
+            Sequence seq = new Sequence(new CheckEnemySight(), new CheckSpellWithTag(SpellTag.DistanceDamage), new LaunchSpellWithTag(SpellTag.DistanceDamage));
 
             return seq;
         }

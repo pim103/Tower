@@ -7,30 +7,39 @@ using Games.Global.TreeBehavior.TestTreeBehavior;
 
 public class UtilsLeaf
 {
-    public static Spell HasSpellFromTag(SpellTag tag, Monster monster)
+    public static List<Spell> HasSpellFromTag(SpellTag tag, Monster monster)
     {
-        Spell wantedSpell = null;
+        List<Spell> wantedSpell = new List<Spell>();
         foreach (Spell spell in monster.spells)
         {
             if (spell.spellTag == tag)
             {
-                wantedSpell = spell;
-                break;
+                wantedSpell.Add(spell);
             }
         }
 
         return wantedSpell;
     }
 
-    public static bool CheckCanLaunchSpell(Spell spell, Monster monster)
+    public static Spell CheckCanLaunchSpell(List<Spell> spells, Monster monster)
     {
-        if (monster.ressource >= spell.cost && !spell.isOnCooldown)
+        List<Spell> castableSpells = new List<Spell>();
+        foreach (Spell spell in spells)
         {
-            return true;
+            if (monster.ressource >= spell.cost && !spell.isOnCooldown)
+            {
+                castableSpells.Add(spell);
+            }
+        }
+
+        if (castableSpells.Count > 0)
+        {
+            return castableSpells[Random.Range(0, castableSpells.Count)];
         }
         else
         {
-            return false;
+            return null;
         }
+        
     }
 }
