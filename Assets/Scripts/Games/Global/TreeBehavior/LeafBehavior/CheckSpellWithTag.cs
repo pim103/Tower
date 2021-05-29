@@ -13,10 +13,12 @@ namespace Games.Global.TreeBehavior.LeafBehavior
         {
             wantedTag = tag;
         }
+
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             List<Spell> wantedSpell = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
+
             if (wantedSpell != null)
             {
                 if (UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster) != null)

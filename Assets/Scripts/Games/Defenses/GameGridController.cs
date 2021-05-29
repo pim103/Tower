@@ -245,7 +245,6 @@ namespace Games.Defenses
 
                     position += GroupsPosition.position[nbMonsterInit];
                     monsterGameObject.transform.position = position;
-                    Debug.Log(monsterGameObject.transform.position);
 
                     DataObject.monsterInScene.Add(monster);
                     currentMap?.Add(monsterGameObject);

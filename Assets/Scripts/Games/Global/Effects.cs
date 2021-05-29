@@ -156,6 +156,11 @@ namespace Games.Global
                     break;
                 case TypeEffect.Heal:
                     entity.hp += level;
+
+                    if (entity.hp > entity.initialHp)
+                    {
+                        entity.hp = entity.initialHp;
+                    }
                     break;
                 case TypeEffect.Purification:
                     List<Effect> effects = entity.GetUnderEffects();

@@ -18,6 +18,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             List<Spell> wantedSpells = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
             Spell spell = UtilsLeaf.CheckCanLaunchSpell(wantedSpells,monster);
+
             if (SpellController.CastSpell(monster, spell))
             {
                 return TreeStatus.SUCCESS;

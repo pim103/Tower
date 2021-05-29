@@ -97,8 +97,8 @@ namespace Games.Global
         public Spell basicAttack { get; set; }
         public Spell basicDefense { get; set; }
         public List<Spell> spells { get; set; }
-        
-        public List<SpellPrefabController> inNefastSpells { get; set; }
+
+        public List<SpellPrefabController> inNefastSpells;
 
         private BehaviorType BehaviorType { get; set; }
         private AttackBehaviorType AttackBehaviorType { get; set; }
@@ -230,14 +230,14 @@ namespace Games.Global
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
-            armors = new List<Armor>();
-            underEffects = new List<Effect>();
-            damageDealExtraEffect = new List<Effect>();
-            damageReceiveExtraEffect = new List<Effect>();
-            entityInRange = new List<Entity>();
-            activeSpellComponents = new List<SpellComponent>();
-            spells = new List<Spell>();
-            inNefastSpells = new List<SpellPrefabController>();
+            armors ??= new List<Armor>();
+            underEffects ??= new List<Effect>();
+            damageDealExtraEffect ??= new List<Effect>();
+            damageReceiveExtraEffect ??= new List<Effect>();
+            entityInRange ??= new List<Entity>();
+            activeSpellComponents ??= new List<SpellComponent>();
+            spells ??= new List<Spell>();
+            inNefastSpells ??= new List<SpellPrefabController>();
         }
 
         // Take true damage is usefull with effect pierce

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Global.TreeBehavior.TestTreeBehavior;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
@@ -17,6 +18,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
+
             if (wantSelf && monster.hp < monster.initialHp*wantedPercentage)
             {
                 return TreeStatus.SUCCESS;

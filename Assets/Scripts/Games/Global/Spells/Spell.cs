@@ -179,7 +179,7 @@ namespace Games.Global.Spells
 
         /* Parameters used in game */
         public Spell originSpell;
-        
+
         public Coroutine currentCoroutine;
         public Entity caster;
         public Entity targetAtCast;
@@ -188,7 +188,7 @@ namespace Games.Global.Spells
 
         public PathCreator pathCreator;
         public TypeSpellComponent TypeSpellComponent { get; set; }
-        public SpellPrefabController spellPrefabController { get; set; }
+        public SpellPrefabController spellPrefabController;
         
         public override string ToString()
         {

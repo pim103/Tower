@@ -29,17 +29,15 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private void FixedUpdate()
         {
+            gc.CurrentMonster.ApplyDamage(0.1f);
             treeBehavior.Execute(gc);
         }
 
         private TreeNode CreateBehavior()
         {
-            //Sequence seq = new Sequence(new CheckHeal());
-            Sequence secDefense = new Sequence(new CheckSpellWithTag(SpellTag.DefensiveBuff), new LaunchSpellWithTag(SpellTag.DefensiveBuff));
-            Sequence secDash = new Sequence(new CheckSpellWithTag(SpellTag.Movement), new LaunchSpellWithTag(SpellTag.Movement));
-            Selector selectExit = new Selector(secDash, secDefense, new ExitAOE());
+            Sequence seq = new Sequence(new CheckHPPercentage(0.7f,true), new CheckSpellWithTag(SpellTag.HealHimself), new LaunchSpellWithTag(SpellTag.HealHimself));
 
-            Sequence selectAoe = new Sequence(new MonsterInAOE(), selectExit);
+            Sequence selectAoe = new Sequence(seq);
 
             return selectAoe;
         }
