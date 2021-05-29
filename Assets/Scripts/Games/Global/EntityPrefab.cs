@@ -69,9 +69,9 @@ namespace Games.Global
                 return;
             }
 
-            FindTarget();
+            //FindTarget();
 
-            if (canMove)
+            /*if (canMove)
             {
                 if (entity.GetBehaviorType() == BehaviorType.Melee ||
                     entity.GetBehaviorType() == BehaviorType.MoveOnTargetAndDie)
@@ -91,7 +91,7 @@ namespace Games.Global
             if (target != null)
             {
                 AttackTarget();   
-            }
+            }*/
         }
 
         public void WantToApplyForce(Vector3 direction, int level)

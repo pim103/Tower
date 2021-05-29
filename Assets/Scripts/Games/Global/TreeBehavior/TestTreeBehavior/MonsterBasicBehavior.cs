@@ -1,5 +1,6 @@
 ﻿using System;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.TreeBehavior.CompositeBehavior;
 using Games.Global.TreeBehavior.LeafBehavior;
 using UnityEngine;
@@ -33,7 +34,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private TreeNode CreateBehavior()
         {
-            Sequence seq = new Sequence(new CheckHeal());
+            Sequence seq = new Sequence(new CheckHPPercentage(0.7f,true),new CheckHeal(SpellTag.HealHimself), new LaunchHeal(SpellTag.HealHimself));
 
             return seq;
         }

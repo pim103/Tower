@@ -12,7 +12,7 @@ public class UtilsLeaf
         Spell wantedSpell = null;
         foreach (Spell spell in monster.spells)
         {
-            if (spell.spellTag == SpellTag.HealHimself)
+            if (spell.spellTag == tag)
             {
                 wantedSpell = spell;
                 break;

@@ -1,14 +1,14 @@
 using Games.Global.Entities;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsController;
 using Games.Global.TreeBehavior.TestTreeBehavior;
-using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class CheckHeal : Leaf
+    public class LaunchHeal : Leaf
     {
         private SpellTag wantedTag;
-        public CheckHeal(SpellTag tag)
+        public LaunchHeal(SpellTag tag)
         {
             wantedTag = tag;
         }
@@ -17,13 +17,11 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             Spell wantedSpell = null;
             wantedSpell = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
-            if (wantedSpell != null)
+            if (SpellController.CastSpell(monster, wantedSpell))
             {
-                UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster);
                 return TreeStatus.SUCCESS;
             }
-
-            if (wantedSpell == null)
+            else
             {
                 return TreeStatus.FAILURE;
             }
