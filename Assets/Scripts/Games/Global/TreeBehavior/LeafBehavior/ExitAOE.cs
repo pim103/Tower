@@ -28,7 +28,6 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 
         protected override void OnReset()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
