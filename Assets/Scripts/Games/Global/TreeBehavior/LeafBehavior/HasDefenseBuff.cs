@@ -1,25 +1,26 @@
 using Games.Global.Entities;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellsController;
 using Games.Global.TreeBehavior.TestTreeBehavior;
 using Games.Global.TreeBehavior.Utils;
 using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class UseDash : Leaf
+    public class HasDefenseBuff : Leaf
     {
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             Spell wantedSpell = null;
-            wantedSpell = UtilsLeaf.HasSpellFromTag(SpellTag.Movement, monster);
-            if (SpellController.CastSpell(monster, wantedSpell))
+            wantedSpell = UtilsLeaf.HasSpellFromTag(SpellTag.DefensiveBuff, monster);
+            bool canLaunchDash = wantedSpell != null && UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster);
+            if (wantedSpell != null && canLaunchDash)
             {
-                Debug.Log("Dashing like a Ninja!");
+                Debug.Log("Oh oh, I can use my defense buff, JoJo!");
                 return TreeStatus.SUCCESS;
             }
-            Debug.Log("Can't Dash wtf am I Doing ??");
+
+            Debug.Log("I can't defend myself, YAMERO !");
             return TreeStatus.FAILURE;
         }
 

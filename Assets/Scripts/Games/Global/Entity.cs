@@ -2,6 +2,7 @@
 using System.Linq;
 using Games.Global.Armors;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Networking;
@@ -96,6 +97,8 @@ namespace Games.Global
         public Spell basicAttack { get; set; }
         public Spell basicDefense { get; set; }
         public List<Spell> spells { get; set; }
+        
+        public List<SpellPrefabController> inNefastSpells { get; set; }
 
         private BehaviorType BehaviorType { get; set; }
         private AttackBehaviorType AttackBehaviorType { get; set; }
@@ -234,6 +237,7 @@ namespace Games.Global
             entityInRange = new List<Entity>();
             activeSpellComponents = new List<SpellComponent>();
             spells = new List<Spell>();
+            inNefastSpells = new List<SpellPrefabController>();
         }
 
         // Take true damage is usefull with effect pierce

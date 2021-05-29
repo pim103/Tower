@@ -1,36 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Games.Global.Entities;
 using Games.Global.Spells;
-using Games.Global.TreeBehavior.TestTreeBehavior;
 
-public class UtilsLeaf
+namespace Games.Global.TreeBehavior.Utils
 {
-    public static Spell HasSpellFromTag(SpellTag tag, Monster monster)
+    public class UtilsLeaf
     {
-        Spell wantedSpell = null;
-        foreach (Spell spell in monster.spells)
+        public static Spell HasSpellFromTag(SpellTag tag, Monster monster)
         {
-            if (spell.spellTag == SpellTag.HealHimself)
+            Spell wantedSpell = null;
+            foreach (Spell spell in monster.spells)
             {
-                wantedSpell = spell;
-                break;
+                if (spell.spellTag == tag)
+                {
+                    wantedSpell = spell;
+                    break;
+                }
             }
+
+            return wantedSpell;
         }
 
-        return wantedSpell;
-    }
-
-    public static bool CheckCanLaunchSpell(Spell spell, Monster monster)
-    {
-        if (monster.ressource >= spell.cost && !spell.isOnCooldown)
+        public static bool IsInAOE(Monster monster)
         {
-            return true;
-        }
-        else
-        {
+            if (monster.inNefastSpells != null && monster.inNefastSpells.Count > 0)
+            {
+                return true;
+            }
             return false;
+        }
+
+        public static bool CheckCanLaunchSpell(Spell spell, Monster monster)
+        {
+            if (monster.ressource >= spell.cost && !spell.isOnCooldown)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

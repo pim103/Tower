@@ -227,10 +227,12 @@ namespace Games.Global.Spells.SpellBehavior
                 if (isEnter)
                 {
                     enemiesTouchedBySpell.Add(entityEnter);
+                    entityEnter.inNefastSpells.Add(this);
                 }
                 else
                 {
                     enemiesTouchedBySpell.Remove(entityEnter);
+                    entityEnter.inNefastSpells.Remove(this);
                 }
             }
             else
@@ -241,7 +243,7 @@ namespace Games.Global.Spells.SpellBehavior
                 }
                 else
                 {
-                    enemiesTouchedBySpell.Remove(entityEnter);
+                    alliesTouchedBySpell.Remove(entityEnter);
                 }
             }
 

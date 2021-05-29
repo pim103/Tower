@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -201,6 +203,35 @@ namespace Games.Global
             }
 
             return false;
+        }
+
+        public void MoveOutFromAOE(SpellPrefabController aoe)
+        {
+            if (aoe.boxCollider == enabled)
+            {
+                Bounds boundsBox = aoe.boxCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+
+            }
+            else if (aoe.meshCollider == enabled)
+            {
+                Bounds boundsBox = aoe.meshCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+            }
+            else
+            {
+                Bounds boundsBox = aoe.sphereCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+            }
         }
 
         public void AttackTarget()
