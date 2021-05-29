@@ -33,9 +33,14 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private TreeNode CreateBehavior()
         {
-            Sequence seq = new Sequence(new CheckHeal());
+            //Sequence seq = new Sequence(new CheckHeal());
+            Sequence secDefense = new Sequence(new HasDefenseBuff(), new UseDefenseBuff());
+            Sequence secDash = new Sequence(new HasDashSkill(), new UseDash());
+            Selector selectExit = new Selector(secDash, secDefense, new ExitAOE());
 
-            return seq;
+            Sequence selectAoe = new Sequence(new MonsterInAOE(), selectExit);
+
+            return selectAoe;
         }
     }
 }
