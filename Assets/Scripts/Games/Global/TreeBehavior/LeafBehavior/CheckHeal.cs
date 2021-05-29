@@ -19,8 +19,10 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             wantedSpell = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
             if (wantedSpell != null)
             {
-                UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster);
-                return TreeStatus.SUCCESS;
+                if (UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster))
+                {
+                    return TreeStatus.SUCCESS;
+                }
             }
 
             if (wantedSpell == null)
