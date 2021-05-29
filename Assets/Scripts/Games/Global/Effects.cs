@@ -184,7 +184,11 @@ namespace Games.Global
                 case TypeEffect.Will:
                     entity.hasWill = true;
 
-                    foreach (TypeEffect type in EffectController.ControlEffect)
+                    List<TypeEffect> willIsNotAffectedBy = new List<TypeEffect>();
+                    willIsNotAffectedBy.AddRange(EffectController.MovementControlEffect);
+                    willIsNotAffectedBy.AddRange(EffectController.IncapacitateEffect);
+                    
+                    foreach (TypeEffect type in willIsNotAffectedBy)
                     {
                         if (entity.EntityIsUnderEffect(type))
                         {
