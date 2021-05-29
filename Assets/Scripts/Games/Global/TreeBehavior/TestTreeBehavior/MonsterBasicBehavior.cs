@@ -33,11 +33,9 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private TreeNode CreateBehavior()
         {
-            Sequence seq = new Sequence(new PlayerTooClose(), new Move());
-            Sequence seq2 = new Sequence(new PlayerTooClose(), new Move());
-            Selector selector = new Selector(seq, seq2);
-            
-            return selector;
+            Sequence seq = new Sequence(new CheckHeal());
+
+            return seq;
         }
     }
 }

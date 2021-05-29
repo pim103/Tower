@@ -60,7 +60,7 @@ namespace Games.Global.Weapons
         {
             Entity wielder = weaponPrefab.GetWielder();
             
-            if (category.spellAttack != null)
+            if (category?.spellAttack != null)
             {
                 wielder.basicAttack = category.spellAttack;
             }
