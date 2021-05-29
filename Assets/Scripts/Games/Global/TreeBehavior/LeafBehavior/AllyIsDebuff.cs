@@ -5,7 +5,6 @@ using Games.Global.TreeBehavior.TestTreeBehavior;
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
     public class AllyIsDebuff : Leaf
-
     {
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
@@ -18,6 +17,27 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 {
                     if (monster == currentMonster)
                         continue;
+
+                    foreach (var effect in monster.GetUnderEffects())
+                    {
+                        List<TypeEffect> badEffects = new List<TypeEffect>();
+                        badEffects.AddRange(EffectController.DebuffEffect);
+                        badEffects.AddRange(EffectController.IncapacitateEffect);
+                        badEffects.AddRange(EffectController.MovementControlEffect);
+                        
+                        foreach (var badEffect in badEffects)
+                        {
+                            if (effect.typeEffect == badEffect)
+                            {
+                                {
+                                    {
+                                        currentMonster.entityPrefab.target = monster;
+                                        return TreeStatus.SUCCESS;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             

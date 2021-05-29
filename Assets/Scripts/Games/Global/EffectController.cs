@@ -33,8 +33,7 @@ namespace Games.Global
         {
             TypeEffect.Heal, TypeEffect.Regen, TypeEffect.Resurrection, TypeEffect.AttackUp, TypeEffect.AttackSpeedUp,
             TypeEffect.DefenseUp, TypeEffect.DivineShield, TypeEffect.AntiSpell, TypeEffect.Will, TypeEffect.Thorn,
-            TypeEffect.Intangible,
-            TypeEffect.Mirror, TypeEffect.SpeedUp, TypeEffect.MagicalDefUp, TypeEffect.PhysicalDefUp,
+            TypeEffect.Intangible, TypeEffect.Mirror, TypeEffect.SpeedUp, TypeEffect.MagicalDefUp, TypeEffect.PhysicalDefUp,
             TypeEffect.Purification, TypeEffect.ResourceFill, TypeEffect.Link
         };
 
