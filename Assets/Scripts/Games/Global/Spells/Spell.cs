@@ -207,7 +207,10 @@ namespace Games.Global.Spells
         DistanceControl,
         DefensiveBuff,
         OffensiveBuff,
-        Movement
+        Movement,
+        DispelHimself,
+        DispelOther,
+        DispelEnemy
     }
 
     [Serializable]

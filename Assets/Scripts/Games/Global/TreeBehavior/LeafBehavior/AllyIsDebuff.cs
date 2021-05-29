@@ -1,31 +1,32 @@
+﻿using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Global.TreeBehavior.TestTreeBehavior;
-using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class MonsterInAOE : Leaf
+    public class AllyIsDebuff : Leaf
+
     {
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             if (DataObject.monsterInScene != null && DataObject.monsterInScene.Count > 0)
             {
-                Monster monster = (behaviorStatus as GameContext).CurrentMonster;
+                Monster currentMonster = (behaviorStatus as GameContext)?.CurrentMonster;
+                List<Monster> monsters = DataObject.monsterInScene;
 
-                if (UtilsLeaf.IsInAOE(monster))
+                foreach (var monster in monsters)
                 {
-                    Debug.Log("Monster is in AOE!");
-                    return TreeStatus.SUCCESS;
+                    if (monster == currentMonster)
+                        continue;
                 }
             }
-
-            Debug.Log("No monster or no monster in AOE");
+            
             return TreeStatus.FAILURE;
         }
 
         protected override void OnReset()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

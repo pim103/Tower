@@ -12,10 +12,10 @@ namespace Games.Global.TreeBehavior.LeafBehavior
         {
             if (DataObject.playerInScene != null && DataObject.playerInScene.Count > 0 && DataObject.monsterInScene != null && DataObject.monsterInScene.Count > 0)
             {
-                Monster monster = (behaviorStatus as GameContext).CurrentMonster;
+                Monster monster = (behaviorStatus as GameContext)?.CurrentMonster;
                 PlayerPrefab player = DataObject.playerInScene.First().Value;
 
-                if (Vector3.Distance(player.transform.position, monster.entityPrefab.transform.position) < 5)
+                if (monster != null && Vector3.Distance(player.transform.position, monster.entityPrefab.transform.position) < 5)
                 {
                     Debug.Log("Player too close, warning !!!");
                     return TreeStatus.SUCCESS;

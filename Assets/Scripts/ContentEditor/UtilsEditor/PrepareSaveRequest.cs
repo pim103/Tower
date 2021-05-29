@@ -285,6 +285,34 @@ namespace ContentEditor.UtilsEditor
             ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
         }
 
+        public static void SaveSpellForMonster(Monster monster, Spell spell)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("monsterId", monster.id);
+            form.AddField("skillId", spell.id);
+            form.AddField("gameToken", NetworkingController.GameToken);
+
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/addSpell", form);
+
+            void Lambda() => ContentGenerationEditor.RequestLoadMonster();
+
+            ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
+        public static void DeleteSpellForMonster(Monster monster, Spell spell)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("monsterId", monster.id);
+            form.AddField("skillId", spell.id);
+            form.AddField("gameToken", NetworkingController.GameToken);
+
+            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/delSpell", form);
+
+            void Lambda() => ContentGenerationEditor.RequestLoadMonster();
+
+            ContentGenerationEditor.instance.StartCoroutine(DatabaseManager.SendData(www, Lambda));
+        }
+
         public static void SaveCategoryWeapon(CategoryWeapon category, bool isNew)
         {
             WWWForm form = new WWWForm();
@@ -370,9 +398,15 @@ namespace ContentEditor.UtilsEditor
             request.KeepAlive = true;
             request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");
 
-            if (request.GetResponse() is FtpWebResponse response)
+            try
             {
-                return response.StatusCode == FtpStatusCode.CommandOK;
+                if (request.GetResponse() is FtpWebResponse response)
+                {
+                    return response.StatusCode == FtpStatusCode.CommandOK;
+                }
+            }
+            catch (WebException e)
+            {
             }
 
             return false;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using TestC;
 using UnityEngine;
@@ -61,6 +63,18 @@ namespace Utils
 
         public Monster ConvertToMonster()
         {
+            List<Spell> spells = new List<Spell>();
+            
+            skillListId.ForEach(spell =>
+            {
+                Spell foundSpell = DataObject.SpellList.GetSpellById(Int32.Parse(spell.id));
+
+                if (foundSpell != null)
+                {
+                    spells.Add(foundSpell);
+                }
+            });
+
             Monster monster = new Monster
             {
                 id = Int32.Parse(id),
@@ -79,11 +93,11 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 nbWeapon = Int32.Parse(nbWeapon),
                 weaponOriginalId = Int32.Parse(weaponId),
-                // spellsName = skillListId,
                 modelName = model,
-                monsterType = (MonsterType) monsterType
+                monsterType = (MonsterType) monsterType,
+                spells = spells
             };
-            
+
             monster.SetConstraint((TypeWeapon) Int32.Parse(typeWeapon));
 
             return monster;

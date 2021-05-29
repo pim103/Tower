@@ -1,27 +1,32 @@
+using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.TreeBehavior.TestTreeBehavior;
-using Games.Global.TreeBehavior.Utils;
 using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class CheckHeal : Leaf
+    public class CheckSpellWithTag : Leaf
     {
+        private SpellTag wantedTag;
+        public CheckSpellWithTag(SpellTag tag)
+        {
+            wantedTag = tag;
+        }
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
-            Spell wantedSpell = null;
-            wantedSpell = UtilsLeaf.HasSpellFromTag(SpellTag.HealHimself,monster);
+            List<Spell> wantedSpell = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
             if (wantedSpell != null)
             {
-                UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster);
-                Debug.Log("yes");
+                if (UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster) != null)
+                {
+                    return TreeStatus.SUCCESS;
+                }
             }
 
-            if (wantedSpell == null)
+            if (wantedSpell.Count == 0)
             {
-                Debug.Log("no");
                 return TreeStatus.FAILURE;
             }
 
