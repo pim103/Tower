@@ -21,7 +21,7 @@ namespace Games.Global.Weapons
     public class Weapon : Equipement
     {
         public WeaponPrefab weaponPrefab;
-        
+
         public int id { get; set; }
         public CategoryWeapon category { get; set; }
         public TypeWeapon type { get; set; }
