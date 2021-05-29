@@ -33,7 +33,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private TreeNode CreateBehavior()
         {
-            Sequence seq = new Sequence(new PlayerTooClose());
+            Sequence seq = new Sequence(new CheckHeal());
 
             return seq;
         }
