@@ -409,7 +409,7 @@ namespace Games.Players
         public void Movement()
         {
             Rigidbody rigidbody = playerRigidbody;
-            int jumpForce = 6;
+            int jumpForce = 10;
 
             int horizontalMove = 0;
             int verticalMove = 0;
