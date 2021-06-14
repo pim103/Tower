@@ -168,6 +168,7 @@ namespace ContentEditor
                         editedSpell = true;
 
                         fileNameSpell = spellInfo.filename;
+                        ParseSpell(currentSpellEdited);
                     }
                 }
             }

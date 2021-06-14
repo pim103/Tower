@@ -129,7 +129,12 @@ namespace Games.Global
                 if (entity.weapon != null)
                 {
                     WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
-                    weaponPrefab.BasicAttack();    
+                    bool initAttack = weaponPrefab.BasicAttack();
+
+                    if (initAttack)
+                    {
+                        SpellController.CastSpell(entity, entity.basicAttack);
+                    }
                 }
             }
         }

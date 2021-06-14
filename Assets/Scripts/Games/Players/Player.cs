@@ -68,12 +68,12 @@ namespace Games.Players
             
             if (mainClass != null)
             {
-                initialAtt = mainClass.att;
-                initialDef = mainClass.def;
-                initialSpeed = mainClass.speed;
-                initialHp = mainClass.hp;
-                initialAttSpeed = mainClass.attSpeed;
-                initialRessource1 = mainClass.ressource;
+                att = initialAtt = mainClass.att;
+                def = initialDef = mainClass.def;
+                speed = initialSpeed = mainClass.speed;
+                hp = initialHp = mainClass.hp;
+                attSpeed = initialAttSpeed = mainClass.attSpeed;
+                ressource = initialRessource1 = mainClass.ressource;
 
                 basicDefense = mainClass.defenseSpell;
             }

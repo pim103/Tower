@@ -64,23 +64,14 @@ namespace Games.Global.Spells.SpellBehavior
         public void SetPosition(Vector3 startPosition, Transform transformMarker)
         {
             Vector3 offset = spellComponent.spellToInstantiate.offsetStartPosition;
-            Vector3 forward = Vector3.forward;
+            Vector3 forward = transformMarker != null ? transformMarker.forward : Vector3.forward;
             Vector3 position = startPosition;
 
-            if (transformMarker)
-            {
-                forward = transformMarker.forward;
-                position += forward * offset.z + forward * offset.x +
-                            Vector3.up * offset.y;
-            }
-            else
-            {
-                position += offset;
-            }
+            position += forward * offset.z + forward * offset.x +
+                        Vector3.up * offset.y;
             
             transform.position = position;
             transform.forward = forward;
-            
         }
 
         public void SetSpellParameter(SpellComponent originSpellComponent, Vector3 startPosition, bool initChild = true)
@@ -89,7 +80,7 @@ namespace Games.Global.Spells.SpellBehavior
             spellComponent = originSpellComponent;
 
             transform.localScale = originSpellComponent.spellToInstantiate.scale;
-            SetPosition(startPosition, null);
+            SetPosition(startPosition, casterOfSpell?.entityPrefab.transform);
 
             if (originSpellComponent.trajectory != null)
             {
