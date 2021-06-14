@@ -68,32 +68,32 @@ namespace ContentEditor
         {
             if (newWeapon == null)
             {
-                newWeapon = new Weapon();
-                newWeapon.equipmentType = EquipmentType.WEAPON;
+                newWeapon = new Weapon {equipmentType = EquipmentType.WEAPON};
             }
             
             DisplayOneWeaponEditor(newWeapon);
 
-            if (GUILayout.Button("Sauvegarder la nouvelle arme"))
-            {
-                PrepareSaveRequest.RequestSaveWeapon(newWeapon, true);
-                newWeapon = null;
-            }
-
             GUILayout.FlexibleSpace();
         }
 
+        private Vector2 scrollPos;
         private void DisplayWeaponStat()
         {
+            EditorGUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
+
             int offsetX = 5;
             int offsetY = 0;
 
             int loop = 0;
 
+            scrollPos = GUI.BeginScrollView(new Rect(0, 0, EditorConstant.WIDTH, EditorConstant.HEIGHT),
+                scrollPos, new Rect(0, 500, 70, 70));
+
             foreach (Weapon weapon in DataObject.EquipmentList.weapons)
             {
-                GUILayout.BeginArea(new Rect(offsetX, offsetY, 300, 500));
+                GUILayout.BeginArea(new Rect(offsetX, offsetY, 300, 450));
 
                 offsetX += 305;
 
@@ -101,26 +101,25 @@ namespace ContentEditor
                 {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
-                    offsetX = 0;
-                    offsetY += 300;
+                    offsetX = 5;
+                    offsetY += 455;
                 }
 
                 DisplayOneWeaponEditor(weapon);
 
                 GUILayout.EndArea();
-                // ++loop;
-                // if (loop % 6 == 0)
-                // {
-                //     EditorGUILayout.EndHorizontal();
-                //     EditorGUILayout.BeginHorizontal();
-                // }
             }
+            
+            GUI.EndScrollView();
 
             EditorGUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndVertical();
         }
 
         private void DisplayOneWeaponEditor(Weapon weapon)
         {
+            GUILayout.FlexibleSpace();
             Color defaultColor = GUI.color;
             
             GUI.color = Color.blue;
@@ -173,8 +172,18 @@ namespace ContentEditor
                     player.InitWeapon(weapon);
                 }
             }
+            
+            Color currentColor = GUI.color;
+            GUI.color = Color.green;
+            if (GUILayout.Button("Sauvegarder l'arme'"))
+            {
+                PrepareSaveRequest.RequestSaveWeapon(weapon, weapon.id == 0);
+                newWeapon = null;
+            }
+            GUI.color = currentColor;
 
             EditorGUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
         }
 
         public void CloneWeaponDictionary()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using DeckBuilding;
 using Games.Global;
 using Games.Global.Weapons;
@@ -15,6 +16,7 @@ namespace Games.Transitions
         [SerializeField] private GameController gameController;
 
         [SerializeField] private GameObject characterSelectionParent;
+        [SerializeField] private GameObject weaponSelectionParent;
         [SerializeField] private GameObject buttonCharTemplate;
         [SerializeField] private GameObject buttonWeaponTemplate;
 
@@ -89,9 +91,12 @@ namespace Games.Transitions
             foreach (Classes classes in DataObject.ClassesList.classes)
             {
                 GameObject charSelector = Instantiate(buttonCharTemplate, characterSelectionParent.transform);
+
                 Identity charIdentity = charSelector.GetComponent<Identity>();
+                charIdentity.title.text = classes.name;
+
                 Button charButton = charSelector.GetComponent<Button>();
-                
+
                 charIdentity.InitIdentityData(IdentityType.Role, classes.id);
                 charButton.onClick.AddListener(delegate { GetIdentityOfButton(charButton); });
 
@@ -101,7 +106,20 @@ namespace Games.Transitions
 
         private void InstantiateWeaponButtons()
         {
-            
+            foreach (CategoryWeapon categoryWeapon in DataObject.CategoryWeaponList.categories)
+            {
+                GameObject weaponSelector = Instantiate(buttonWeaponTemplate, characterSelectionParent.transform);
+
+                Identity weaponIdentity = weaponSelector.GetComponent<Identity>();
+                weaponIdentity.title.text = categoryWeapon.name;
+
+                Button weaponButton = weaponSelector.GetComponent<Button>();
+
+                weaponIdentity.InitIdentityData(IdentityType.CategoryWeapon, categoryWeapon.id);
+                weaponButton.onClick.AddListener(delegate { GetIdentityOfButton(weaponButton); });
+
+                IdentityOfButton.Add(weaponButton, weaponIdentity);
+            }
         }
         
         private void LaunchGame()

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using ContentEditor.SpellEditorComposant;
 using ContentEditor.UtilsEditor;
 using FullSerializer;

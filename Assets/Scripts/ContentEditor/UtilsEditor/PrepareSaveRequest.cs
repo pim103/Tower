@@ -395,7 +395,7 @@ namespace ContentEditor.UtilsEditor
             request.Method = WebRequestMethods.Ftp.DeleteFile;
             request.UseBinary = true;
             request.UsePassive = true;
-            request.KeepAlive = true;
+            request.KeepAlive = true;    
             request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");
 
             try

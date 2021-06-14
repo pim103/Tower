@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Games.Transitions
 {
@@ -10,6 +11,7 @@ namespace Games.Transitions
 
     public class Identity: MonoBehaviour
     {
+        public Text title;
         public IdentityType identityType;
         private int identityId;
 

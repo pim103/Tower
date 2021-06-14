@@ -1,10 +1,6 @@
 ﻿using ContentEditor.UtilsEditor;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellsController;
-using Games.Global.Spells.SpellsGenerator;
-using Games.Players;
 using PathCreation;
-using PathCreation.Examples;
 using TestC;
 using UnityEditor;
 using UnityEditor.SceneManagement;
