@@ -44,7 +44,7 @@ namespace Menus
         private List<GameObject> deckCards;
         public bool newDeck;
         [SerializeField] private InputField deckName; 
-        //TODO : ^^^^ changer en text simple dans la scène ^^^^
+        //TODO : ^^^^ changer en bouton dans la scène ^^^^
         //+ ajouter un bouton 'crayon' pour activer la modification (et du coup là afficher l'input field
         //+ transformer le 'crayon' en validation et ajouter un bouton annuler)
         #endregion
@@ -242,12 +242,12 @@ namespace Menus
             yield return new WaitForSeconds(0.5f);
             if (www.responseCode == 201)
             {
-                selectedDeck = new Deck();
-                selectedDeck.id = Int32.Parse(www.downloadHandler.text);
+                currentDeck = new Deck();
+                currentDeck.id = Int32.Parse(www.downloadHandler.text);
                 Debug.Log("Deck Created!");
-                if (selectedDeck != null)
+                if (currentDeck != null)
                 {
-                    StartCoroutine(DeleteCardsInDeck(selectedDeck.id));
+                    StartCoroutine(DeleteCardsInDeck(currentDeck.id));
                 }
             }
             else if (www.responseCode == 406)
@@ -282,10 +282,10 @@ namespace Menus
             if (www.responseCode == 201)
             {
                 Debug.Log("Suppression des cartes effectuée");
-                foreach (GameObject cardButton in cardInDeckButtonsList)
+                foreach (GameObject cardButton in cards)
                 {
                     CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
-                    StartCoroutine(AddNewCardInDeck(selectedDeck.id,currentExposer.card.id,Int32.Parse(currentExposer.cardCopies.text)));
+                    StartCoroutine(AddNewCardInDeck(currentDeck.id,currentExposer.card.id,Int32.Parse(currentExposer.cardCopies.text)));
                 }
             }
             else if (www.responseCode == 406)
@@ -350,7 +350,7 @@ namespace Menus
             bool containsEquipments = false;
             totalDistinctCardNumber = 0;
             cardCounter = 0;
-            foreach (GameObject cardButton in cardInDeckButtonsList)
+            foreach (GameObject cardButton in cards)
             {
                 CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
                 if (currentExposer.card.GroupsMonster != null)
@@ -366,13 +366,13 @@ namespace Menus
             if (containsMonsters ^ containsEquipments)
             {
                 Debug.Log(containsEquipments+ " "+containsMonsters);
-                if (selectedDeck == null)
+                if (currentDeck == null)
                 {
                     StartCoroutine(containsMonsters ? AddNewDeck(deckName.text, 1) : AddNewDeck(deckName.text, 0));
                 }
                 else
                 {
-                    StartCoroutine(DeleteCardsInDeck(selectedDeck.id));
+                    StartCoroutine(DeleteCardsInDeck(currentDeck.id));
                 }
                 StartCoroutine(WaitEndCreation());
             }
