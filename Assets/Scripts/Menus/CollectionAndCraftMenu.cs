@@ -30,7 +30,7 @@ namespace Menus
         [SerializeField] 
         private GameObject cardPrefab;
         [SerializeField] 
-        private GameObject ingredientPrefab;
+        private GameObject ingredientPrefab; //TODO : move this to craft parameters ?
         private List<GameObject> cards;
         #endregion
         
@@ -128,8 +128,7 @@ namespace Menus
             }
         }
         #endregion
-        
-        
+
         #region craft functions
 
         private void OpenCraft(Card card)
@@ -224,7 +223,6 @@ namespace Menus
 
         private void Craft(Card card, int nb)
         {
-            
             AddCardsToCollection(card, nb);
             //TODO : uncomment to check if there is enough ingredients in player inventory and remove the one's up
             //if (card.Recipe.CanCraft(DataObject.playerIngredients, nbToCraft))

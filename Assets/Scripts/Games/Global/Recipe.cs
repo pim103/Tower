@@ -14,6 +14,11 @@ namespace Games.Global
 
         private readonly Dictionary<Ingredient, int> craftRecipe;
 
+        public Recipe()
+        {
+            craftRecipe = new Dictionary<Ingredient, int>();
+        }
+        
         public Recipe(List<IngredientJson> ingredients)
         {
             craftRecipe = new Dictionary<Ingredient, int>();
