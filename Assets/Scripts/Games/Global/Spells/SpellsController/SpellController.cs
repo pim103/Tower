@@ -38,40 +38,238 @@ namespace Games.Global.Spells.SpellsController
             SpellInterpreter.instance = spellInterpreter;
         }
 
-        public static bool CastSpell(Entity entity, Spell spell, int spellSlotIfPlayer = 0)
+        public static bool CastSpell(Entity entity, Spell spell)
         {
-            if (spell == null && spell.cost <= entity.ressource1 - spell.cost)
-            {
+            if (spell == null || 
+                entity.ressource - spell.cost < 0 ||
+                spell.isOnCooldown ||
+                spell.nbUse == 0
+            ) {
                 return false;
             }
-            
-//            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && spell.activeSpellComponent.isBasicAttack && entity.weapons.Count > 0))
-            if ((!spell.isOnCooldown && spell.nbUse != 0) || (spell.activeSpellComponent != null && entity.weapons.Count > 0))
-            {
-                Debug.Log("Launch spell " + spell.nameSpell);
-                if (spell.nbUse > 0)
-                {
-                    spell.nbUse--;
-                }
 
-                spell.isOnCooldown = true;
-                instance.StartCoroutine(PlayCastTime(entity, spell, spellSlotIfPlayer));
-            }
-            else if (spell.canCastDuringCast)
+            if (spell.nbUse > 0)
             {
-                spell.wantToCastDuringCast = true;
+                spell.nbUse--;
             }
-            else if (spell.canRecast && !spell.alreadyRecast && entity.canRecast)
+
+            Debug.Log("Launch spell " + spell.nameSpell);
+            switch (spell.TypeSpell)
             {
-                spell.alreadyRecast = true;
-                instance.StartCoroutine(PlayCastTime(entity, spell));
+                case TypeSpell.Holding:
+                    spell.isHolding = true;
+                    break;
+                case TypeSpell.HoldThenRelease:
+                    spell.isHolding = true;
+                    break;
+                case TypeSpell.ActivePassive:
+                    instance.StartCoroutine(StartCooldown(spell));
+                    break;
+                case TypeSpell.UniqueActivation:
+                    instance.StartCoroutine(StartCooldown(spell));
+                    break;
+                case TypeSpell.Passive:
+                    break;
             }
-            else
-            {
-                return false;
-            }
+
+            instance.StartCoroutine(PlayCastTime(entity, spell));
 
             return true;
+        }
+
+        public static void InterruptSpell(Spell spell)
+        {
+            if (spell.isOnCooldown)
+            {
+                return;
+            }
+            
+            if (spell.TypeSpell == TypeSpell.Holding || spell.TypeSpell == TypeSpell.HoldThenRelease)
+            {
+                instance.StartCoroutine(StartCooldown(spell));
+            }
+
+            spell.isHolding = false;
+        }
+
+        private static IEnumerator PlayCastTime(Entity caster, Spell spell)
+        {
+            TargetsFound targetsFound = GetTargetGetWithStartForm(caster, spell.startFrom);
+            caster.ressource -= spell.cost;
+            
+            float duration = spell.castTime;
+            while (duration > 0)
+            {
+                yield return new WaitForSeconds(0.1f);
+                duration -= 0.1f;
+            }
+
+            if (spell.TypeSpell == TypeSpell.MultipleActivation)
+            {
+                yield return PlayMultipleAction(caster, spell, targetsFound);
+                yield break;
+            }
+
+            CastSpellComponentFromTargetsFound(caster, spell, spell.spellComponentFirstActivation, targetsFound);
+
+            if (spell.TypeSpell == TypeSpell.Holding || spell.TypeSpell == TypeSpell.HoldThenRelease)
+            {
+                spell.timeHolding = 0.0f;
+
+                while ( 
+                    spell.isHolding &&
+                    caster.ressource - spell.holdingCost >= 0 &&
+                    (spell.timeHolding < spell.maximumTimeHolding || spell.maximumTimeHolding == 0))
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    spell.timeHolding += 0.1f;
+                    caster.ressource -= spell.holdingCost;
+                }
+
+                InterruptSpell(spell);
+                CastSpellComponentFromTargetsFound(caster, spell, spell.spellComponentAfterHolding, targetsFound);
+            }
+        }
+
+        private static IEnumerator PlayMultipleAction(Entity caster, Spell spell, TargetsFound targetsFound)
+        {
+            SpellComponent spellComponentToLaunch = null;
+            int currentSpellIndexLaunch = spell.nbSpellActivation;
+
+            if (spell.nbSpellActivation == 0)
+            {
+                spellComponentToLaunch = spell.spellComponentFirstActivation;
+            }
+            else if (spell.nbSpellActivation < spell.spellComponents.Count)
+            {
+                spellComponentToLaunch = spell.spellComponents[spell.nbSpellActivation].spellComponent;
+            }
+
+            CastSpellComponentFromTargetsFound(caster, spell, spellComponentToLaunch, targetsFound);
+            spell.nbSpellActivation += 1;
+
+            // If index == size of spellComponents, last component was played, start cooldown
+            if (spell.nbSpellActivation >= spell.spellComponents.Count)
+            {
+                yield return StartCooldown(spell);
+                yield break;
+            }
+
+            float timeBeforeRecast = spell.spellComponents[spell.nbSpellActivation].timeBeforeReset;
+
+            while (timeBeforeRecast > 0 && currentSpellIndexLaunch == spell.nbSpellActivation)
+            {
+                yield return new WaitForSeconds(0.1f);
+                timeBeforeRecast -= 0.1f;
+            }
+
+            // If same index, player doesn't recast spell, so start cooldown
+            if (currentSpellIndexLaunch == spell.nbSpellActivation)
+            {
+                yield return StartCooldown(spell);
+            }
+        }
+
+        private static IEnumerator StartCooldown(Spell spell)
+        {
+            spell.isOnCooldown = true;
+            spell.currentCooldown = spell.cooldown;
+
+            while (spell.currentCooldown > 0)
+            {
+                yield return new WaitForSeconds(1);
+                spell.currentCooldown -= 1;
+            }
+
+            spell.isOnCooldown = false;
+        }
+
+        public static void CastSpellComponentFromTargetsFound(Entity caster, Spell spell, SpellComponent spellComponent, TargetsFound targetsFound, SpellComponent lastSpellComponent = null)
+        {
+            if (targetsFound.targets.Count > 0)
+            {
+                targetsFound.targets.ForEach(target => CastSpellComponent(caster, spellComponent, target, target.entityPrefab.transform.position, spell, lastSpellComponent));
+            }
+            else if (targetsFound.target != null)
+            {
+                CastSpellComponent(caster, spellComponent, targetsFound.target, targetsFound.position, spell, lastSpellComponent);
+            }
+            else if (targetsFound.position != Vector3.negativeInfinity)
+            {
+                CastSpellComponent(caster, spellComponent, caster.entityPrefab.target, targetsFound.position, spell, lastSpellComponent);
+            }
+        }
+
+        public static SpellComponent CastSpellComponent(
+            Entity caster,
+            SpellComponent spellComponent,
+            Entity target,
+            Vector3 startPosition,
+            Spell originSpell,
+            SpellComponent lastSpellComponent = null)
+        {
+            if (spellComponent == null)
+            {
+                return null;
+            }
+
+            SpellComponent cloneSpellComponent = CloneCorrectSpellComponent(spellComponent);
+            cloneSpellComponent.originSpell = originSpell;
+            caster.activeSpellComponents.Add(cloneSpellComponent);
+
+            cloneSpellComponent.caster = caster;
+            cloneSpellComponent.targetAtCast = target;
+
+            if (cloneSpellComponent.trajectory != null)
+            {
+                if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_TARGET)
+                {
+                    cloneSpellComponent.trajectory.objectToFollow = target.entityPrefab.transform;
+                } 
+                else if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_LAST_SPELL && lastSpellComponent != null && lastSpellComponent.spellPrefabController != null)
+                {
+                    cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
+                }
+            }
+
+            SpellInterpreter.instance.StartSpellTreatment(cloneSpellComponent, startPosition);
+            return cloneSpellComponent;
+        }
+
+        public static void CastPassiveSpell(Entity entity)
+        {
+            if (entity.spells == null)
+            {
+                return;
+            }
+
+            foreach (Spell spell in entity.spells.FindAll(spell => spell.TypeSpell == TypeSpell.Passive))
+            {
+                if (spell.spellComponentFirstActivation != null)
+                {
+                    // TODO : Reimplement Passive spell
+//                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.target);
+                }
+            }
+        }
+
+        private static SpellComponent CloneCorrectSpellComponent(SpellComponent spellComponent)
+        {
+            switch (spellComponent.TypeSpellComponent)
+            {
+                case TypeSpellComponent.Movement:
+                    return Tools.Clone(spellComponent as MovementSpell);
+                case TypeSpellComponent.Transformation:
+                    return Tools.Clone(spellComponent as TransformationSpell);
+                case TypeSpellComponent.Passive:
+                    return Tools.Clone(spellComponent as PassiveSpell);
+                case TypeSpellComponent.BasicAttack:
+                    return Tools.Clone(spellComponent as BasicAttackSpell);
+                case TypeSpellComponent.Summon:
+                    return Tools.Clone(spellComponent as SummonSpell);
+                default:
+                    return Tools.Clone(spellComponent);
+            }
         }
 
         public static TargetsFound GetTargetGetWithStartForm(Entity caster, StartFrom startFromNewSpellComponent,
@@ -205,210 +403,6 @@ namespace Games.Global.Spells.SpellsController
             }
 
             return targetFound;
-        }
-
-        public static void CastSpellComponentFromTargetsFound(Entity caster, SpellComponent spellComponent, TargetsFound targetsFound, SpellComponent lastSpellComponent = null)
-        {
-            if (targetsFound.targets.Count > 0)
-            {
-                targetsFound.targets.ForEach(target => CastSpellComponent(caster, spellComponent, target, target.entityPrefab.transform.position, lastSpellComponent));
-            }
-            else if (targetsFound.target != null)
-            {
-                CastSpellComponent(caster, spellComponent, targetsFound.target, targetsFound.position, lastSpellComponent);
-            }
-            else if (targetsFound.position != Vector3.negativeInfinity)
-            {
-                CastSpellComponent(caster, spellComponent, caster.entityPrefab.target, targetsFound.position, lastSpellComponent);
-            }
-        }
-
-        private static SpellComponent CloneCorrectSpellComponent(SpellComponent spellComponent)
-        {
-            switch (spellComponent.typeSpell)
-            {
-                case TypeSpell.Movement:
-                    return Tools.Clone(spellComponent as MovementSpell);
-                case TypeSpell.Transformation:
-                    return Tools.Clone(spellComponent as TransformationSpell);
-                case TypeSpell.Passive:
-                    return Tools.Clone(spellComponent as PassiveSpell);
-                case TypeSpell.BasicAttack:
-                    return Tools.Clone(spellComponent as BasicAttackSpell);
-                case TypeSpell.Summon:
-                    return Tools.Clone(spellComponent as SummonSpell);
-                default:
-                    return Tools.Clone(spellComponent);
-            }
-        } 
-
-        public static SpellComponent CastSpellComponent(Entity caster, SpellComponent spellComponent, Entity target, Vector3 startPosition, SpellComponent lastSpellComponent = null)
-        {
-            SpellComponent cloneSpellComponent = CloneCorrectSpellComponent(spellComponent);
-            caster.activeSpellComponents.Add(cloneSpellComponent);
-            
-            cloneSpellComponent.caster = caster;
-            cloneSpellComponent.targetAtCast = target;
-
-            if (cloneSpellComponent.trajectory != null)
-            {
-                if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_TARGET)
-                {
-                    cloneSpellComponent.trajectory.objectToFollow = target.entityPrefab.transform;
-                } 
-                else if (cloneSpellComponent.trajectory.followCategory == FollowCategory.FOLLOW_LAST_SPELL && lastSpellComponent != null && lastSpellComponent.spellPrefabController != null)
-                {
-                    cloneSpellComponent.trajectory.objectToFollow = lastSpellComponent.spellPrefabController.transform;
-                }
-            }
-
-            SpellInterpreter.instance.StartSpellTreatment(cloneSpellComponent, startPosition);
-            return cloneSpellComponent;
-        }
-
-        public static IEnumerator StartCooldown(Entity caster, Spell spell, int spellSlotIfPlayer = 0)
-        {
-            GameObject bgTimer = null;
-            Text timer = null;
-            
-            if (spellSlotIfPlayer > 0)
-            {
-                PlayerPrefab playerPrefab = caster.entityPrefab as PlayerPrefab;
-
-                switch (spellSlotIfPlayer)
-                {
-                    case 1:
-                        bgTimer = playerPrefab.bgTimer1;
-                        timer = playerPrefab.timer1;
-                        break;
-                    case 2:
-                        bgTimer = playerPrefab.bgTimer2;
-                        timer = playerPrefab.timer2;
-                        break;
-                    case 3:
-                        bgTimer = playerPrefab.bgTimer3;
-                        timer = playerPrefab.timer3;
-                        break;
-                }
-
-                if (timer != null && bgTimer != null)
-                {
-                    bgTimer.SetActive(true);
-                    timer.text = spell.cooldown.ToString();
-                }
-            }
-
-            float duration = spell.cooldown;
-            while (duration > 0)
-            {
-                yield return new WaitForSeconds(1);
-                duration -= 1;
-
-                if (timer != null)
-                {
-                    timer.text = duration.ToString();
-                }
-            }
-
-            if (bgTimer != null)
-            {
-                bgTimer.SetActive(false);
-            }
-
-            spell.isOnCooldown = false;
-            spell.alreadyRecast = false;
-        }
-
-        public static IEnumerator PlayCastTime(Entity caster, Spell spell, int spellSlotIfPlayer = 0)
-        {
-            TargetsFound targetsFound = GetTargetGetWithStartForm(caster, spell.startFrom);
-            caster.ressource1 -= spell.cost;
-            
-            float duration = spell.castTime;
-
-            if (spell.duringCastSpellComponent != null)
-            {
-                spell.canCastDuringCast = true;
-            }
-
-            while (duration > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                duration -= 0.1f;
-
-                if (spell.wantToCastDuringCast)
-                {
-                    spell.wantToCastDuringCast = false;
-                    spell.canCastDuringCast = false;
-
-                    CastSpellComponentFromTargetsFound(caster, spell.duringCastSpellComponent, targetsFound);
-                    if (spell.interruptCurrentCast)
-                    {
-                        yield break;
-                    }
-                }
-            }
-
-            if (spell.activeSpellComponent == null)
-            {
-                yield break;
-            }
-
-            instance.StartCoroutine(StartCooldown(caster, spell, spellSlotIfPlayer));
-            CastSpellComponentFromTargetsFound(caster, spell.activeSpellComponent, targetsFound);
-        }
-
-        public static void CastPassiveSpell(Entity entity)
-        {
-            if (entity.spells == null)
-            {
-                return;
-            }
-
-            foreach (Spell spell in entity.spells)
-            {
-                if (spell.passiveSpellComponent != null)
-                {
-                    // TODO : Reimplement Passive spell
-//                    CastSpellComponent(entity, spell.passiveSpellComponent, entity.entityPrefab.target);
-                }
-            }
-        }
-
-        public static Spell LoadSpellByName(string nameSpell)
-        {
-            string path = "Assets/Data/SpellsJson/" + nameSpell + ".json";
-            Spell spell = FindSpellWithPath(path);
-
-            if (spell == null)
-            {
-                Debug.Log("Pas de spells");
-            }
-
-            return spell;
-        }
-        
-        private static Spell FindSpellWithPath(string tempPath)
-        {
-            fsSerializer serializer = new fsSerializer();
-            fsData data;
-            Spell spell = null;
-            string jsonSpell;
-
-            try
-            {
-                jsonSpell = File.ReadAllText(tempPath);
-                data = fsJsonParser.Parse(jsonSpell);
-                serializer.TryDeserialize(data, ref spell);
-                spell = Tools.Clone(spell);
-            }
-            catch (Exception e)
-            {
-//                Debug.Log("Cant import spell for path : " + tempPath);
-//                Debug.Log(e.Message);
-            }
-
-            return spell;
         }
     }
 }

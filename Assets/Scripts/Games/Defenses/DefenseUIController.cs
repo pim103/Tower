@@ -102,8 +102,8 @@ namespace Games.Defenses
             }
 
             DrawCards();
-            hoverDetector.maxResource = initDefense.currentLevel + 3;
-            hoverDetector.currentResource = initDefense.currentLevel + 3;
+            hoverDetector.maxResource = initDefense.currentLevel + 5;
+            hoverDetector.currentResource = initDefense.currentLevel + 5;
             maxResourceText.text = "/ "+hoverDetector.maxResource;
             currentResourceText.text = hoverDetector.currentResource.ToString();
         }

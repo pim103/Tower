@@ -8,6 +8,15 @@ using Utils;
 
 namespace Games.Global.Entities
 {
+    public enum MonsterType
+    {
+        Tank,
+        Support,
+        Distance,
+        Cac
+    }
+
+    [Serializable]
     public class Monster: Entity
     {
         public int id { get; set; }
@@ -15,15 +24,32 @@ namespace Games.Global.Entities
         public int nbWeapon { get; set; }
         public int weaponOriginalId { get; set; }
 
-        public Family family { get; set; }
+        public int family { get; set; }
 
-        public TypeWeapon constraint { get; set; }
+        private TypeWeapon constraint { get; set; }
 
         private MonsterPrefab monsterPrefab;
 
-        public List<SpellList> spellsName { get; set; }
-
         public Texture2D sprite { get; set; }
+        
+        public MonsterType monsterType { get; set; }
+
+        public void SetConstraint(TypeWeapon nconstraint)
+        {
+            constraint = nconstraint;
+        }
+        
+        
+        public bool IsFacingProjectile()
+        {
+            // TODO :  Implementing Projectile Handler (look hard)
+            return false;
+        }
+
+        public TypeWeapon GetConstraint()
+        {
+            return constraint;
+        }
 
         public override void BasicAttack()
         {
@@ -45,36 +71,32 @@ namespace Games.Global.Entities
 
         public void InitMonster(MonsterPrefab newMonsterPrefab)
         {
+            InitEntityList();
             monsterPrefab = newMonsterPrefab;
             monsterPrefab.SetMonster(this);
 
             if (constraint == TypeWeapon.Distance)
             {
-                BehaviorType = BehaviorType.Distance;
+                SetBehaviorType(BehaviorType.Distance);
             } else if (constraint == TypeWeapon.Cac)
             {
-                BehaviorType = BehaviorType.Melee;
+                SetBehaviorType(BehaviorType.Melee);
             }
 
-            AttackBehaviorType = AttackBehaviorType.Random;
+            SetAttackBehaviorType(AttackBehaviorType.Random);
         }
 
         public bool InitWeapon(int idWeapon)
         {
-            if (weapons.Count < nbWeapon)
+            Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
+
+            if (constraint != weapon.type)
             {
-                Weapon weapon = DataObject.EquipmentList.GetWeaponWithId(idWeapon);
-
-                if (constraint != weapon.type)
-                {
-                    return false;
-                }
-
-                monsterPrefab.AddItemInHand(weapon);
-                weapons.Add(weapon);
-
-                return true;
+                return false;
             }
+
+            monsterPrefab.AddItemInHand(weapon);
+            this.weapon = weapon;
 
             SpellController.CastPassiveSpell(this);
 
@@ -92,24 +114,24 @@ namespace Games.Global.Entities
 
             monsterPrefab.AddItemInHand(weapon);
 
-            weapons.Add(weapon);
+            this.weapon = weapon;
         }
 
         public void InitSpells()
         {
-            foreach (SpellList spellName in spellsName)
-            {
-                Spell spell = SpellController.LoadSpellByName(spellName.name);
-
-                if (spell != null)
-                {
-                    spells.Add(spell);
-                }
-                else
-                {
-                    Debug.Log("Doesnt find spell " + spellName.name);
-                }
-            }
+//             foreach (SpellList spellName in spellsName)
+//             {
+//                 Spell spell = DataObject.SpellList.GetSpellByName(spellName.);
+//
+//                 if (spell != null)
+//                 {
+//                     spells.Add(spell);
+//                 }
+//                 else
+//                 {
+// //                    Debug.Log("Doesnt find spell " + spellName.name);
+//                 }
+//             }
         }
 
         public void InitKey(GameObject keyObject)

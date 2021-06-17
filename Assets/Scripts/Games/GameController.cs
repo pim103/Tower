@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DefaultNamespace;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global;
@@ -46,6 +47,7 @@ namespace Games {
         private string roomId;
 
         [SerializeField] private Button backToMenu;
+        [SerializeField] private Phase phase;
 
         public static GameObject mainCamera;
 
@@ -86,10 +88,16 @@ namespace Games {
             // TODO : change index
             PlayerIndex = 0;
 
-            if (byPassDefense)
+            if (phase == Phase.Attack)
             {
                 gameGridController.GenerateAndInitFakeGrid();
                 AttackPhase();
+            } 
+            else if (phase == Phase.Defense)
+            {
+                gameGridController.GenerateAndInitFakeGrid();
+                StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
+                ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
             }
             else
             {
@@ -123,10 +131,11 @@ namespace Games {
                 gameGridController.InitGridData(currentGameGrid);
                 initDefensePhase.Init();
                 await transitionDefenseAttack.PlayDefensePhase();
-            
+
                 gameGridController.DesactiveMap();
-            
-                GameControllerNetwork.SendGridData();
+
+                // Send defense grid
+                GameControllerNetwork.SendGridData(initDefensePhase.defenseGrid);
 
                 while (!CurrentRoom.generateAttackGrid)
                 {

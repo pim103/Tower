@@ -38,14 +38,18 @@ namespace Games.Global.Weapons
             isAttacking = false;
         }
 
-        public void BasicAttack()
+        public bool BasicAttack()
         {
+            bool initAttack = !isAttacking;
+
             if (!isAttacking)
             {
                 Animator animator = wielder.entityPrefab.animator;
                 animator.SetBool(weapon.animationToPlay, true);
                 isAttacking = true;
             }
+
+            return initAttack;
         }
 
         public void DeactivateBoolAttack()

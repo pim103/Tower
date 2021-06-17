@@ -17,31 +17,11 @@ namespace Games.Global.Weapons
         Distance,
         Cac
     }
-    
-    public enum CategoryWeapon
-    {
-        SHORT_SWORD,
-        LONG_SWORD,
-        SPEAR,
-        AXE,
-        TWO_HAND_AXE,
-        HAMMER,
-        HALBERD,
-        MACE,
-        BOW,
-        STAFF,
-        DAGGER,
-        TRIDENT,
-        RIFLE,
-        CROSSBOW,
-        SLING,
-        HANDGUN
-    }
 
     public class Weapon : Equipement
     {
         public WeaponPrefab weaponPrefab;
-        
+
         public int id { get; set; }
         public CategoryWeapon category { get; set; }
         public TypeWeapon type { get; set; }
@@ -49,12 +29,6 @@ namespace Games.Global.Weapons
         public float attSpeed { get; set; }
 
         public string animationToPlay { get; set; }
-        public string spellOfBasicAttack { get; set; }
-
-        public List<string> warriorSpells { get; set; }
-        public List<string> mageSpells { get; set; }
-        public List<string> rogueSpells { get; set; }
-        public List<string> rangerSpells { get; set; }
 
         public Spell basicAttack { get; set; }
 
@@ -62,24 +36,19 @@ namespace Games.Global.Weapons
         {
             switch (classe)
             {
-                case Classes.Warrior:
-                    InitWeaponSpellWithJson(warriorSpells);
-                    break;
-                case Classes.Mage:
-                    InitWeaponSpellWithJson(mageSpells);
-                    break;
-                case Classes.Rogue:
-                    InitWeaponSpellWithJson(rogueSpells);
-                    break;
-                case Classes.Ranger:
-                    InitWeaponSpellWithJson(rangerSpells);
-                    break;
+//                case Classes.Warrior:
+//                    InitWeaponSpellWithJson(warriorSpells);
+//                    break;
+//                case Classes.Mage:
+//                    InitWeaponSpellWithJson(mageSpells);
+//                    break;
+//                case Classes.Rogue:
+//                    InitWeaponSpellWithJson(rogueSpells);
+//                    break;
+//                case Classes.Ranger:
+//                    InitWeaponSpellWithJson(rangerSpells);
+//                    break;
             }
-        }
-
-        public virtual void FixAngleAttack(bool isFirstIteration, Entity wielder)
-        {
-            
         }
 
         public void InitWeapon()
@@ -87,14 +56,13 @@ namespace Games.Global.Weapons
             InitBasicAttack();
         }
 
-        public void InitBasicAttack()
+        private void InitBasicAttack()
         {
-            Spell spell = SpellController.LoadSpellByName(spellOfBasicAttack);
             Entity wielder = weaponPrefab.GetWielder();
             
-            if (spell != null)
+            if (category?.spellAttack != null)
             {
-                wielder.basicAttack = spell;
+                wielder.basicAttack = category.spellAttack;
             }
         }
 
@@ -102,9 +70,14 @@ namespace Games.Global.Weapons
         {
             Entity wielder = weaponPrefab.GetWielder();
 
+            if (spellsToFind == null)
+            {
+                return;
+            }
+            
             foreach (string spellString in spellsToFind)
             {
-                Spell spell = SpellController.LoadSpellByName(spellString);
+                Spell spell = DataObject.SpellList.GetSpellByName(spellString);
 
                 if (spell == null)
                 {

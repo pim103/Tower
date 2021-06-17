@@ -1,8 +1,11 @@
 ﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
 using System.Collections.Generic;
 using System.Linq;
+using ContentEditor.UtilsEditor;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +17,8 @@ namespace ContentEditor
     {
         MONSTER,
         GROUP,
-        MONSTER_IN_GROUP
+        MONSTER_IN_GROUP,
+        EDIT_SPELL
     }
 
     public enum TreatmentInDatabase
@@ -42,6 +46,7 @@ namespace ContentEditor
         private MonsterEditorCategory monsterEditorCategory = MonsterEditorCategory.MONSTER;
 
         private Monster newMonster;
+        private Monster currentMonster;
         private GroupsMonster newGroup;
         private GroupsMonster currentGroupMonsterEditing;
         private MonstersInGroup monstersInGroup;
@@ -51,6 +56,9 @@ namespace ContentEditor
 
         private List<string> weaponChoice = new List<string>();
         private List<int> weaponChoiceIds = new List<int>();
+        
+        private Dictionary<Spell, CreateOrSelectComponent<Spell>> spellSelectors = new Dictionary<Spell, CreateOrSelectComponent<Spell>>();
+        private CreateOrSelectComponent<Spell> newSelector;
 
         public void DisplayHeaderContent()
         {
@@ -100,48 +108,58 @@ namespace ContentEditor
                 else if (monsterEditorCategory == MonsterEditorCategory.MONSTER_IN_GROUP)
                 {
                     DisplayMonsterInGroupEditor();
+                } else if (monsterEditorCategory == MonsterEditorCategory.EDIT_SPELL)
+                {
+                    DisplaySpellForMonster();
                 }
             }
         }
 
         public void DisplayFooterContent()
         {
-            if (monsterEditorCategory == MonsterEditorCategory.MONSTER)
+            switch (monsterEditorCategory)
             {
-                string buttonLabel = "Créer un nouveau monstre";
-
-                if (isCreatingNewMonster)
+                case MonsterEditorCategory.MONSTER:
                 {
-                    if (GUILayout.Button("Reset le nouveau monstre"))
+                    string buttonLabel = "Créer un nouveau monstre";
+
+                    if (isCreatingNewMonster)
                     {
-                        newMonster = new Monster();
-                    }
+                        if (GUILayout.Button("Reset le nouveau monstre"))
+                        {
+                            newMonster = new Monster();
+                        }
                     
-                    buttonLabel = "Changer les monstres existants";
-                }
-
-                if (GUILayout.Button(buttonLabel))
-                {
-                    isCreatingNewMonster = !isCreatingNewMonster;
-                }
-            }
-            else if (monsterEditorCategory == MonsterEditorCategory.GROUP)
-            {
-                string buttonLabel = "Créer un nouveau groupe";
-
-                if (isCreatingNewGroup)
-                {
-                    if (GUILayout.Button("Reset le nouveau groupe"))
-                    {
-                        newGroup = new GroupsMonster();
+                        buttonLabel = "Changer les monstres existants";
                     }
 
-                    buttonLabel = "Changer les groupes existants";
-                }
+                    if (GUILayout.Button(buttonLabel))
+                    {
+                        isCreatingNewMonster = !isCreatingNewMonster;
+                    }
 
-                if (GUILayout.Button(buttonLabel))
+                    break;
+                }
+                case MonsterEditorCategory.GROUP:
                 {
-                    isCreatingNewGroup = !isCreatingNewGroup;
+                    string buttonLabel = "Créer un nouveau groupe";
+
+                    if (isCreatingNewGroup)
+                    {
+                        if (GUILayout.Button("Reset le nouveau groupe"))
+                        {
+                            newGroup = new GroupsMonster();
+                        }
+
+                        buttonLabel = "Changer les groupes existants";
+                    }
+
+                    if (GUILayout.Button(buttonLabel))
+                    {
+                        isCreatingNewGroup = !isCreatingNewGroup;
+                    }
+
+                    break;
                 }
             }
         }
@@ -164,15 +182,18 @@ namespace ContentEditor
             EditorGUILayout.IntField("ID", monster.id);
             EditorGUI.EndDisabledGroup();
 
+            monster.monsterType = (MonsterType) EditorGUILayout.EnumPopup("Monster type", monster.monsterType);
             monster.mobName = EditorGUILayout.TextField("Name", monster.mobName);
             monster.hp = EditorGUILayout.FloatField("Hp", monster.hp);
             monster.def = EditorGUILayout.IntField("Defense", monster.def);
             monster.att = EditorGUILayout.FloatField("Attack", monster.att);
             monster.attSpeed = EditorGUILayout.FloatField("Attack speed", monster.attSpeed);
             monster.speed = EditorGUILayout.FloatField("Speed", monster.speed);
-            monster.constraint = (TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.constraint);
-            monster.modelName = EditorGUILayout.TextField("Model Name", monster.modelName);
-            
+            monster.SetConstraint((TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.GetConstraint()));
+
+            EditorGUILayout.LabelField("Model");
+            monster.model = (GameObject)EditorGUILayout.ObjectField(monster.model, typeof(GameObject), false);
+
             EditorGUI.BeginChangeCheck();
             int selected = weaponChoiceIds.IndexOf(monster.weaponOriginalId);
             selected = EditorGUILayout.Popup("Original weapon", selected == -1 ? 0 : selected, weaponChoice.ToArray());
@@ -183,8 +204,21 @@ namespace ContentEditor
             }
 
             EditorGUILayout.LabelField("Sprite");
-
             monster.sprite = (Texture2D)EditorGUILayout.ObjectField(monster.sprite, typeof(Texture2D), false);
+
+            if (!isCreatingNewMonster && GUILayout.Button("Editer les spells"))
+            {
+                currentMonster = monster;
+                monsterEditorCategory = MonsterEditorCategory.EDIT_SPELL;
+                
+                spellSelectors.Clear();
+                newSelector = null;
+            }
+
+            if (GUILayout.Button("Instantiate monster") && UtilEditor.IsTestScene())
+            {
+                Debug.Log("Need to instantiate monster");
+            }
 
             EditorGUILayout.EndVertical();
         }
@@ -202,7 +236,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder le nouveau monstre"))
             {
-                contentGenerationEditor.RequestSaveMonster(newMonster, true);
+                PrepareSaveRequest.RequestSaveMonster(newMonster, true);
                 newMonster = null;
             }
 
@@ -247,7 +281,14 @@ namespace ContentEditor
             group.name = EditorGUILayout.TextField("Name", group.name);
             group.cost = EditorGUILayout.IntField("Cost", group.cost);
             group.radius = EditorGUILayout.IntField("Radius", group.radius);
-            group.family = (Family) EditorGUILayout.EnumPopup("Family", group.family);
+            
+            EditorGUI.BeginChangeCheck();
+            Family family = (Family) EditorGUILayout.EnumPopup("Family", (Family)group.family);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                group.family = (int) family;
+            }
 
             EditorGUILayout.LabelField("Sprite");
             group.sprite = (Texture2D)EditorGUILayout.ObjectField(group.sprite, typeof(Texture2D), false);
@@ -258,6 +299,11 @@ namespace ContentEditor
                 monsterEditorCategory = MonsterEditorCategory.MONSTER_IN_GROUP;
 
                 CreateChoiceMonsterList();
+            }
+
+            if (GUILayout.Button("Instantiate group") && UtilEditor.IsTestScene())
+            {
+                GameGridController.InitGroups(group, 1, 1);
             }
 
             EditorGUILayout.EndVertical();
@@ -276,7 +322,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder le nouveau groupe"))
             {
-                contentGenerationEditor.RequestSaveGroupMonster(newGroup, true, null);
+                PrepareSaveRequest.RequestSaveGroupMonster(newGroup, true, null);
                 newGroup = null;
             }
 
@@ -361,6 +407,78 @@ namespace ContentEditor
             EditorGUILayout.EndHorizontal();
         }
 
+        private void DisplaySpellForMonster()
+        {
+            GUILayout.BeginHorizontal();
+            int loop = 0;
+            List<Spell> existingSpell = DataObject.SpellList.SpellInfos.ConvertAll(s => s.spell);
+
+            foreach (Spell spell in currentMonster.spells)
+            {
+                if (!spellSelectors.ContainsKey(spell))
+                {
+                    spellSelectors.Add(spell, new CreateOrSelectComponent<Spell>(existingSpell, spell, "Spell", null));
+                }
+            }
+
+            foreach (KeyValuePair<Spell, CreateOrSelectComponent<Spell>> selector in spellSelectors)
+            {
+                Spell currentSpell = selector.Value.DisplayOptions();
+
+                GUILayout.BeginVertical();
+                Color defaultC = GUI.color;
+                GUI.color = Color.green;
+                if (GUILayout.Button("Save Spell"))
+                {
+                    PrepareSaveRequest.SaveSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUI.color = Color.red;
+                if (GUILayout.Button("Delete Spell"))
+                {
+                    PrepareSaveRequest.DeleteSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUILayout.EndVertical();
+
+                ++loop;
+                if (loop % 6 == 0)
+                {
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.BeginHorizontal();
+                }
+            }
+
+            if (newSelector != null)
+            {
+                Spell currentSpell = newSelector.DisplayOptions();
+
+                GUILayout.BeginVertical();
+                Color defaultC = GUI.color;
+                GUI.color = Color.green;
+                if (GUILayout.Button("Save Spell"))
+                {
+                    spellSelectors.Add(currentSpell, newSelector);
+                    PrepareSaveRequest.SaveSpellForMonster(currentMonster, currentSpell);
+                }
+                GUI.color = defaultC;
+                GUI.color = Color.red;
+                if (GUILayout.Button("Delete Spell"))
+                {
+                    newSelector = null;
+                }
+                GUI.color = defaultC;
+                GUILayout.EndVertical();
+            }
+            
+            EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("Ajouter un spell"))
+            {
+                newSelector = new CreateOrSelectComponent<Spell>(existingSpell, null, "Spell", null);
+            }
+        }
+
         private void CreateChoiceMonsterList()
         {
             monsterChoice.Clear();
@@ -382,13 +500,13 @@ namespace ContentEditor
             {
                 return;
             }
-            
+
             weaponChoice.Clear();
             weaponChoiceIds.Clear();
-            
+
             weaponChoice.Add("Nothing");
             weaponChoiceIds.Add(-1);
-            
+
             DataObject.EquipmentList.weapons.ForEach(weapon =>
             {
                 weaponChoice.Add(weapon.id + " : " + weapon.equipmentName);

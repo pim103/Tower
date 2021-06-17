@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global.Spells.SpellBehavior;
-using Games.Global.Spells.SpellParameter;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -135,7 +134,7 @@ namespace Games.Global.Spells.SpellsController
             }
 
             List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
-            
+
             foreach (ActionTriggered action in actionsToPlay)
             {   
                 TargetsFound targetsFound =
@@ -151,7 +150,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (action.spellComponent != null)
                 {
-                    SpellController.CastSpellComponentFromTargetsFound(spellComponent.caster, action.spellComponent, targetsFound, spellComponent);
+                    SpellController.CastSpellComponentFromTargetsFound(spellComponent.caster, spellComponent.originSpell, action.spellComponent, targetsFound, spellComponent);
                 }
 
                 if (action.effect != null)
@@ -210,7 +209,11 @@ namespace Games.Global.Spells.SpellsController
             float spellInterval = spellComponent.spellInterval <= 0.00001 ? 1 : spellComponent.spellInterval;
             int originalSpellCharges = spellComponent.spellCharges;
             
-            while (spellDuration > 0 || (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || (spellComponent.trajectory != null && spellComponent.trajectory.disapearAtTheEndOfTrajectory))
+            while (
+                spellDuration > 0 || 
+                (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || 
+                (spellComponent.trajectory != null && spellComponent.trajectory.disapearAtTheEndOfTrajectory) ||
+                (spellComponent.originSpell != null && spellComponent.originSpell.isHolding))
             {   
                 DuringIntervalSpellBehavior(spellComponent);
                 yield return new WaitForSeconds(spellInterval);

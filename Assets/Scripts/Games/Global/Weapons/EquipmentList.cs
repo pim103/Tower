@@ -12,15 +12,11 @@ namespace Games.Global.Weapons
 {
     public class EquipmentList
     {
-        private GameObject[] equipmentGameObject;
-
         public List<Weapon> weapons;
         public List<Armor> armors;
 
-        public EquipmentList(GameObject[] list, string jsonObject)
+        public EquipmentList(string jsonObject)
         {
-            equipmentGameObject = list;
-
             weapons = new List<Weapon>();
             armors = new List<Armor>();
             InitEquipmentDictionnary(jsonObject);
@@ -54,14 +50,11 @@ namespace Games.Global.Weapons
             return cloneWeapon;
         }
 
-        public void PrintDictionnary()
+        public Weapon GetFirstWeaponFromIdCategory(int idCategory)
         {
-            foreach (Weapon weapon in weapons)
-            {
-                Debug.Log(weapon);
-                Debug.Log(weapon.category);
-                Debug.Log(weapon.damage);
-            }
+            // TODO : use typeWeapon
+            // return Tools.Clone(weapons.Find(weapon => weapon.category == categoryWeapon));
+            return Tools.Clone(weapons.First());
         }
 
         private void InitEquipmentDictionnary(string json)
@@ -83,9 +76,10 @@ namespace Games.Global.Weapons
                     {
                         Weapon loadedWeapon = equipmentJsonObject.ConvertToWeapon();
 
-                        if (equipmentGameObject != null && equipmentGameObject.Length > 0 && equipmentGameObject.ToList().Exists(go => go.name == loadedWeapon.modelName))
+                        GameObject weaponModel = Resources.Load(loadedWeapon.modelName) as GameObject;
+                        if (weaponModel)
                         {
-                            loadedWeapon.model = equipmentGameObject.First(go => go.name == loadedWeapon.modelName);
+                            loadedWeapon.model = weaponModel;
                         }
 
                         weapons.Add(loadedWeapon);
@@ -94,9 +88,10 @@ namespace Games.Global.Weapons
                     {
                         Armor loadedArmor = equipmentJsonObject.ConvertToArmor();
 
-                        if (equipmentGameObject != null && equipmentGameObject.Length > 0 && equipmentGameObject.ToList().Exists(go => go.name == loadedArmor.modelName))
+                        GameObject armorModel = Resources.Load(loadedArmor.modelName) as GameObject;
+                        if (armorModel)
                         {
-                            loadedArmor.model = equipmentGameObject.First(go => go.name == loadedArmor.modelName);
+                            loadedArmor.model = armorModel;
                         }
 
                         armors.Add(loadedArmor);

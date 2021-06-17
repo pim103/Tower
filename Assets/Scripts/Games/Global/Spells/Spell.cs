@@ -28,7 +28,7 @@ namespace Games.Global.Spells
         Cone,
     }
 
-    public enum TypeSpell
+    public enum TypeSpellComponent
     {
         Classic,
         Movement,
@@ -42,6 +42,7 @@ namespace Games.Global.Spells
     {
         Magical,
         Physical
+     
     }
     
     public enum Trigger
@@ -86,10 +87,10 @@ namespace Games.Global.Spells
             switch (conditionType)
             {
                 case ConditionType.IfCasterHasEffect:
-                    conditionIsValid = caster.underEffects.ContainsKey(typeEffectNeeded);
+                    conditionIsValid = caster.EntityIsUnderEffect(typeEffectNeeded);
                     break;
                 case ConditionType.IfTargetHasEffect:
-                    conditionIsValid = target.underEffects.ContainsKey(typeEffectNeeded);
+                    conditionIsValid = target.EntityIsUnderEffect(typeEffectNeeded);
                     break;
                 case ConditionType.MinEnemiesInArea:
                     conditionIsValid = caster.entityInRange.Count >= valueNeeded;
@@ -114,6 +115,23 @@ namespace Games.Global.Spells
         None,
         OnAttack,
         OnDamageReceived
+    }
+
+    public enum TypeSpell
+    {
+        UniqueActivation,
+        MultipleActivation,
+        Passive,
+        Holding,
+        HoldThenRelease,
+        ActivePassive
+    }
+
+    [Serializable]
+    public class SpellComponentWithTimeCast
+    {
+        public SpellComponent spellComponent { get; set; }
+        public float timeBeforeReset { get; set; }
     }
 
     [Serializable]
@@ -160,6 +178,8 @@ namespace Games.Global.Spells
         public virtual void OnTriggerExit(Entity enemy) {}
 
         /* Parameters used in game */
+        public Spell originSpell;
+
         public Coroutine currentCoroutine;
         public Entity caster;
         public Entity targetAtCast;
@@ -167,43 +187,76 @@ namespace Games.Global.Spells
         public Vector3 startAtPosition;
 
         public PathCreator pathCreator;
-        public TypeSpell typeSpell { get; set; }
-        public SpellPrefabController spellPrefabController { get; set; }
+        public TypeSpellComponent TypeSpellComponent { get; set; }
+        public SpellPrefabController spellPrefabController;
+        
+        public override string ToString()
+        {
+            return nameSpellComponent;
+        }
+    }
+
+    public enum SpellTag
+    {
+        MeleeDamage,
+        DistanceDamage,
+        HealHimself,
+        HealOther,
+        HealArea,
+        MeleeControl,
+        DistanceControl,
+        DefensiveBuff,
+        OffensiveBuff,
+        Movement,
+        DispelHimself,
+        DispelOther,
+        DispelEnemy
     }
 
     [Serializable]
     public class Spell
     {
+        public int id { get; set; } = -1;
+        public SpellTag spellTag { get; set; }
+        public TypeSpell TypeSpell { get; set; }
         public StartFrom startFrom { get; set; }
         public string nameSpell { get; set; }
         public float initialCooldown { get; set; }
         public float cooldown { get; set; }
         public float cost { get; set; }
         public float castTime { get; set; }
-
-        public bool deactivatePassiveWhenActive { get; set; }
         public bool isOnCooldown { get; set; }
 
         public int nbUse { get; set; } = -1;
 
-        public bool canCastDuringCast { get; set; } = false;
-        public bool wantToCastDuringCast { get; set; } = false;
-        
         public Texture2D sprite { get; set; }
 
-        // Active:
-        public SpellComponent activeSpellComponent { get; set; }
+        public SpellComponent spellComponentFirstActivation { get; set; }
 
-        // Passive:
+        // Passive
         public SpellComponent passiveSpellComponent { get; set; }
+        public bool deactivatePassiveWhenActive { get; set; }
+        
+        // Holding
+        public float holdingCost { get; set; }
+        public float maximumTimeHolding { get; set; }
+        
+        public bool isHolding;
 
-        // DuringCast:
-        public SpellComponent duringCastSpellComponent { get; set; }
-        public bool interruptCurrentCast { get; set; }
+        public float timeHolding { get; set; }
 
-        //Recast
-        public SpellComponent recastSpellComponent { get; set; }
-        public bool canRecast { get; set; }
-        public bool alreadyRecast { get; set; }
+        public SpellComponent spellComponentAfterHolding { get; set; }
+
+        // Multiple Activation
+        public List<SpellComponentWithTimeCast> spellComponents { get; set; }
+        public int nbSpellActivation = 0;
+        
+        // In game parameters
+        public float currentCooldown;
+
+        public override string ToString()
+        {
+            return nameSpell;
+        }
     }
 }

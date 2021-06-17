@@ -1,9 +1,13 @@
 ﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
 using System.Collections.Generic;
+using System.Diagnostics;
+using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Weapons;
+using Games.Players;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Tools = Utils.Tools;
 
 namespace ContentEditor
@@ -14,6 +18,8 @@ namespace ContentEditor
         public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
         public ContentGenerationEditor contentGenerationEditor;
         
+        private CreateOrSelectComponent<CategoryWeapon> categoryWeaponSelector;
+
         private Weapon newWeapon;
 
         public void DisplayHeaderContent()
@@ -70,7 +76,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Sauvegarder la nouvelle arme"))
             {
-                contentGenerationEditor.RequestSaveWeapon(newWeapon, true);
+                PrepareSaveRequest.RequestSaveWeapon(newWeapon, true);
                 newWeapon = null;
             }
 
@@ -80,19 +86,34 @@ namespace ContentEditor
         private void DisplayWeaponStat()
         {
             EditorGUILayout.BeginHorizontal();
+            int offsetX = 5;
+            int offsetY = 0;
 
             int loop = 0;
 
             foreach (Weapon weapon in DataObject.EquipmentList.weapons)
             {
-                DisplayOneWeaponEditor(weapon);
+                GUILayout.BeginArea(new Rect(offsetX, offsetY, 300, 500));
 
-                ++loop;
-                if (loop % 6 == 0)
+                offsetX += 305;
+
+                if (offsetX + 305 > EditorConstant.WIDTH)
                 {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
+                    offsetX = 0;
+                    offsetY += 300;
                 }
+
+                DisplayOneWeaponEditor(weapon);
+
+                GUILayout.EndArea();
+                // ++loop;
+                // if (loop % 6 == 0)
+                // {
+                //     EditorGUILayout.EndHorizontal();
+                //     EditorGUILayout.BeginHorizontal();
+                // }
             }
 
             EditorGUILayout.EndHorizontal();
@@ -120,14 +141,38 @@ namespace ContentEditor
             weapon.damage = EditorGUILayout.IntField("Damage", weapon.damage);
             weapon.attSpeed = EditorGUILayout.FloatField("Attack speed", weapon.attSpeed);
             weapon.type = (TypeWeapon) EditorGUILayout.EnumPopup("Type", weapon.type);
-            weapon.category = (CategoryWeapon) EditorGUILayout.EnumPopup("Category", weapon.category);
+
+            if (DictionaryManager.hasCategoriesLoad)
+            {
+                categoryWeaponSelector ??= new CreateOrSelectComponent<CategoryWeapon>(DataObject.CategoryWeaponList.categories,
+                        weapon.category, "Categorie", null);
+
+                weapon.category = categoryWeaponSelector.DisplayOptions();
+            }
+
             weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);
             weapon.rarity = (Rarity) EditorGUILayout.EnumPopup("Rarity", weapon.rarity);
             weapon.lootRate = EditorGUILayout.IntField("Loot Rate", weapon.lootRate);
-            weapon.modelName = EditorGUILayout.TextField("Model Name", weapon.modelName);
+
+            EditorGUILayout.LabelField("Model");
+            weapon.model = (GameObject)EditorGUILayout.ObjectField(weapon.model, typeof(GameObject), false);
+
             EditorGUILayout.LabelField("Sprite");
-                
             weapon.sprite = (Texture2D)EditorGUILayout.ObjectField(weapon.sprite, typeof(Texture2D), false);
+
+            if (GUILayout.Button("Instantiate weapon") && UtilEditor.IsTestScene())
+            {
+                Player player = UtilEditor.GetPlayerFromSceneTest();
+
+                if (player == null)
+                {
+                    Debug.LogError("Can't find player object in current scene");
+                }
+                else
+                {
+                    player.InitWeapon(weapon);
+                }
+            }
 
             EditorGUILayout.EndVertical();
         }

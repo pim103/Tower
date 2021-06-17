@@ -1,7 +1,9 @@
-﻿using Games.Global.Spells.SpellParameter;
+﻿using System;
+using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
 using PathCreation;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Games.Global.Spells.SpellBehavior
 {
@@ -17,16 +19,12 @@ namespace Games.Global.Spells.SpellBehavior
             }
 
             PathCreator pathCreator = null;
-            
-            Vector3 newPosition = startPosition;
-            newPosition.y = spellToInstantiate.height;
-
             // INIT SPELL PATH
             if (spellComponent.trajectory != null && spellComponent.trajectory.spellPath != null)
             {
                 GameObject spellPathCreator = ObjectPooler.SharedInstance.GetPooledObject(0);
                 
-                spellPathCreator.transform.position = newPosition;
+                spellPathCreator.transform.position = startPosition;
                 spellPathCreator.transform.rotation = spellComponent.caster.entityPrefab.transform.rotation;
 
                 spellPathCreator.SetActive(true);
@@ -47,28 +45,12 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 // INIT GENERIC SPELL PREFAB
                 GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
-                genericSpellPrefab.transform.localScale = spellToInstantiate.scale;
-                genericSpellPrefab.transform.position = newPosition;
-
-                // INIT OBJECT CHILD OF GENERIC SPELL
-                GameObject prefabWanted = null;
-                if (spellComponent.spellToInstantiate.idPoolObject != -1)
-                {
-                    prefabWanted = ObjectPooler.SharedInstance.GetPooledObject(spellComponent.spellToInstantiate.idPoolObject);
-                    prefabWanted.transform.parent = genericSpellPrefab.transform;
-                    prefabWanted.transform.localPosition = Vector3.zero;
-                    prefabWanted.transform.localEulerAngles = Vector3.zero;
-                    prefabWanted.transform.localScale = Vector3.one;
-                    prefabWanted.SetActive(true);   
-                }
-
+                genericSpellPrefab.SetActive(true);
                 SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
-                spellPrefabController.ActiveCollider(spellToInstantiate.geometry);
-                spellPrefabController.SetValues(spellComponent.caster, spellComponent, prefabWanted);
+
+                spellPrefabController.SetSpellParameter(spellComponent, startPosition);
 
                 spellComponent.spellPrefabController = spellPrefabController;
-                
-                genericSpellPrefab.SetActive(true);
             }
         }
 

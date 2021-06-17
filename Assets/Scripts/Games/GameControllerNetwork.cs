@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FullSerializer;
+using Games.Defenses;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
@@ -102,14 +103,15 @@ namespace Games
             if (callbackMessage.callbackMessages.message == "StartDefense")
             {
                 GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
-//                GameController.currentGameGrid.DisplayGridData();
-
                 CurrentRoom.loadGameDefense = true;
             }
 
             if (callbackMessage.callbackMessages.message == "LoadAttackGrid")
             {
+                Debug.Log("Receive new grid");
+                GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
                 CurrentRoom.generateAttackGrid = true;
+                GameController.currentGameGrid.DisplayGridData();
             }
             if (callbackMessage.callbackMessages.message == "StartAttack")
             {
@@ -136,20 +138,20 @@ namespace Games
         public static void SendRoleAndClasses()
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.classe.ToString());
-            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.categoryWeapon.ToString());
+            dictionary.Add("classes", ChooseDeckAndClass.currentRoleIdentity.GetIdentityId().ToString());
+            dictionary.Add("weapon", ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId().ToString());
             dictionary.Add("equipmentDeck", ChooseDeckAndClass.equipmentDeckId.ToString());
             dictionary.Add("monsterDeck", ChooseDeckAndClass.monsterDeckId.ToString());
             
             TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "initGame", TowersWebSocket.FromDictToString(dictionary));
         }
         
-        public static void SendGridData()
+        public static void SendGridData(GameGrid grid)
         {
             fsSerializer serializer = new fsSerializer();
             fsData data;
 
-            serializer.TrySerialize(GameController.currentGameGrid.GetType(), GameController.currentGameGrid, out data);
+            serializer.TrySerialize(grid.GetType(), grid, out data);
 
             Dictionary<string, string> args = new Dictionary<string, string>();
             args.Add("gameGrid", fsJsonPrinter.CompressedJson(data));

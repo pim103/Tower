@@ -2,6 +2,7 @@
 using System.Linq;
 using Games.Global.Armors;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Networking;
@@ -68,19 +69,19 @@ namespace Games.Global
         public int magicalDef { get; set; } = 0;
         public int physicalDef { get; set; } = 0;
 
-        public float ressource1 { get; set; } = DEFAULT_RESSOURCE;
+        public float ressource { get; set; } = DEFAULT_RESSOURCE;
         public float ressource2 { get; set; } = 0;
 
         public List<int> playerInBack { get; set; }
         
         // If needed, create WeaponExposer to get all scripts of a weapon
-        public List<Weapon> weapons { get; set; }
+        public Weapon weapon { get; set; }
         public List<Armor> armors { get; set; }
 
-        public TypeEntity typeEntity { get; set; }
+        private TypeEntity typeEntity { get; set; }
 
         // Suffered effect 
-        public Dictionary<TypeEffect, Effect> underEffects { get; set; }
+        private List<Effect> underEffects;
 
         // Effect add to damage deal
         public List<Effect> damageDealExtraEffect { get; set; }
@@ -97,12 +98,85 @@ namespace Games.Global
         public Spell basicDefense { get; set; }
         public List<Spell> spells { get; set; }
 
-        public BehaviorType BehaviorType { get; set; }
-        public AttackBehaviorType AttackBehaviorType { get; set; }
+        public List<SpellPrefabController> inNefastSpells;
+
+        private BehaviorType BehaviorType { get; set; }
+        private AttackBehaviorType AttackBehaviorType { get; set; }
 
         public bool doingSkill { get; set; } = false;
 
         public int nbCharges;
+
+        public BehaviorType GetBehaviorType()
+        {
+            return BehaviorType;
+        }
+        
+        public AttackBehaviorType GetAttackBehaviorType()
+        {
+            return AttackBehaviorType;
+        }
+        
+        public TypeEntity GetTypeEntity()
+        {
+            return typeEntity;
+        }
+        
+        public void SetBehaviorType(BehaviorType bType)
+        {
+            BehaviorType = bType;
+        }
+        
+        public void SetAttackBehaviorType(AttackBehaviorType abType)
+        {
+            AttackBehaviorType = abType;
+        }
+        
+        public void SetTypeEntity(TypeEntity tEntity)
+        {
+            typeEntity = tEntity;
+        }
+
+        public bool EntityIsUnderEffect(TypeEffect typeEffect)
+        {
+            return underEffects.Exists(effect => effect.typeEffect == typeEffect);
+        }
+        
+        public Effect TryGetEffectInUnderEffect(TypeEffect typeEffect)
+        {
+            if (EntityIsUnderEffect(typeEffect))
+            {
+                return underEffects.First(effect => effect.typeEffect == typeEffect);
+            }
+
+            return null;
+        }
+
+        public void ClearUnderEffect()
+        {
+            underEffects.Clear();
+        }
+
+        public int GetNbUnderEffect()
+        {
+            return underEffects.Count;
+        }
+
+        public void AddEffectInUnderEffect(Effect effect)
+        {
+            underEffects.Add(effect);
+        }
+
+        public void RemoveUnderEffect(TypeEffect typeEffect)
+        {
+            Effect effectToDelete = TryGetEffectInUnderEffect(typeEffect);
+            underEffects.Remove(effectToDelete);
+        }
+
+        public List<Effect> GetUnderEffects()
+        {
+            return underEffects;
+        }
 
         public virtual void BasicAttack()
         {
@@ -156,14 +230,14 @@ namespace Games.Global
         
         public void InitEntityList(int nbWeapons = DEFAULT_NB_WEAPONS)
         {
-            weapons = new List<Weapon>();
-            armors = new List<Armor>();
-            underEffects = new Dictionary<TypeEffect, Effect>();
-            damageDealExtraEffect = new List<Effect>();
-            damageReceiveExtraEffect = new List<Effect>();
-            entityInRange = new List<Entity>();
-            activeSpellComponents = new List<SpellComponent>();
-            spells = new List<Spell>();
+            armors ??= new List<Armor>();
+            underEffects ??= new List<Effect>();
+            damageDealExtraEffect ??= new List<Effect>();
+            damageReceiveExtraEffect ??= new List<Effect>();
+            entityInRange ??= new List<Entity>();
+            activeSpellComponents ??= new List<SpellComponent>();
+            spells ??= new List<Spell>();
+            inNefastSpells ??= new List<SpellPrefabController>();
         }
 
         // Take true damage is usefull with effect pierce
@@ -213,7 +287,7 @@ namespace Games.Global
 
             if (originDamage.hasLifeSteal)
             {
-                originDamage.hp += damageReceived * originDamage.underEffects[TypeEffect.LifeSteal].level;
+                originDamage.hp += damageReceived * originDamage.TryGetEffectInUnderEffect(TypeEffect.LifeSteal).level;
                 if (originDamage.hp > originDamage.initialHp)
                 {
                     originDamage.hp = originDamage.initialHp;
@@ -238,7 +312,7 @@ namespace Games.Global
 
             if (isSleep)
             {
-                EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Sleep]);
+                EffectController.StopCurrentEffect(this, TryGetEffectInUnderEffect(TypeEffect.Sleep));
             }
 
             SpellInterpreter.TriggerWhenEntityReceivedDamage(activeSpellComponents);
@@ -259,7 +333,7 @@ namespace Games.Global
                 if (shooldResurrect)
                 {
                     hp = initialHp / 2;
-                    EffectController.StopCurrentEffect(this, underEffects[TypeEffect.Resurrection]);
+                    EffectController.StopCurrentEffect(this, TryGetEffectInUnderEffect(TypeEffect.Resurrection));
 
                     return;
                 }

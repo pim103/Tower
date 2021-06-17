@@ -156,9 +156,14 @@ namespace Games.Global
                     break;
                 case TypeEffect.Heal:
                     entity.hp += level;
+
+                    if (entity.hp > entity.initialHp)
+                    {
+                        entity.hp = entity.initialHp;
+                    }
                     break;
                 case TypeEffect.Purification:
-                    List<Effect> effects = entity.underEffects.Values.ToList();
+                    List<Effect> effects = entity.GetUnderEffects();
 
                     foreach (Effect effect in effects)
                     {
@@ -184,11 +189,15 @@ namespace Games.Global
                 case TypeEffect.Will:
                     entity.hasWill = true;
 
-                    foreach (TypeEffect type in EffectController.ControlEffect)
+                    List<TypeEffect> willIsNotAffectedBy = new List<TypeEffect>();
+                    willIsNotAffectedBy.AddRange(EffectController.MovementControlEffect);
+                    willIsNotAffectedBy.AddRange(EffectController.IncapacitateEffect);
+                    
+                    foreach (TypeEffect type in willIsNotAffectedBy)
                     {
-                        if (entity.underEffects.ContainsKey(type))
+                        if (entity.EntityIsUnderEffect(type))
                         {
-                            EffectController.StopCurrentEffect(entity, entity.underEffects[type]);
+                            EffectController.StopCurrentEffect(entity, entity.TryGetEffectInUnderEffect(type));
                         }
                     }
 
@@ -218,7 +227,7 @@ namespace Games.Global
                     entity.hasNoAggro = true;
                     break;
                 case TypeEffect.ResourceFill:
-                    entity.ressource1 += level;
+                    entity.ressource += level;
                     break;
                 case TypeEffect.UnkillableByBleeding:
                     entity.isUnkillableByBleeding = true;
@@ -242,7 +251,6 @@ namespace Games.Global
                     if (entity.spells.Count > 0)
                     {
                         entity.spells[0].isOnCooldown = false;
-                        entity.spells[0].alreadyRecast = false;
                     }
 
                     break;
@@ -250,7 +258,6 @@ namespace Games.Global
                     if (entity.spells.Count > 1)
                     {
                         entity.spells[1].isOnCooldown = false;
-                        entity.spells[1].alreadyRecast = false;
                     }
 
                     break;
@@ -258,7 +265,6 @@ namespace Games.Global
                     if (entity.spells.Count > 2)
                     {
                         entity.spells[2].isOnCooldown = false;
-                        entity.spells[2].alreadyRecast = false;
                     }
 
                     break;
@@ -348,7 +354,7 @@ namespace Games.Global
 
         public void TriggerEffectAtTime(Entity entity)
         {
-            float extraDamage = launcher.underEffects.ContainsKey(TypeEffect.DotDamageIncrease) ? 0.2f : 0;
+            float extraDamage = launcher.EntityIsUnderEffect(TypeEffect.DotDamageIncrease) ? 0.2f : 0;
             Vector3 dir = Vector3.zero;
 
             switch (typeEffect)
@@ -357,23 +363,23 @@ namespace Games.Global
                     entity.speed = entity.initialSpeed + (1 * level);
                     break;
                 case TypeEffect.Slow:
-                    entity.speed = entity.underEffects.ContainsKey(TypeEffect.SpeedUp)
+                    entity.speed = entity.EntityIsUnderEffect(TypeEffect.SpeedUp)
                         ? entity.speed / 2
                         : entity.initialSpeed / 2;
                     break;
                 case TypeEffect.Burn:
-                    if (entity.underEffects.ContainsKey(TypeEffect.Sleep))
+                    if (entity.EntityIsUnderEffect(TypeEffect.Sleep))
                     {
-                        Effect sleep = entity.underEffects[TypeEffect.Sleep];
+                        Effect sleep = entity.TryGetEffectInUnderEffect(TypeEffect.Sleep);
                         EffectController.StopCurrentEffect(entity, sleep);
                     }
 
                     entity.ApplyDamage(0.2f + extraDamage);
                     break;
                 case TypeEffect.Freezing:
-                    if (entity.underEffects.ContainsKey(TypeEffect.Sleep))
+                    if (entity.EntityIsUnderEffect(TypeEffect.Sleep))
                     {
-                        Effect sleep = entity.underEffects[TypeEffect.Sleep];
+                        Effect sleep = entity.TryGetEffectInUnderEffect(TypeEffect.Sleep);
                         EffectController.StopCurrentEffect(entity, sleep);
                     }
 
@@ -381,9 +387,9 @@ namespace Games.Global
                     entity.ApplyDamage(0.1f + extraDamage);
                     break;
                 case TypeEffect.Bleed:
-                    if (entity.underEffects.ContainsKey(TypeEffect.Sleep))
+                    if (entity.EntityIsUnderEffect(TypeEffect.Sleep))
                     {
-                        Effect sleep = entity.underEffects[TypeEffect.Sleep];
+                        Effect sleep = entity.TryGetEffectInUnderEffect(TypeEffect.Sleep);
                         EffectController.StopCurrentEffect(entity, sleep);
                     }
 
@@ -401,17 +407,17 @@ namespace Games.Global
                     entity.ApplyDamage(0.1f + extraDamage);
                     break;
                 case TypeEffect.DefenseUp:
-                    entity.def = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                    entity.def = entity.EntityIsUnderEffect(TypeEffect.BrokenDef)
                         ? (1 * level)
                         : entity.initialDef + (1 * level);
                     break;
                 case TypeEffect.PhysicalDefUp:
-                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                    entity.physicalDef = entity.EntityIsUnderEffect(TypeEffect.BrokenDef)
                         ? (1 * level)
                         : entity.initialPhysicalDef + (1 * level);
                     break;
                 case TypeEffect.MagicalDefUp:
-                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.BrokenDef)
+                    entity.magicalDef = entity.EntityIsUnderEffect(TypeEffect.BrokenDef)
                         ? (1 * level)
                         : entity.initialMagicalDef + (1 * level);
                     break;
@@ -452,7 +458,7 @@ namespace Games.Global
                     entity.canPierceOnBack = false;
                     break;
                 case TypeEffect.Stun:
-                    if (!entity.underEffects.ContainsKey(TypeEffect.Sleep))
+                    if (!entity.EntityIsUnderEffect(TypeEffect.Sleep))
                     {
                         entity.entityPrefab.canDoSomething = true;
                     }
@@ -461,7 +467,7 @@ namespace Games.Global
                     break;
                 case TypeEffect.Sleep:
                     entity.isSleep = false;
-                    if (!entity.underEffects.ContainsKey(TypeEffect.Stun))
+                    if (!entity.EntityIsUnderEffect(TypeEffect.Stun))
                     {
                         entity.entityPrefab.canDoSomething = true;
                     }
@@ -521,13 +527,13 @@ namespace Games.Global
                     entity.isSilence = false;
                     break;
                 case TypeEffect.BrokenDef:
-                    entity.def = entity.underEffects.ContainsKey(TypeEffect.DefenseUp)
+                    entity.def = entity.EntityIsUnderEffect(TypeEffect.DefenseUp)
                         ? entity.def + entity.initialDef
                         : entity.initialDef;
-                    entity.magicalDef = entity.underEffects.ContainsKey(TypeEffect.MagicalDefUp)
+                    entity.magicalDef = entity.EntityIsUnderEffect(TypeEffect.MagicalDefUp)
                         ? entity.magicalDef + entity.initialMagicalDef
                         : entity.initialMagicalDef;
-                    entity.physicalDef = entity.underEffects.ContainsKey(TypeEffect.PhysicalDefUp)
+                    entity.physicalDef = entity.EntityIsUnderEffect(TypeEffect.PhysicalDefUp)
                         ? entity.physicalDef + entity.initialPhysicalDef
                         : entity.initialPhysicalDef;
                     Debug.Log(entity.def);

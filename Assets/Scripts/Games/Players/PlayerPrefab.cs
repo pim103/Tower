@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Games.Global;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
-using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using Debug = UnityEngine.Debug;
 
 namespace Games.Players
 {
@@ -26,10 +23,7 @@ namespace Games.Players
         [SerializeField] public Transform playerTransform;
         [SerializeField] private Rigidbody playerRigidbody;
         
-        [SerializeField] public GameObject cameraPoint;
         [SerializeField] public Camera camera;
-        [SerializeField] public GameObject cameraGameObject;
-        [SerializeField] private GameObject originalCameraPosition;
         [SerializeField] private SkinnedMeshRenderer[] skins;
         
         private Material[] materialBackUpForSkin;
@@ -69,7 +63,7 @@ namespace Games.Players
             pressDefenseButton = false;
 
             Player player = entity as Player;
-            player.ResetStats();
+            player?.ResetStats();
         }
         
         private void Start()
@@ -85,7 +79,7 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayerStats(ChooseDeckAndClass.currentRoleIdentity.classe);
+            player.InitPlayer(ChooseDeckAndClass.currentRoleIdentity.GetIdentityId());
 
             wantToGoBack = false;
             wantToGoForward = false;
@@ -104,9 +98,9 @@ namespace Games.Players
                 yield return new WaitForSeconds(0.1f);
                 count += 0.1f;
 
-                if (entity.ressource1 < entity.initialRessource1)
+                if (entity.ressource < entity.initialRessource1)
                 {
-                    entity.ressource1 += 0.1f;
+                    entity.ressource += 0.1f;
                 }
 
                 if (entity.nbCharges < 4 && count >= 0.5f)
@@ -128,10 +122,55 @@ namespace Games.Players
             float diff = (float) entity.hp / (float) entity.initialHp;
             hpBar.value = diff;
 
-            diff = (float) entity.ressource1 / (float) entity.initialRessource1;
+            diff = (float) entity.ressource / (float) entity.initialRessource1;
             ressourcesBar.value = diff;
+
+            UpdateCooldown();
         }
 
+        private void UpdateCooldown()
+        {
+            int slot = 0;
+            foreach (Spell spell in entity.spells)
+            {
+                GameObject bgTimer = null;
+                Text timer = null;
+             
+                ++slot;
+                
+                switch (slot)
+                {
+                    case 1:
+                        bgTimer = bgTimer1;
+                        timer = timer1;
+                        break;
+                    case 2:
+                        bgTimer = bgTimer2;
+                        timer = timer2;
+                        break;
+                    case 3:
+                        bgTimer = bgTimer3;
+                        timer = timer3;
+                        break;
+                }
+
+                if (spell.isOnCooldown)
+                {
+                    if (timer != null && bgTimer != null)
+                    {
+                        bgTimer.SetActive(true);
+                    }
+                    if (timer != null)
+                    {
+                        timer.text = spell.currentCooldown.ToString();
+                    }
+                } else if (bgTimer != null && bgTimer.activeSelf)
+                {
+                    bgTimer.SetActive(false);
+                }
+            }
+        }
+        
         private void FixedUpdate()
         {
             if (isFakePlayer)
@@ -273,6 +312,14 @@ namespace Games.Players
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                wantToJump = true;
+            } else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                wantToJump = false;
+            }
+
             if (!canMove)
             {
                 wantToGoBack = false;
@@ -321,19 +368,37 @@ namespace Games.Players
                     {
                     }
 
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        wantToCastSpell1 = true;
+                        SpellController.CastSpell(entity, entity.spells[0]);
+                    }
                     if (Input.GetKeyUp(KeyCode.Alpha1))
                     {
-                        SpellController.CastSpell(entity, entity.spells[0], 1);
+                        wantToCastSpell1 = false;
+                        SpellController.InterruptSpell(entity.spells[0]);
                     }
 
-                    if (Input.GetKeyUp(KeyCode.Alpha2))
+                    if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
-                        SpellController.CastSpell(entity, entity.spells[1], 2);
+                        wantToCastSpell2 = true;
+                        SpellController.CastSpell(entity, entity.spells[1]);
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Alpha2))
+                    {
+                        wantToCastSpell2 = false;
+                        SpellController.InterruptSpell(entity.spells[1]);
                     }
 
-                    if (Input.GetKeyUp(KeyCode.Alpha3))
+                    if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
-                        SpellController.CastSpell(entity, entity.spells[2], 3);
+                        wantToCastSpell3 = true;
+                        SpellController.CastSpell(entity, entity.spells[2]);
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Alpha3))
+                    {
+                        wantToCastSpell3 = false;
+                        SpellController.InterruptSpell(entity.spells[2]);
                     }
                 }
             }
@@ -344,6 +409,7 @@ namespace Games.Players
         public void Movement()
         {
             Rigidbody rigidbody = playerRigidbody;
+            int jumpForce = 10;
 
             int horizontalMove = 0;
             int verticalMove = 0;
@@ -385,7 +451,13 @@ namespace Games.Players
                 locVel.z = verticalMove * currentSpeed;
             }
 
-            if (grounded && !ejected)
+
+            if (grounded && wantToJump)
+            {
+                locVel.y = jumpForce;
+            }
+
+            if (!ejected)
             {
                 rigidbody.velocity = transform.TransformDirection(locVel);
             }
@@ -395,7 +467,7 @@ namespace Games.Players
         {
             if (entity.isFeared)
             {
-                Entity launcher = entity.underEffects[TypeEffect.Fear].launcher;
+                Entity launcher = entity.TryGetEffectInUnderEffect(TypeEffect.Fear).launcher;
                 transform.LookAt(launcher.entityPrefab.transform);
                 transform.Rotate(Vector3.up * 180);
                 return;
@@ -403,7 +475,7 @@ namespace Games.Players
             
             if(entity.isCharmed)
             {
-                Entity launcher = entity.underEffects[TypeEffect.Charm].launcher;
+                Entity launcher = entity.TryGetEffectInUnderEffect(TypeEffect.Charm).launcher;
                 transform.LookAt(launcher.entityPrefab.transform);
                 return;
             }
@@ -431,6 +503,8 @@ namespace Games.Players
 
             playerGameObject.transform.Rotate(0, horizontal, 0);
 
+            GameObject cameraPoint = camera.gameObject;
+            
             vertical = Mathf.Clamp(vertical, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
             
@@ -443,7 +517,7 @@ namespace Games.Players
 
             float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.x);
 
-            angleX = Mathf.Clamp (angleX, -25, 30);
+            angleX = Mathf.Clamp (angleX, -75, 55);
             q.x = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleX);
 
             cameraPoint.transform.localRotation = q;
@@ -457,7 +531,7 @@ namespace Games.Players
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
                 {
                     EntityPrefab entityPrefab = hit.collider.GetComponent<EntityPrefab>();
-                    if (entityPrefab.entity.typeEntity == TypeEntity.MOB)
+                    if (entityPrefab.entity.GetTypeEntity() == TypeEntity.MOB)
                     {
                         target = entityPrefab.entity;
                     }
@@ -468,15 +542,15 @@ namespace Games.Players
                 positionPointed = Vector3.positiveInfinity;
             }
 
-            if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))
-            {
-                camera.transform.position = hit.point;
-                camera.transform.position += camera.transform.forward * 0.2f;
-            }
-            else
-            {
-                camera.transform.position = originalCameraPosition.transform.position;
-            }
+            // if (Physics.Raycast(playerTransform.position, (camera.transform.forward * -1), out hit, 6, interactWithCamera))
+            // {
+            //     camera.transform.position = hit.point;
+            //     camera.transform.position += camera.transform.forward * 0.2f;
+            // }
+            // else
+            // {
+            //     camera.transform.position = originalCameraPosition.transform.position;
+            // }
         }
 
         public override void SetInvisibility()

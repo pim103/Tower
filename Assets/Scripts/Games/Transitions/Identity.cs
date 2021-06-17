@@ -1,7 +1,4 @@
-﻿using Games.Global;
-using Games.Global.Weapons;
-using Games.Players;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Games.Transitions
 {
@@ -10,12 +7,21 @@ namespace Games.Transitions
         Role,
         CategoryWeapon
     }
-    
+
     public class Identity: MonoBehaviour
     {
-        [SerializeField] public IdentityType identityType;
+        public IdentityType identityType;
+        private int identityId;
 
-        [SerializeField] public CategoryWeapon categoryWeapon;
-        [SerializeField] public Classes classe;
+        public void InitIdentityData(IdentityType type, int id)
+        {
+            identityType = type;
+            identityId = id;
+        }
+
+        public int GetIdentityId()
+        {
+            return identityId;
+        }
     }
 }

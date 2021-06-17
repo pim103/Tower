@@ -10,15 +10,11 @@ namespace Games.Global.Entities
 {
     public class MonsterList
     {
-        private GameObject[] monsterGameObjects;
-
         public List<GroupsMonster> groupsList;
         public List<Monster> monsterList;
-        
-        public MonsterList(GameObject[] list, string json)
-        {
-            monsterGameObjects = list;
 
+        public MonsterList(string json)
+        {
             groupsList = new List<GroupsMonster>();
             monsterList = new List<Monster>();
 
@@ -35,7 +31,7 @@ namespace Games.Global.Entities
             Monster cloneMonster = Tools.Clone(monsterList.First(monster => monster.id == id));
             cloneMonster.InitEntityList();
             cloneMonster.InitSpells();
-            cloneMonster.typeEntity = TypeEntity.MOB;
+            cloneMonster.SetTypeEntity(TypeEntity.MOB);
             return cloneMonster;
         }
 
@@ -62,9 +58,10 @@ namespace Games.Global.Entities
                     {
                         Monster monster = mob.ConvertToMonster();
 
-                        if (monsterGameObjects != null && monsterGameObjects.ToList().Exists(model => model.name == monster.modelName))
+                        GameObject monsterModel = Resources.Load(monster.modelName) as GameObject;
+                        if (monsterModel)
                         {
-                            monster.model = monsterGameObjects.First(model => model.name == monster.modelName);
+                            monster.model = monsterModel;
                         }
 
                         if (!monsterList.Exists(monsterAdded => monsterAdded.id == monster.id))
@@ -106,9 +103,10 @@ namespace Games.Global.Entities
                 {
                     Monster nMonster = mobs.ConvertToMonster();
 
-                    if (monsterGameObjects != null)
+                    GameObject monsterModel = Resources.Load(nMonster.modelName) as GameObject;
+                    if (monsterModel)
                     {
-                        nMonster.model = monsterGameObjects.First(model => model.name == nMonster.modelName);
+                        nMonster.model = monsterModel;
                     }
 
                     monsterList.Add(nMonster);

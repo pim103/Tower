@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Games.Global.Entities;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellBehavior;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Players;
@@ -57,7 +60,7 @@ namespace Games.Global
 
         private void FixedUpdate()
         {
-            if (entity.BehaviorType == BehaviorType.Player)
+            if (entity.GetBehaviorType() == BehaviorType.Player)
             {
                 return;
             }
@@ -68,16 +71,16 @@ namespace Games.Global
                 return;
             }
 
-            FindTarget();
+            //FindTarget();
 
-            if (canMove)
+            /*if (canMove)
             {
-                if (entity.BehaviorType == BehaviorType.Melee ||
-                    entity.BehaviorType == BehaviorType.MoveOnTargetAndDie)
+                if (entity.GetBehaviorType() == BehaviorType.Melee ||
+                    entity.GetBehaviorType() == BehaviorType.MoveOnTargetAndDie)
                 {
                     MoveToTarget(1);
                 }
-                else if (entity.BehaviorType == BehaviorType.Distance)
+                else if (entity.GetBehaviorType() == BehaviorType.Distance)
                 {
                     MoveToTarget(10);
                 }
@@ -90,7 +93,7 @@ namespace Games.Global
             if (target != null)
             {
                 AttackTarget();   
-            }
+            }*/
         }
 
         public void WantToApplyForce(Vector3 direction, int level)
@@ -123,19 +126,24 @@ namespace Games.Global
             
             if (entity.basicAttack != null)
             {
-                if (entity.weapons.Count > 0)
+                if (entity.weapon != null)
                 {
-                    WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
-                    weaponPrefab.BasicAttack();    
+                    WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
+                    bool initAttack = weaponPrefab.BasicAttack();
+
+                    if (initAttack)
+                    {
+                        SpellController.CastSpell(entity, entity.basicAttack);
+                    }
                 }
             }
         }
 
         public void CancelBasicAttack()
         {
-            if (entity.weapons.Count > 0)
+            if (entity.weapon != null)
             {
-                WeaponPrefab weaponPrefab = entity.weapons[0].weaponPrefab;
+                WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
                 weaponPrefab.DeactivateBoolAttack();    
             }
         }
@@ -146,11 +154,16 @@ namespace Games.Global
             Transform position = positionInRightHand;
             Transform angle = angleWithOneRight;
 
-            if (weapon.category == CategoryWeapon.BOW)
+            if (weapon.category != null && weapon.category.name == "BOW")
             {
                 hand = leftHand;
                 position = positionInLeftHand;
                 angle = angleWithOneLeft;
+            }
+
+            if (entity.weapon != null && entity.weapon.weaponPrefab)
+            {
+                Destroy(entity.weapon.weaponPrefab.gameObject);
             }
 
             GameObject weaponGameObject = Instantiate(weapon.model, hand.transform, true);
@@ -176,7 +189,7 @@ namespace Games.Global
                 return false;
             }
             
-            switch (entity.AttackBehaviorType)
+            switch (entity.GetAttackBehaviorType())
             {
                 case AttackBehaviorType.AllSpellsIFirst:
                     foreach (Spell spell in entity.spells)
@@ -197,6 +210,35 @@ namespace Games.Global
             return false;
         }
 
+        public void MoveOutFromAOE(SpellPrefabController aoe)
+        {
+            if (aoe.boxCollider == enabled)
+            {
+                Bounds boundsBox = aoe.boxCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+
+            }
+            else if (aoe.meshCollider == enabled)
+            {
+                Bounds boundsBox = aoe.meshCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+            }
+            else
+            {
+                Bounds boundsBox = aoe.sphereCollider.bounds;
+                
+                Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
+                heading *= 1.5f;
+                navMeshAgent.SetDestination(heading);
+            }
+        }
+
         public void AttackTarget()
         {
             transform.LookAt(target.entityPrefab.transform);
@@ -207,7 +249,7 @@ namespace Games.Global
 
             if (!CastSpell())
             {
-                switch (entity.BehaviorType)
+                switch (entity.GetBehaviorType())
                 {
                     // TODO : adapt range of weapon for attack
                     case BehaviorType.Distance:
@@ -255,7 +297,7 @@ namespace Games.Global
             float dist = 10000;
             float minDistAggro = 100;
 
-            switch (entity.typeEntity)
+            switch (entity.GetTypeEntity())
             {
                 case TypeEntity.MOB:
                     foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
@@ -348,7 +390,7 @@ namespace Games.Global
         
         public void EntityDie()
         {
-            if (entity.typeEntity == TypeEntity.MOB)
+            if (entity.GetTypeEntity() == TypeEntity.MOB)
             {
                 if (!entity.isSummon)
                 {
@@ -365,7 +407,7 @@ namespace Games.Global
                     DataObject.invocationsInScene.Remove(entity);
                 }
             }
-            else if (entity.typeEntity == TypeEntity.ALLIES)
+            else if (entity.GetTypeEntity() == TypeEntity.ALLIES)
             {
                 if (entity.isPlayer)
                 {

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using PathCreation;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Games.Global.Spells.SpellBehavior
 {
@@ -50,7 +52,7 @@ namespace Games.Global.Spells.SpellBehavior
             }
             else if (traj != null && traj.objectToFollow != null)
             {
-                transform.position = traj.objectToFollow.position;
+                SetPosition(traj.objectToFollow.position, traj.objectToFollow);
             }
 
             if (spellToInstantiate.incrementAmplitudeByTime != Vector3.zero)
@@ -59,12 +61,26 @@ namespace Games.Global.Spells.SpellBehavior
             }
         }
 
-        public void SetValues(Entity originEntity, SpellComponent originSpellComponent, GameObject children)
+        public void SetPosition(Vector3 startPosition, Transform transformMarker)
         {
-            childrenGameObject = children;
+            Vector3 offset = spellComponent.spellToInstantiate.offsetStartPosition;
+            Vector3 forward = transformMarker != null ? transformMarker.forward : Vector3.forward;
+            Vector3 position = startPosition;
+
+            position += forward * offset.z + forward * offset.x +
+                        Vector3.up * offset.y;
             
-            casterOfSpell = originEntity;
+            transform.position = position;
+            transform.forward = forward;
+        }
+
+        public void SetSpellParameter(SpellComponent originSpellComponent, Vector3 startPosition, bool initChild = true)
+        {
+            casterOfSpell = originSpellComponent.caster;
             spellComponent = originSpellComponent;
+
+            transform.localScale = originSpellComponent.spellToInstantiate.scale;
+            SetPosition(startPosition, casterOfSpell?.entityPrefab.transform);
 
             if (originSpellComponent.trajectory != null)
             {
@@ -79,6 +95,34 @@ namespace Games.Global.Spells.SpellBehavior
             if (alliesTouchedBySpell == null)
             {
                 alliesTouchedBySpell = new List<Entity>();
+            }
+
+            ActiveCollider(originSpellComponent.spellToInstantiate.geometry);
+
+            if (initChild)
+            {
+                InitChildObject();
+            }
+        }
+
+        private void InitChildObject()
+        {
+            if (!String.IsNullOrEmpty(spellComponent.spellToInstantiate.pathGameObjectToInstantiate) && !childrenGameObject)
+            {
+                GameObject wantedGo =
+                    Resources.Load<GameObject>(spellComponent.spellToInstantiate.pathGameObjectToInstantiate);
+
+                childrenGameObject = Object.Instantiate(wantedGo, transform, true);
+
+                Vector3 parentScale = transform.localScale;
+                Vector3 offset = spellComponent.spellToInstantiate.offsetObjectToInstantiate;
+                offset.x /= parentScale.x;
+                offset.y /= parentScale.y;
+                offset.z /= parentScale.z;
+                childrenGameObject.transform.localPosition = offset;
+                childrenGameObject.transform.localEulerAngles = Vector3.zero;
+                childrenGameObject.transform.localScale = Vector3.one;
+                childrenGameObject.SetActive(true);   
             }
         }
 
@@ -118,15 +162,15 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 case Geometry.Cone:
                     meshCollider.enabled = true;
-                    cone.SetActive(true);
+                    // cone.SetActive(true);
                     break;
                 case Geometry.Sphere:
                     sphereCollider.enabled = true;
-                    sphere.SetActive(true);
+                    // sphere.SetActive(true);
                     break;
                 case Geometry.Square:
                     boxCollider.enabled = true;
-                    square.SetActive(true);
+                    // square.SetActive(true);
                     break;
             }
         }
@@ -168,16 +212,18 @@ namespace Games.Global.Spells.SpellBehavior
             
             Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
 
-            if ( (casterOfSpell.typeEntity == TypeEntity.MOB && entityEnter.typeEntity == TypeEntity.ALLIES ) ||
-                 (casterOfSpell.typeEntity == TypeEntity.ALLIES && entityEnter.typeEntity == TypeEntity.MOB ))
+            if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
+                 (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))
             {
                 if (isEnter)
                 {
                     enemiesTouchedBySpell.Add(entityEnter);
+                    entityEnter.inNefastSpells.Add(this);
                 }
                 else
                 {
                     enemiesTouchedBySpell.Remove(entityEnter);
+                    entityEnter.inNefastSpells.Remove(this);
                 }
             }
             else
@@ -188,7 +234,7 @@ namespace Games.Global.Spells.SpellBehavior
                 }
                 else
                 {
-                    enemiesTouchedBySpell.Remove(entityEnter);
+                    alliesTouchedBySpell.Remove(entityEnter);
                 }
             }
 
@@ -203,9 +249,9 @@ namespace Games.Global.Spells.SpellBehavior
             }
 
             spellComponent.OnTriggerEnter(other.GetComponent<EntityPrefab>().entity);
-            bool hasFindindAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+            bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
 
-            if (hasFindindAction && !spellComponent.spellToInstantiate.passingThroughEntity)
+            if (hasFindingAction && !spellComponent.spellToInstantiate.passingThroughEntity)
             {
                 SpellInterpreter.EndSpellComponent(spellComponent);
             }

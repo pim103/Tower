@@ -12,7 +12,7 @@ namespace Games
         [SerializeField] private GameObject defenseContainer;
         [SerializeField] private GameObject attackContainer;
         
-        private void Start()
+        private void Awake()
         {
             instance = this;
         }
@@ -28,7 +28,7 @@ namespace Games
         public static void ActiveContainerOfCurrentPhase(Phase phase)
         {
             DeactiveAllObjects();
-            
+
             switch (phase)
             {
                 case Phase.RoleAndDeck:

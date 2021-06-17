@@ -2,19 +2,14 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using ContentEditor.UtilsEditor;
 using Games.Global;
-using Games.Global.Armors;
-using Games.Global.Entities;
-using Games.Global.Weapons;
 using Networking;
-using Networking.Client;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace ContentEditor
 {
@@ -33,7 +28,9 @@ namespace ContentEditor
         public static Texture2D spellSprite;
         public static Texture2D monsterSprite;
         public static Texture2D armorSprite;
+        public static Texture2D categorySprite;
         public static Texture2D playerSprite;
+        public static Texture2D spellGeneratorSprite;
 
         public static void ResetConst()
         {
@@ -59,6 +56,7 @@ namespace ContentEditor
             playerSprite = Resources.Load<Texture2D>("Editor/Warrior");
             monsterSprite = Resources.Load<Texture2D>("Editor/monster");
             armorSprite = Resources.Load<Texture2D>("Editor/armor");
+            categorySprite = armorSprite;
         }
     }
     
@@ -69,9 +67,11 @@ namespace ContentEditor
         {
             WEAPON,
             ARMOR,
+            CATEGORY,
             SPELL,
             MONSTER,
-            PLAYER
+            PLAYER,
+            SPELL_GENERATOR
         }
 
         [SerializeField]
@@ -98,15 +98,24 @@ namespace ContentEditor
             {
                 monsterEditor.contentGenerationEditor = this;
             }
+
+            if (!instance)
+            {
+                instance = this;
+            }
         }
         
         private Vector2 scrollPos;
-        private WeaponEditor weaponEditor = new WeaponEditor();
-        private ArmorEditor armorEditor = new ArmorEditor();
-        private MonsterEditor monsterEditor = new MonsterEditor();
-        private PlayerEditor playerEditor = new PlayerEditor();
-        private SpellEditor spellEditor = new SpellEditor();
-        private IEditorInterface currentEditor;
+        public static WeaponEditor weaponEditor = new WeaponEditor();
+        public static ArmorEditor armorEditor = new ArmorEditor();
+        public static MonsterEditor monsterEditor = new MonsterEditor();
+        public static PlayerEditor playerEditor = new PlayerEditor();
+        public static SpellEditor spellEditor = new SpellEditor();
+        public static SpellGeneratorEditor spellGenerator = new SpellGeneratorEditor();
+        public static CategoryEditor categoryEditor = new CategoryEditor();
+        public static IEditorInterface currentEditor;
+
+        public static ContentGenerationEditor instance;
 
         public void DisplayHeader()
         {
@@ -129,6 +138,11 @@ namespace ContentEditor
                 currentCategory = Category.ARMOR;
                 currentEditor = armorEditor;
             }
+            else if (GUILayout.Button(EditorConstant.categorySprite, GUILayout.Width(75), GUILayout.Height(75)))
+            {
+                currentCategory = Category.CATEGORY;
+                currentEditor = categoryEditor;
+            }
             else if (GUILayout.Button(EditorConstant.monsterSprite, GUILayout.Width(75), GUILayout.Height(75)))
             {
                 monsterEditor.CreateWeaponChoiceList();
@@ -144,6 +158,13 @@ namespace ContentEditor
             {
                 currentCategory = Category.SPELL;
                 currentEditor = spellEditor;
+                spellEditor.InitSpellEditor();
+            }
+            else if (GUILayout.Button(EditorConstant.spellGeneratorSprite, GUILayout.Width(75), GUILayout.Height(75)))
+            {
+                currentCategory = Category.SPELL_GENERATOR;
+                spellGenerator.OpenTrajectorySceneMode();
+                currentEditor = spellGenerator;
             }
 
             GUILayout.FlexibleSpace();
@@ -163,10 +184,9 @@ namespace ContentEditor
             EditorGUILayout.EndVertical();
             GUILayout.FlexibleSpace();
         }
-        
+
         void OnGUI ()
         {
-            DictionaryManager.InitAbility();
             GUILayout.Label("Test custom editor", EditorStyles.boldLabel);
 
             // INIT VAR
@@ -196,82 +216,6 @@ namespace ContentEditor
             DisplayFooter();
         }
 
-        private void SaveChanges()
-        {
-            if (DataObject.EquipmentList != null)
-            {
-                bool weaponWasSaved = false;
-                bool armorWasSaved = false;
-
-                foreach (Weapon weapon in DataObject.EquipmentList.weapons)
-                {
-                    if (!Utils.Tools.IsSimilar(weapon, weaponEditor.originalWeapon[weapon.id]))
-                    {
-                        Debug.Log("Need to save weapon " + weapon.id);
-                        RequestSaveWeapon(weapon, false);
-                        weaponWasSaved = true;
-                    }
-                }
-                
-                foreach (Armor armor in DataObject.EquipmentList.armors)
-                {
-                    if (!Utils.Tools.IsSimilar(armor, armorEditor.originalArmor[armor.id]))
-                    {
-                        Debug.Log("Need to save armor " + armor.id);
-                        RequestSaveArmor(armor, false);
-                        armorWasSaved = true;
-                    }
-                }
-
-                if (weaponWasSaved)
-                {
-                    weaponEditor.CloneWeaponDictionary();
-                }
-
-                if (armorWasSaved)
-                {
-                    armorEditor.CloneArmorDictionary();
-                }
-            }
-
-            if (DataObject.MonsterList != null)
-            {
-                bool monsterWasSaved = false;
-
-                foreach (Monster monster in DataObject.MonsterList.monsterList)
-                {
-                    if (!Utils.Tools.IsSimilar(monster, monsterEditor.origMonsterList[monster.id]))
-                    {
-                        Debug.Log("Need to save monster " + monster.id);
-                        RequestSaveMonster(monster, false);
-                        monsterWasSaved = true;
-                    }
-                }
-                
-                foreach (GroupsMonster group in DataObject.MonsterList.groupsList)
-                {
-                    GroupsMonster originalGroup = monsterEditor.origGroupsList[group.id];
-                    List<MonsterInGroupTreatment> monsterInGroupTreatments =
-                        monsterEditor.GetTreatmentForMonsterInGroup(group.monstersInGroupList,
-                            originalGroup.monstersInGroupList);
-                    
-                    if (!Utils.Tools.IsSimilar(group, originalGroup) && monsterInGroupTreatments.Count > 0)
-                    {
-                        Debug.Log("Need to save group " + group.id);
-                        Debug.Log(Utils.Tools.IsSimilar(group, originalGroup));
-                        Debug.Log(monsterInGroupTreatments.Count);
-                        RequestSaveGroupMonster(group, false, monsterInGroupTreatments);
-                        monsterWasSaved = true;
-                    }
-                }
-
-                if (monsterWasSaved)
-                {
-                    monsterEditor.CloneMonsterDictionary();
-                }
-            }
-        }
-
         public void DisplayFooter()
         {
             Color defaultColor = GUI.color;
@@ -292,7 +236,7 @@ namespace ContentEditor
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Save", GUILayout.Width(75), GUILayout.Height(25)))
             {
-                SaveChanges();
+                SaveData();
             }
             if (GUILayout.Button("Open test scene", GUILayout.Width(150), GUILayout.Height(25)))
             {
@@ -304,268 +248,101 @@ namespace ContentEditor
             GUILayout.EndVertical();
         }
 
-        private string GetSpritePath(Texture2D sprite)
+        void SaveData()
         {
-            string spritePath = AssetDatabase.GetAssetPath(sprite);
-            const string resourcesFolder = "Resources/";
-
-            if (spritePath.Contains(resourcesFolder))
-            {
-                int indexOfResources = spritePath.IndexOf(resourcesFolder, StringComparison.CurrentCulture);
-                spritePath = spritePath.Substring(indexOfResources + resourcesFolder.Length);
-
-                int indexOfExtension = spritePath.IndexOf(".", StringComparison.CurrentCulture);
-                if (indexOfExtension != -1)
-                {
-                    spritePath = spritePath.Substring(0, indexOfExtension);
-                }
-            }
-            else
-            {
-                Debug.Log("L'image n'est pas dans Resource !");
-                spritePath = "";
-            }
-
-            return spritePath;
-        }
-
-        public void RequestSaveWeapon(Weapon weapon, bool isNew)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("id", weapon.id);
-            form.AddField("name", weapon.equipmentName);
-            form.AddField("category", (int)weapon.category);
-            form.AddField("type", (int)weapon.type);
-            form.AddField("rarity", (int)weapon.rarity);
-            form.AddField("lootRate", weapon.lootRate);
-            form.AddField("cost", weapon.cost);
-            form.AddField("damage", weapon.damage);
-            form.AddField("attSpeed", (int)weapon.attSpeed);
-            form.AddField("onDamageDealt", "");
-            form.AddField("onDamageReceive", "");
-            form.AddField("model", weapon.modelName);
-            form.AddField("equipmentType", (int)weapon.equipmentType);
-            form.AddField("spritePath", weapon.sprite != null ? GetSpritePath(weapon.sprite) : "");
-            form.AddField("gameToken", NetworkingController.GameToken);
-
-            UnityWebRequest www;
-            if (isNew)
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/add", form);
-            }
-            else
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/update", form);
-            }
-
-            void Lambda() => RequestLoadEquipment();
-
-            this.StartCoroutine(SendData(www, Lambda));
-        }
-        
-        public void RequestSaveArmor(Armor armor, bool isNew)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("id", armor.id);
-            form.AddField("name", armor.equipmentName);
-            form.AddField("category", (int)armor.armorCategory);
-            form.AddField("rarity", (int)armor.rarity);
-            form.AddField("lootRate", armor.lootRate);
-            form.AddField("cost", armor.cost);
-            form.AddField("damage", armor.def);
-            form.AddField("onDamageDealt", "");
-            form.AddField("onDamageReceive", "");
-            form.AddField("model", armor.modelName);
-            form.AddField("equipmentType", (int)armor.equipmentType);
-            form.AddField("spritePath", armor.sprite != null ? GetSpritePath(armor.sprite) : "");
-            form.AddField("gameToken", NetworkingController.GameToken);
-            // Use for weapon
-            form.AddField("type", 0);
-            form.AddField("attSpeed", 0);
-
-            UnityWebRequest www;
-            if (isNew)
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/add", form);
-            }
-            else
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/equipment/update", form);
-            }
-
-            void Lambda() => RequestLoadEquipment();
-
-            this.StartCoroutine(SendData(www, Lambda));
-        }
-
-        public void RequestSaveMonster(Monster monster, bool isNew)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("id", monster.id);
-            form.AddField("typeWeapon", (int) monster.constraint);
-            form.AddField("name", monster.mobName);
-            form.AddField("hp", (int) monster.hp);
-            form.AddField("def", monster.def);
-            form.AddField("att", (int) monster.att);
-            form.AddField("speed", (int) monster.speed);
-            form.AddField("nbWeapon", monster.nbWeapon);
-            form.AddField("onDamageDealt", "");
-            form.AddField("onDamageReceive", "");
-            form.AddField("model", monster.modelName);
-            form.AddField("weaponId", monster.weaponOriginalId);
-            form.AddField("attSpeed", (int) monster.attSpeed);
-            form.AddField("spritePath", monster.sprite != null ? GetSpritePath(monster.sprite) : "");
-            form.AddField("gameToken", NetworkingController.GameToken);
-
-            UnityWebRequest www;
-            if (isNew)
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/add", form);
-            }
-            else
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/monster/update", form);
-            }
-
-            void Lambda() => RequestLoadMonster();
-
-            this.StartCoroutine(SendData(www, Lambda));
-        }
-
-        public void RequestSaveGroupMonster(GroupsMonster group, bool isNew, List<MonsterInGroupTreatment> monsterInGroupTreatmentsList)
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("id", group.id);
-            form.AddField("family", (int) group.family);
-            form.AddField("cost", group.cost);
-            form.AddField("radius", group.radius);
-            form.AddField("groupName", group.name);
-            form.AddField("spritePath", group.sprite != null ? GetSpritePath(group.sprite) : "");
-            form.AddField("gameToken", NetworkingController.GameToken);
-
-            if (isNew)
-            {
-                foreach (MonstersInGroup monstersInGroup in group.monstersInGroupList)
-                {
-                    form.AddField("monster_groups_list_monsters[]", monstersInGroup.GetMonsterId());
-                    form.AddField("monster_groups_list_nbMonster[]", monstersInGroup.nbMonster);
-                }
-            }
-            else if (monsterInGroupTreatmentsList != null)
-            {
-                foreach (MonsterInGroupTreatment monsterInGroupTreatments in monsterInGroupTreatmentsList)
-                {
-                    form.AddField("monster_groups_list_monsters[]", monsterInGroupTreatments.monstersInGroup.GetMonsterId());
-                    form.AddField("monster_groups_list_nbMonster[]", monsterInGroupTreatments.monstersInGroup.nbMonster);
-                    form.AddField("monster_groups_list_treatment[]", (int) monsterInGroupTreatments.treatment);
-                }
-
-            }
-
-            UnityWebRequest www;
-            if (isNew)
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/group/monster/add", form);
-            }
-            else
-            {
-                www = UnityWebRequest.Post(NetworkingController.PublicURL + "/api/v1/group/monster/update", form);
-            }
-
-            void Lambda() => RequestLoadMonster();
-            this.StartCoroutine(SendData(www, Lambda));
-        }
-
-        IEnumerator SendData(UnityWebRequest www)
-        {
-            yield return SendData(www, null);
-        }
-        
-        IEnumerator SendData(UnityWebRequest www, Action successEndCallback)
-        {
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            
-            if (www.responseCode == 201)
-            {
-                successEndCallback();
-                Debug.Log("Request was send");
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.Log("ERROR");
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-            }
+            PrepareSaveRequest.SaveChanges();
         }
 
         void LoadData()
         {
-            RequestLoadEquipment();
-            RequestLoadMonster();
+            this.StartCoroutine(LoadDataAsync());
         }
 
-        public void RequestLoadEquipment()
+        private IEnumerator LoadDataAsync()
         {
-            this.StartCoroutine(LoadEquipment());
-        }
+            RequestLoadSpell();
 
-        public IEnumerator LoadEquipment()
-        {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/api/v1/equipment/list");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
+            while (!DictionaryManager.hasSpellsLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            instance.StartCoroutine(RequestLoadClasses());
+            instance.StartCoroutine(RequestLoadCategory());
             
-            if (www.responseCode == 200)
+            while (!DictionaryManager.hasClassesLoad || !DictionaryManager.hasCategoriesLoad)
             {
-                DataObject.EquipmentList = new EquipmentList(null, www.downloadHandler.text);
-                weaponEditor.CloneWeaponDictionary();
-                armorEditor.CloneArmorDictionary();
-                monsterEditor.CreateWeaponChoiceList();
+                yield return new WaitForSeconds(0.5f);
             }
-            else
-            {
-                Debug.Log("Can't get equipment...");
-            }
+
+            instance.StartCoroutine(RequestLoadClassesCategory());
+            instance.StartCoroutine(RequestLoadEquipment());
+            instance.StartCoroutine(RequestLoadMonster());
         }
 
-        public void RequestLoadMonster()
+        public static void RequestLoadSpell()
         {
-            this.StartCoroutine(LoadMonster());
+            DictionaryManager.hasSpellsLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetSpells());
+        }
+
+        public static IEnumerator RequestLoadClasses()
+        {
+            DictionaryManager.hasClassesLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetClasses());
+
+            while (!DictionaryManager.hasClassesLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            playerEditor.CloneOriginalClasses();
         }
         
-        private IEnumerator LoadMonster()
+        public static IEnumerator RequestLoadCategory()
         {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/group/list.php");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
+            DictionaryManager.hasCategoriesLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetCategoryWeapon());
+
+            while (!DictionaryManager.hasCategoriesLoad)
             {
-                DataObject.MonsterList = new MonsterList(null, www.downloadHandler.text);
+                yield return new WaitForSeconds(0.5f);
             }
-            else
+        }
+
+        public static IEnumerator RequestLoadClassesCategory()
+        {
+            instance.StartCoroutine(DatabaseManager.GetClassesCategoryWeapon());
+
+            yield break;
+        }
+
+        public static IEnumerator RequestLoadEquipment()
+        {
+            DictionaryManager.hasWeaponsLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetWeapons());
+
+            while (!DictionaryManager.hasWeaponsLoad)
             {
-                Debug.Log("Can't get Monsters...");
+                yield return new WaitForSeconds(0.5f);
             }
-    
-            www = UnityWebRequest.Get("https://towers.heolia.eu/services/game/monster/list.php");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
+
+            weaponEditor.CloneWeaponDictionary();
+            armorEditor.CloneArmorDictionary();
+            monsterEditor.CreateWeaponChoiceList();
+        }
+
+        public static IEnumerator RequestLoadMonster()
+        {
+            DictionaryManager.hasMonstersLoad = false;
+            instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
+
+            while (!DictionaryManager.hasMonstersLoad)
             {
-                DataObject.MonsterList.InitSpecificMonsterList(www.downloadHandler.text);
-                monsterEditor.CloneMonsterDictionary();
+                yield return new WaitForSeconds(0.5f);
             }
-            else
-            {
-                Debug.Log("Can't get Monsters...");
-            }
+
+            monsterEditor.CloneMonsterDictionary();
         }
     }
 }

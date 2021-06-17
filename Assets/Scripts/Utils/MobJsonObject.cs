@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
+using TestC;
 using UnityEngine;
 
 namespace Utils
@@ -16,13 +19,6 @@ namespace Utils
     public class RawMonsterList
     {
         public List<MobJsonObject> monsters;
-    }
-
-    [Serializable]
-    public class SpellList
-    {
-        public string id;
-        public string name;
     }
 
     [Serializable]
@@ -42,8 +38,9 @@ namespace Utils
         public string weaponId { get; set; } = "0";
 
         public string typeWeapon { get; set; } = "0";
+        public int monsterType { get; set; } = 0;
 
-        public List<SpellList> skillListId;
+        public List<SpellJsonObject> skillListId;
 
         public string onDamageDealt { get; set; }
         public string onDamageReceive { get; set; }
@@ -53,12 +50,12 @@ namespace Utils
 
         public void PrintAttribute()
         {
-            Debug.Log("Object id : " + id + " name : " + name);
+            Debug.Log("Object id : " + id + " name : " + name + " type " + (MonsterType) monsterType);
             Debug.Log("Stats => dmg : " + att + " speed : " + speed + " hp : " + hp + " def : " + def + " nbWeapon : " + nbWeapon);
             Debug.Log("Ability => onDamageDealt : " + onDamageDealt + " onDamageReceive : " + onDamageReceive);
             Debug.Log("Model Name : " + model);
             Debug.Log("skills : ");
-            foreach (SpellList skill in skillListId)
+            foreach (SpellJsonObject skill in skillListId)
             {
                 Debug.Log("Cast : " + skill.name);
             }
@@ -66,6 +63,18 @@ namespace Utils
 
         public Monster ConvertToMonster()
         {
+            List<Spell> spells = new List<Spell>();
+            
+            skillListId.ForEach(spell =>
+            {
+                Spell foundSpell = DataObject.SpellList.GetSpellById(Int32.Parse(spell.id));
+
+                if (foundSpell != null)
+                {
+                    spells.Add(foundSpell);
+                }
+            });
+
             Monster monster = new Monster
             {
                 id = Int32.Parse(id),
@@ -84,10 +93,12 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 nbWeapon = Int32.Parse(nbWeapon),
                 weaponOriginalId = Int32.Parse(weaponId),
-                constraint = (TypeWeapon) Int32.Parse(typeWeapon),
-                spellsName = skillListId,
-                modelName = model
+                modelName = model,
+                monsterType = (MonsterType) monsterType,
+                spells = spells
             };
+
+            monster.SetConstraint((TypeWeapon) Int32.Parse(typeWeapon));
 
             return monster;
         }
@@ -164,7 +175,7 @@ namespace Utils
             {
                 id = Int32.Parse(id),
                 cost = Int32.Parse(cost),
-                family = (Family) Int32.Parse(family),
+                family = Int32.Parse(family),
                 radius = Int32.Parse(radius),
                 name = groupName,
                 sprite = Resources.Load<Texture2D>(spritePath),
@@ -180,7 +191,6 @@ namespace Utils
                 monstersInGroup.SetMonster(mob.ConvertToMonster());
                 
                 groupsMonster.monstersInGroupList.Add(monstersInGroup);
-//                groupsMonster.monsterInGroups.Add(Int32.Parse(mob.id), Int32.Parse(mob.nbMonster));
             }
 
             return groupsMonster;

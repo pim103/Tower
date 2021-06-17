@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Games.Global.Weapons;
 using UnityEngine;
 using Utils;
@@ -21,9 +22,10 @@ namespace Games.Global.Entities
         Elf
     }
 
+    [Serializable]
     public class MonstersInGroup
     {
-        private Monster monster { get; set; }
+        public Monster monster { get; set; }
         public int nbMonster { get; set; }
 
         public void SetMonster(Monster nMonster)
@@ -49,12 +51,13 @@ namespace Games.Global.Entities
         }
     }
 
+    [Serializable]
     public class GroupsMonster
     {
         public const int DEFAULT_RADIUS = 1;
 
         public int id { get; set; }
-        public Family family { get; set; }
+        public int family { get; set; }
         public int cost { get; set; }
         public string name { get; set; }
         public int radius { get; set; } = DEFAULT_RADIUS;
@@ -63,39 +66,22 @@ namespace Games.Global.Entities
         public List<MonstersInGroup> monstersInGroupList { get; set; } = new List<MonstersInGroup>();
         public Texture2D sprite { get; set; }
 
-        public void InitSpecificEquipment(Monster monster, List<int> equipment)
+        public void AddEquipmentId(int meleeWeaponId, int rangeWeaponId)
         {
-            int nbWeaponFound = 0;
-
-            if (equipment != null)
+            foreach (MonstersInGroup monstersInGroup in monstersInGroupList)
             {
-                if (monster.constraint == TypeWeapon.Cac)
-                {
-                    if (equipment[0] != 0)
-                    {
-                        if (monster.InitWeapon(equipment[0]))
-                        {
-                            nbWeaponFound++;
-                        }
-                    }
-                }
-                else if (monster.constraint == TypeWeapon.Distance)
-                {
-                    if (equipment[1] != 0)
-                    {
-                        if (monster.InitWeapon(equipment[1]))
-                        {
-                            nbWeaponFound++;
-                        }
-                    }
-                
-                    // TODO init armor with : equipment[2] / equipment[3] / equipment[4]
-                }
-            }
+                Monster monster = monstersInGroup.GetMonster();
 
-            if (nbWeaponFound == 0)
-            {
-                monster.InitOriginalWeapon();
+                if (monster.GetConstraint() == TypeWeapon.Cac && meleeWeaponId > 0)
+                {
+                    monster.weaponOriginalId = meleeWeaponId;
+                    monstersInGroup.SetMonster(monster);
+                } 
+                else if (monster.GetConstraint() == TypeWeapon.Distance && rangeWeaponId > 0)
+                {
+                    monster.weaponOriginalId = rangeWeaponId;
+                    monstersInGroup.SetMonster(monster);
+                }
             }
         }
     }

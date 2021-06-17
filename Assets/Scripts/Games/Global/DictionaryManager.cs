@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DeckBuilding;
 using Games.Global.Entities;
+using Games.Global.Spells;
 using Games.Global.Weapons;
 using Games.Players;
 using Networking;
@@ -15,163 +15,74 @@ namespace Games.Global
 {
     public class DictionaryManager: MonoBehaviour
     {
-        [SerializeField] private GameObject[] monsterGameObjects;
-        [SerializeField] private GameObject[] weaponsGameObject;
-        [SerializeField] private Material[] effectMaterials;
-
+        public static bool hasSpellsLoad;
         public static bool hasWeaponsLoad;
         public static bool hasMonstersLoad;
+        public static bool hasClassesLoad;
+        public static bool hasCategoriesLoad;
         public static bool hasCardsLoad;
         public static bool wasConnected;
 
         private static bool wasInit;
 
+        private static DictionaryManager instance;
+
         public void Awake()
         {
             if (!wasInit)
             {
-                InitAbility();
+                instance = this;
+                GroupsPosition.InitPosition();
                 
                 DataObject.CardList = new CardList();
 
-                StartCoroutine(GetWeapons());
-                StartCoroutine(GetGroupsMonster());
-                StartCoroutine(GetCards());
-                StartCoroutine(GetCardCollection());
-                StartCoroutine(GetDecks());
-
-                DataObject.MaterialsList = new List<Material>();
-                DataObject.MaterialsList.AddRange(effectMaterials.ToList());
+                StartCoroutine(InitializeDataObject());
 
                 wasInit = true;
             }
         }
 
-        public static void InitAbility()
+        public static IEnumerator InitializeDataObject()
         {
-            GroupsPosition.InitPosition();
-        }
+            instance.StartCoroutine(DatabaseManager.GetSpells());
 
-        public IEnumerator GetWeapons()
-        {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/equipment/list.php");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
+            while (!hasSpellsLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
             
-            if (www.responseCode == 200)
-            {
-                DataObject.EquipmentList = new EquipmentList(weaponsGameObject, www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.Log("Can't get weapons...");
-                Debug.Log(www.responseCode);
-                Debug.Log(www.downloadHandler.text);
-            }
-        }
+            instance.StartCoroutine(DatabaseManager.GetClasses());
+            instance.StartCoroutine(DatabaseManager.GetCategoryWeapon());
+            instance.StartCoroutine(DatabaseManager.GetGroupsMonster());
 
-        public IEnumerator GetGroupsMonster()
-        {
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/group/list.php");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
+            while (!hasCategoriesLoad)
             {
-                Debug.Log(www.downloadHandler.text);
-                DataObject.MonsterList = new MonsterList(monsterGameObjects, www.downloadHandler.text);
+                yield return new WaitForSeconds(0.5f);
             }
-            else
-            {
-                Debug.Log("Can't get Monsters...");
-            }
-        }
+            
+            instance.StartCoroutine(DatabaseManager.GetWeapons());
 
-        public IEnumerator GetCards()
-        {
+            while (!hasClassesLoad)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            instance.StartCoroutine(DatabaseManager.GetClassesCategoryWeapon());
+            
             while (!hasMonstersLoad || !hasWeaponsLoad)
             {
                 yield return new WaitForSeconds(0.5f);
             }
 
-            var www = UnityWebRequest.Get(NetworkingController.PublicURL + "/services/game/card/list.php");
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
-            {
-                Debug.Log(www.downloadHandler.text);
-                DataObject.CardList.InitCards(www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.Log("Can't get Cards...");
-            }
-        }
+            instance.StartCoroutine(DatabaseManager.GetCards());
 
-        public static IEnumerator GetCardCollection()
-        {
             while (!hasCardsLoad || !wasConnected)
             {
                 yield return new WaitForSeconds(0.5f);
             }
 
-            CardList.collectionIsLoaded = false;
-            
-            WWWForm form = new WWWForm();
-            if (NetworkingController.AuthToken != "")
-            {
-                form.AddField("collectionOwner", NetworkingController.AuthToken);
-            }
-            else
-            {
-                form.AddField("collectionOwner", "HZ0PUiJjDly8EDkyYUiP");
-            }
-            
-            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/card/listAccountCollection.php", form);
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
-            {
-                DataObject.CardList.InitCardCollection(www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.Log("Can't get Cards collection...");
-            }
-        }
-        
-        public IEnumerator GetDecks()
-        {
-            while (!hasCardsLoad || !wasConnected)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            WWWForm form = new WWWForm();
-            if (NetworkingController.AuthToken != "")
-            {
-                form.AddField("deckOwner", NetworkingController.AuthToken);
-            }
-            else
-            {
-                form.AddField("deckOwner", "HZ0PUiJjDly8EDkyYUiP");
-            }
-            
-            var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/card/listCardDeck.php", form);
-            www.certificateHandler = new AcceptCertificate();
-            yield return www.SendWebRequest();
-            yield return new WaitForSeconds(0.5f);
-            if (www.responseCode == 200)
-            {
-                DataObject.CardList.InitDeck(www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.Log("Can't get Cards decks...");
-            }
+            instance.StartCoroutine(DatabaseManager.GetCardCollection());
+            instance.StartCoroutine(DatabaseManager.GetDecks());
         }
     }
 
@@ -182,7 +93,9 @@ namespace Games.Global
         public static MonsterList MonsterList;
         public static EquipmentList EquipmentList;
         public static CardList CardList;
-        public static List<Material> MaterialsList;
+        public static ClassesList ClassesList;
+        public static SpellList SpellList;
+        public static CategoryWeaponList CategoryWeaponList;
         
         public static List<Monster> monsterInScene = new List<Monster>();
         public static Dictionary<int, PlayerPrefab> playerInScene = new Dictionary<int, PlayerPrefab>();

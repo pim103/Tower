@@ -16,7 +16,7 @@ namespace Games.Global.Spells
     {
         public TransformationSpell()
         {
-            typeSpell = TypeSpell.Transformation;
+            TypeSpellComponent = TypeSpellComponent.Transformation;
         }
 
         // int : spellSlot - Spell : newSpell

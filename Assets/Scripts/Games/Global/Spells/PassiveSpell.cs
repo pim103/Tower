@@ -8,7 +8,7 @@ namespace Games.Global.Spells
     {
         public PassiveSpell()
         {
-            typeSpell = TypeSpell.Passive;
+            TypeSpellComponent = TypeSpellComponent.Passive;
         }
 
         public SpellComponent permanentSpellComponent { get; set; }
@@ -27,7 +27,7 @@ namespace Games.Global.Spells
             }
             else if (permanentSpellComponentInstantiate == null)
             {
-                permanentSpellComponentInstantiate = SpellController.CastSpellComponent(caster, permanentSpellComponent, caster, caster.entityPrefab.transform.position, this);
+                permanentSpellComponentInstantiate = SpellController.CastSpellComponent(caster, permanentSpellComponent, caster, caster.entityPrefab.transform.position, originSpell, this);
             }
         }
     }

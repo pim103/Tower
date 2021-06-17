@@ -8,7 +8,7 @@ namespace Games.Global.Spells
     {
         public BasicAttackSpell()
         {
-            typeSpell = TypeSpell.BasicAttack;
+            TypeSpellComponent = TypeSpellComponent.BasicAttack;
         }
         
         public override void OnTriggerEnter(Entity enemy)

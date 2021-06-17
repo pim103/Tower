@@ -68,8 +68,7 @@ namespace Games.Defenses
             {
                 aboveMap = true;
                 currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
-                //Debug.Log(objectInHand);
-                //Debug.Log(currentCardBehavior.cardType);
+
                 if (objectInHand && (objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.equipement != null || objectInHand.layer == LayerMask.NameToLayer("Key")))
                 {
                     if (currentTileController.contentType == GridTileController.TypeData.Group)
@@ -108,8 +107,12 @@ namespace Games.Defenses
                 
                 if (objectInHand)
                 {
-                    if (objectInHand.layer == LayerMask.NameToLayer("Wall") || objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                    if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
                     {
+                        objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 2.5f;
+                    }
+                    else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
+                    {    
                         objectInHand.transform.position = hit.collider.gameObject.transform.position + Vector3.down * 2.25f;
                     }
                     else if(objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
@@ -130,12 +133,15 @@ namespace Games.Defenses
                     {
                         currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                         pathToEnd = new NavMeshPath(); 
+
                         NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+
                         if (defenseUiController.keyAlreadyPut)
                         {
                             pathToKey = new NavMeshPath();
                             NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
                         }
+
                         if (pathToEnd.status == NavMeshPathStatus.PathComplete && (pathToKey.status == NavMeshPathStatus.PathComplete || !defenseUiController.keyAlreadyPut))
                         {
                             currentlyBlocked = false;
