@@ -117,9 +117,6 @@ namespace Games.Players
         public void InitWeapon(Weapon weapon)
         {
             playerPrefab.AddItemInHand(weapon);
-            weapon.InitPlayerSkill(mainClass);
-            // TODO : Add init weapon => change basic attack spell
-
             this.weapon = weapon;
         }
     }

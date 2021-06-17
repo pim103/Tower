@@ -62,7 +62,7 @@ namespace Games.Global
             
             instance.StartCoroutine(DatabaseManager.GetWeapons());
 
-            while (!hasClassesLoad)
+            while (!hasClassesLoad || !hasWeaponsLoad)
             {
                 yield return new WaitForSeconds(0.5f);
             }

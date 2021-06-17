@@ -117,23 +117,6 @@ namespace Games.Global.Entities
             this.weapon = weapon;
         }
 
-        public void InitSpells()
-        {
-//             foreach (SpellList spellName in spellsName)
-//             {
-//                 Spell spell = DataObject.SpellList.GetSpellByName(spellName.);
-//
-//                 if (spell != null)
-//                 {
-//                     spells.Add(spell);
-//                 }
-//                 else
-//                 {
-// //                    Debug.Log("Doesnt find spell " + spellName.name);
-//                 }
-//             }
-        }
-
         public void InitKey(GameObject keyObject)
         {
             monsterPrefab.objectsToLoot.Add(keyObject);

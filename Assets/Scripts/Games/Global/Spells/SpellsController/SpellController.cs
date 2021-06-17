@@ -19,15 +19,6 @@ namespace Games.Global.Spells.SpellsController
 
     public class SpellController : MonoBehaviour
     {
-//        [SerializeField] private BuffController buffController;
-//        [SerializeField] private AreaOfEffectController areaOfEffectController;
-//        [SerializeField] private MovementController movementController;
-//        [SerializeField] private WaveController waveController;
-//        [SerializeField] private ProjectileController projectileController;
-//        [SerializeField] private SummonController summonController;
-//        [SerializeField] private PassiveController passiveController;
-//        [SerializeField] private TransformationController transformationController;
-
         [SerializeField] private SpellInterpreter spellInterpreter;
 
         public static SpellController instance;

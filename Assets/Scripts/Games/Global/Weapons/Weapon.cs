@@ -32,25 +32,6 @@ namespace Games.Global.Weapons
 
         public Spell basicAttack { get; set; }
 
-        public void InitPlayerSkill(Classes classe)
-        {
-            switch (classe)
-            {
-//                case Classes.Warrior:
-//                    InitWeaponSpellWithJson(warriorSpells);
-//                    break;
-//                case Classes.Mage:
-//                    InitWeaponSpellWithJson(mageSpells);
-//                    break;
-//                case Classes.Rogue:
-//                    InitWeaponSpellWithJson(rogueSpells);
-//                    break;
-//                case Classes.Ranger:
-//                    InitWeaponSpellWithJson(rangerSpells);
-//                    break;
-            }
-        }
-
         public void InitWeapon()
         {
             InitBasicAttack();
