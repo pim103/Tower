@@ -1,11 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardInDeckButtonExposer : MonoBehaviour
+namespace DeckBuilding
 {
-    [SerializeField] public Text name;
-    [SerializeField] public Text copies;
-    public Card card;
+    public class CardInDeckButtonExposer : MonoBehaviour
+    {
+        [SerializeField] public TextMeshProUGUI cardName;
+        [SerializeField] public TextMeshProUGUI cardCopies;
+        [SerializeField] public Button cardButton;
+        public Card card;
+    }
 }

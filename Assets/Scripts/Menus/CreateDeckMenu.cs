@@ -11,47 +11,52 @@ using UnityEngine.UI;
 
 namespace Menus
 {
+    //TODO : refacto like CollectionAndCraftMenu.cs + the menu prefab asociated at this script
+    
     public class CreateDeckMenu : MonoBehaviour, MenuInterface
     {
+        
+        #region all menus parameters
         [SerializeField]
         private MenuController mc;
-
-        [SerializeField]
-        private Button saveDeckButton;
-
         [SerializeField]
         private Button returnButton;
+        #endregion
 
+        #region collection parameters
+        [SerializeField] 
+        private GridLayoutGroup collectionGrid;
+        [SerializeField] 
+        private GameObject cardPrefab;
+        private List<GameObject> cards;
+        #endregion
+        
+        #region deck edition parameters
+        [SerializeField]
+        private Button saveDeckButton;
         [SerializeField] 
         private DeckManagementMenu deckManagementMenu;
-
-        private List<Card> cardsInDeck;
-        private List<GameObject> cardInDeckButtonsList;
-        private List<GameObject> cardInCollButtonsList;
-
         [SerializeField] 
-        private GameObject cardInDeckButton;
+        private GridLayoutGroup deckGrid;
         [SerializeField] 
-        private GameObject cardInCollButton;
-
+        private GameObject cardInDeckPrefab;
+        private Deck currentDeck;
+        private List<GameObject> deckCards;
         public bool newDeck;
-        private Deck selectedDeck;
+        [SerializeField] private InputField deckName; 
+        //TODO : ^^^^ changer en text simple dans la scène ^^^^
+        //+ ajouter un bouton 'crayon' pour activer la modification (et du coup là afficher l'input field
+        //+ transformer le 'crayon' en validation et ajouter un bouton annuler)
+        #endregion
 
         private int totalDistinctCardNumber;
         private int cardCounter;
         private bool reloadingDecks;
 
-        [SerializeField] private InputField deckName;
-        [SerializeField] private Transform deckPosition;
-        [SerializeField] private Transform ColPosition;
-        [SerializeField] private Transform ColPositionXOffset;
-        [SerializeField] private Transform ColPositionYOffset;
-        [SerializeField] private GameObject ColParent;
+        #region start and initialization functions
         private void Start()
         {
-            saveDeckButton.onClick.AddListener(delegate {
-                SaveDeck();
-            });
+            saveDeckButton.onClick.AddListener(SaveDeck);
 
             returnButton.onClick.AddListener(delegate
             {
@@ -61,189 +66,162 @@ namespace Menus
 
         public void InitMenu()
         {
-
-            if (deckManagementMenu.selectedDeck != 0)
-            {
-                Debug.Log(deckManagementMenu.selectedDeckName);
-                deckName.text = deckManagementMenu.selectedDeckName;
-                selectedDeck = DataObject.CardList.GetDeckById(deckManagementMenu.selectedDeck);
-            }
-            else
-            {
-                selectedDeck = null;
-                deckName.text = "";
-            }
-            
-            if (cardInCollButtonsList != null)
-            {
-                foreach (var button in cardInCollButtonsList)
-                {
-                    button.SetActive(false);
-                }
-            }
-            if (cardInDeckButtonsList != null)
-            {
-                foreach (var button in cardInDeckButtonsList)
-                {
-                    button.SetActive(false);
-                }
-            }
-
-            cardInDeckButtonsList = new List<GameObject>();
-            cardInCollButtonsList = new List<GameObject>();
-
-            if (!newDeck)
-            {
-                foreach (Card card in selectedDeck.GetCardsInDeck())
-                {
-                    int currentCount = cardInDeckButtonsList.Count;
-                    GameObject currentCardInDeckButton = Instantiate(cardInDeckButton, transform);
-                    cardInDeckButtonsList.Add(currentCardInDeckButton);
-                    currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * currentCount - 1, 0);
-                    
-                    CardInDeckButtonExposer currentButtonExposer = currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
-
-                    if (card.GroupsMonster != null)
-                    {
-                        currentButtonExposer.card = card;
-                        currentButtonExposer.name.text = card.GroupsMonster.name;
-                        currentButtonExposer.copies.text = selectedDeck.GetCardNumber(card.id).ToString();
-                        currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
-                        {
-                            RemoveCardFromDeck(currentButtonExposer); 
-                        });
-                    } else if (card.Weapon != null)
-                    {
-                        currentButtonExposer.card = card;
-                        currentButtonExposer.name.text = card.Weapon.equipmentName;
-                        currentButtonExposer.copies.text = selectedDeck.GetCardNumber(card.id).ToString();
-                        currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
-                        {
-                            RemoveCardFromDeck(currentButtonExposer);
-                        });
-                    }
-                }
-            }
-            ShowCards();
-            Debug.Log("Create Deck Menu");
+            InitializeCollection();
         }
 
-        public void ShowCards()
+        private void InitializeCollection()
         {
-            if (cardInCollButtonsList != null)
+            if (cards != null)
             {
-                foreach (var button in cardInCollButtonsList)
+                foreach (GameObject card in cards)
                 {
-                    button.SetActive(false);
+                    card.SetActive(false);
                 }
             }
-            
-            cardInCollButtonsList = new List<GameObject>();
-            int ycount = 0;
+
+            cards = new List<GameObject>();
 
             foreach (Card card in DataObject.CardList.GetCardsInCollection())
             {
-                int currentCount = cardInCollButtonsList.Count;
-                GameObject currentCardInCollButton = Instantiate(cardInCollButton, transform);
-                currentCardInCollButton.transform.SetParent(ColParent.transform);
-                cardInCollButtonsList.Add(currentCardInCollButton);
-                if (currentCount % 5 == 0)
-                {
-                    ycount += 1;
-                }
-                currentCardInCollButton.transform.position = new Vector3(ColPosition.position.x+(ColPositionXOffset.position.x-ColPosition.position.x)*(currentCount%5),ColPosition.position.y+((ColPositionYOffset.position.y-ColPosition.position.y)*(ycount-1))+20,0);
+                GameObject instantiateCard = Instantiate(cardPrefab, collectionGrid.transform);
+                cards.Add(instantiateCard);
                 
-                CardInCollButtonExposer currentButtonExposer = currentCardInCollButton.GetComponent<CardInCollButtonExposer>();
-
+                CardInCollButtonExposer cardExposer = instantiateCard.GetComponent<CardInCollButtonExposer>();
+                
                 if (card.GroupsMonster != null)
                 {
-                    currentButtonExposer.card = card;
-                    currentButtonExposer.cardName.text = card.GroupsMonster.name;
-                    currentButtonExposer.cardCopies.text = DataObject.CardList.GetNbSpecificCardInCollection(card.id).ToString();
-                    currentButtonExposer.cardEffect.text = "effet";
-                    currentButtonExposer.cardCost.text = card.GroupsMonster.cost.ToString();
-                    currentButtonExposer.cardFamily.text = card.GroupsMonster.family.ToString();
-                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
-                    {
-                        PutCardInDeck(currentButtonExposer.card);
-                    });
-                } else if (card.Weapon != null)
+                    cardExposer.cardName.text = card.GroupsMonster.name;
+                    cardExposer.cardCost.text = card.GroupsMonster.cost.ToString();
+                    cardExposer.cardFamily.text = card.GroupsMonster.family.ToString();
+                } 
+                else if (card.Weapon != null)
                 {
-                    currentButtonExposer.card = card;
-                    currentButtonExposer.cardName.text = card.Weapon.equipmentName;
-                    currentButtonExposer.cardCopies.text = DataObject.CardList.GetNbSpecificCardInCollection(card.id).ToString();
-                    currentButtonExposer.cardEffect.text = "effet";
-                    currentButtonExposer.cardCost.text = card.Weapon.cost.ToString();
-                    currentButtonExposer.cardFamily.text = card.Weapon.type.ToString();
-                    currentCardInCollButton.GetComponent<Button>().onClick.AddListener(delegate
+                    cardExposer.cardName.text = card.Weapon.equipmentName;
+                    cardExposer.cardCost.text = card.Weapon.cost.ToString();
+                    cardExposer.cardFamily.text = card.Weapon.type.ToString();
+                }
+                cardExposer.cardCopies.text = "Copies possédées : " + DataObject.CardList.GetNbSpecificCardInCollection(card.id);
+                cardExposer.cardEffect.text = "Description de l'effet";
+                cardExposer.cardButton.onClick.RemoveAllListeners();
+                cardExposer.cardButton.onClick.AddListener(delegate
+                {
+                    PutCardInDeck(cardExposer.card);
+                });
+                cardExposer.card = card;
+                
+            }
+            
+            InitializeDeck();
+        }
+        
+        private void InitializeDeck()
+        {
+            if (deckCards != null)
+            {
+                foreach (GameObject card in deckCards)
+                {
+                    card.SetActive(false);
+                }
+            }
+            
+            deckCards = new List<GameObject>();
+            
+            if (deckManagementMenu.selectedDeck != 0)
+            {
+                currentDeck = DataObject.CardList.GetDeckById(deckManagementMenu.selectedDeck);
+                deckName.text = deckManagementMenu.selectedDeckName;
+            }
+            else
+            {
+                currentDeck = null;
+                deckName.text = "";
+            }
+
+            if (!newDeck)
+            {
+                foreach (Card card in currentDeck.GetCardsInDeck())
+                {
+                    GameObject instantiateCard = Instantiate(cardInDeckPrefab, deckGrid.transform);
+                    deckCards.Add(instantiateCard);
+                    
+                    CardInDeckButtonExposer cardExposer = instantiateCard.GetComponent<CardInDeckButtonExposer>();
+
+                    if (card.GroupsMonster != null)
                     {
-                        PutCardInDeck(currentButtonExposer.card);
+                        cardExposer.cardName.text = card.GroupsMonster.name;
+                    } 
+                    else if (card.Weapon != null)
+                    {
+                        cardExposer.cardName.text = card.Weapon.equipmentName;
+                    }
+                    cardExposer.card = card;
+                    cardExposer.cardCopies.text = currentDeck.GetCardNumber(card.id).ToString();
+                    cardExposer.cardButton.onClick.RemoveAllListeners();
+                    cardExposer.cardButton.onClick.AddListener(delegate
+                    {
+                        RemoveCardFromDeck(cardExposer);
                     });
                 }
             }
         }
 
-        private void RemoveCardFromDeck(CardInDeckButtonExposer cardInDeckButtonExposer)
+        #endregion
+        
+        #region deck management functions
+        private void RemoveCardFromDeck(CardInDeckButtonExposer cardExposer)
         {
-            int cardNb = Int32.Parse(cardInDeckButtonExposer.copies.text);
-            if (cardNb > 1)
+            int cardCopies = Int32.Parse(cardExposer.cardCopies.text);
+            if (cardCopies > 1)
             {
-                cardInDeckButtonExposer.copies.text = (cardNb - 1).ToString();
+                cardExposer.cardCopies.text = (cardCopies - 1).ToString();
             }
             else
             {
-                cardInDeckButtonsList.Remove(cardInDeckButtonExposer.gameObject);
-                cardInDeckButtonExposer.gameObject.SetActive(false);
-                int posCount = 0;
-                foreach (GameObject button in cardInDeckButtonsList)
-                {
-                    button.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * posCount - 1, button.transform.position.z);
-                    posCount++;
-                }
+                cards.Remove(cardExposer.gameObject);
+                cardExposer.gameObject.SetActive(false);
             }
         }
 
         private void PutCardInDeck(Card card)
         {
             bool cardFound = false;
-            foreach (GameObject cardButton in cardInDeckButtonsList)
+            foreach (GameObject cardButton in cards)
             {
-                CardInDeckButtonExposer currentButtonExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
-                if (currentButtonExposer.card.id == card.id)
+                CardInDeckButtonExposer cardExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
+                if (cardExposer.card.id == card.id)
                 {
                     cardFound = true;
-                    int nbCopies = Int32.Parse(currentButtonExposer.copies.text);
-                    if (nbCopies < 3)
+                    int cardCopies = Int32.Parse(cardExposer.cardCopies.text);
+                    if (cardCopies < 3)
                     {
-                        currentButtonExposer.copies.text = (nbCopies + 1).ToString();
+                        cardExposer.cardCopies.text = (cardCopies + 1).ToString();
                     }
                 }
             }
 
+            //TODO : faire un scroll rect pour les cartes  à l'intérieur du deck 
+            //en gros refaire la partie droite dans le (prefab du) menu
             if (!cardFound)
             {
-                int currentCount = cardInDeckButtonsList.Count;
-                GameObject currentCardInDeckButton = Instantiate(cardInDeckButton, transform);
-                cardInDeckButtonsList.Add(currentCardInDeckButton);
-                currentCardInDeckButton.transform.position = new Vector3(deckPosition.position.x, deckPosition.position.y - 30 * currentCount - 1, 0);
-                    
-                CardInDeckButtonExposer currentButtonExposer = currentCardInDeckButton.GetComponent<CardInDeckButtonExposer>();
+                GameObject currentDeckCard = Instantiate(cardInDeckPrefab, deckGrid.transform);
+                deckCards.Add(currentDeckCard);
+                CardInDeckButtonExposer currentButtonExposer = currentDeckCard.GetComponent<CardInDeckButtonExposer>();
 
                 if (card.GroupsMonster != null)
                 {
                     currentButtonExposer.card = card;
-                    currentButtonExposer.name.text = card.GroupsMonster.name;
-                    currentButtonExposer.copies.text = "1";
-                    currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
+                    currentButtonExposer.cardName.text = card.GroupsMonster.name;
+                    currentButtonExposer.cardCopies.text = "1";
+                    currentButtonExposer.cardButton.onClick.AddListener(delegate
                     {
                         RemoveCardFromDeck(currentButtonExposer);
                     });
                 } else if (card.Weapon != null)
                 {
                     currentButtonExposer.card = card;
-                    currentButtonExposer.name.text = card.Weapon.equipmentName;
-                    currentButtonExposer.copies.text = "1";
-                    currentCardInDeckButton.GetComponent<Button>().onClick.AddListener(delegate
+                    currentButtonExposer.cardName.text = card.Weapon.equipmentName;
+                    currentButtonExposer.cardCopies.text = "1";
+                    currentButtonExposer.cardButton.onClick.AddListener(delegate
                     {
                         RemoveCardFromDeck(currentButtonExposer);
                     });
@@ -307,7 +285,7 @@ namespace Menus
                 foreach (GameObject cardButton in cardInDeckButtonsList)
                 {
                     CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
-                    StartCoroutine(AddNewCardInDeck(selectedDeck.id,currentExposer.card.id,Int32.Parse(currentExposer.copies.text)));
+                    StartCoroutine(AddNewCardInDeck(selectedDeck.id,currentExposer.card.id,Int32.Parse(currentExposer.cardCopies.text)));
                 }
             }
             else if (www.responseCode == 406)
@@ -444,5 +422,6 @@ namespace Menus
                 Debug.Log("Can't get Cards decks...");
             }
         }
+        #endregion
     }
 }
