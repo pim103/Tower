@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using System.Collections.Generic;
 using ContentEditor.UtilsEditor;
 using Games.Global;
 using Games.Global.Spells;
-using Games.Global.TreeBehavior.CompositeBehavior;
 using Games.Global.Weapons;
 using Games.Players;
 using UnityEditor;
@@ -261,3 +262,5 @@ namespace ContentEditor
         }
     }
 }
+
+#endif

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using DeckBuilding;
 using Games.Global;
@@ -6,7 +8,9 @@ using Games.Global.Weapons;
 using Games.Players;
 using Networking;
 using Networking.Client;
+using Networking.Client.Room;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Games.Transitions
@@ -45,6 +49,8 @@ namespace Games.Transitions
         private int activeMonsterButtonCount = 1;
         private int activeEquipmentButtonCount = 1;
 
+        private bool isInit = false;
+
         private void OnEnable()
         {
             isValidate = false;
@@ -52,38 +58,33 @@ namespace Games.Transitions
 
         private void Start()
         {
-            isValidate = false;
-            IdentityOfButton = new Dictionary<Button, Identity>();
+            CurrentRoom.loadRoleAndDeck = true;
+        }
 
-            InstantiateCharButtons();
-            InstantiateWeaponButtons();
-            // Button activeButton = null;
-            //
-            // foreach (Button button in buttonsOfChoice)
-            // {
-            //     Identity identity = button.GetComponent<Identity>();
-            //     button.onClick.AddListener(delegate { GetIdentityOfButton(button); });
-            //
-            //     IdentityOfButton.Add(button, identity);
-            //     if (identity.identityType == IdentityType.Role && activeButton == null)
-            //     {
-            //         activeButton = button;
-            //     }
-            //     else if (identity.identityType == IdentityType.CategoryWeapon)
-            //     {
-            //         button.interactable = false;
-            //     }
-            // }
-            //
-            // if (activeButton != null)
-            // {
-            //     activeButton.onClick.Invoke();
-            // }
+        private void Update()
+        {
+            if (!DictionaryManager.hasWeaponsLoad ||
+                !DictionaryManager.hasMonstersLoad ||
+                !DictionaryManager.hasCardsLoad ||
+                !DictionaryManager.hasClassesLoad)
+            {
+                return;
+            }
 
-            validateChoices.onClick.AddListener(LaunchGame);
-            monsterDeckId = 0;
-            equipmentDeckId = 0;
-            FetchDecks();
+            if (!isInit)
+            {
+                isInit = true;
+                isValidate = false;
+                IdentityOfButton = new Dictionary<Button, Identity>();
+
+                InstantiateCharButtons();
+                InstantiateWeaponButtons();
+
+                validateChoices.onClick.AddListener(LaunchGame);
+                monsterDeckId = 0;
+                equipmentDeckId = 0;
+                FetchDecks();
+            }
         }
 
         private void InstantiateCharButtons()
@@ -108,7 +109,7 @@ namespace Games.Transitions
         {
             foreach (CategoryWeapon categoryWeapon in DataObject.CategoryWeaponList.categories)
             {
-                GameObject weaponSelector = Instantiate(buttonWeaponTemplate, characterSelectionParent.transform);
+                GameObject weaponSelector = Instantiate(buttonWeaponTemplate, weaponSelectionParent.transform);
 
                 Identity weaponIdentity = weaponSelector.GetComponent<Identity>();
                 weaponIdentity.title.text = categoryWeapon.name;
@@ -124,9 +125,10 @@ namespace Games.Transitions
         
         private void LaunchGame()
         {
-            Dictionary<string, int> argsDict = new Dictionary<string, int>();
-            argsDict.Add("class", currentRoleIdentity.GetIdentityId());
-            argsDict.Add("weapon", currentWeaponIdentity.GetIdentityId());
+            Dictionary<string, int> argsDict = new Dictionary<string, int>
+            {
+                {"class", currentRoleIdentity.GetIdentityId()}, {"weapon", currentWeaponIdentity.GetIdentityId()}
+            };
 
             if (!gameController.byPassDefense)
             {
@@ -152,8 +154,6 @@ namespace Games.Transitions
 
                 currentRoleIdentity = identity;
                 currentRoleImage = buttonImage;
-                currentWeaponIdentity = null;
-                currentWeaponImage = null;
             }
             else if (identity.identityType == IdentityType.CategoryWeapon)
             {

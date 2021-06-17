@@ -1,4 +1,6 @@
-﻿using ContentEditor.UtilsEditor;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using ContentEditor.UtilsEditor;
 using Games.Global.Spells;
 using PathCreation;
 using TestC;
@@ -192,3 +194,5 @@ namespace ContentEditor
         }
     }
 }
+
+#endif

@@ -1,6 +1,7 @@
-﻿using System;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using System;
 using System.Collections.Generic;
-using Games.Global.Spells;
 using UnityEditor;
 using UnityEngine;
 
@@ -126,3 +127,5 @@ namespace ContentEditor.UtilsEditor
         }
     }
 }
+
+#endif

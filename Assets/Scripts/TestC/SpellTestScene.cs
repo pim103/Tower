@@ -181,31 +181,6 @@ namespace TestC
 
             CreateTestSpell();
 
-            int countSpells = 0;
-            // foreach (KeyValuePair<string, Spell> pair in ListCreatedElement.Spell)
-            // {
-            //     Spell copySpell = Tools.Clone(pair.Value);
-            //     player.entity.spells.Add(copySpell);
-            //
-            //     if (countSpells == 0)
-            //     {
-            //         player.spell1.text = copySpell.nameSpell;
-            //     } else if (countSpells == 1)
-            //     {
-            //         player.spell2.text = copySpell.nameSpell;
-            //     } else if (countSpells == 2)
-            //     {
-            //         player.spell3.text = copySpell.nameSpell;
-            //     }
-            //     else
-            //     {
-            //         extraSpellText[countSpells].gameObject.SetActive(true);
-            //         extraSpellText[countSpells].transform.GetChild(0).GetComponent<Text>().text = copySpell.nameSpell;
-            //     }
-            //     
-            //     countSpells++;
-            // }
-
             SpellController.CastPassiveSpell(player.entity);
         }
 
