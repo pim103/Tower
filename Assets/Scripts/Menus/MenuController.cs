@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FullSerializer;
 using Games.Defenses;
+using Games.Players;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
@@ -61,7 +62,7 @@ namespace Menus
             else
             {
                 TowersWebSocket.StartConnection();
-                ActivateMenu(Menu.MainMenu);
+                //ActivateMenu(Menu.MainMenu);
             }
 
             StartCoroutine(CheckForDeconnection());
@@ -199,6 +200,8 @@ namespace Menus
 
         private void CancelResearchMatch()
         {
+            PlayerInMenu.isInMenu = false;
+            Cursor.lockState = CursorLockMode.Locked;
             searchingMatchCanvas.active = false;
             var setSocket = new Dictionary<string, string>();
             setSocket.Add("tokenPlayer", NetworkingController.AuthToken);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
+using Games.Players;
 using Networking;
 using Networking.Client;
 using TMPro;
@@ -71,12 +72,9 @@ namespace Menus
 
         public void InitMenu()
         {
-            InitializeCollection();
-        }
-
-        private void InitializeCollection()
-        {
-            if (cards != null)
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
+            if (deckManagementMenu.selectedDeck != 0)
             {
                 foreach (GameObject card in cards)
                 {

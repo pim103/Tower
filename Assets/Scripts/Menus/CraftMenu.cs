@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Games.Players;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menus
@@ -21,6 +22,8 @@ namespace Menus
 
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
             Debug.Log("Craft Menu");
         }
     }

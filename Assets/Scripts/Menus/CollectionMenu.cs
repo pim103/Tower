@@ -2,6 +2,7 @@
 using DeckBuilding;
 using Games.Global;
 using Games.Global.Entities;
+using Games.Players;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +34,8 @@ namespace Menus
 
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
             minBorder = 0;
             maxBorder = 15;
             ShowCards();
