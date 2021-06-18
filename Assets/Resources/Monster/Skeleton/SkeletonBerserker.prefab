@@ -894,6 +894,7 @@ GameObject:
   - component: {fileID: 2871207911170149337}
   - component: {fileID: 6427951248319800584}
   - component: {fileID: 6512480093088239001}
+  - component: {fileID: 1461046648837222997}
   m_Layer: 11
   m_Name: SkeletonBerserker
   m_TagString: Untagged
@@ -983,8 +984,10 @@ MonoBehaviour:
   canMove: 1
   forcedDirection: {x: 0, y: 0, z: 0}
   positionPointed: {x: 0, y: 0, z: 0}
+  entityRigidbodies: []
   hpBar: {fileID: 2514338152487012179}
   objectsToLoot: []
+  root: {fileID: 8521370539132425963}
 --- !u!136 &2871207911170149337
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1037,6 +1040,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1461046648837222997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132226987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132229761
 GameObject:
   m_ObjectHideFlags: 0
