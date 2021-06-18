@@ -25,12 +25,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164099144919328287}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0.49986362, y: -0.4999868, z: -0.5001144, w: -0.5000352}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 3
+  m_Father: {fileID: 8521370539131955227}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7789206995644314044
 BoxCollider:
@@ -86,7 +86,7 @@ Transform:
   m_LocalScale: {x: 0.015000007, y: 0.015000013, z: 0.015000007}
   m_Children: []
   m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3799372146921082884
 GameObject:
@@ -116,7 +116,7 @@ Transform:
   m_LocalScale: {x: 0.015000007, y: 0.015000013, z: 0.015000007}
   m_Children: []
   m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4891197118384083870
 GameObject:
@@ -143,12 +143,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4891197118384083870}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0.49986362, y: -0.4999868, z: -0.5001144, w: -0.5000352}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 8
+  m_Father: {fileID: 8521370539131955227}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8439853049035131011
 SphereCollider:
@@ -204,7 +204,7 @@ Transform:
   m_LocalScale: {x: 0.015000007, y: 0.015000013, z: 0.015000007}
   m_Children: []
   m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6460668141722690288
 GameObject:
@@ -234,7 +234,7 @@ Transform:
   m_LocalScale: {x: 0.015000007, y: 0.015000013, z: 0.015000007}
   m_Children: []
   m_Father: {fileID: 8521370539131973237}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8521370539132191773
 GameObject:
@@ -480,6 +480,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132044413}
+  - component: {fileID: 7103056960237416602}
+  - component: {fileID: 5171992148734444997}
+  - component: {fileID: 1633344798006926772}
+  - component: {fileID: 3800819689651926550}
   m_Layer: 0
   m_Name: skeleton_knight_ R Thigh
   m_TagString: Untagged
@@ -500,8 +504,97 @@ Transform:
   m_Children:
   - {fileID: 8521370539132045377}
   m_Father: {fileID: 8521370539131955227}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7103056960237416602
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132200175}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.052990172
+  m_Height: 0.39020795
+  m_Direction: 0
+  m_Center: {x: -0.29576677, y: 0.000000005538703, z: 0.0000000032568728}
+--- !u!54 &5171992148734444997
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132200175}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &1633344798006926772
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132200175}
+  m_ConnectedBody: {fileID: 8848435721635376541}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.000000067841015, y: -0.00000013411045, z: -0.09197499}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &3800819689651926550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132200175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132204619
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +635,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131936647}
+  - component: {fileID: 2860586459102984724}
+  - component: {fileID: 2624902578076158358}
+  - component: {fileID: 1173248433778298137}
+  - component: {fileID: 718700507688226278}
   m_Layer: 0
   m_Name: skeleton_knight_ R Hand
   m_TagString: Untagged
@@ -568,6 +665,95 @@ Transform:
   m_Father: {fileID: 8521370539132004165}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2860586459102984724
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132204671}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.11928061
+  m_Direction: 0
+  m_Center: {x: -0.1, y: -0.000000004808115, z: -0.000000005164309}
+--- !u!54 &2624902578076158358
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132204671}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &1173248433778298137
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132204671}
+  m_ConnectedBody: {fileID: 1773892782849727611}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.2732229, y: -0.00000003366642, z: -0.00000019585173}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &718700507688226278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132204671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132205061
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +917,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131942855}
+  - component: {fileID: 8887245989638485883}
+  - component: {fileID: 2071305463492715115}
+  - component: {fileID: 7488824470976714102}
+  - component: {fileID: 5635738454045893644}
   m_Layer: 0
   m_Name: skeleton_knight_ L Hand
   m_TagString: Untagged
@@ -757,6 +947,95 @@ Transform:
   m_Father: {fileID: 8521370539131971491}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &8887245989638485883
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132217523}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.11928061
+  m_Direction: 0
+  m_Center: {x: -0.1, y: -0.000000004808115, z: -0.000000005164309}
+--- !u!54 &2071305463492715115
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132217523}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &7488824470976714102
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132217523}
+  m_ConnectedBody: {fileID: 860248682468903986}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.27322283, y: 0.000000083191026, z: -0.0000000010178345}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &5635738454045893644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132217523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132217683
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +1137,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131943403}
+  - component: {fileID: 9198504961163268305}
+  - component: {fileID: 4684005573476686221}
+  - component: {fileID: 2280936712081161229}
+  - component: {fileID: 3144031590167167970}
   m_Layer: 0
   m_Name: skeleton_knight_ R UpperArm
   m_TagString: Untagged
@@ -880,6 +1163,95 @@ Transform:
   m_Father: {fileID: 8521370539131961209}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &9198504961163268305
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132226555}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.29525283
+  m_Direction: 0
+  m_Center: {x: -0.14041308, y: 0.000000006261701, z: -0.0000000062211334}
+--- !u!54 &4684005573476686221
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132226555}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &2280936712081161229
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132226555}
+  m_ConnectedBody: {fileID: 8848435721635376541}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.56452703, y: 0.0023198724, z: -0.17910922}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &3144031590167167970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132226555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132226987
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +1265,6 @@ GameObject:
   - component: {fileID: 2371696985282420669}
   - component: {fileID: 2871207911170149337}
   - component: {fileID: 6427951248319800584}
-  - component: {fileID: 6512480093088239001}
   - component: {fileID: 799959187394077843}
   m_Layer: 11
   m_Name: SkeletonBow
@@ -916,13 +1287,10 @@ Transform:
   - {fileID: 8521370539131996407}
   - {fileID: 8521370539132047565}
   - {fileID: 8521370539131993687}
-  - {fileID: 753199862364955621}
   - {fileID: 6014481797865298105}
   - {fileID: 3590441326526159950}
   - {fileID: 1897464822735068468}
   - {fileID: 5161579070902402284}
-  - {fileID: 1946197402562123024}
-  - {fileID: 2017845969137382815}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -959,7 +1327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHand: {fileID: 8521370539132204671}
   leftHand: {fileID: 8521370539132217523}
-  rigidbodyEntity: {fileID: 6512480093088239001}
+  rigidbodyEntity: {fileID: 0}
   meshRenderer: {fileID: 0}
   mrShaderTargets:
   - {fileID: 8521370539129972293}
@@ -984,8 +1352,23 @@ MonoBehaviour:
   canMove: 1
   forcedDirection: {x: 0, y: 0, z: 0}
   positionPointed: {x: 0, y: 0, z: 0}
+  entityRigidbodies:
+  - {fileID: 8848435721635376541}
+  - {fileID: 2839646141834172113}
+  - {fileID: 4086789148448387485}
+  - {fileID: 8847346827491976000}
+  - {fileID: 5171992148734444997}
+  - {fileID: 5092723315157436915}
+  - {fileID: 6118162842823694229}
+  - {fileID: 1041868038111059509}
+  - {fileID: 860248682468903986}
+  - {fileID: 2071305463492715115}
+  - {fileID: 4684005573476686221}
+  - {fileID: 1773892782849727611}
+  - {fileID: 2624902578076158358}
   hpBar: {fileID: 6817082800428232638}
   objectsToLoot: []
+  root: {fileID: 8521370539132425963}
 --- !u!136 &2871207911170149337
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -995,9 +1378,9 @@ CapsuleCollider:
   m_GameObject: {fileID: 8521370539132226987}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.30305934
-  m_Height: 1.928103
+  m_Height: 0.54
   m_Direction: 1
   m_Center: {x: 0.002146244, y: 0.96188116, z: 0}
 --- !u!195 &6427951248319800584
@@ -1022,22 +1405,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!54 &6512480093088239001
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8521370539132226987}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &799959187394077843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1059,6 +1426,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132045377}
+  - component: {fileID: 7157598270711278090}
+  - component: {fileID: 5092723315157436915}
+  - component: {fileID: 6167634255867266565}
+  - component: {fileID: 5742188492745666105}
   m_Layer: 0
   m_Name: skeleton_knight_ R Calf
   m_TagString: Untagged
@@ -1081,6 +1452,95 @@ Transform:
   m_Father: {fileID: 8521370539132044413}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7157598270711278090
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132229761}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.055732
+  m_Height: 0.44568527
+  m_Direction: 0
+  m_Center: {x: -0.3, y: 0, z: 0}
+--- !u!54 &5092723315157436915
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132229761}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &6167634255867266565
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132229761}
+  m_ConnectedBody: {fileID: 5171992148734444997}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.4987731, y: 0.00000018264836, z: 0.000000052154064}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &5742188492745666105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132229761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132229879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,7 +1570,7 @@ Transform:
   m_Children:
   - {fileID: 8521370539131970957}
   m_Father: {fileID: 8521370539131955227}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8521370539132232423
 GameObject:
@@ -1121,6 +1581,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132004165}
+  - component: {fileID: 7549371878309454914}
+  - component: {fileID: 1773892782849727611}
+  - component: {fileID: 2591601996777145724}
+  - component: {fileID: 2356841111829912702}
   m_Layer: 0
   m_Name: skeleton_knight_ R Forearm
   m_TagString: Untagged
@@ -1143,6 +1607,95 @@ Transform:
   m_Father: {fileID: 8521370539131943403}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7549371878309454914
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132232423}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.29525283
+  m_Direction: 0
+  m_Center: {x: -0.14041308, y: 0.000000006261701, z: -0.0000000062211334}
+--- !u!54 &1773892782849727611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132232423}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &2591601996777145724
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132232423}
+  m_ConnectedBody: {fileID: 4684005573476686221}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.33155292, y: 0.00000010710208, z: 0.000000029802322}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &2356841111829912702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132232423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132233603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,6 +1705,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132048743}
+  - component: {fileID: 8469244351082387526}
+  - component: {fileID: 1041868038111059509}
+  - component: {fileID: 1215248240955793910}
+  - component: {fileID: 6174729954219388683}
   m_Layer: 0
   m_Name: skeleton_knight_ L UpperArm
   m_TagString: Untagged
@@ -1174,6 +1731,95 @@ Transform:
   m_Father: {fileID: 8521370539132043813}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &8469244351082387526
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132233603}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.29525283
+  m_Direction: 0
+  m_Center: {x: -0.14041308, y: 0.000000006261701, z: -0.0000000062211334}
+--- !u!54 &1041868038111059509
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132233603}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &1215248240955793910
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132233603}
+  m_ConnectedBody: {fileID: 8848435721635376541}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.56452626, y: 0.0023201853, z: 0.1791107}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &6174729954219388683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132233603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132235323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1890,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132022167}
+  - component: {fileID: 6644841345467192217}
+  - component: {fileID: 4086789148448387485}
+  - component: {fileID: 2300408739173830288}
+  - component: {fileID: 2585191639860140891}
   m_Layer: 0
   m_Name: skeleton_knight_ L Calf
   m_TagString: Untagged
@@ -1266,6 +1916,95 @@ Transform:
   m_Father: {fileID: 8521370539131982551}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6644841345467192217
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132238603}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.055732
+  m_Height: 0.44568527
+  m_Direction: 0
+  m_Center: {x: -0.3, y: 0, z: 0}
+--- !u!54 &4086789148448387485
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132238603}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &2300408739173830288
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132238603}
+  m_ConnectedBody: {fileID: 2839646141834172113}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.498773, y: 0.00000007625385, z: -0.00000004656613}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &2585191639860140891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132238603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132239085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +2014,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539132016127}
+  - component: {fileID: 3527112879233928668}
+  - component: {fileID: 6118162842823694229}
+  - component: {fileID: 3702001604883280636}
+  - component: {fileID: 2832402860893940620}
   m_Layer: 0
   m_Name: skeleton_knight_ R Foot
   m_TagString: Untagged
@@ -1297,6 +2040,95 @@ Transform:
   m_Father: {fileID: 8521370539132045377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3527112879233928668
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132239085}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.051100213
+  m_Height: 0.20906524
+  m_Direction: 1
+  m_Center: {x: -0.1, y: 0.2, z: 0}
+--- !u!54 &6118162842823694229
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132239085}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &3702001604883280636
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132239085}
+  m_ConnectedBody: {fileID: 5092723315157436915}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.39448714, y: 0.00000013195674, z: -0.000000019977822}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &2832402860893940620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132239085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132240477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,6 +2202,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131982551}
+  - component: {fileID: 2295332341502904095}
+  - component: {fileID: 2839646141834172113}
+  - component: {fileID: 8270732453924049132}
+  - component: {fileID: 8926606241913484208}
   m_Layer: 0
   m_Name: skeleton_knight_ L Thigh
   m_TagString: Untagged
@@ -1390,8 +2226,97 @@ Transform:
   m_Children:
   - {fileID: 8521370539132022167}
   m_Father: {fileID: 8521370539131955227}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2295332341502904095
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132246683}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.052990172
+  m_Height: 0.39020795
+  m_Direction: 0
+  m_Center: {x: -0.29576677, y: 0.000000005538703, z: 0.0000000032568728}
+--- !u!54 &2839646141834172113
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132246683}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &8270732453924049132
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132246683}
+  m_ConnectedBody: {fileID: 8848435721635376541}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0.00000012744566, y: 0.00000013411045, z: 0.09197499}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &8926606241913484208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132246683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132246935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,6 +2805,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131971491}
+  - component: {fileID: 3612439048080042291}
+  - component: {fileID: 860248682468903986}
+  - component: {fileID: 9142405943924368390}
+  - component: {fileID: 1576823767106495436}
   m_Layer: 0
   m_Name: skeleton_knight_ L Forearm
   m_TagString: Untagged
@@ -1902,6 +2831,95 @@ Transform:
   m_Father: {fileID: 8521370539132048743}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3612439048080042291
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132422577}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.027752958
+  m_Height: 0.29525283
+  m_Direction: 0
+  m_Center: {x: -0.14041308, y: 0.000000006261701, z: -0.0000000062211334}
+--- !u!54 &860248682468903986
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132422577}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &9142405943924368390
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132422577}
+  m_ConnectedBody: {fileID: 1041868038111059509}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.3315529, y: 0.0000000018626451, z: -0.000000119209275}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &1576823767106495436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132422577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132423117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,6 +2947,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2017845969137382815}
   - {fileID: 8521370539131955227}
   m_Father: {fileID: 8521370539131973237}
   m_RootOrder: 2
@@ -2093,7 +3112,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131955227}
-  m_Layer: 0
+  - component: {fileID: 4366118584822125313}
+  - component: {fileID: 8848435721635376541}
+  - component: {fileID: 3274311759073300017}
+  m_Layer: 11
   m_Name: skeleton_knight_ Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2111,12 +3133,57 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1946197402562123024}
+  - {fileID: 753199862364955621}
   - {fileID: 8521370539131982551}
   - {fileID: 8521370539132044413}
   - {fileID: 8521370539131975835}
   m_Father: {fileID: 8521370539131993687}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4366118584822125313
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132425963}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.08580655
+  m_Height: 0.920697
+  m_Direction: 0
+  m_Center: {x: -0.43553293, y: -0.000000009586444, z: 0.000000009798466}
+--- !u!54 &8848435721635376541
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132425963}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3274311759073300017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132425963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132426257
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,6 +3410,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8521370539131991731}
+  - component: {fileID: 5032293449949741301}
+  - component: {fileID: 8847346827491976000}
+  - component: {fileID: 29768860141378942}
+  - component: {fileID: 525249981149964708}
   m_Layer: 0
   m_Name: skeleton_knight_ L Foot
   m_TagString: Untagged
@@ -2365,6 +3436,95 @@ Transform:
   m_Father: {fileID: 8521370539132022167}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5032293449949741301
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132443183}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.051100213
+  m_Height: 0.20906524
+  m_Direction: 1
+  m_Center: {x: -0.1, y: 0.2, z: 0}
+--- !u!54 &8847346827491976000
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132443183}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &29768860141378942
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132443183}
+  m_ConnectedBody: {fileID: 4086789148448387485}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.394487, y: 0.00000017796992, z: -0.000000072866676}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 40
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
+--- !u!114 &525249981149964708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521370539132443183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 2371696985282420669}
 --- !u!1 &8521370539132444587
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,7 +3685,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 8521370539131973237}
+    m_TransformParent: {fileID: 8521370539131993687}
     m_Modifications:
     - target: {fileID: 1684468281776099442, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
@@ -2542,6 +3702,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6384775721610577619, guid: e68a8e2bee1dea242893a615f9cf6397,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2555,7 +3720,7 @@ PrefabInstance:
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
@@ -2600,37 +3765,37 @@ PrefabInstance:
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.49000025
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.49996406
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.49988565
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.5001371
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.50001323
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.000022053719
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.49
+      value: 0.00009918446
       objectReference: {fileID: 0}
     - target: {fileID: 7426272848820254907, guid: e68a8e2bee1dea242893a615f9cf6397,
         type: 3}

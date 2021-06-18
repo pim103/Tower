@@ -29,7 +29,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         private void FixedUpdate()
         {
-            gc.CurrentMonster.ApplyDamage(0.1f);
+            //gc.CurrentMonster.ApplyDamage(0.1f);
             treeBehavior.Execute(gc);
         }
 

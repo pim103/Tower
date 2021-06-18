@@ -15,9 +15,12 @@ namespace Games.Global.Entities
         [SerializeField] 
         public List<GameObject> objectsToLoot;
 
+        [SerializeField] private GameObject root;
+
         private PlayerPrefab playerPrefab;
 
         private Monster monster;
+        private Vector3 initialRootPosition;
 
         private void Start()
         {
@@ -44,6 +47,7 @@ namespace Games.Global.Entities
 
             entity.SetTypeEntity(TypeEntity.MOB);
             entity.playerInBack = new List<int>();
+            initialRootPosition = root.transform.localPosition;
         }
 
         private void Update()
@@ -63,6 +67,10 @@ namespace Games.Global.Entities
             hpBar.value = diff;
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
+            if (Vector3.Distance(root.transform.localPosition, initialRootPosition) > 0.1)
+            {
+                hpBar.transform.position = root.transform.position + Vector3.up * 2;
+            }
         }
 
         public void SetMonster(Monster monster)

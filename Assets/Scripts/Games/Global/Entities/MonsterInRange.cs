@@ -13,8 +13,11 @@ namespace Games.Global.Entities
 
             if (layerMask == other.gameObject.layer)
             {
-                EntityPrefab otherPrefab = other.GetComponent<EntityPrefab>();
-                entityPrefab.entity.entityInRange.Add(otherPrefab.entity);
+                EntityPrefab otherPrefab = other.GetComponent<ColliderEntityExposer>().entityPrefab;
+                if (!entityPrefab.entity.entityInRange.Contains(otherPrefab.entity))
+                {
+                    entityPrefab.entity.entityInRange.Add(otherPrefab.entity);
+                }
             }
         }
 
@@ -24,7 +27,7 @@ namespace Games.Global.Entities
 
             if (layerMask == other.gameObject.layer)
             {
-                EntityPrefab otherPrefab = other.GetComponent<EntityPrefab>();
+                EntityPrefab otherPrefab = other.GetComponent<ColliderEntityExposer>().entityPrefab;
 
                 if (entityPrefab.entity.entityInRange.Contains(otherPrefab.entity))
                 {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Games.Global;
+using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Transitions;
@@ -530,7 +531,7 @@ namespace Games.Players
 
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
                 {
-                    EntityPrefab entityPrefab = hit.collider.GetComponent<EntityPrefab>();
+                    EntityPrefab entityPrefab = hit.collider.GetComponent<ColliderEntityExposer>().entityPrefab;
                     if (entityPrefab.entity.GetTypeEntity() == TypeEntity.MOB)
                     {
                         target = entityPrefab.entity;

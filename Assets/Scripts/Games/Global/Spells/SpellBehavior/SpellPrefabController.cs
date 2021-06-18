@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Games.Global.Entities;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
 using PathCreation;
@@ -210,7 +211,11 @@ namespace Games.Global.Spells.SpellBehavior
                 return false;
             }
             
-            Entity entityEnter = other.GetComponent<EntityPrefab>().entity;
+            Entity entityEnter = other.GetComponent<ColliderEntityExposer>().entityPrefab.entity;
+            if (enemiesTouchedBySpell.Contains(entityEnter))
+            {
+                return false;
+            }
 
             if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
                  (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))
@@ -248,8 +253,14 @@ namespace Games.Global.Spells.SpellBehavior
                 return;
             }
 
-            spellComponent.OnTriggerEnter(other.GetComponent<EntityPrefab>().entity);
+            EntityPrefab entityPrefab = other.GetComponent<ColliderEntityExposer>().entityPrefab;
+            spellComponent.OnTriggerEnter(entityPrefab.entity);
             bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+            if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
+            {
+                Debug.Log("ui");
+                entityPrefab.LaunchEnableRagdoll(20);
+            }
 
             if (hasFindingAction && !spellComponent.spellToInstantiate.passingThroughEntity)
             {
@@ -264,7 +275,7 @@ namespace Games.Global.Spells.SpellBehavior
                 return;
             }
 
-            spellComponent.OnTriggerExit(other.GetComponent<EntityPrefab>().entity);
+            spellComponent.OnTriggerExit(other.GetComponent<ColliderEntityExposer>().entityPrefab.entity);
             SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_END);
         }
     }

@@ -58,6 +58,10 @@ namespace Games.Global
 
         public Entity target;
 
+        public Coroutine ragdollCoroutine;
+
+        [SerializeField] private Rigidbody[] entityRigidbodies;
+
         private void FixedUpdate()
         {
             if (entity.GetBehaviorType() == BehaviorType.Player)
@@ -421,6 +425,36 @@ namespace Games.Global
             }
 
             gameObject.SetActive(false);
+        }
+
+        public void LaunchEnableRagdoll(int time)
+        {
+            ragdollCoroutine = StartCoroutine(EnableRagdoll(time));
+        }
+
+        public IEnumerator EnableRagdoll(int time)
+        {
+            animator.enabled = false;
+            navMeshAgent.enabled = false;
+            int cpt = 0;
+            foreach (Rigidbody rigidbody in entityRigidbodies)
+            {
+                rigidbody.useGravity = true;
+            }
+            while (cpt < time)
+            {
+                cpt++;
+                Debug.Log(cpt + " " + time);
+                yield return new WaitForSeconds(0.1f);
+            }
+            Debug.Log("fin de la ragdoll");
+            foreach (Rigidbody rigidbody in entityRigidbodies)
+            {
+                rigidbody.useGravity = false;
+            }
+            animator.enabled = true;
+            navMeshAgent.enabled = true;
+            ragdollCoroutine = null;
         }
     }
 }
