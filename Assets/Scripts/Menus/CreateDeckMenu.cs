@@ -42,13 +42,13 @@ namespace Menus
         [SerializeField] 
         private GameObject cardInDeckPrefab;
         private Deck currentDeck;
-        private List<GameObject> deckCards;
-        public bool newDeck;
+        [HideInInspector] public bool newDeck;
         [SerializeField] private GameObject deckNameStatic; 
         [SerializeField] private GameObject deckNameDynamic; 
         [SerializeField] private TextMeshProUGUI deckName;
         [SerializeField] private Button editDeckNameButton;
         [SerializeField] private Button saveDeckNameButton;
+        private List<GameObject> deckCards;
         #endregion
 
         private int totalDistinctCardNumber;
@@ -144,28 +144,29 @@ namespace Menus
 
             if (!newDeck)
             {
-                foreach (Card card in currentDeck.GetCardsInDeck())
+                if (currentDeck != null)
                 {
-                    GameObject instantiateCard = Instantiate(cardInDeckPrefab, deckGrid.transform);
-                    deckCards.Add(instantiateCard);
-                    
-                    CardInDeckButtonExposer cardExposer = instantiateCard.GetComponent<CardInDeckButtonExposer>();
+                    foreach (Card card in currentDeck.GetCardsInDeck())
+                    {
+                        GameObject instantiateCard = Instantiate(cardInDeckPrefab, deckGrid.transform);
+                        deckCards.Add(instantiateCard);
 
-                    if (card.GroupsMonster != null)
-                    {
-                        cardExposer.cardName.text = card.GroupsMonster.name;
-                    } 
-                    else if (card.Weapon != null)
-                    {
-                        cardExposer.cardName.text = card.Weapon.equipmentName;
+                        CardInDeckButtonExposer cardExposer = instantiateCard.GetComponent<CardInDeckButtonExposer>();
+
+                        if (card.GroupsMonster != null)
+                        {
+                            cardExposer.cardName.text = card.GroupsMonster.name;
+                        }
+                        else if (card.Weapon != null)
+                        {
+                            cardExposer.cardName.text = card.Weapon.equipmentName;
+                        }
+
+                        cardExposer.card = card;
+                        cardExposer.cardCopies.text = currentDeck.GetCardNumber(card.id).ToString();
+                        cardExposer.cardButton.onClick.RemoveAllListeners();
+                        cardExposer.cardButton.onClick.AddListener(delegate { RemoveCardFromDeck(cardExposer); });
                     }
-                    cardExposer.card = card;
-                    cardExposer.cardCopies.text = currentDeck.GetCardNumber(card.id).ToString();
-                    cardExposer.cardButton.onClick.RemoveAllListeners();
-                    cardExposer.cardButton.onClick.AddListener(delegate
-                    {
-                        RemoveCardFromDeck(cardExposer);
-                    });
                 }
             }
         }
@@ -182,7 +183,7 @@ namespace Menus
             }
             else
             {
-                cards.Remove(cardExposer.gameObject);
+                deckCards.Remove(cardExposer.gameObject);
                 cardExposer.gameObject.SetActive(false);
             }
         }
@@ -190,7 +191,7 @@ namespace Menus
         private void PutCardInDeck(Card card)
         {
             bool cardFound = false;
-            foreach (GameObject cardButton in cards)
+            foreach (GameObject cardButton in deckCards)
             {
                 CardInDeckButtonExposer cardExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
                 if (cardExposer.card.id == card.id)
@@ -204,41 +205,33 @@ namespace Menus
                 }
             }
 
-            //TODO : faire un scroll rect pour les cartes  à l'intérieur du deck 
-            //en gros refaire la partie droite dans le (prefab du) menu
             if (!cardFound)
             {
                 GameObject currentDeckCard = Instantiate(cardInDeckPrefab, deckGrid.transform);
                 deckCards.Add(currentDeckCard);
-                CardInDeckButtonExposer currentButtonExposer = currentDeckCard.GetComponent<CardInDeckButtonExposer>();
+                CardInDeckButtonExposer cardExposer = currentDeckCard.GetComponent<CardInDeckButtonExposer>();
 
                 if (card.GroupsMonster != null)
                 {
-                    currentButtonExposer.card = card;
-                    currentButtonExposer.cardName.text = card.GroupsMonster.name;
-                    currentButtonExposer.cardCopies.text = "1";
-                    currentButtonExposer.cardButton.onClick.AddListener(delegate
-                    {
-                        RemoveCardFromDeck(currentButtonExposer);
-                    });
+                    cardExposer.cardName.text = card.GroupsMonster.name;
                 } else if (card.Weapon != null)
                 {
-                    currentButtonExposer.card = card;
-                    currentButtonExposer.cardName.text = card.Weapon.equipmentName;
-                    currentButtonExposer.cardCopies.text = "1";
-                    currentButtonExposer.cardButton.onClick.AddListener(delegate
-                    {
-                        RemoveCardFromDeck(currentButtonExposer);
-                    });
+                    cardExposer.cardName.text = card.Weapon.equipmentName;
                 }
+                cardExposer.card = card;
+                cardExposer.cardCopies.text = "1";
+                cardExposer.cardButton.onClick.AddListener(delegate
+                {
+                    RemoveCardFromDeck(cardExposer);
+                });
             }
         }
-        
-        public IEnumerator AddNewDeck(string deckName, int isMonsterDeck)
+
+        private IEnumerator AddNewDeck(string newDeckName, int isMonsterDeck)
         {
             WWWForm form = new WWWForm();
             form.AddField("deckOwner", NetworkingController.AuthToken);
-            form.AddField("deckName", deckName);
+            form.AddField("deckName", newDeckName);
             form.AddField("isMonsterDeck", isMonsterDeck);
             form.AddField("gameToken", NetworkingController.GameToken);
             var www = UnityWebRequest.Post(NetworkingController.PublicURL + "/services/game/deck/add.php", form);
@@ -287,7 +280,7 @@ namespace Menus
             if (www.responseCode == 201)
             {
                 Debug.Log("Suppression des cartes effectuée");
-                foreach (GameObject cardButton in cards)
+                foreach (GameObject cardButton in deckCards)
                 {
                     CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
                     StartCoroutine(AddNewCardInDeck(currentDeck.id,currentExposer.card.id,Int32.Parse(currentExposer.cardCopies.text)));
@@ -355,9 +348,9 @@ namespace Menus
             bool containsEquipments = false;
             totalDistinctCardNumber = 0;
             cardCounter = 0;
-            foreach (GameObject cardButton in cards)
+            foreach (GameObject card in deckCards)
             {
-                CardInDeckButtonExposer currentExposer = cardButton.GetComponent<CardInDeckButtonExposer>();
+                CardInDeckButtonExposer currentExposer = card.GetComponent<CardInDeckButtonExposer>();
                 if (currentExposer.card.GroupsMonster != null)
                 {
                     containsMonsters = true;

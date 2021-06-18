@@ -91,7 +91,7 @@ namespace Menus
             {
                 foreach (var deck in decks)
                 {
-                    Destroy(deck);
+                    deck.SetActive(false);
                 }
             }
             
