@@ -108,7 +108,7 @@ namespace Games.Players
             DataObject.nbEntityInScene++;
             isPlayer = true;
 
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId());
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(5 /*ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId()*/);
             InitWeapon(weapon);
 
             SpellController.CastPassiveSpell(this);
