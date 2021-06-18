@@ -580,7 +580,7 @@ PrefabInstance:
     - target: {fileID: 863476719615444121, guid: 1963eaad3595e814d83511d5a58560d3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.9980774
+      value: -4.998932
       objectReference: {fileID: 0}
     - target: {fileID: 863476719615444121, guid: 1963eaad3595e814d83511d5a58560d3,
         type: 3}
@@ -750,6 +750,36 @@ PrefabInstance:
     - target: {fileID: 6727038909049259625, guid: 1963eaad3595e814d83511d5a58560d3,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612090419468112736, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612090419468112736, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612090419468112736, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765963409140140543, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765963409140140543, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765963409140140543, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1074,6 +1104,7 @@ MonoBehaviour:
   roomId: okBoomer
   backToMenu: {fileID: 1448107120}
   phase: 0
+  isWon: 0
   byPassDefense: 0
 --- !u!114 &194075444
 MonoBehaviour:
@@ -2624,6 +2655,7 @@ MonoBehaviour:
   trapPooler: {fileID: 934534612}
   navMeshSurface: {fileID: 75662015}
   keyObject: {fileID: 1517899869}
+  doorPivot: {fileID: 1248472976}
 --- !u!114 &979748979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3587,6 +3619,11 @@ PrefabInstance:
       propertyPath: objectsInScene
       value: 
       objectReference: {fileID: 194075444}
+    - target: {fileID: 6214047049892683476, guid: a65ca85574463ea42a5af1e306c7a3ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6942331883085425749, guid: a65ca85574463ea42a5af1e306c7a3ac,
         type: 3}
       propertyPath: m_RootOrder

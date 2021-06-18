@@ -31,6 +31,7 @@ namespace Games.Defenses
         [SerializeField] private ObjectPooler trapPooler;
         [SerializeField] private NavMeshSurface navMeshSurface;
         [SerializeField] private GameObject keyObject;
+        [SerializeField] private GameObject doorPivot;
         
         public const int TileOffset = 4;
 
@@ -52,7 +53,7 @@ namespace Games.Defenses
                     if (i == 1 && j == 1)
                     {
                         cellType = CellType.Spawn;
-                    } else if (i == grid.size-2 && j == grid.size-2)
+                    } else if (i == grid.size-3 && j == grid.size-3)
                     {
                         cellType = CellType.End;
                     }
@@ -83,7 +84,9 @@ namespace Games.Defenses
             
             List<GridCellData> gridCellDatas = grid.gridCellDataList.gridCellDatas;
             
-            bool foundKey;
+            bool foundKey = false;
+            doorPivot.SetActive(true);
+            keyObject.SetActive(false);
 
             Debug.Log("==================================== START ====================================");
             navMeshSurface.enabled = false;
@@ -161,6 +164,11 @@ namespace Games.Defenses
                 }
             }
 
+            if (!foundKey)
+            {
+                doorPivot.SetActive(false);
+            }
+
             Debug.Log("==================================== END ====================================");
             navMeshSurface.enabled = true;
             navMeshSurface.BuildNavMesh();
@@ -209,10 +217,10 @@ namespace Games.Defenses
             pos.z = y * TileOffset;
             objectPooled.transform.position = pos;
 
-            if (rot != Vector3.zero)
-            {
+            /*if (rot != Vector3.zero)
+            {*/
                 objectPooled.transform.localEulerAngles = rot;
-            }
+            //}
 
             currentMap.Add(objectPooled);
             objectPooled.SetActive(true);
