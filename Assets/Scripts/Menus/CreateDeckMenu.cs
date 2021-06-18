@@ -5,6 +5,7 @@ using DeckBuilding;
 using Games.Global;
 using Networking;
 using Networking.Client;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -43,10 +44,11 @@ namespace Menus
         private Deck currentDeck;
         private List<GameObject> deckCards;
         public bool newDeck;
-        [SerializeField] private InputField deckName; 
-        //TODO : ^^^^ changer en bouton dans la scène ^^^^
-        //+ ajouter un bouton 'crayon' pour activer la modification (et du coup là afficher l'input field
-        //+ transformer le 'crayon' en validation et ajouter un bouton annuler)
+        [SerializeField] private GameObject deckNameStatic; 
+        [SerializeField] private GameObject deckNameDynamic; 
+        [SerializeField] private TextMeshProUGUI deckName;
+        [SerializeField] private Button editDeckNameButton;
+        [SerializeField] private Button saveDeckNameButton;
         #endregion
 
         private int totalDistinctCardNumber;
@@ -57,6 +59,9 @@ namespace Menus
         private void Start()
         {
             saveDeckButton.onClick.AddListener(SaveDeck);
+            
+            editDeckNameButton.onClick.AddListener(EditDeckName);
+            saveDeckNameButton.onClick.AddListener(SaveDeckName);
 
             returnButton.onClick.AddListener(delegate
             {
@@ -421,6 +426,23 @@ namespace Menus
             {
                 Debug.Log("Can't get Cards decks...");
             }
+        }
+
+        private void EditDeckName()
+        {
+            deckNameStatic.SetActive(false);
+            deckNameDynamic.SetActive(true);
+        }
+
+        public void EditDeckName(string newName)
+        {
+            deckName.text = newName;
+        }
+
+        private void SaveDeckName()
+        {
+            deckNameStatic.SetActive(true);
+            deckNameDynamic.SetActive(false);
         }
         #endregion
     }
