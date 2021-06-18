@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Games.Players;
 using Networking;
 using Networking.Client;
 using Networking.Client.Room;
@@ -124,6 +125,8 @@ namespace Menus
 
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }

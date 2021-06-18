@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using DeckBuilding;
 using Games.Global;
+using Games.Players;
 using Networking;
 using Networking.Client;
 using UnityEngine;
@@ -82,6 +83,8 @@ namespace Menus
 
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
             selectedDeck = 0;
             deckButtonList = new List<GameObject>();
             ShowDecks();

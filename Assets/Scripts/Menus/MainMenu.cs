@@ -1,4 +1,5 @@
-﻿using Networking;
+﻿using Games.Players;
+using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,6 +67,8 @@ namespace Menus
 
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Debug.Log("Main Menu");
         }
     }

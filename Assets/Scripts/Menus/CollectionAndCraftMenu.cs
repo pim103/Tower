@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DeckBuilding;
 using Games.Global;
+using Games.Players;
 using Networking;
 using TMPro;
 using UnityEngine;
@@ -61,6 +62,8 @@ namespace Menus
         
         public void InitMenu()
         {
+            PlayerInMenu.isInMenu = true;
+            Cursor.lockState = CursorLockMode.None;
             InitializeCollection();
         }
         
