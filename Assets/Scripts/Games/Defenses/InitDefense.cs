@@ -80,6 +80,7 @@ namespace Games.Defenses
 
                             if (currentCardBehaviorInGame.keySlot)
                             {
+                                Debug.Log("sentKey");
                                 currentCardBehaviorInGame.group.hasKey = true;
                             }
 

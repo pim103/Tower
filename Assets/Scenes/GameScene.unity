@@ -580,7 +580,12 @@ PrefabInstance:
     - target: {fileID: 863476719615444121, guid: 1963eaad3595e814d83511d5a58560d3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.998749
+      value: -4.9980774
+      objectReference: {fileID: 0}
+    - target: {fileID: 863476719615444121, guid: 1963eaad3595e814d83511d5a58560d3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1018909076686238933, guid: 1963eaad3595e814d83511d5a58560d3,
         type: 3}
@@ -2618,6 +2623,7 @@ MonoBehaviour:
   dungeonObjectPooler: {fileID: 979748979}
   trapPooler: {fileID: 934534612}
   navMeshSurface: {fileID: 75662015}
+  keyObject: {fileID: 1517899869}
 --- !u!114 &979748979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4429,6 +4435,11 @@ PrefabInstance:
       propertyPath: doorPivot
       value: 
       objectReference: {fileID: 1248472976}
+    - target: {fileID: 4166119068141975375, guid: 2166d8b8e84eec94aa429bc872063fc9,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7105068309209196474, guid: 2166d8b8e84eec94aa429bc872063fc9,
         type: 3}
       propertyPath: m_Name
@@ -4508,12 +4519,18 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1517899866}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1517899869}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 782743d1417c75345b6bcc5804cdfa3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1517899869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7105068309209196474, guid: 2166d8b8e84eec94aa429bc872063fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1517899866}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1542544456 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7401777425161430235, guid: d4c010c5899cffe4a81036732de267a8,
