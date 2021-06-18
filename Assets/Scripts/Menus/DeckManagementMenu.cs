@@ -8,6 +8,7 @@ using Networking;
 using Networking.Client;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
 
@@ -15,36 +16,35 @@ namespace Menus
 {
     public class DeckManagementMenu : MonoBehaviour, MenuInterface
     {
+        
+        #region all parameters
         [SerializeField]
         private MenuController mc;
-
-        [SerializeField]
-        private Button collectionButton;
-
-        [SerializeField]
-        private Button createDeckButton;
-
-        [SerializeField]
-        private Button editDeckButton;
-
         [SerializeField]
         private Button returnButton;
-
-        [SerializeField] 
-        private GameObject deckButton;
-
         [SerializeField] 
         private CreateDeckMenu createDeckMenu;
+        #endregion
 
-        [SerializeField] private Button deleteButton;
-        [SerializeField] private Transform BasePos;
-        [SerializeField] private Transform BasePosXOffset;
-        [SerializeField] private Transform BasePosYOffset;
-        
-        private List<GameObject> deckButtonList;
-
-        public int selectedDeck;
-        public string selectedDeckName;
+        #region deck management parameters
+        [SerializeField]
+        private Button collectionButton;
+        [SerializeField]
+        private Button createDeckButton;
+        [SerializeField]
+        private Button editDeckButton;
+        [SerializeField] 
+        private GameObject deckPrefab;
+        [SerializeField] 
+        private Button deleteButton;
+        [SerializeField] 
+        private GameObject deckGrid;
+        private List<GameObject> decks;
+        [HideInInspector] public int selectedDeck;
+        [HideInInspector] public string selectedDeckName;
+        #endregion
+       
+        #region start and initialization functions
         private void Start()
         {
             collectionButton.onClick.AddListener(delegate {
@@ -82,39 +82,41 @@ namespace Menus
 
         public void InitMenu()
         {
-            selectedDeck = 0;
-            deckButtonList = new List<GameObject>();
-            ShowDecks();
-            Debug.Log("Deck Management Menu");
+            InitializeDecks();
         }
 
-        private void ShowDecks()
+        private void InitializeDecks()
         {
-            int ycount = 0;
+            if (decks != null)
+            {
+                foreach (var deck in decks)
+                {
+                    Destroy(deck);
+                }
+            }
+            
+            selectedDeck = 0;
+            decks = new List<GameObject>();
+            
             foreach (var deck in DataObject.CardList.GetDecks())
             {
-                int currentCount = deckButtonList.Count;
-                GameObject currentDeckButton = Instantiate(deckButton, transform);
-                deckButtonList.Add(currentDeckButton);
-                if (currentCount % 3 == 0)
-                {
-                    ycount += 1;
-                }
+                GameObject currentDeck = Instantiate(deckPrefab, deckGrid.transform);
+                decks.Add(currentDeck);
                 
-                currentDeckButton.transform.position = new Vector3(BasePos.position.x + (BasePosXOffset.position.x-BasePos.position.x) * (currentCount % 3),
-                    BasePos.position.y + ((BasePosYOffset.position.y-BasePos.position.y) * (ycount - 1)), 0);
-                DeckButtonExposer currentButtonExposer = currentDeckButton.GetComponent<DeckButtonExposer>();
-                currentButtonExposer.deckName.text = deck.name;
-                currentButtonExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
-                currentButtonExposer.deckId = deck.id;
-                currentDeckButton.GetComponent<Button>().onClick.AddListener(delegate
+                DeckButtonExposer currentDeckExposer = currentDeck.GetComponent<DeckButtonExposer>();
+                currentDeckExposer.deckName.text = deck.name;
+                currentDeckExposer.typeImage.color = deck.type == Decktype.Monsters ? Color.red : Color.blue;
+                currentDeckExposer.deckId = deck.id;
+                currentDeckExposer.deckButton.onClick.AddListener(delegate
                 {
                     selectedDeck = deck.id;
                     selectedDeckName = deck.name;
                 });
             }
         }
+        #endregion
         
+        #region deck management functions
         public IEnumerator DeleteDeck(int deckId)
         {
             WWWForm form = new WWWForm();
@@ -127,11 +129,11 @@ namespace Menus
             if (www.responseCode == 201)
             {
                 Debug.Log("Suppression des cartes effectuée");
-                foreach (GameObject deckButton in deckButtonList)
+                foreach (GameObject deck in decks)
                 {
-                    if (deckButton.GetComponent<DeckButtonExposer>().deckId == deckId)
+                    if (deck.GetComponent<DeckButtonExposer>().deckId == deckId)
                     {
-                        deckButton.SetActive(false);
+                        deck.SetActive(false);
                     }
                 }
             }
@@ -154,5 +156,6 @@ namespace Menus
                 Debug.Log("Serveur indisponible.");
             }
         }
+        #endregion
     }
 }

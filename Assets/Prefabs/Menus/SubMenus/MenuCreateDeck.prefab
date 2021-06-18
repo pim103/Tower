@@ -903,7 +903,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.4
+  m_fontSize: 22.1
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.85
+  m_fontSize: 21.45
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1646,7 +1646,11 @@ MonoBehaviour:
   cardInDeckPrefab: {fileID: 3760025332026716317, guid: 393a0c0f226edf54ba7872dcfaab4b40,
     type: 3}
   newDeck: 0
-  deckName: {fileID: 0}
+  deckNameStatic: {fileID: 2221781413627450401}
+  deckNameDynamic: {fileID: 3640513463325765685}
+  deckName: {fileID: 2182314711479155299}
+  editDeckNameButton: {fileID: 7949490081740025219}
+  saveDeckNameButton: {fileID: 1859269239693086599}
 --- !u!1 &5435095019446539112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,6 +1896,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8661394352848807729}
   - component: {fileID: 1159821656344538871}
+  - component: {fileID: 8528709304605161340}
   m_Layer: 5
   m_Name: Collection
   m_TagString: Untagged
@@ -1942,6 +1947,20 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: -10}
   m_Constraint: 1
   m_ConstraintCount: 1
+--- !u!114 &8528709304605161340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6822859270389248091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &7481364265662740952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,7 +2144,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.75
+  m_fontSize: 20.15
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2177,6 +2196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8726404683590133630}
   - component: {fileID: 1488095070336980998}
+  - component: {fileID: 8355271253194305479}
   m_Layer: 5
   m_Name: Collection
   m_TagString: Untagged
@@ -2227,6 +2247,20 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 4
+--- !u!114 &8355271253194305479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798516148297604674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &8878109843109361232
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,7 +2417,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8264285718317433120}
+        m_TargetAssemblyTypeName: Menus.CreateDeckMenu, Assembly-CSharp
+        m_MethodName: EditDeckName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
