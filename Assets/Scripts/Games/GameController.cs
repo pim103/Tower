@@ -51,6 +51,8 @@ namespace Games {
 
         public static GameObject mainCamera;
 
+        public bool isWon = false;
+
         public static string staticRoomId;
         public static int PlayerIndex;
         private bool idAssigned = false;
@@ -153,6 +155,17 @@ namespace Games {
 
                 await AttackPhase();
             }
+            
+            EndGame(isWon);
+        }
+
+        public static void SetEndOfGame(bool isWon)
+        {
+            otherPlayerDie = true;
+            instance.isWon = isWon;
+            CurrentRoom.loadGameDefense = false;
+            CurrentRoom.loadGameAttack = false;
+            CurrentRoom.generateAttackGrid = false;
         }
 
         private async Task AttackPhase()
@@ -166,18 +179,12 @@ namespace Games {
 
         private void SetEndGameText(string text)
         {
-            otherPlayerDie = true;
             endGameText.text = text;
         }
 
-        public static void EndGame(bool hasWon)
+        private void EndGame(bool hasWon)
         {
-            CurrentRoom.loadGameDefense = false;
-            CurrentRoom.loadGameAttack = false;
-            CurrentRoom.generateAttackGrid = false;
-
             Cursor.lockState = CursorLockMode.None;
-            DataObject.playerInScene.Remove(PlayerIndex);
             instance.objectsInScene.mainCamera.SetActive(true);
             instance.endGameMenu.SetActive(true);
 

@@ -117,10 +117,10 @@ namespace Games
                     CurrentRoom.generateAttackGrid = false;
                     break;
                 case "WON":
-                    GameController.EndGame(false);
+                    GameController.SetEndOfGame(false);
                     break;
                 case "DEATH":
-                    GameController.EndGame(true);
+                    GameController.SetEndOfGame(true);
                     break;
             }
 

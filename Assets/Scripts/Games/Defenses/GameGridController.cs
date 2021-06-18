@@ -88,7 +88,7 @@ namespace Games.Defenses
             navMeshSurface.enabled = false;
             foreach (GridCellData gridCellData in gridCellDatas)
             {
-                Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
+                // Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
                 
                 switch ((CellType) gridCellData.cellType)
                 {
