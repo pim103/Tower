@@ -40,7 +40,7 @@ namespace Games.Defenses
         private GameGrid GenerateGrid(int size)
         {
             GameGrid grid = new GameGrid();
-            grid.gridCellDataList = new GridCellDataList();
+            /*grid.gridCellDataList = new GridCellDataList();
             grid.gridCellDataList.gridCellDatas = new List<GridCellData>();
             
             grid.size = size;
