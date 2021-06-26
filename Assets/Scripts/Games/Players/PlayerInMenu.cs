@@ -284,6 +284,9 @@ namespace Games.Players
                 else
                 {
                     informationLayout.SetActive(false);
+                    canGoInCraftMenu = false;
+                    canGoInCollectionMenu = false;
+                    canGoInPlayMenu = false;
                 }
 
             }
