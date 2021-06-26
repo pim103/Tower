@@ -30,14 +30,14 @@ namespace Games.Attacks
     {
         [SerializeField] private ObjectsInScene objectsInScene;
         [SerializeField] private InitDefense initDefense;
-        [SerializeField] private HoverDetector hoverDetector;
+        [SerializeField] private DefenseControls defenseControls;
         [SerializeField] private GameGridController gameGridController;
 
         public async Task Init()
         {
-            if (hoverDetector.objectInHand != null)
+            if (defenseControls.objectInHand != null)
             {
-                hoverDetector.objectInHand.SetActive(false);
+                defenseControls.objectInHand.SetActive(false);
             }
 
             foreach (GameObject go in initDefense.gridCellList)

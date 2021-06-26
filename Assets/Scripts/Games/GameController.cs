@@ -92,12 +92,12 @@ namespace Games {
 
             if (phase == Phase.Attack)
             {
-                gameGridController.GenerateAndInitFakeGrid();
+                //gameGridController.GenerateAndInitFakeGrid();
                 AttackPhase();
             } 
             else if (phase == Phase.Defense)
             {
-                gameGridController.GenerateAndInitFakeGrid();
+                //gameGridController.GenerateAndInitFakeGrid();
                 StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
             }

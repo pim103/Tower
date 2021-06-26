@@ -38,7 +38,7 @@ namespace Games.Defenses
         private ObjectPooler defensePooler;
 
         [SerializeField] 
-        private HoverDetector hoverDetector;
+        private DefenseControls defenseControls;
 
         [SerializeField] 
         private GameObject cardPrefab;
@@ -102,30 +102,30 @@ namespace Games.Defenses
             }
 
             DrawCards();
-            hoverDetector.maxResource = initDefense.currentLevel + 5;
-            hoverDetector.currentResource = initDefense.currentLevel + 5;
-            maxResourceText.text = "/ "+hoverDetector.maxResource;
-            currentResourceText.text = hoverDetector.currentResource.ToString();
+            defenseControls.maxResource = initDefense.currentLevel + 5;
+            defenseControls.currentResource = initDefense.currentLevel + 5;
+            maxResourceText.text = "/ "+defenseControls.maxResource;
+            currentResourceText.text = defenseControls.currentResource.ToString();
         }
 
         public void PutWallInHand()
         {
-            if (currentWallNumber > 0 && !hoverDetector.objectInHand)
+            if (currentWallNumber > 0 && !defenseControls.objectInHand)
             {
                 currentWallNumber -= 1;
                 wallButtonText.text = "Mur x" + currentWallNumber;
                 GameObject wall = defensePooler.GetPooledObject(currentWallType+1);
-                hoverDetector.objectInHand = wall;
+                defenseControls.objectInHand = wall;
                 wall.SetActive(true);
             }
         }
 
         public void PutKeyInHand()
         {
-            if (!hoverDetector.objectInHand && !keyAlreadyPut)
+            if (!defenseControls.objectInHand && !keyAlreadyPut)
             {
                 keyObject.SetActive(true);
-                hoverDetector.objectInHand = keyObject;
+                defenseControls.objectInHand = keyObject;
             }
         }
 
@@ -139,7 +139,7 @@ namespace Games.Defenses
         public void PutCardInHand(GameObject card)
         {
             card.transform.parent = null;
-            hoverDetector.objectInHand = card;
+            defenseControls.objectInHand = card;
             card.layer = LayerMask.NameToLayer("CardInHand");
         }
         
@@ -155,20 +155,20 @@ namespace Games.Defenses
                 equipementCardBehaviorInGame.transform.localPosition = Vector3.zero;
                 equipementCardBehaviorInGame.gameObject.layer = LayerMask.NameToLayer("Card");
                 equipementCard.SetActive(true);
-                hoverDetector.currentResource += equipementCardBehaviorInGame.equipement.cost;
+                defenseControls.currentResource += equipementCardBehaviorInGame.equipement.cost;
                 Debug.Log("return card");
             }
         }
 
         public void PutTrapInHand(TrapBehavior trapBehavior)
         {
-            if (!hoverDetector.objectInHand)
+            if (!defenseControls.objectInHand)
             {
                 GameObject trap = defensePooler.GetPooledObject(0);
                 trap.GetComponent<TrapBehavior>().SetAndActiveTraps(trapBehavior.trapData);
-                hoverDetector.objectInHand = trap;
+                defenseControls.objectInHand = trap;
                 trap.SetActive(true);
-                hoverDetector.currentResource -= 1;
+                defenseControls.currentResource -= 1;
             }
         }
 

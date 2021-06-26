@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Games.Defenses
 {
-    public class HoverDetector : MonoBehaviour
+    public class DefenseControls : MonoBehaviour
     {
         Ray ray;
         RaycastHit hit;
@@ -55,6 +55,14 @@ namespace Games.Defenses
         private bool puttingWalls;
         public int maxResource;
         public int currentResource;
+        
+        public bool wantToGoForward;
+        public bool wantToGoBack;
+        public bool wantToGoLeft;
+        public bool wantToGoRight;
+        public bool wantToGoUp;
+        public bool wantToGoDown;
+        public bool lockCam;
         private void Start()
         {
             //mouseMask = LayerMask.GetMask("Grid");
@@ -252,20 +260,7 @@ namespace Games.Defenses
                         currentTileController.contentType = GridTileController.TypeData.Empty;
                         defenseUiController.currentWallNumber += 1;
                         defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
-                    } /*else if (objectInHand)
-                    {
-                        if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
-                        {
-                            objectInHand.SetActive(false);
-                            objectInHand = null;
-                            defenseUiController.currentWallNumber += 1;
-                            defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
-                        } else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
-                        {
-                            objectInHand.SetActive(false);
-                            objectInHand = null;
-                        }
-                    }*/
+                    }
                 }
             }
             else
@@ -282,6 +277,12 @@ namespace Games.Defenses
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     CardBehaviorInGame hitCardBehavior = hit.transform.GetComponent<CardBehaviorInGame>();
+                    Debug.Log("testname : "+hit.collider.name);
+                    Debug.Log("test : "+hitCardBehavior);
+                    Debug.Log("test2 : "+hitCardBehavior.group);
+                    Debug.Log("test3 : "+hitCardBehavior.group.cost);
+                    Debug.Log("test4 : "+hitCardBehavior.equipement);
+                    Debug.Log("test5 : "+hitCardBehavior.equipement.cost);
                     if ((hitCardBehavior.group != null && hitCardBehavior.group.cost <= currentResource) ||
                         (hitCardBehavior.equipement != null && hitCardBehavior.equipement.cost <= currentResource))
                     {
@@ -412,6 +413,64 @@ namespace Games.Defenses
             {
                 puttingWalls = false;
             }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                wantToGoForward = true;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                wantToGoBack = true;
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                wantToGoLeft = true;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                wantToGoRight = true;
+            }
+
+            if (Input.GetKeyUp(KeyCode.Z))
+            {
+                wantToGoForward = false;
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                wantToGoBack = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                wantToGoLeft = false;
+            }
+            if (Input.GetKeyUp(KeyCode.D))
+            {
+                wantToGoRight = false;
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                wantToGoUp = true;
+            } else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                wantToGoUp = false;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                wantToGoDown = true;
+            } else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                wantToGoDown = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                lockCam = !lockCam;
+                Cursor.lockState = !lockCam ? CursorLockMode.Locked : CursorLockMode.None;
+            }
+            Movement();
+            if (!lockCam)
+            {
+                CameraRotation();
+            }
         }
         
         private void LateUpdate()
@@ -444,6 +503,91 @@ namespace Games.Defenses
                     WarningPanelText.text = "Chemin bloqué : Bougez le bloc ou cliquez droit pour annuler";
                 }
             }
+        }
+        
+        public void Movement()
+        {
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            int currentSpeed = 30;
+
+            int xMove = 0;
+            int zMove = 0;
+            int yMove = 0;
+
+            if (wantToGoForward)
+            {
+                zMove += 1;
+            }
+            else if (wantToGoBack)
+            {
+                zMove -= 1;
+            }
+
+            if (wantToGoLeft)
+            {
+                xMove -= 1;
+            }
+            else if (wantToGoRight)
+            {
+                xMove += 1;
+            }
+            if (wantToGoDown)
+            {
+                yMove -= 1;
+            }
+            else if (wantToGoUp)
+            {
+                yMove += 1;
+            }
+
+            Vector3 locVel;
+                
+                
+            locVel = transform.InverseTransformDirection(rigidbody.velocity);
+            locVel.x = xMove * currentSpeed;
+            locVel.z = zMove * currentSpeed;
+            locVel.y = yMove * currentSpeed;
+                
+                
+            rigidbody.velocity = transform.TransformDirection(locVel);
+        }
+        
+        private void CameraRotation()
+        {
+            Vector3 eulerAngles = transform.localEulerAngles;
+            //eulerAngles.x = 0;
+            eulerAngles.z = 0;
+            transform.localEulerAngles = eulerAngles;
+
+            float rotationSpeed = 5;
+            
+            
+            float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
+            float vertical = Input.GetAxis("Mouse Y") * rotationSpeed;
+
+            
+            Camera camera = GetComponent<Camera>();
+            GameObject cameraPoint = camera.gameObject;
+            
+            /*vertical = Mathf.Clamp(vertical, -90f, 90f);            
+            horizontal = Mathf.Clamp(horizontal, -90f, 90f);*/            
+            cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
+            cameraPoint.transform.Rotate(0, horizontal, 0, Space.Self);
+            
+            /*Quaternion q = cameraPoint.transform.localRotation;
+            
+            q.x /= q.w;
+            q.y /= q.w;
+            q.z /= q.w;
+            q.w = 1.0f;
+
+            float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.x);
+
+            //angleX = Mathf.Clamp (angleX, -75, 55);
+            q.x = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleX);
+
+            cameraPoint.transform.localRotation = q;*/
+
         }
     }
 }

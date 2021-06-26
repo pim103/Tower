@@ -37,7 +37,7 @@ namespace Games.Transitions
         private InitDefense initDefense;
 
         [SerializeField] 
-        private HoverDetector hoverDetector;
+        private DefenseControls defenseControls;
 
         [SerializeField] private Button validateButton;
         [SerializeField] private GameObject waitingOtherPlayerPanel;
@@ -57,7 +57,7 @@ namespace Games.Transitions
         {
             defenseUI.SetActive(true);
             waitingOtherPlayerPanel.SetActive(false);
-            hoverDetector.enabled = true;
+            defenseControls.enabled = true;
             hasValidated = false;
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
@@ -65,9 +65,9 @@ namespace Games.Transitions
             while(defenseTimer > 0 && !hasValidated)
             {
                 counter.text = defenseTimer.ToString();
-                if (defenseTimer <= 10 && !hoverDetector.defenseUiController.keyAlreadyPut)
+                if (defenseTimer <= 10 && !defenseControls.defenseUiController.keyAlreadyPut)
                 {
-                    hoverDetector.defenseUiController.keyButton.transform.GetComponent<Image>().color = new Color(1,defenseTimer%2,defenseTimer%2,1);
+                    defenseControls.defenseUiController.keyButton.transform.GetComponent<Image>().color = new Color(1,defenseTimer%2,defenseTimer%2,1);
                 }
 
                 await Task.Delay(1000);
@@ -79,34 +79,34 @@ namespace Games.Transitions
             waitingOtherPlayerPanel.SetActive(true);
             defenseTimer = durationDefensePhase;
 
-            if (hoverDetector.currentlyBlocked)
+            if (defenseControls.currentlyBlocked)
             {
-                if (hoverDetector.lastTileWithContent)
+                if (defenseControls.lastTileWithContent)
                 {
-                    hoverDetector.lastTileWithContent.content = null;
-                    hoverDetector.lastTileWithContent.contentType = GridTileController.TypeData.Empty;
+                    defenseControls.lastTileWithContent.content = null;
+                    defenseControls.lastTileWithContent.contentType = GridTileController.TypeData.Empty;
                 }
 
-                if (hoverDetector.lastObjectPutInPlay)
+                if (defenseControls.lastObjectPutInPlay)
                 {
-                    hoverDetector.lastObjectPutInPlay.SetActive(false);
+                    defenseControls.lastObjectPutInPlay.SetActive(false);
                 }
 
-                if (hoverDetector.objectInHand)
+                if (defenseControls.objectInHand)
                 {
-                    hoverDetector.objectInHand.SetActive(false);
+                    defenseControls.objectInHand.SetActive(false);
                 }
 
-                if (hoverDetector.defenseUiController.keyAlreadyPut)
+                if (defenseControls.defenseUiController.keyAlreadyPut)
                 {
-                    hoverDetector.tileHoldingKeyGroup.content.SetActive(false);
-                    hoverDetector.tileHoldingKeyGroup.content = null;
-                    hoverDetector.tileHoldingKeyGroup.contentType = GridTileController.TypeData.Empty;
+                    defenseControls.tileHoldingKeyGroup.content.SetActive(false);
+                    defenseControls.tileHoldingKeyGroup.content = null;
+                    defenseControls.tileHoldingKeyGroup.contentType = GridTileController.TypeData.Empty;
                 }
             }
             
-            hoverDetector.defenseUiController.keyObject.SetActive(false);
-            hoverDetector.enabled = false;
+            defenseControls.defenseUiController.keyObject.SetActive(false);
+            defenseControls.enabled = false;
         }
     }
 }
