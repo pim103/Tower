@@ -86,8 +86,8 @@ namespace Menus
             PlayerInMenu.isInMenu = true;
             Cursor.lockState = CursorLockMode.None;
             selectedDeck = 0;
-            deckButtonList = new List<GameObject>();
-            ShowDecks();
+            //deckButtonList = new List<GameObject>();
+            //ShowDecks();
             Debug.Log("Deck Management Menu");
         }
 
