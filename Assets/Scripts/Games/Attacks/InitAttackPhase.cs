@@ -39,7 +39,6 @@ namespace Games.Attacks
             {
                 defenseControls.objectInHand.SetActive(false);
             }
-
             foreach (GameObject go in initDefense.gridCellList)
             {
                 GridTileController gridTileController = go.GetComponent<GridTileController>();
@@ -49,7 +48,6 @@ namespace Games.Attacks
                     gridTileController.content.transform.position = new Vector3(0,-10,0);
                     gridTileController.content.SetActive(false);
                 }
-
                 go.SetActive(false);
             }
         }
@@ -60,7 +58,7 @@ namespace Games.Attacks
             objectsInScene.playerPrefab[GameController.PlayerIndex].canMove = true;
 
             objectsInScene.playerPrefab[GameController.PlayerIndex].camera.gameObject.SetActive(true);
-            objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = gameGridController.startZone.transform.position;
+            objectsInScene.playerPrefab[GameController.PlayerIndex].transform.position = objectsInScene.startPos.transform.position;
             
             Cursor.lockState = CursorLockMode.Locked;
 

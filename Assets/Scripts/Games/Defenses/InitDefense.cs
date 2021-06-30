@@ -27,16 +27,20 @@ namespace Games.Defenses
         public List<GameObject> gridCellList;
 
         public GameGrid defenseGrid;
+
+        [SerializeField] private GameObject[] maps;
         
         public void Init()
         {
-            if (GameController.currentGameGrid == null)
+            /*if (GameController.currentGameGrid == null)
             {
                 return;
-            }
+            }*/
 
             defenseGrid = GameController.currentGameGrid;
-
+            
+            maps[0].SetActive(true);
+            
             Generate(GameController.currentGameGrid.size);
             Vector3 pos = defenseCamera.transform.position;
             pos.x = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
@@ -52,13 +56,26 @@ namespace Games.Defenses
 
         public void FillGameGrid()
         {
+            Debug.Log(gridCellList.Count);
             foreach (GameObject gridCell in gridCellList)
             {
+                Debug.Log("inforeach");
+                if (gridCell == null)
+                {
+                    continue;
+                }
+                Debug.Log("beforeGetComponent");
                 GridTileController cellController = gridCell.GetComponent<GridTileController>();
+                if (cellController == null)
+                {
+                    continue;
+                }
+                Debug.Log("beforeGridCellData");
                 GridCellData gridCellData = defenseGrid.GetGridCellDataFromCoordinates((int)cellController.coordinates.x, (int)cellController.coordinates.y);
-
+                Debug.Log("gotCellController");
                 if (cellController.contentType != GridTileController.TypeData.Empty)
                 {
+                    Debug.Log("firstcond");
                     switch (cellController.contentType)
                     {
                         case GridTileController.TypeData.Group:
@@ -87,6 +104,7 @@ namespace Games.Defenses
                             gridCellData.groupsMonster = currentCardBehaviorInGame.group;
                             break;
                         case GridTileController.TypeData.Wall:
+                            Debug.Log("wall");
                             gridCellData.cellType = (int) CellType.Wall;
                             break;
                         case GridTileController.TypeData.Trap:
@@ -97,10 +115,13 @@ namespace Games.Defenses
                             break;
                     }
                 }
+                Debug.Log("aftercond");
                 
                 gridCell.SetActive(false);
                 if (cellController.content != null) cellController.content.SetActive(false);
+                Debug.Log("lafin");
             }
+            Debug.Log("lavraiefin");
         }
 
         private void Generate(int size)
@@ -111,8 +132,11 @@ namespace Games.Defenses
             {
                 for (int j = 0; j < size; ++j)
                 {
-                    currentCell = Instantiate(gridCell, new Vector3( i * GameGridController.TileOffset,  3f, j * GameGridController.TileOffset), Quaternion.Euler(90,0,0));
+                    int yPos = 3;
+                    int xPos = i % (size / 2);
+                    if (i >= size / 2) yPos += 4;
 
+                    currentCell = Instantiate(gridCell, new Vector3(xPos * GameGridController.TileOffset, yPos, j * GameGridController.TileOffset), Quaternion.Euler(90, 0, 0));
                     GridTileController currentTileController = currentCell.GetComponent<GridTileController>();
                     currentTileController.coordinates.x = i;
                     currentTileController.coordinates.y = j;

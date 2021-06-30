@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DefaultNamespace;
 using Games.Attacks;
 using Games.Defenses;
@@ -63,6 +64,10 @@ namespace Games {
 
         public static GameController instance;
 
+        [SerializeField] private MapStats[] mapStatsList;
+
+        public int level = 0;
+
         /*
          * Flag to skip defensePhase
          */
@@ -92,13 +97,13 @@ namespace Games {
 
             if (phase == Phase.Attack)
             {
-                //gameGridController.GenerateAndInitFakeGrid();
+                gameGridController.GenerateAndInitFakeGrid();
                 AttackPhase();
             } 
             else if (phase == Phase.Defense)
             {
-                //gameGridController.GenerateAndInitFakeGrid();
-                StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
+                gameGridController.GenerateAndInitFakeGrid();
+                //StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
             }
             else
@@ -128,32 +133,57 @@ namespace Games {
                 {
                     await Task.Delay(500);
                 }
-
+                mapStatsList[level].gameObject.SetActive(true);
+                objectsInScene.startPos = mapStatsList[level].startPos;
+                objectsInScene.endZone = mapStatsList[level].endZone;
+                objectsInScene.endDoor = mapStatsList[level].endDoor;
+                gameGridController.GenerateAndInitFakeGrid();
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
-                gameGridController.InitGridData(currentGameGrid);
+                //gameGridController.InitGridData(currentGameGrid);
                 initDefensePhase.Init();
-                await transitionDefenseAttack.PlayDefensePhase();
-
+                
+                Debug.Log("PlayDef");
+                try
+                {
+                    await transitionDefenseAttack.PlayDefensePhase();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
+                
+                Debug.Log("desactmap");
                 gameGridController.DesactiveMap();
 
                 // Send defense grid
+                Debug.Log("SendGrid");
                 GameControllerNetwork.SendGridData(initDefensePhase.defenseGrid);
 
                 while (!CurrentRoom.generateAttackGrid)
                 {
                     await Task.Delay(500); 
                 }
-
+                
+                Debug.Log("BeforeInit");
                 await initAttackPhase.Init();
+                Debug.Log("BeforeInitGridData");
                 gameGridController.InitGridData(currentGameGrid);
+                Debug.Log("BeforeSendSet");
                 GameControllerNetwork.SendSetAttackReady();
 
                 while (!CurrentRoom.loadGameAttack)
                 {
                     await Task.Delay(500);
                 }
-
+                Debug.Log("BeforeAwait");
                 await AttackPhase();
+                mapStatsList[level].gameObject.SetActive(false);
+                if (level < mapStatsList.Length - 1)
+                {
+                    level += 1;
+                }
             }
             
             EndGame(isWon);

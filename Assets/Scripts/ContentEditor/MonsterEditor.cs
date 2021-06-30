@@ -303,7 +303,7 @@ namespace ContentEditor
 
             if (GUILayout.Button("Instantiate group") && UtilEditor.IsTestScene())
             {
-                GameGridController.InitGroups(group, 1, 1);
+                GameGridController.InitGroups(group, 1, 1, 1.5f);
             }
 
             EditorGUILayout.EndVertical();

@@ -37,8 +37,7 @@ namespace Games.Defenses
         [SerializeField]
         public GameObject startPos;
 
-        [SerializeField]
-        public GameObject dest;
+        [SerializeField] private ObjectsInScene objectsInScene;
 
         private NavMeshPath pathToEnd;
         private NavMeshPath pathToKey;
@@ -142,7 +141,7 @@ namespace Games.Defenses
                         currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                         pathToEnd = new NavMeshPath(); 
 
-                        NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+                        NavMesh.CalculatePath(startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
 
                         if (defenseUiController.keyAlreadyPut)
                         {
@@ -276,13 +275,7 @@ namespace Games.Defenses
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    CardBehaviorInGame hitCardBehavior = hit.transform.GetComponent<CardBehaviorInGame>();
-                    Debug.Log("testname : "+hit.collider.name);
-                    Debug.Log("test : "+hitCardBehavior);
-                    Debug.Log("test2 : "+hitCardBehavior.group);
-                    Debug.Log("test3 : "+hitCardBehavior.group.cost);
-                    Debug.Log("test4 : "+hitCardBehavior.equipement);
-                    Debug.Log("test5 : "+hitCardBehavior.equipement.cost);
+                    CardBehaviorInGame hitCardBehavior = hit.collider.GetComponent<CardBehaviorInGame>();
                     if ((hitCardBehavior.group != null && hitCardBehavior.group.cost <= currentResource) ||
                         (hitCardBehavior.equipement != null && hitCardBehavior.equipement.cost <= currentResource))
                     {
@@ -476,7 +469,7 @@ namespace Games.Defenses
         private void LateUpdate()
         {
             pathToEnd = new NavMeshPath(); 
-            NavMesh.CalculatePath(startPos.transform.position,dest.transform.position,NavMesh.AllAreas,pathToEnd);
+            NavMesh.CalculatePath(startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
             pathToKey = new NavMeshPath();
             if (defenseUiController.keyAlreadyPut)
             {

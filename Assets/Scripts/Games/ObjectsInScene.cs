@@ -31,5 +31,9 @@ namespace Games
 
         [SerializeField]
         public PlayerPrefab[] playerPrefab;
+
+        public Transform startPos;
+        public GameObject endZone;
+        public GameObject endDoor;
     }
 }

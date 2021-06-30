@@ -3945,6 +3945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8846672858026085160}
   - component: {fileID: 8919711871375543199}
+  - component: {fileID: 1128921492213505886}
   m_Layer: 0
   m_Name: NewMap1
   m_TagString: Untagged
@@ -4045,6 +4046,22 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: 718538fe65e74f9479fe945b2e1f9b0a, type: 2}
+--- !u!114 &1128921492213505886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712392621402724393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbf24960da82a6e439c91bf663a3d14d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapsize: 12
+  startPos: {fileID: 4266831672744662704}
+  endZone: {fileID: 551029182152641403}
+  endDoor: {fileID: 3585149878144285177}
 --- !u!1001 &3406479362250576666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43467,9 +43484,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a65ca85574463ea42a5af1e306c7a3ac, type: 3}
+--- !u!1 &3585149878144285177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6214047049892683476, guid: a65ca85574463ea42a5af1e306c7a3ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 7493347733524834093}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &551029182152641400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6942331883085425749, guid: a65ca85574463ea42a5af1e306c7a3ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 7493347733524834093}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &551029182152641403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6942331883085425750, guid: a65ca85574463ea42a5af1e306c7a3ac,
     type: 3}
   m_PrefabInstance: {fileID: 7493347733524834093}
   m_PrefabAsset: {fileID: 0}

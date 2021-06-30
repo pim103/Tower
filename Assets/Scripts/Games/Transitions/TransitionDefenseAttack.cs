@@ -72,9 +72,9 @@ namespace Games.Transitions
 
                 await Task.Delay(1000);
             }
-
+            Debug.Log("hmm");
             initDefense.FillGameGrid();
-
+            Debug.Log("zapas");
             defenseUI.SetActive(false);
             waitingOtherPlayerPanel.SetActive(true);
             defenseTimer = durationDefensePhase;

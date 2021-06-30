@@ -46,7 +46,7 @@ namespace DefaultNamespace
             gameGridController.InitGridData(GameController.currentGameGrid);
         }
 
-        public static IEnumerator CreateDefenseInstance(InitDefense initDefensePhase)
+        /*public static IEnumerator CreateDefenseInstance(InitDefense initDefensePhase)
         {
             initDefense = initDefensePhase;
             NetworkingController.Environnement = "LOCAL";
@@ -87,7 +87,7 @@ namespace DefaultNamespace
                 
                 initDefensePhase.Init();
             }
-        }
+        }*/
 
         public static void SetFirstValidDeck()
         {

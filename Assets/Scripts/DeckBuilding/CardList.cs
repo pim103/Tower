@@ -39,6 +39,8 @@ namespace DeckBuilding
 
         public Deck GetDeckById(int id)
         {
+            Debug.Log("id : "+id);
+            Debug.Log("decks : "+decks.Count);
             return Tools.Clone(decks.First(deck => deck.id == id));
         }
 

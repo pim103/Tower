@@ -31,7 +31,7 @@ namespace Games.Defenses
         [SerializeField] private ObjectPooler trapPooler;
         [SerializeField] private NavMeshSurface navMeshSurface;
         [SerializeField] private GameObject keyObject;
-        [SerializeField] private GameObject doorPivot;
+        [SerializeField] private ObjectsInScene objectsInScene;
         
         public const int TileOffset = 4;
 
@@ -40,24 +40,16 @@ namespace Games.Defenses
         private GameGrid GenerateGrid()
         {
             GameGrid grid = new GameGrid();
-            /*grid.gridCellDataList = new GridCellDataList();
+            grid.gridCellDataList = new GridCellDataList();
             grid.gridCellDataList.gridCellDatas = new List<GridCellData>();
             
-            grid.size = 20;
+            grid.size = 24;
             for (int i = 0; i < grid.size; ++i)
             {
                 for (int j = 0; j < grid.size; ++j)
                 {
                     CellType cellType = CellType.None;
 
-                    if (i == 1 && j == 1)
-                    {
-                        cellType = CellType.Spawn;
-                    } else if (i == grid.size-3 && j == grid.size-3)
-                    {
-                        cellType = CellType.End;
-                    }
-                    
                     grid.gridCellDataList.gridCellDatas.Add(new GridCellData
                     {
                         x = i,
@@ -65,8 +57,8 @@ namespace Games.Defenses
                         cellType = (int)cellType
                     });
                 }
-            }*/
-
+            }
+            //Debug.Log(grid.gridCellDataList.gridCellDatas.Count);
             return grid;
         }
 
@@ -85,7 +77,7 @@ namespace Games.Defenses
             List<GridCellData> gridCellDatas = grid.gridCellDataList.gridCellDatas;
             
             bool foundKey = false;
-            doorPivot.SetActive(true);
+            objectsInScene.endDoor.SetActive(true);
             keyObject.SetActive(false);
 
             Debug.Log("==================================== START ====================================");
@@ -93,14 +85,20 @@ namespace Games.Defenses
             foreach (GridCellData gridCellData in gridCellDatas)
             {
                 //Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
-                
+                int height = 4;
+                int posX = gridCellData.x;
+                if (gridCellData.x > grid.size / 2)
+                {
+                    height += 4;
+                    posX %= (grid.size / 2);
+                }
                 switch ((CellType) gridCellData.cellType)
                 {
                     case CellType.ObjectToInstantiate:
-                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
+                        //PoolGameObject(posX, gridCellData.y, height, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         if (gridCellData.groupsMonster != null)
                         {
-                            if (InitGroups(gridCellData.groupsMonster, gridCellData.x, gridCellData.y, TileOffset, currentMap, keyObject))
+                            if (InitGroups(gridCellData.groupsMonster, posX, gridCellData.y, height, TileOffset, currentMap, keyObject))
                             {
                                 Debug.Log("keyfound");
                                 foundKey = true;
@@ -112,7 +110,7 @@ namespace Games.Defenses
                             InitTrap(gridCellData.trap, gridCellData.x, gridCellData.y, gridCellData.rotationY, TileOffset);
                         }
                         break;
-                    case CellType.End:
+                    /*case CellType.End:
                         Vector3 pos = endZone.transform.position;
                         pos.x = gridCellData.x * TileOffset;
                         pos.y = 0;
@@ -124,8 +122,8 @@ namespace Games.Defenses
                         break;
                     case CellType.Hole:
                         PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdOnlyRoof, Vector3.zero);
-                        break;
-                    case CellType.Spawn:
+                        break;*/
+                    /*case CellType.Spawn:
                         startZone.transform.position = new Vector3
                         {
                             x = gridCellData.x * TileOffset,
@@ -133,11 +131,11 @@ namespace Games.Defenses
                             z = gridCellData.y * TileOffset,
                         };
                         PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
-                        break;
+                        break;*/
                     case CellType.Wall:
-                        PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdPlaceableWall, Vector3.zero);
+                        PoolGameObject(posX, gridCellData.y, height, (ThemeGrid)grid.theme, MapThemePrefab.IdPlaceableWall, Vector3.zero);
                         break;
-                    case CellType.None:
+                    /*case CellType.None:
                         int x = gridCellData.x;
                         int y = gridCellData.y;
 
@@ -160,18 +158,18 @@ namespace Games.Defenses
                         }
 
                         PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, idPoolObject, rot);
-                        break;
+                        break;*/
                 }
             }
 
             if (!foundKey)
             {
-                doorPivot.SetActive(false);
+                objectsInScene.endDoor.SetActive(false);
             }
 
             Debug.Log("==================================== END ====================================");
             navMeshSurface.enabled = true;
-            navMeshSurface.BuildNavMesh();
+            //navMeshSurface.BuildNavMesh();
         }
 
         private Vector3 FindRotation(int x, int y, int size)
@@ -195,7 +193,7 @@ namespace Games.Defenses
             return rot;
         }
 
-        private void PoolGameObject(int x, int y, ThemeGrid themeGrid, int idPoolObject, Vector3 rot)
+        private void PoolGameObject(int x, int y, int height, ThemeGrid themeGrid, int idPoolObject, Vector3 rot)
         {
             ObjectPooler objectPooler = null;
 
@@ -215,6 +213,7 @@ namespace Games.Defenses
             Vector3 pos = objectPooled.transform.position;
             pos.x = x * TileOffset;
             pos.z = y * TileOffset;
+            pos.y = height;
             objectPooled.transform.position = pos;
 
             /*if (rot != Vector3.zero)
@@ -226,7 +225,7 @@ namespace Games.Defenses
             objectPooled.SetActive(true);
         }
         
-        public static bool InitGroups(GroupsMonster groups, int x, int y, int offset = 1, List<GameObject> currentMap = null, GameObject key = null)
+        public static bool InitGroups(GroupsMonster groups, int x, int y, float height, int offset = 1, List<GameObject> currentMap = null, GameObject key = null)
         {
             Monster monster;
             int nbMonsterInit = 0;
@@ -239,7 +238,7 @@ namespace Games.Defenses
                 {
                     Vector3 position = Vector3.zero;
                     position.x = x * offset;
-                    position.y = 1.5f;
+                    position.y = height;
                     position.z = y * offset;
                     
                     monster = monstersInGroup.GetMonster();
@@ -264,6 +263,7 @@ namespace Games.Defenses
                         monster.InitKey(key);
                     }
                     currentMap?.Add(monsterGameObject);
+                    monsterGameObject.GetComponent<NavMeshAgent>().enabled = true;
                 }
             }
 

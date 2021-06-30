@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Games.Defenses
 {
@@ -29,6 +30,15 @@ namespace Games.Defenses
         public void ChangeColorToCyan()
         {
             GetComponent<Renderer>().material.color = new Color(0,0,0,0);
+        }
+
+        private void OnEnable()
+        {
+            if (!Physics.Raycast(transform.position, transform.forward, 2f,
+                LayerMask.GetMask("Ground")))
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -65,8 +65,10 @@
             {
                 return null;
             }
-
-            return gridCellDataList.gridCellDatas.First(data => data.x == x && data.y == y);
+            Debug.Log("beforeFirst");
+            GridCellData res = gridCellDataList.gridCellDatas.First(data => data.x == x && data.y == y);
+            Debug.Log("found");
+            return res;
         }
     }
 }

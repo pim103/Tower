@@ -101,7 +101,7 @@ namespace Games
             switch (callbackMessage.callbackMessages.message)
             {
                 case "StartDefense":
-                    GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
+                    //GameController.currentGameGrid = ;
                     CurrentRoom.loadGameDefense = true;
                     CurrentRoom.loadGameAttack = false;
                     break;
