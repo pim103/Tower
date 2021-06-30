@@ -84,6 +84,60 @@
             </e>
           </e>
         </e>
+        <e p="InfinityPBR" t="Include">
+          <e p="__READ ME &amp; Support &amp; Instructions" t="Include">
+            <e p="LOW POLY - COLOR SHIFTER READ ME.txt" t="Include" />
+            <e p="LOW POLY READ ME.txt" t="Include" />
+          </e>
+          <e p="_InfinityPBR - Demons" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="SFB_DemoDemonLP.cs" t="Include" />
+            </e>
+          </e>
+          <e p="_InfinityPBR - Dragons" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="DragonLP_Demo.cs" t="Include" />
+              <e p="SFB_DragonDemo.cs" t="Include" />
+              <e p="SFB_DragonGroundToFly.cs" t="Include" />
+              <e p="SFB_DragonHeight.cs" t="Include" />
+            </e>
+          </e>
+          <e p="_InfinityPBR - Skeleton Warrior" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="SkeletonDemoLP.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Demo Scripts" t="Include">
+            <e p="ColorShifterObject.cs" t="Include" />
+            <e p="ColorShiftRuntime.cs" t="Include" />
+            <e p="DemoKeyCommands.cs" t="Include" />
+            <e p="IPBR_EnvironmentWarningLP.cs" t="Include" />
+            <e p="IPBR_SupportAndReview.cs" t="Include" />
+            <e p="SFB_BlendShapesManager.cs" t="Include" />
+            <e p="SFB_CameraFocus.cs" t="Include" />
+            <e p="SFB_CameraRotate_v2.cs" t="Include" />
+            <e p="SFB_DemoControl_v2.cs" t="Include" />
+            <e p="SFB_DemoControlKeys.cs" t="Include" />
+            <e p="SFB_StayWithTarget.cs" t="Include" />
+            <e p="WardrobeManager.cs" t="Include" />
+          </e>
+          <e p="Editor" t="Include">
+            <e p="AnimationEventCopier.cs" t="Include" />
+            <e p="ColorShifter.cs" t="Include" />
+            <e p="ColorShifterObjectEditor.cs" t="Include" />
+            <e p="ColorShiftRuntimeEditor.cs" t="Include" />
+            <e p="SFB_BlendShapesManagerEditor.cs" t="Include" />
+            <e p="SFB_LoadWelcome.cs" t="Include" />
+            <e p="WardrobeManagerEditor.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="IPBR_DiffuseHSL.shader" t="Include" />
+            <e p="IPBR_DiffuseHSL_Transparent.shader" t="Include" />
+            <e p="IPBR_LPColor.shader" t="Include" />
+            <e p="IPBR_LPColor_HDRP.shader" t="Include" />
+            <e p="IPBR_LPColor_URP.shader" t="Include" />
+          </e>
+        </e>
         <e p="NavMeshComponents" t="Include">
           <e p="Editor" t="Include">
             <e p="NavMeshAssetManager.cs" t="Include" />
@@ -228,12 +282,12 @@
             </e>
             <e p="ContainerController.cs" t="Include" />
             <e p="Defenses" t="Include">
+              <e p="DefenseControls.cs" t="Include" />
               <e p="DefenseUIController.cs" t="Include" />
               <e p="GameGrid.cs" t="Include" />
               <e p="GameGridController.cs" t="Include" />
               <e p="GridTileController.cs" t="Include" />
               <e p="GroupRangeBehavior.cs" t="Include" />
-              <e p="HoverDetector.cs" t="Include" />
               <e p="InitDefense.cs" t="Include" />
               <e p="Traps" t="Include">
                 <e p="ArrowTrapBehavior.cs" t="Include" />
@@ -261,6 +315,7 @@
               <e p="EffectController.cs" t="Include" />
               <e p="Effects.cs" t="Include" />
               <e p="Entities" t="Include">
+                <e p="ColliderEntityExposer.cs" t="Include" />
                 <e p="GroupsMonster.cs" t="Include" />
                 <e p="Monster.cs" t="Include" />
                 <e p="MonsterBack.cs" t="Include" />

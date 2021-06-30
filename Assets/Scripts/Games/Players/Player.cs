@@ -140,6 +140,11 @@ namespace Games.Players
         
         public void InitWeapon(Weapon weapon)
         {
+            if (weapon == null)
+            {
+                return;
+            }
+            
             playerPrefab.AddItemInHand(weapon);
             this.weapon = weapon;
         }

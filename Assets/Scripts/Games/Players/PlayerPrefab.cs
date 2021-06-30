@@ -80,7 +80,10 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayer(ChooseDeckAndClass.currentRoleIdentity.GetIdentityId());
+            int idClasses = ChooseDeckAndClass.currentRoleIdentity != null
+                ? ChooseDeckAndClass.currentRoleIdentity.GetIdentityId()
+                : 0;
+            player.InitPlayer(idClasses);
 
             wantToGoBack = false;
             wantToGoForward = false;
@@ -120,11 +123,17 @@ namespace Games.Players
             }
             GetIntentPlayer();
 
-            float diff = (float) entity.hp / (float) entity.initialHp;
-            hpBar.value = diff;
+            if (hpBar)
+            {
+                float diff = (float) entity.hp / (float) entity.initialHp;
+                hpBar.value = diff;
+            }
 
-            diff = (float) entity.ressource / (float) entity.initialRessource1;
-            ressourcesBar.value = diff;
+            if (ressourcesBar)
+            {
+                float diff = (float) entity.ressource / (float) entity.initialRessource1;
+                ressourcesBar.value = diff;
+            }
 
             UpdateCooldown();
         }
