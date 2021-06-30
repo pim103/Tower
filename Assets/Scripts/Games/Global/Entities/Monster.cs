@@ -58,16 +58,6 @@ namespace Games.Global.Entities
                 monsterPrefab.PlayBasicAttack();
             }
         }
-        
-        public override void BasicDefense()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void DesactiveBasicDefense()
-        {
-            throw new NotImplementedException();
-        }
 
         public void InitMonster(MonsterPrefab newMonsterPrefab)
         {
@@ -115,23 +105,6 @@ namespace Games.Global.Entities
             monsterPrefab.AddItemInHand(weapon);
 
             this.weapon = weapon;
-        }
-
-        public void InitSpells()
-        {
-//             foreach (SpellList spellName in spellsName)
-//             {
-//                 Spell spell = DataObject.SpellList.GetSpellByName(spellName.);
-//
-//                 if (spell != null)
-//                 {
-//                     spells.Add(spell);
-//                 }
-//                 else
-//                 {
-// //                    Debug.Log("Doesnt find spell " + spellName.name);
-//                 }
-//             }
         }
 
         public void InitKey(GameObject keyObject)

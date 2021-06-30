@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Games.Global.Entities;
 using Games.Global.TreeBehavior.TestTreeBehavior;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {

@@ -53,21 +53,19 @@ namespace Games
                             return;
                         }
 
-                        if (callbackMessage.callbackMessages.message == "WON")
+                        if (callbackMessage.callbackMessages.message != null)
                         {
-                            GameController.EndGame(false);
+                            Debug.Log(callbackMessage.callbackMessages.message);
                         }
-                        if (callbackMessage.callbackMessages.message == "DEATH")
+                        
+                        switch (callbackMessage.callbackMessages.message)
                         {
-                            GameController.EndGame(true);
-                        }
-                        if (callbackMessage.callbackMessages.message == "LoadGame")
-                        {
-                            CurrentRoom.loadGame = true;
-                        }
-                        if (callbackMessage.callbackMessages.message == "setGameLoaded")
-                        {
-                            Debug.Log("En attente de l'adversaire");
+                            case "LoadGame":
+                                CurrentRoom.loadGame = true;
+                                break;
+                            case "setGameLoaded":
+                                Debug.Log("En attente de l'adversaire");
+                                break;
                         }
 
                         if (CurrentRoom.loadGame)
@@ -100,22 +98,30 @@ namespace Games
                 TransitionMenuGame.waitingForStart = callbackMessage.callbackMessages.roleTimer;
                 CurrentRoom.loadRoleAndDeck = true;
             }
-            if (callbackMessage.callbackMessages.message == "StartDefense")
+            switch (callbackMessage.callbackMessages.message)
             {
-                GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
-                CurrentRoom.loadGameDefense = true;
-            }
-
-            if (callbackMessage.callbackMessages.message == "LoadAttackGrid")
-            {
-                Debug.Log("Receive new grid");
-                GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
-                CurrentRoom.generateAttackGrid = true;
-                GameController.currentGameGrid.DisplayGridData();
-            }
-            if (callbackMessage.callbackMessages.message == "StartAttack")
-            {
-                CurrentRoom.loadGameAttack = true;
+                case "StartDefense":
+                    GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
+                    CurrentRoom.loadGameDefense = true;
+                    CurrentRoom.loadGameAttack = false;
+                    break;
+                case "LoadAttackGrid":
+                    Debug.Log("Receive new grid");
+                    GameController.currentGameGrid = callbackMessage.callbackMessages.maps;
+                    CurrentRoom.generateAttackGrid = true;
+                    GameController.currentGameGrid.DisplayGridData();
+                    break;
+                case "StartAttack":
+                    CurrentRoom.loadGameAttack = true;
+                    CurrentRoom.loadGameDefense = false;
+                    CurrentRoom.generateAttackGrid = false;
+                    break;
+                case "WON":
+                    GameController.SetEndOfGame(false);
+                    break;
+                case "DEATH":
+                    GameController.SetEndOfGame(true);
+                    break;
             }
 
             if (CurrentRoom.loadGameAttack)

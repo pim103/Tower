@@ -19,15 +19,6 @@ namespace Games.Global.Spells.SpellsController
 
     public class SpellController : MonoBehaviour
     {
-//        [SerializeField] private BuffController buffController;
-//        [SerializeField] private AreaOfEffectController areaOfEffectController;
-//        [SerializeField] private MovementController movementController;
-//        [SerializeField] private WaveController waveController;
-//        [SerializeField] private ProjectileController projectileController;
-//        [SerializeField] private SummonController summonController;
-//        [SerializeField] private PassiveController passiveController;
-//        [SerializeField] private TransformationController transformationController;
-
         [SerializeField] private SpellInterpreter spellInterpreter;
 
         public static SpellController instance;
@@ -238,12 +229,14 @@ namespace Games.Global.Spells.SpellsController
 
         public static void CastPassiveSpell(Entity entity)
         {
-            if (entity.spells == null)
+            if (entity.spells == null || entity.spells.Count == 0)
             {
                 return;
             }
 
-            foreach (Spell spell in entity.spells.FindAll(spell => spell.TypeSpell == TypeSpell.Passive))
+            List<Spell> passiveSpell = entity.spells.FindAll(spell => spell.TypeSpell == TypeSpell.Passive);
+
+            foreach (Spell spell in passiveSpell)
             {
                 if (spell.spellComponentFirstActivation != null)
                 {

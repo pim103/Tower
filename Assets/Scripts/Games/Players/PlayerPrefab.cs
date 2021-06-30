@@ -346,12 +346,12 @@ namespace Games.Players
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    entity.BasicDefense();
+                    SpellController.CastSpell(entity, entity.basicDefense);
                     pressDefenseButton = true;
                 }
                 else if (Input.GetMouseButtonUp(1))
                 {
-                    entity.DesactiveBasicDefense();
+                    SpellController.InterruptSpell(entity.basicDefense);
                     pressDefenseButton = false;
                 }
 
@@ -558,10 +558,7 @@ namespace Games.Players
         {
             int count = 0;
 
-            if (materialBackUpForSkin == null)
-            {
-                materialBackUpForSkin = new Material[skins.Length];
-            }
+            materialBackUpForSkin ??= new Material[skins.Length];
             
             foreach (SkinnedMeshRenderer skin in skins)
             {

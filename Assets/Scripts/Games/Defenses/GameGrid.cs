@@ -55,7 +55,7 @@
         {
             foreach (GridCellData g in gridCellDataList.gridCellDatas)
             {
-                Debug.Log(" x : " + g.x + " y : " + g.y + " type : " + g.cellType);
+                //Debug.Log(" x : " + g.x + " y : " + g.y + " type : " + g.cellType);
             }
         }
 

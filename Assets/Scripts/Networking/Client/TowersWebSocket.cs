@@ -32,15 +32,15 @@ namespace Networking.Client
 
         static TowersWebSocket()
         {
-            if (NetworkingController.Environnement == "PROD")
-            {
-                END_POINT_GAME = "wss://www.towers.heolia.eu/websocket-v2";
-                END_POINT_CHAT = "wss://towers.heolia.eu/chat";
-            }
-            else if (NetworkingController.Environnement == "LOCAL")
+            if (NetworkingController.Environnement == "LOCAL")
             {
                 END_POINT_GAME = "ws://localhost:8093/websocket";
                 END_POINT_CHAT = "ws://localhost:8082";
+            }
+            else
+            {
+                END_POINT_GAME = "wss://www.towers.heolia.eu/websocket-v2";
+                END_POINT_CHAT = "wss://towers.heolia.eu/chat";
             }
         }
 

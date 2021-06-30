@@ -83,9 +83,9 @@ namespace Games.Players
 
             if (classesWeaponSpell != null)
             {
-                spells.Add(classesWeaponSpell.spell1);
-                spells.Add(classesWeaponSpell.spell2);
-                spells.Add(classesWeaponSpell.spell3);
+                if (classesWeaponSpell.spell1 != null) spells.Add(classesWeaponSpell.spell1);
+                if (classesWeaponSpell.spell2 != null) spells.Add(classesWeaponSpell.spell2);
+                if (classesWeaponSpell.spell3 != null) spells.Add(classesWeaponSpell.spell3);
             }
             
             return spells;

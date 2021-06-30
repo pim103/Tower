@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Games.Global.Armors;
 using Games.Global.Spells;
@@ -184,16 +184,6 @@ namespace Games.Global
         }
 
         public virtual void CancelBasicAttack()
-        {
-            
-        }
-
-        public virtual void BasicDefense()
-        {
-            
-        }
-
-        public virtual void DesactiveBasicDefense()
         {
             
         }

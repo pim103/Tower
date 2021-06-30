@@ -422,7 +422,7 @@ namespace Games.Defenses
             if (defenseUiController.keyAlreadyPut)
             {
                 NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
-                Debug.Log(pathToKey.status);
+                //Debug.Log(pathToKey.status);
             }
             if (pathToEnd.status != NavMeshPathStatus.PathComplete || pathToKey.status != NavMeshPathStatus.PathComplete && defenseUiController.keyAlreadyPut)
             {

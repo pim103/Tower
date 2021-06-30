@@ -1,10 +1,8 @@
-﻿using ContentEditor.UtilsEditor;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using ContentEditor.UtilsEditor;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellsController;
-using Games.Global.Spells.SpellsGenerator;
-using Games.Players;
 using PathCreation;
-using PathCreation.Examples;
 using TestC;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -196,3 +194,5 @@ namespace ContentEditor
         }
     }
 }
+
+#endif

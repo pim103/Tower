@@ -59,6 +59,7 @@ namespace Games.Global.Spells.SpellBehavior
             if (spellToInstantiate.incrementAmplitudeByTime != Vector3.zero)
             {
                 transform.localScale += (spellToInstantiate.incrementAmplitudeByTime * Time.deltaTime);
+                if (childrenGameObject) childrenGameObject.transform.localScale += (spellToInstantiate.incrementAmplitudeByTime * Time.deltaTime);
             }
         }
 
@@ -122,7 +123,7 @@ namespace Games.Global.Spells.SpellBehavior
                 offset.z /= parentScale.z;
                 childrenGameObject.transform.localPosition = offset;
                 childrenGameObject.transform.localEulerAngles = Vector3.zero;
-                childrenGameObject.transform.localScale = Vector3.one;
+                childrenGameObject.transform.localScale = wantedGo.transform.localScale;
                 childrenGameObject.SetActive(true);   
             }
         }
@@ -256,9 +257,9 @@ namespace Games.Global.Spells.SpellBehavior
             EntityPrefab entityPrefab = other.GetComponent<ColliderEntityExposer>().entityPrefab;
             spellComponent.OnTriggerEnter(entityPrefab.entity);
             bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
+
             if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
             {
-                Debug.Log("ui");
                 entityPrefab.LaunchEnableRagdoll(20);
             }
 

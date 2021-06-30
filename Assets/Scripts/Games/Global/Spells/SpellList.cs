@@ -101,7 +101,7 @@ namespace Games.Global.Spells
         
         private static Spell LoadSpellByName(string filenameSpell)
         {
-            string path = "Assets/Data/SpellsJson/" + filenameSpell + ".json";
+            string path = Application.dataPath + "/Data/SpellsJson/" + filenameSpell + ".json";
             Spell spell = FindSpellWithPath(path);
 
             return spell;
@@ -132,6 +132,16 @@ namespace Games.Global.Spells
 
         private void DownloadSpell(string filename)
         {
+            if (!Directory.Exists(Application.dataPath + "/Data/"))
+            {
+                Directory.CreateDirectory(Application.dataPath + "/Data/");
+            }
+
+            if (!Directory.Exists(Application.dataPath + "/Data/SpellsJson/"))
+            {
+                Directory.CreateDirectory(Application.dataPath + "/Data/SpellsJson/");
+            }
+
             using var client = new WebClient();
 
             client.DownloadFile(new Uri($@"{NetworkingController.PublicURL}/data/spell/{filename}.json"), 

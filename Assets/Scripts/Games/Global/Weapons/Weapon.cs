@@ -32,25 +32,6 @@ namespace Games.Global.Weapons
 
         public Spell basicAttack { get; set; }
 
-        public void InitPlayerSkill(Classes classe)
-        {
-            switch (classe)
-            {
-//                case Classes.Warrior:
-//                    InitWeaponSpellWithJson(warriorSpells);
-//                    break;
-//                case Classes.Mage:
-//                    InitWeaponSpellWithJson(mageSpells);
-//                    break;
-//                case Classes.Rogue:
-//                    InitWeaponSpellWithJson(rogueSpells);
-//                    break;
-//                case Classes.Ranger:
-//                    InitWeaponSpellWithJson(rangerSpells);
-//                    break;
-            }
-        }
-
         public void InitWeapon()
         {
             InitBasicAttack();
@@ -63,43 +44,6 @@ namespace Games.Global.Weapons
             if (category?.spellAttack != null)
             {
                 wielder.basicAttack = category.spellAttack;
-            }
-        }
-
-        public void InitWeaponSpellWithJson(List<string> spellsToFind)
-        {
-            Entity wielder = weaponPrefab.GetWielder();
-
-            if (spellsToFind == null)
-            {
-                return;
-            }
-            
-            foreach (string spellString in spellsToFind)
-            {
-                Spell spell = DataObject.SpellList.GetSpellByName(spellString);
-
-                if (spell == null)
-                {
-                    Debug.Log("Pas de spells");
-                    continue;
-                }
-
-                wielder.spells.Add(spell);
-                if (weaponPrefab.GetWielder().isPlayer)
-                {
-                    PlayerPrefab playerPrefab = (PlayerPrefab) wielder.entityPrefab;
-                    if (wielder.spells.Count == 1)
-                    {
-                        playerPrefab.spell1.text = spell.nameSpell;
-                    } else if (wielder.spells.Count == 2)
-                    {
-                        playerPrefab.spell2.text = spell.nameSpell;
-                    } else if (wielder.spells.Count == 3)
-                    {
-                        playerPrefab.spell3.text = spell.nameSpell;
-                    }
-                }
             }
         }
 

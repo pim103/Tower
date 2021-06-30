@@ -1,6 +1,4 @@
-﻿using UnityEditor.Experimental.GraphView;
-
-namespace Games.Global.TreeBehavior
+﻿namespace Games.Global.TreeBehavior
 {
     public enum TreeStatus
     {

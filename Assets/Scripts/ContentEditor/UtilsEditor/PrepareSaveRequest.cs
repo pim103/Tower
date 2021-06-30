@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -395,7 +397,7 @@ namespace ContentEditor.UtilsEditor
             request.Method = WebRequestMethods.Ftp.DeleteFile;
             request.UseBinary = true;
             request.UsePassive = true;
-            request.KeepAlive = true;
+            request.KeepAlive = true;    
             request.Credentials = new NetworkCredential("towers", "f7pWu2heDgCH8jMi");
 
             try
@@ -413,3 +415,5 @@ namespace ContentEditor.UtilsEditor
         }
     }
 }
+
+#endif

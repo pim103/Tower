@@ -232,7 +232,6 @@ GameObject:
   - component: {fileID: 52772915}
   - component: {fileID: 52772914}
   - component: {fileID: 52772913}
-  - component: {fileID: 52772906}
   - component: {fileID: 52772903}
   m_Layer: 0
   m_Name: StateController
@@ -251,18 +250,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 577d2e95782146f0aa5377136752201a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &52772906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52772902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 376bab91269ba4145961fb073a36bc97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &52772913
@@ -16487,11 +16474,6 @@ PrefabInstance:
       objectReference: {fileID: 394857382}
     - target: {fileID: 6879311515420388703, guid: 03518ad692d34cb4792f659eb650ba44,
         type: 3}
-      propertyPath: buffCases.Array.size
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 6879311515420388703, guid: 03518ad692d34cb4792f659eb650ba44,
-        type: 3}
       propertyPath: buffCases.Array.data[0]
       value: 
       objectReference: {fileID: 394857381}
@@ -16585,17 +16567,6 @@ PrefabInstance:
       propertyPath: buffCases.Array.data[18]
       value: 
       objectReference: {fileID: 394857363}
-    - target: {fileID: 7168763929155484931, guid: 03518ad692d34cb4792f659eb650ba44,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7168763929155484931, guid: 03518ad692d34cb4792f659eb650ba44,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 2f7d99ff6c2e5cb4c866f6231a4d4eeb,
-        type: 2}
     - target: {fileID: 7988970279727641102, guid: 03518ad692d34cb4792f659eb650ba44,
         type: 3}
       propertyPath: m_Enabled
@@ -16609,7 +16580,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1101897900}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299880392}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e229a923f1ae9248884a5f8cf924a07, type: 3}
@@ -17047,37 +17018,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292459680}
   m_CullTransparentMesh: 0
---- !u!1 &1299880392 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2245213192122257895, guid: 03518ad692d34cb4792f659eb650ba44,
-    type: 3}
-  m_PrefabInstance: {fileID: 1101897900}
-  m_PrefabAsset: {fileID: 0}
---- !u!75 &1299880396
-ConstantForce:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299880392}
-  m_Enabled: 1
-  m_Force: {x: 0, y: -15, z: 0}
-  m_RelativeForce: {x: 0, y: 0, z: 0}
-  m_Torque: {x: 0, y: 0, z: 0}
-  m_RelativeTorque: {x: 0, y: 0, z: 0}
---- !u!114 &1299880397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299880392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6a1a5a2a7a7538408f98dd4c9462bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entityPrefab: {fileID: 1101897901}
 --- !u!1 &1308144625
 GameObject:
   m_ObjectHideFlags: 0

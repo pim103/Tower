@@ -41,10 +41,9 @@ namespace ContentEditor.SpellEditorComposant
 
         // Passive Selectors
         private static CreateOrSelectComponent<SpellComponent> passiveComponentSelector;
-        
-        
-        private static bool dropdownEffectIsOpen;
-        private static bool dropdownConditionIsOpen;
+
+        private static Dictionary<ActionTriggered, bool> dropdownsEffectIsOpen = new Dictionary<ActionTriggered, bool>();
+        private static Dictionary<ActionTriggered, bool> dropdownsConditionIsOpen = new Dictionary<ActionTriggered, bool>();
         private static Dictionary<ActionTriggered, CreateOrSelectComponent<SpellComponent>> componentChooseOrSelects;
 
         public static void InitSpellComponentEditor()
@@ -188,6 +187,8 @@ namespace ContentEditor.SpellEditorComposant
         }
 
         private static GameObject summonSpellObject;
+        private static Dictionary<Spell, CreateOrSelectComponent<Spell>> summonChooseOrSelect = new Dictionary<Spell, CreateOrSelectComponent<Spell>>();
+        private static CreateOrSelectComponent<Spell> summonBasicAttack;
         
         private static void DisplaySpecificComponentOptions(SpellComponent spellComponentEdited)
         {
@@ -195,9 +196,16 @@ namespace ContentEditor.SpellEditorComposant
             {
                 case TypeSpellComponent.Movement:
                     MovementSpell currentSpell = spellComponentEdited as MovementSpell;
-                        currentSpell.isFollowingMouse = EditorGUILayout.Toggle("Is follow mouse", currentSpell.isFollowingMouse);
+                    currentSpell.isFollowingMouse = EditorGUILayout.Toggle("Is follow mouse", currentSpell.isFollowingMouse);
                     currentSpell.movementSpellType =
                         (MovementSpellType) EditorGUILayout.EnumPopup("Movement spell type", currentSpell.movementSpellType);
+
+                    if (currentSpell.movementSpellType == MovementSpellType.Charge ||
+                        currentSpell.movementSpellType == MovementSpellType.Dash)
+                    {
+                        currentSpell.direction =
+                            (Direction) EditorGUILayout.EnumPopup("Direction", currentSpell.direction);
+                    }
                     break;
                 case TypeSpellComponent.Transformation:
                     if (!(spellComponentEdited is TransformationSpell currentTransformationSpellComponent))
@@ -302,6 +310,21 @@ namespace ContentEditor.SpellEditorComposant
                     currentSummonSpellComponent.summonNumber =
                         EditorGUILayout.IntField("Nb summon", currentSummonSpellComponent.summonNumber);
 
+                    summonBasicAttack ??= new CreateOrSelectComponent<Spell>(SpellEditor.GetSpells(),
+                        null, "Spellcomponent for action", null);
+
+                    currentSummonSpellComponent.basicAttack = summonBasicAttack.DisplayOptions();
+                    
+                    // TODO : add multiple spell
+                    // foreach (Spell s in currentSummonSpellComponent.spells.ToArray())
+                    // {
+                    //     summonChooseOrSelect[s].DisplayOptions();
+                    //     if (summonChooseOrSelect.ContainsKey(s))
+                    //     {
+                    //         
+                    //     }
+                    // }
+                    
                     break;
             }
         }
@@ -332,28 +355,27 @@ namespace ContentEditor.SpellEditorComposant
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
+            if (!dropdownsEffectIsOpen.ContainsKey(actionTriggered))
+            {
+                dropdownsEffectIsOpen.Add(actionTriggered, false);
+            }
+
             string labelEffectButton = "Ajouter un effet";
-            if (dropdownEffectIsOpen)
+            if (dropdownsEffectIsOpen[actionTriggered])
             {
                 labelEffectButton = "Supprimer l'effet";
             }
-            
+
             if (GUILayout.Button(labelEffectButton))
             {
-                dropdownEffectIsOpen = !dropdownEffectIsOpen;
+                dropdownsEffectIsOpen[actionTriggered] = !dropdownsEffectIsOpen[actionTriggered];
 
-                if (!dropdownEffectIsOpen)
-                {
-                    actionTriggered.effect = null;
-                }
-                else
-                {
-                    actionTriggered.effect = new Effect();
-                }
+                actionTriggered.effect = !dropdownsEffectIsOpen[actionTriggered] ? null : new Effect();
             }
 
-            if (dropdownEffectIsOpen && actionTriggered.effect != null)
+            if (dropdownsEffectIsOpen[actionTriggered] && actionTriggered.effect != null)
             {
+                actionTriggered.actionOnEffectType = (ActionOnEffectType) EditorGUILayout.EnumPopup("Action de l'effet", actionTriggered.actionOnEffectType);
                 actionTriggered.effect.nameEffect = EditorGUILayout.TextField("Nom de l'effet", actionTriggered.effect.nameEffect);
                 actionTriggered.effect.typeEffect = (TypeEffect) EditorGUILayout.EnumPopup("Type d'effet", actionTriggered.effect.typeEffect);
                 actionTriggered.effect.level = EditorGUILayout.IntField("Niveau", actionTriggered.effect.level);
@@ -366,27 +388,25 @@ namespace ContentEditor.SpellEditorComposant
                 }
             }
             
+            if (!dropdownsConditionIsOpen.ContainsKey(actionTriggered))
+            {
+                dropdownsConditionIsOpen.Add(actionTriggered, false);
+            }
+
             string labelCondtionButton = "Ajouter une condition";
-            if (dropdownConditionIsOpen)
+            if (dropdownsConditionIsOpen[actionTriggered])
             {
                 labelCondtionButton = "Supprimer la condition";
             }
             
             if (GUILayout.Button(labelCondtionButton))
             {
-                dropdownConditionIsOpen = !dropdownConditionIsOpen;
+                dropdownsConditionIsOpen[actionTriggered] = !dropdownsConditionIsOpen[actionTriggered];
 
-                if (!dropdownConditionIsOpen)
-                {
-                    actionTriggered.conditionToTrigger = null;
-                }
-                else
-                {
-                    actionTriggered.conditionToTrigger = new ConditionToTrigger();
-                }
+                actionTriggered.conditionToTrigger = !dropdownsConditionIsOpen[actionTriggered] ? null : new ConditionToTrigger();
             }
 
-            if (dropdownConditionIsOpen && actionTriggered.conditionToTrigger != null)
+            if (dropdownsConditionIsOpen[actionTriggered] && actionTriggered.conditionToTrigger != null)
             {
                 actionTriggered.conditionToTrigger.conditionName = EditorGUILayout.TextField("Nom de la condition", actionTriggered.conditionToTrigger.conditionName);
                 actionTriggered.conditionToTrigger.conditionType = (ConditionType) EditorGUILayout.EnumPopup("Condition type", actionTriggered.conditionToTrigger.conditionType);
@@ -528,8 +548,8 @@ namespace ContentEditor.SpellEditorComposant
                     return;
                 }
 
-                if (movSpell.movementSpellType == MovementSpellType.Dash ||
-                    (movSpell.movementSpellType == MovementSpellType.Charge && !movSpell.isFollowingMouse))
+                if (movSpell.direction == Direction.UseTrajectory && !movSpell.isFollowingMouse &&
+                    (movSpell.movementSpellType == MovementSpellType.Dash || movSpell.movementSpellType == MovementSpellType.Charge))
                 {
                     if (movSpell.trajectory == null)
                     {

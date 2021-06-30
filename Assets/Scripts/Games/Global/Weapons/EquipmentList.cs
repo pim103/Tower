@@ -52,9 +52,7 @@ namespace Games.Global.Weapons
 
         public Weapon GetFirstWeaponFromIdCategory(int idCategory)
         {
-            // TODO : use typeWeapon
-            // return Tools.Clone(weapons.Find(weapon => weapon.category == categoryWeapon));
-            return Tools.Clone(weapons.First());
+            return Tools.Clone(weapons.Find(weapon => weapon.category.id == idCategory));
         }
 
         private void InitEquipmentDictionnary(string json)

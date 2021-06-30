@@ -24,8 +24,15 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 GameObject spellPathCreator = ObjectPooler.SharedInstance.GetPooledObject(0);
                 
-                spellPathCreator.transform.position = startPosition;
-                spellPathCreator.transform.rotation = spellComponent.caster.entityPrefab.transform.rotation;
+                Vector3 offset = spellComponent.spellToInstantiate.offsetStartPosition;
+                Vector3 forward = spellComponent.caster.entityPrefab.transform.forward;
+                Vector3 position = startPosition;
+
+                position += forward * offset.z + forward * offset.x +
+                            Vector3.up * offset.y;
+            
+                spellPathCreator.transform.position = position;
+                spellPathCreator.transform.forward = forward;
 
                 spellPathCreator.SetActive(true);
 

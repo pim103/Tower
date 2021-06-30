@@ -1,10 +1,10 @@
-﻿using System;
-using Games.Global.Weapons;
+﻿#if UNITY_EDITOR_64 || UNITY_EDITOR
+
+using System;
 using Games.Players;
 using TestC;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
@@ -73,3 +73,5 @@ namespace ContentEditor.UtilsEditor
         }
     }
 }
+
+#endif

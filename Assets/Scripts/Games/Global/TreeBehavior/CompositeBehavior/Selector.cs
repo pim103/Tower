@@ -1,6 +1,4 @@
-﻿using UnityEditor.Experimental.GraphView;
-
-namespace Games.Global.TreeBehavior.CompositeBehavior
+﻿namespace Games.Global.TreeBehavior.CompositeBehavior
 {
     public class Selector : Composite
     {

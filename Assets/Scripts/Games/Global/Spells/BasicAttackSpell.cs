@@ -13,6 +13,11 @@ namespace Games.Global.Spells
         
         public override void OnTriggerEnter(Entity enemy)
         {
+            if (enemy == caster)
+            {
+                return;
+            }
+
             bool damageIsNull = (enemy.isIntangible && damageType == DamageType.Physical) ||
                                 (enemy.hasAntiSpell && damageType == DamageType.Magical) ||
                                 caster.isBlind ||
@@ -31,6 +36,11 @@ namespace Games.Global.Spells
             }
 
             float damage = caster.att;
+            if (caster.weapon != null)
+            {
+                damage += caster.weapon.damage;
+            }
+            
             if (caster.isWeak)
             {
                 damage /= 2;

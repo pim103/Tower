@@ -30,6 +30,8 @@ namespace Games.Defenses
         [SerializeField] private ObjectPooler dungeonObjectPooler;
         [SerializeField] private ObjectPooler trapPooler;
         [SerializeField] private NavMeshSurface navMeshSurface;
+        [SerializeField] private GameObject keyObject;
+        [SerializeField] private GameObject doorPivot;
         
         public const int TileOffset = 4;
 
@@ -51,7 +53,7 @@ namespace Games.Defenses
                     if (i == 1 && j == 1)
                     {
                         cellType = CellType.Spawn;
-                    } else if (i == grid.size-2 && j == grid.size-2)
+                    } else if (i == grid.size-3 && j == grid.size-3)
                     {
                         cellType = CellType.End;
                     }
@@ -82,13 +84,15 @@ namespace Games.Defenses
             
             List<GridCellData> gridCellDatas = grid.gridCellDataList.gridCellDatas;
             
-            bool foundKey;
+            bool foundKey = false;
+            doorPivot.SetActive(true);
+            keyObject.SetActive(false);
 
             Debug.Log("==================================== START ====================================");
             navMeshSurface.enabled = false;
             foreach (GridCellData gridCellData in gridCellDatas)
             {
-                Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
+                //Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
                 
                 switch ((CellType) gridCellData.cellType)
                 {
@@ -96,9 +100,11 @@ namespace Games.Defenses
                         PoolGameObject(gridCellData.x, gridCellData.y, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         if (gridCellData.groupsMonster != null)
                         {
-                            if (InitGroups(gridCellData.groupsMonster, gridCellData.x, gridCellData.y, TileOffset, currentMap))
+                            if (InitGroups(gridCellData.groupsMonster, gridCellData.x, gridCellData.y, TileOffset, currentMap, keyObject))
                             {
+                                Debug.Log("keyfound");
                                 foundKey = true;
+                                //gridCellData.groupsMonster.monstersInGroupList[0].monster.InitKey(keyObject);
                             }
                         }
                         else if (gridCellData.trap != null)
@@ -158,6 +164,11 @@ namespace Games.Defenses
                 }
             }
 
+            if (!foundKey)
+            {
+                doorPivot.SetActive(false);
+            }
+
             Debug.Log("==================================== END ====================================");
             navMeshSurface.enabled = true;
             navMeshSurface.BuildNavMesh();
@@ -206,16 +217,16 @@ namespace Games.Defenses
             pos.z = y * TileOffset;
             objectPooled.transform.position = pos;
 
-            if (rot != Vector3.zero)
-            {
+            /*if (rot != Vector3.zero)
+            {*/
                 objectPooled.transform.localEulerAngles = rot;
-            }
+            //}
 
             currentMap.Add(objectPooled);
             objectPooled.SetActive(true);
         }
         
-        public static bool InitGroups(GroupsMonster groups, int x, int y, int offset = 1, List<GameObject> currentMap = null)
+        public static bool InitGroups(GroupsMonster groups, int x, int y, int offset = 1, List<GameObject> currentMap = null, GameObject key = null)
         {
             Monster monster;
             int nbMonsterInit = 0;
@@ -247,6 +258,11 @@ namespace Games.Defenses
                     monsterGameObject.transform.position = position;
 
                     DataObject.monsterInScene.Add(monster);
+                    if (groups.hasKey && key!=null)
+                    {
+                        Debug.Log("initkey");
+                        monster.InitKey(key);
+                    }
                     currentMap?.Add(monsterGameObject);
                 }
             }

@@ -89,7 +89,7 @@ namespace ContentEditor
                 DisplayOneArmorEditor(armor);
 
                 ++loop;
-                if (loop % 6 == 0)
+                if (loop % 4 == 0)
                 {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();

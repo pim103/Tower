@@ -432,26 +432,28 @@ namespace Games.Global
             ragdollCoroutine = StartCoroutine(EnableRagdoll(time));
         }
 
-        public IEnumerator EnableRagdoll(int time)
+        private IEnumerator EnableRagdoll(int time)
         {
             animator.enabled = false;
             navMeshAgent.enabled = false;
             int cpt = 0;
+
             foreach (Rigidbody rigidbody in entityRigidbodies)
             {
                 rigidbody.useGravity = true;
             }
+            
             while (cpt < time)
             {
                 cpt++;
-                Debug.Log(cpt + " " + time);
                 yield return new WaitForSeconds(0.1f);
             }
-            Debug.Log("fin de la ragdoll");
+
             foreach (Rigidbody rigidbody in entityRigidbodies)
             {
                 rigidbody.useGravity = false;
             }
+
             animator.enabled = true;
             navMeshAgent.enabled = true;
             ragdollCoroutine = null;
