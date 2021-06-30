@@ -58,16 +58,6 @@ namespace Games.Global.Entities
                 monsterPrefab.PlayBasicAttack();
             }
         }
-        
-        public override void BasicDefense()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void DesactiveBasicDefense()
-        {
-            throw new NotImplementedException();
-        }
 
         public void InitMonster(MonsterPrefab newMonsterPrefab)
         {

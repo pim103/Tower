@@ -47,43 +47,6 @@ namespace Games.Global.Weapons
             }
         }
 
-        public void InitWeaponSpellWithJson(List<string> spellsToFind)
-        {
-            Entity wielder = weaponPrefab.GetWielder();
-
-            if (spellsToFind == null)
-            {
-                return;
-            }
-            
-            foreach (string spellString in spellsToFind)
-            {
-                Spell spell = DataObject.SpellList.GetSpellByName(spellString);
-
-                if (spell == null)
-                {
-                    Debug.Log("Pas de spells");
-                    continue;
-                }
-
-                wielder.spells.Add(spell);
-                if (weaponPrefab.GetWielder().isPlayer)
-                {
-                    PlayerPrefab playerPrefab = (PlayerPrefab) wielder.entityPrefab;
-                    if (wielder.spells.Count == 1)
-                    {
-                        playerPrefab.spell1.text = spell.nameSpell;
-                    } else if (wielder.spells.Count == 2)
-                    {
-                        playerPrefab.spell2.text = spell.nameSpell;
-                    } else if (wielder.spells.Count == 3)
-                    {
-                        playerPrefab.spell3.text = spell.nameSpell;
-                    }
-                }
-            }
-        }
-
         public void PrintAttributes()
         {
             Debug.Log("Weapon " + modelName + " - " + equipmentName + " type : " + type + " Category : " + category + " cost " + cost);

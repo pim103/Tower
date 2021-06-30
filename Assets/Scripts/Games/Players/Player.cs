@@ -1,10 +1,12 @@
-﻿using Games.Global;
+﻿using System.Collections.Generic;
+using Games.Global;
 using Games.Global.Armors;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
 using Games.Global.Weapons;
 using Games.Transitions;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Games.Players
 {
@@ -27,14 +29,6 @@ namespace Games.Players
         public override void BasicAttack()
         {
             playerPrefab.PlayBasicAttack();
-        }
-
-        public override void BasicDefense()
-        {
-            if (basicDefense != null)
-            {
-                SpellController.CastSpell(this, basicDefense);
-            }
         }
 
         public void ResetSpellCooldownAndStatus()
@@ -87,6 +81,7 @@ namespace Games.Players
         {
             Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
             InitClasses(classe);
+            
         }
 
         public void InitClasses(Classes classes)
@@ -108,12 +103,37 @@ namespace Games.Players
             DataObject.nbEntityInScene++;
             isPlayer = true;
 
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(5 /*ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId()*/);
+            int idCategoryWeapon = ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId();
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(idCategoryWeapon);
             InitWeapon(weapon);
 
+            InitSpellFromClassesAndWeapons(idCategoryWeapon);
             SpellController.CastPassiveSpell(this);
         }
 
+        public void InitSpellFromClassesAndWeapons(int idCategory)
+        {
+            CategoryWeapon categoryWeapon = DataObject.CategoryWeaponList.GetCategoryFromId(idCategory);
+            spells.AddRange(DataObject.ClassesList.GetSpellForClassesAndCategory(categoryWeapon, mainClass));
+
+            int loop = 0;
+            Text currentText;
+            foreach (Spell spell in spells)
+            {
+                currentText = playerPrefab.spell1;
+                if (loop == 1)
+                {
+                    currentText = playerPrefab.spell2;
+                } else if (loop == 2)
+                {
+                    currentText = playerPrefab.spell3;
+                }
+
+                ++loop;
+                currentText.text = spell.nameSpell;
+            }
+        }
+        
         public void InitWeapon(Weapon weapon)
         {
             playerPrefab.AddItemInHand(weapon);

@@ -229,12 +229,14 @@ namespace Games.Global.Spells.SpellsController
 
         public static void CastPassiveSpell(Entity entity)
         {
-            if (entity.spells == null)
+            if (entity.spells == null || entity.spells.Count == 0)
             {
                 return;
             }
 
-            foreach (Spell spell in entity.spells.FindAll(spell => spell.TypeSpell == TypeSpell.Passive))
+            List<Spell> passiveSpell = entity.spells.FindAll(spell => spell.TypeSpell == TypeSpell.Passive);
+
+            foreach (Spell spell in passiveSpell)
             {
                 if (spell.spellComponentFirstActivation != null)
                 {

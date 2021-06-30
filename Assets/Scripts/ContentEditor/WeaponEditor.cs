@@ -18,7 +18,7 @@ namespace ContentEditor
         public Dictionary<int, Weapon> originalWeapon = new Dictionary<int, Weapon>();
         public ContentGenerationEditor contentGenerationEditor;
         
-        private CreateOrSelectComponent<CategoryWeapon> categoryWeaponSelector;
+        private Dictionary<Weapon, CreateOrSelectComponent<CategoryWeapon>> categoryWeaponSelectors = new Dictionary<Weapon, CreateOrSelectComponent<CategoryWeapon>>();
 
         private Weapon newWeapon;
 
@@ -79,42 +79,23 @@ namespace ContentEditor
         private Vector2 scrollPos;
         private void DisplayWeaponStat()
         {
-            EditorGUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
-
-            int offsetX = 5;
-            int offsetY = 0;
 
             int loop = 0;
 
-            scrollPos = GUI.BeginScrollView(new Rect(0, 0, EditorConstant.WIDTH, EditorConstant.HEIGHT),
-                scrollPos, new Rect(0, 500, 70, 70));
-
             foreach (Weapon weapon in DataObject.EquipmentList.weapons)
             {
-                GUILayout.BeginArea(new Rect(offsetX, offsetY, 300, 450));
-
-                offsetX += 305;
-
-                if (offsetX + 305 > EditorConstant.WIDTH)
+                DisplayOneWeaponEditor(weapon);
+                
+                ++loop;
+                if (loop % 4 == 0)
                 {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
-                    offsetX = 5;
-                    offsetY += 455;
                 }
-
-                DisplayOneWeaponEditor(weapon);
-
-                GUILayout.EndArea();
             }
-            
-            GUI.EndScrollView();
 
             EditorGUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndVertical();
         }
 
         private void DisplayOneWeaponEditor(Weapon weapon)
@@ -143,10 +124,12 @@ namespace ContentEditor
 
             if (DictionaryManager.hasCategoriesLoad)
             {
-                categoryWeaponSelector ??= new CreateOrSelectComponent<CategoryWeapon>(DataObject.CategoryWeaponList.categories,
-                        weapon.category, "Categorie", null);
+                if (!categoryWeaponSelectors.ContainsKey(weapon)) {
+                    categoryWeaponSelectors.Add(weapon, new CreateOrSelectComponent<CategoryWeapon>(DataObject.CategoryWeaponList.categories,
+                        weapon.category, "Categorie", null));
+                }
 
-                weapon.category = categoryWeaponSelector.DisplayOptions();
+                weapon.category = categoryWeaponSelectors[weapon].DisplayOptions();
             }
 
             weapon.cost = EditorGUILayout.IntField("Cost", weapon.cost);

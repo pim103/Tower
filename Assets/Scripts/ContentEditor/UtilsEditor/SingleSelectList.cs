@@ -95,9 +95,10 @@ namespace ContentEditor.UtilsEditor
             return currentChoiceSelected;
         }
     }
-    
+
     public class SingleSelectList<T>
     {
+        private Vector2 scrollPosition;
         private readonly List<T> choices;
         
         public SingleSelectList(List<T> choiceList)
@@ -110,6 +111,7 @@ namespace ContentEditor.UtilsEditor
             OptionSelected<T> selectedChoice = null;
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
             if (GUILayout.Button("Aucun", GUILayout.Height(50)))
             {
                 selectedChoice = new OptionSelected<T> {option = default(T)};
@@ -121,6 +123,7 @@ namespace ContentEditor.UtilsEditor
                     selectedChoice = new OptionSelected<T> {option = choice};
                 }
             }
+            EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
 
             return selectedChoice;

@@ -12,6 +12,13 @@ namespace Games.Global.Spells
         TpWithTarget
     }
 
+    public enum Direction
+    {
+        UseTrajectory,
+        Forward,
+        Backward
+    }
+
     [Serializable]
     public class MovementSpell : SpellComponent
     {
@@ -22,6 +29,7 @@ namespace Games.Global.Spells
 
         public bool isFollowingMouse { get; set; }
         public MovementSpellType movementSpellType { get; set; }
+        public Direction direction { get; set; }
 
         private float distanceTravelled;
         
@@ -49,7 +57,6 @@ namespace Games.Global.Spells
             {
                 caster.entityPrefab.cameraBlocked = true;
             }
-            
             switch (movementSpellType)
             {
                 case MovementSpellType.TpWithTarget:
@@ -70,9 +77,16 @@ namespace Games.Global.Spells
             {
                 if (isFollowingMouse)
                 {
-                    caster.entityPrefab.transform.position += (caster.entityPrefab.transform.forward * trajectory.speed);
-                }
-                else if (trajectory.spellPath != null)
+                    caster.entityPrefab.transform.position += (caster.entityPrefab.transform.forward);
+                } else if (direction == Direction.Forward)
+                {
+                    caster.entityPrefab.GetComponent<Rigidbody>().AddForce(caster.entityPrefab.transform.forward * 300, ForceMode.Impulse);
+                    // caster.entityPrefab.transform.position += (caster.entityPrefab.transform.forward * 10);
+                } else if (direction== Direction.Backward)
+                {
+                    caster.entityPrefab.GetComponent<Rigidbody>().AddForce(-caster.entityPrefab.transform.forward * 300, ForceMode.Impulse);
+                    // caster.entityPrefab.transform.position -= (caster.entityPrefab.transform.forward * 10);
+                } else if (trajectory.spellPath != null)
                 {
                     distanceTravelled += trajectory.speed * spellInterval;
                     caster.entityPrefab.transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);

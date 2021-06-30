@@ -15,7 +15,7 @@ namespace Utils
         public string speed { get; set; } = "0";
         public string attSpeed { get; set; } = "0";
         public string ressource { get; set; } = "0";
-        public int defenseSpell { get; set; }
+        public int spellDefense { get; set; }
 
         public Classes ConvertToClasses()
         {
@@ -29,7 +29,7 @@ namespace Utils
                 speed = Int32.Parse(speed),
                 attSpeed = Int32.Parse(attSpeed),
                 ressource = Int32.Parse(ressource),
-                defenseSpell = DataObject.SpellList.GetSpellById(defenseSpell)
+                defenseSpell = DataObject.SpellList.GetSpellById(spellDefense)
             };
         }
     }
