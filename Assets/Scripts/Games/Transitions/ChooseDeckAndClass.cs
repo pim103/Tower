@@ -59,6 +59,8 @@ namespace Games.Transitions
         private void Start()
         {
             CurrentRoom.loadRoleAndDeck = true;
+
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void Update()
