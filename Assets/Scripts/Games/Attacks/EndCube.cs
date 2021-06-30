@@ -47,8 +47,15 @@ namespace Games.Attacks
         {
             Cursor.lockState = CursorLockMode.None;
 
-            int mapPlayed = 3;
-            
+            int mapPlayed = 1;
+
+            int playerLayer = LayerMask.NameToLayer("Player");
+
+            if (other.gameObject.layer != playerLayer)
+            {
+                return;
+            }
+
             // TODO : set nb map played
             if (initDefense.currentLevel < mapPlayed)
             {

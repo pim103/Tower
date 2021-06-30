@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DefaultNamespace;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global;
 using Games.Transitions;
+using Networking;
+using Networking.Client;
 using Networking.Client.Room;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -73,7 +76,7 @@ namespace Games {
          */
         public bool byPassDefense = true;
 
-        private void LoadMainMenu()
+        public static void LoadMainMenu()
         {
             SceneManager.LoadScene("MenuScene");
         }
@@ -87,7 +90,12 @@ namespace Games {
             
             mainCamera = objectsInScene.mainCamera;
             endGameMenu.SetActive(false);
-            backToMenu.onClick.AddListener(LoadMainMenu);
+            backToMenu.onClick.AddListener(() => {
+                var setSocket = new Dictionary<string, string>();
+                setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
+                setSocket.Add("room", NetworkingController.CurrentRoomToken);
+                TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "quitMatchmaking", TowersWebSocket.FromDictToString(setSocket));
+            });
             staticRoomId = roomId;
 
             objectsInScene.mainCamera.SetActive(true);

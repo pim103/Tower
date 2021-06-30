@@ -122,6 +122,10 @@ namespace Games
                 case "DEATH":
                     GameController.SetEndOfGame(true);
                     break;
+                case "QuitMatchmaking":
+                    NetworkingController.CurrentRoomToken = "GENERAL";
+                    GameController.LoadMainMenu();
+                    break;
             }
 
             if (CurrentRoom.loadGameAttack)
