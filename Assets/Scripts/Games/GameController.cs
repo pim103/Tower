@@ -71,6 +71,12 @@ namespace Games {
 
         public int level = 0;
 
+        [SerializeField] private GameObject backGround;
+
+        [SerializeField] private AudioClip defenseMusic;
+        [SerializeField] private AudioClip attackMusic;
+        [SerializeField] private AudioSource musicSource;
+        
         /*
          * Flag to skip defensePhase
          */
@@ -142,6 +148,9 @@ namespace Games {
                     await Task.Delay(500);
                 }
                 mapStatsList[level].gameObject.SetActive(true);
+                backGround.SetActive(true);
+                musicSource.clip = defenseMusic;
+                musicSource.Play();
                 objectsInScene.startPos = mapStatsList[level].startPos;
                 objectsInScene.endZone = mapStatsList[level].endZone;
                 objectsInScene.endDoor = mapStatsList[level].endDoor;
@@ -164,6 +173,7 @@ namespace Games {
                 
                 Debug.Log("desactmap");
                 gameGridController.DesactiveMap();
+                backGround.SetActive(false);
 
                 // Send defense grid
                 Debug.Log("SendGrid");
@@ -185,6 +195,8 @@ namespace Games {
                 {
                     await Task.Delay(500);
                 }
+                musicSource.clip = attackMusic;
+                musicSource.Play();
                 Debug.Log("BeforeAwait");
                 await AttackPhase();
                 mapStatsList[level].gameObject.SetActive(false);
