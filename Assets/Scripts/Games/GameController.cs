@@ -105,12 +105,12 @@ namespace Games {
 
             if (phase == Phase.Attack)
             {
-                gameGridController.GenerateAndInitFakeGrid();
+                //gameGridController.GenerateAndInitFakeGrid();
                 AttackPhase();
             } 
             else if (phase == Phase.Defense)
             {
-                gameGridController.GenerateAndInitFakeGrid();
+                //gameGridController.GenerateAndInitFakeGrid();
                 //StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
             }
@@ -145,7 +145,7 @@ namespace Games {
                 objectsInScene.startPos = mapStatsList[level].startPos;
                 objectsInScene.endZone = mapStatsList[level].endZone;
                 objectsInScene.endDoor = mapStatsList[level].endDoor;
-                gameGridController.GenerateAndInitFakeGrid();
+                gameGridController.GenerateAndInitFakeGrid(mapStatsList[level]);
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);
                 initDefensePhase.Init(mapStatsList[level].mapSize, mapStatsList[level].floors);
@@ -177,7 +177,7 @@ namespace Games {
                 Debug.Log("BeforeInit");
                 await initAttackPhase.Init();
                 Debug.Log("BeforeInitGridData");
-                gameGridController.InitGridData(currentGameGrid);
+                gameGridController.InitGridData(currentGameGrid, mapStatsList[level].floors);
                 Debug.Log("BeforeSendSet");
                 GameControllerNetwork.SendSetAttackReady();
 

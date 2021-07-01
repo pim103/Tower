@@ -37,13 +37,13 @@ namespace Games.Defenses
 
         private List<GameObject> currentMap = new List<GameObject>();
 
-        private GameGrid GenerateGrid()
+        private GameGrid GenerateGrid(int size)
         {
             GameGrid grid = new GameGrid();
             grid.gridCellDataList = new GridCellDataList();
             grid.gridCellDataList.gridCellDatas = new List<GridCellData>();
             
-            grid.size = 24;
+            grid.size = size;
             for (int i = 0; i < grid.size; ++i)
             {
                 for (int j = 0; j < grid.size; ++j)
@@ -62,13 +62,13 @@ namespace Games.Defenses
             return grid;
         }
 
-        public void GenerateAndInitFakeGrid()
+        public void GenerateAndInitFakeGrid(MapStats mapStats)
         {
-            GameController.currentGameGrid = GenerateGrid();
-            InitGridData(GameController.currentGameGrid);
+            GameController.currentGameGrid = GenerateGrid(mapStats.mapSize);
+            InitGridData(GameController.currentGameGrid, mapStats.floors);
         }
         
-        public void InitGridData(GameGrid grid)
+        public void InitGridData(GameGrid grid, int floors)
         {
             DataObject.playerInScene.Clear();
             DataObject.monsterInScene.Clear();
@@ -85,13 +85,13 @@ namespace Games.Defenses
             foreach (GridCellData gridCellData in gridCellDatas)
             {
                 //Debug.Log(gridCellData.x + " " + gridCellData.y + " " + gridCellData.cellType);
-                int height = 4;
+                int height = 2 + (gridCellData.x/(grid.size/floors))*4;
                 int posX = gridCellData.x;
-                if (gridCellData.x > grid.size / 2)
+                posX %= (grid.size / floors);
+                /*if (gridCellData.x > grid.size / 2)
                 {
                     height += 4;
-                    posX %= (grid.size / 2);
-                }
+                }*/
                 switch ((CellType) gridCellData.cellType)
                 {
                     case CellType.ObjectToInstantiate:

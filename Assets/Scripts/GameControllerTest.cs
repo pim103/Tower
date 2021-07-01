@@ -43,7 +43,7 @@ namespace DefaultNamespace
             gameGridController.DesactiveMap();
             
             yield return new WaitForSeconds(4);
-            gameGridController.InitGridData(GameController.currentGameGrid);
+            //gameGridController.InitGridData(GameController.currentGameGrid);
         }
 
         /*public static IEnumerator CreateDefenseInstance(InitDefense initDefensePhase)
