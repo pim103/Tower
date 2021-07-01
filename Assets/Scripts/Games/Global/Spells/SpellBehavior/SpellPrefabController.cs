@@ -255,7 +255,7 @@ namespace Games.Global.Spells.SpellBehavior
             }
 
             EntityPrefab entityPrefab = other.GetComponent<ColliderEntityExposer>().entityPrefab;
-            spellComponent.OnTriggerEnter(entityPrefab.entity);
+            bool doSomething = spellComponent.OnTriggerEnter(entityPrefab.entity);
             bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
@@ -263,7 +263,7 @@ namespace Games.Global.Spells.SpellBehavior
                 entityPrefab.LaunchEnableRagdoll(20);
             }
 
-            if (hasFindingAction && !spellComponent.spellToInstantiate.passingThroughEntity)
+            if ((hasFindingAction || doSomething) && !spellComponent.spellToInstantiate.passingThroughEntity)
             {
                 SpellInterpreter.EndSpellComponent(spellComponent);
             }

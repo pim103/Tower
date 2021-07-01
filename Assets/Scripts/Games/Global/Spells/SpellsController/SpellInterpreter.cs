@@ -166,7 +166,7 @@ namespace Games.Global.Spells.SpellsController
 
                 if (action.damageDeal > 0)
                 {
-                    int damageDeal = action.damageDeal;
+                    float damageDeal = action.damageDeal + spellComponent.caster.att + spellComponent.caster.weapon.damage;
 
                     if (spellComponent.damageMultiplierOnDistance != 0)
                     {

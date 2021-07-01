@@ -11,11 +11,11 @@ namespace Games.Global.Spells
             TypeSpellComponent = TypeSpellComponent.BasicAttack;
         }
         
-        public override void OnTriggerEnter(Entity enemy)
+        public override bool OnTriggerEnter(Entity enemy)
         {
             if (enemy == caster)
             {
-                return;
+                return false;
             }
 
             bool damageIsNull = (enemy.isIntangible && damageType == DamageType.Physical) ||
@@ -59,6 +59,8 @@ namespace Games.Global.Spells
             damage = damageIsNull ? 0 : damage;
 
             enemy.TakeDamage(damage, caster, damageType, this);
+
+            return true;
         }
     }
 }

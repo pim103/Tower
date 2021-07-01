@@ -174,7 +174,11 @@ namespace Games.Global.Spells
         public virtual void DuringInterval() {}
         public virtual void OnAttack() {}
         public virtual void OnDamageReceive() {}
-        public virtual void OnTriggerEnter(Entity enemy) {}
+
+        public virtual bool OnTriggerEnter(Entity enemy)
+        {
+            return false; 
+        }
         public virtual void OnTriggerExit(Entity enemy) {}
 
         /* Parameters used in game */
