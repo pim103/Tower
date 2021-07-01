@@ -166,7 +166,8 @@ namespace TestC
             classe.InitIdentityData(IdentityType.Role, DataObject.ClassesList.GetFirstClasses().id);
 
             Identity weapon = new Identity();
-            weapon.InitIdentityData(IdentityType.CategoryWeapon, 0);
+            // 4 : bow | 5 : sword
+            weapon.InitIdentityData(IdentityType.CategoryWeapon, 4);
 
             ChooseDeckAndClass.currentRoleIdentity = classe;
             ChooseDeckAndClass.currentWeaponIdentity = weapon;
@@ -174,12 +175,7 @@ namespace TestC
             player.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
 
-            player.entity.spells.Clear();
-            player.spell1.text = "";
-            player.spell2.text = "";
-            player.spell3.text = "";
-
-            CreateTestSpell();
+            // CreateTestSpell();
 
             SpellController.CastPassiveSpell(player.entity);
         }

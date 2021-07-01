@@ -429,6 +429,11 @@ namespace Games.Global
 
         public void LaunchEnableRagdoll(int time)
         {
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
+
             ragdollCoroutine = StartCoroutine(EnableRagdoll(time));
         }
 
