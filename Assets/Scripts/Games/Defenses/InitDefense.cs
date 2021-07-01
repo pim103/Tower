@@ -30,7 +30,7 @@ namespace Games.Defenses
 
         [SerializeField] private GameObject[] maps;
         
-        public void Init()
+        public void Init(int size, int floors)
         {
             /*if (GameController.currentGameGrid == null)
             {
@@ -41,10 +41,10 @@ namespace Games.Defenses
             
             maps[0].SetActive(true);
             
-            Generate(GameController.currentGameGrid.size);
+            Generate(size, floors);
             Vector3 pos = defenseCamera.transform.position;
             pos.x = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
-            pos.y = GameController.currentGameGrid.size * 4;
+            pos.y = 10;
             pos.z = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
 
             defenseCamera.transform.localPosition = pos;
@@ -124,17 +124,17 @@ namespace Games.Defenses
             Debug.Log("lavraiefin");
         }
 
-        private void Generate(int size)
+        private void Generate(int size, int floors)
         {
             gridCellList = new List<GameObject>();
 
             for (int i = 0; i < size; ++i)
             {
-                for (int j = 0; j < size; ++j)
+                for (int j = 0; j < size/floors; ++j)
                 {
-                    int yPos = 3;
-                    int xPos = i % (size / 2);
-                    if (i >= size / 2) yPos += 4;
+                    int yPos = 3 + (i/(size/floors))*4;
+                    int xPos = i % (size / floors);
+                    //if (i >= size / floors) yPos += 4;
 
                     currentCell = Instantiate(gridCell, new Vector3(xPos * GameGridController.TileOffset, yPos, j * GameGridController.TileOffset), Quaternion.Euler(90, 0, 0));
                     GridTileController currentTileController = currentCell.GetComponent<GridTileController>();

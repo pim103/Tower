@@ -148,7 +148,7 @@ namespace Games {
                 gameGridController.GenerateAndInitFakeGrid();
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);
-                initDefensePhase.Init();
+                initDefensePhase.Init(mapStatsList[level].mapSize, mapStatsList[level].floors);
                 
                 Debug.Log("PlayDef");
                 try
