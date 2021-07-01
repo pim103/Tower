@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FullSerializer;
@@ -170,7 +170,7 @@ namespace Menus
                         {
                             NetworkingController.CurrentRoomToken = callbackMessage.callbackMessages.room;
                             canStart = args.Data;
-                        } else if (callbackMessage.callbackMessages.message == "QuitMatchmaking")
+                        } else if (callbackMessage.callbackMessages.message == "LeavingMatchmaking")
                         {
                             NetworkingController.CurrentRoomToken = "GENERAL";
                         }

@@ -122,7 +122,7 @@ namespace Games
                 case "DEATH":
                     GameController.SetEndOfGame(true);
                     break;
-                case "QuitMatchmaking":
+                case "LeavingMatchmaking":
                     NetworkingController.CurrentRoomToken = "GENERAL";
                     GameController.LoadMainMenu();
                     break;
