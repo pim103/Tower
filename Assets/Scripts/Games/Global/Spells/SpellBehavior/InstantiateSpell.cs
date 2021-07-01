@@ -1,6 +1,7 @@
 ﻿using System;
 using Games.Global.Spells.SpellParameter;
 using Games.Global.Weapons;
+using Games.Players;
 using PathCreation;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -33,6 +34,12 @@ namespace Games.Global.Spells.SpellBehavior
             
                 spellPathCreator.transform.position = position;
                 spellPathCreator.transform.forward = forward;
+
+                if (spellComponent.caster.isPlayer)
+                {
+                    spellPathCreator.transform.forward =
+                        ((PlayerPrefab) spellComponent.caster.entityPrefab).camera.transform.forward;
+                }
 
                 spellPathCreator.SetActive(true);
 
