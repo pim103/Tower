@@ -28,7 +28,7 @@ namespace Games.Global.Weapons
                 yield return new WaitForSeconds(0.1f);
             } while (animator.GetCurrentAnimatorStateInfo(0).IsName("ok"));
 
-            animator.SetBool(weapon.animationToPlay, false);
+            //animator.SetBool(weapon.animationToPlay, false);
             //weapon.FixAngleAttack(false, wielder);
 
             wielder.entityPrefab.characterMesh.transform.localPosition = Vector3.zero;
@@ -45,7 +45,7 @@ namespace Games.Global.Weapons
             if (!isAttacking)
             {
                 Animator animator = wielder.entityPrefab.animator;
-                animator.SetBool(weapon.animationToPlay, true);
+                //animator.SetBool(weapon.animationToPlay, true);
                 isAttacking = true;
             }
 
@@ -55,7 +55,7 @@ namespace Games.Global.Weapons
         public void DeactivateBoolAttack()
         {
             Animator animator = wielder.entityPrefab.animator;
-            animator.SetBool(weapon.animationToPlay, false);
+            //animator.SetBool(weapon.animationToPlay, false);
             isAttacking = false;
         }
 

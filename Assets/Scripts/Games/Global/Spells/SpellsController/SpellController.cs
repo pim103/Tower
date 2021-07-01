@@ -62,7 +62,17 @@ namespace Games.Global.Spells.SpellsController
                 case TypeSpell.Passive:
                     break;
             }
-
+            
+            if (entity.GetTypeEntity() == TypeEntity.ALLIES)
+            {
+                Debug.Log("wut");
+                entity.entityPrefab.animator.SetTrigger("doingShortSwordAttack");
+                //entity.entityPrefab.animator.ResetTrigger("doingShortSwordAttack");
+            }
+            else
+            {
+                entity.entityPrefab.animator.SetTrigger("Attack 1");
+            }
             instance.StartCoroutine(PlayCastTime(entity, spell));
 
             return true;
@@ -203,7 +213,7 @@ namespace Games.Global.Spells.SpellsController
             {
                 return null;
             }
-
+            
             SpellComponent cloneSpellComponent = CloneCorrectSpellComponent(spellComponent);
             cloneSpellComponent.originSpell = originSpell;
             caster.activeSpellComponents.Add(cloneSpellComponent);

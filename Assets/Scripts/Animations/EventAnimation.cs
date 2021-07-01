@@ -17,11 +17,11 @@ namespace Animations
 
         public void TriggerShortSwordSlash()
         {
-            shortSwordSlash.SetActive(true);
+            /*shortSwordSlash.SetActive(true);
             Entity entity = entityPrefab.entity;
             
             SpellController.CastSpell(entity, entity.basicAttack);
-            //shortSwordSlash.GetComponent<ParticleSystem>().Play();
+            //shortSwordSlash.GetComponent<ParticleSystem>().Play();*/
         }
 
         public void EndAttackAnimation()

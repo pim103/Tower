@@ -260,7 +260,8 @@ namespace Games.Global.Spells.SpellBehavior
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
             {
-                entityPrefab.LaunchEnableRagdoll(20);
+                //entityPrefab.LaunchEnableRagdoll(20);
+                entityPrefab.animator.SetTrigger("Got Hit");
             }
 
             if ((hasFindingAction || doSomething) && !spellComponent.spellToInstantiate.passingThroughEntity)
