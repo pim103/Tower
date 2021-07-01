@@ -87,6 +87,11 @@ namespace Games.Players
         public void InitClasses(Classes classes)
         {
             mainClass = classes;
+
+            if (weapon != null)
+            {
+                InitSpellFromClassesAndWeapons(weapon.category.id);
+            }
             
             ResetStats();
         }
@@ -94,6 +99,10 @@ namespace Games.Players
         public void InitPlayer(int idClasses)
         {
             InitEntityList();
+
+            int idCategoryWeapon = ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId();
+            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(idCategoryWeapon);
+            InitWeapon(weapon);
 
             InitClasses(idClasses);
 
@@ -103,11 +112,6 @@ namespace Games.Players
             DataObject.nbEntityInScene++;
             isPlayer = true;
 
-            int idCategoryWeapon = ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId();
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(idCategoryWeapon);
-            InitWeapon(weapon);
-
-            InitSpellFromClassesAndWeapons(idCategoryWeapon);
             SpellController.CastPassiveSpell(this);
         }
 

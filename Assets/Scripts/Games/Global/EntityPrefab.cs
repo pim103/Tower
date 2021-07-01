@@ -127,19 +127,12 @@ namespace Games.Global
         public void PlayBasicAttack()
         {
             SpellInterpreter.TriggerWhenEntityAttack(entity.activeSpellComponents);
+
+            entity.basicAttack.cooldown = 1 / entity.attSpeed;
             
             if (entity.basicAttack != null)
             {
-                if (entity.weapon != null)
-                {
-                    WeaponPrefab weaponPrefab = entity.weapon.weaponPrefab;
-                    bool initAttack = weaponPrefab.BasicAttack();
-
-                    if (initAttack)
-                    {
-                        SpellController.CastSpell(entity, entity.basicAttack);
-                    }
-                }
+                SpellController.CastSpell(entity, entity.basicAttack);
             }
         }
 

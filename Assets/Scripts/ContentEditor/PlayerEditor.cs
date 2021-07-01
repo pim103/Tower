@@ -210,7 +210,7 @@ namespace ContentEditor
             }
             GUI.color = currentColor;
 
-            if (GUILayout.Button("Play Classes") && UtilEditor.IsTestScene())
+            if (UtilEditor.IsTestScene() && DataObject.ClassesList.classesWeaponSpell != null && DataObject.ClassesList.classesWeaponSpell.Count > 0 && GUILayout.Button("Play Classes"))
             {
                 Player player = UtilEditor.GetPlayerFromSceneTest();
 

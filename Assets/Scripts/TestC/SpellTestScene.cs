@@ -163,11 +163,12 @@ namespace TestC
             }
             
             Identity classe = new Identity();
+            // 1 : Warrior | 2 : Mage | 3 : Rogue | 4 : Ranger
             classe.InitIdentityData(IdentityType.Role, DataObject.ClassesList.GetFirstClasses().id);
 
             Identity weapon = new Identity();
             // 4 : bow | 5 : sword
-            weapon.InitIdentityData(IdentityType.CategoryWeapon, 4);
+            weapon.InitIdentityData(IdentityType.CategoryWeapon, 5);
 
             ChooseDeckAndClass.currentRoleIdentity = classe;
             ChooseDeckAndClass.currentWeaponIdentity = weapon;

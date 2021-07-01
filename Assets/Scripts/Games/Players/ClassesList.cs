@@ -28,7 +28,6 @@ namespace Games.Players
         public ClassesList(string jsonObject)
         {
             classes = new List<Classes>();
-            classesWeaponSpell = new List<ClassesWeaponSpell>();
 
             InitClassesFromJson(jsonObject);
         }
@@ -71,18 +70,19 @@ namespace Games.Players
 
         public List<ClassesWeaponSpell> GetSpellCategoryForClasses(Classes classes)
         {
-            return classesWeaponSpell.FindAll(data => data.classes.id == classes.id);
+            return classesWeaponSpell?.FindAll(data => data.classes.id == classes.id);
         }
         
         public List<Spell> GetSpellForClassesAndCategory(CategoryWeapon categoryWeapon, Classes classes)
         {
             List<Spell> spells = new List<Spell>();
 
-            ClassesWeaponSpell classesWeaponSpell = this.classesWeaponSpell.Find(data =>
+            ClassesWeaponSpell classesWeaponSpell = this.classesWeaponSpell?.Find(data =>
                 data.classes.id == classes.id && data.categoryWeapon.id == categoryWeapon.id);
 
             if (classesWeaponSpell != null)
             {
+                spells.Clear();
                 if (classesWeaponSpell.spell1 != null) spells.Add(classesWeaponSpell.spell1);
                 if (classesWeaponSpell.spell2 != null) spells.Add(classesWeaponSpell.spell2);
                 if (classesWeaponSpell.spell3 != null) spells.Add(classesWeaponSpell.spell3);
@@ -90,9 +90,10 @@ namespace Games.Players
             
             return spells;
         }
-        
+
         public void InitClassesCategorySpells(string json)
         {
+            classesWeaponSpell = new List<ClassesWeaponSpell>();
             fsSerializer serializer = new fsSerializer();
             fsData data;
 

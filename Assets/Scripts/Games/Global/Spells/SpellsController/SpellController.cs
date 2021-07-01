@@ -65,7 +65,6 @@ namespace Games.Global.Spells.SpellsController
             
             if (entity.GetTypeEntity() == TypeEntity.ALLIES)
             {
-                Debug.Log("wut");
                 entity.entityPrefab.animator.SetTrigger("doingShortSwordAttack");
                 //entity.entityPrefab.animator.ResetTrigger("doingShortSwordAttack");
             }
@@ -178,8 +177,8 @@ namespace Games.Global.Spells.SpellsController
 
             while (spell.currentCooldown > 0)
             {
-                yield return new WaitForSeconds(1);
-                spell.currentCooldown -= 1;
+                yield return new WaitForSeconds(0.1f);
+                spell.currentCooldown -= 0.1f;
             }
 
             spell.isOnCooldown = false;
