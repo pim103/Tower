@@ -66,6 +66,10 @@ namespace Games
                             case "setGameLoaded":
                                 Debug.Log("En attente de l'adversaire");
                                 break;
+                            case "LeavingMatchmaking":
+                                NetworkingController.CurrentRoomToken = "GENERAL";
+                                GameController.LoadMainMenu();
+                                break;
                         }
 
                         if (CurrentRoom.loadGame)
@@ -121,10 +125,6 @@ namespace Games
                     break;
                 case "DEATH":
                     GameController.SetEndOfGame(true);
-                    break;
-                case "LeavingMatchmaking":
-                    NetworkingController.CurrentRoomToken = "GENERAL";
-                    GameController.LoadMainMenu();
                     break;
             }
 
