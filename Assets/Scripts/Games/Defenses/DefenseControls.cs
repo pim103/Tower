@@ -337,6 +337,7 @@ namespace Games.Defenses
 
                     objectInHand.transform.SetParent(currentCardBehaviorInGame.ownCardContainer);
                     objectInHand.transform.localPosition = Vector3.zero;
+                    objectInHand.transform.localEulerAngles = Vector3.zero;
                     objectInHand.layer = LayerMask.NameToLayer("Card");
                     objectInHand = null;
                     if (currentCardBehaviorInGame.group != null)

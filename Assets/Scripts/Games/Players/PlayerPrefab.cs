@@ -330,7 +330,7 @@ namespace Games.Players
             }
 
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
-            if (wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight)
+            if (wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight && !wantToJump)
             {
                 //audioSource.PlayOneShot(footstepsClip);
                 if (footstepsRoutine == null)

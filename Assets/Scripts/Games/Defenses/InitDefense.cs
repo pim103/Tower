@@ -43,9 +43,9 @@ namespace Games.Defenses
             
             Generate(size, floors);
             Vector3 pos = defenseCamera.transform.position;
-            pos.x = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
-            pos.y = 10;
-            pos.z = (GameController.currentGameGrid.size / 2) * GameGridController.TileOffset;
+            pos.x = 0;
+            pos.y = 0;
+            pos.z = 60;
 
             defenseCamera.transform.localPosition = pos;
             

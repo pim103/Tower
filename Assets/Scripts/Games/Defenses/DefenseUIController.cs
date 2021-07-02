@@ -153,6 +153,7 @@ namespace Games.Defenses
                 equipementCardBehaviorInGame.ownMeshRenderer.enabled = true;
                 equipementCardBehaviorInGame.transform.SetParent(equipementCardBehaviorInGame.ownCardContainer);
                 equipementCardBehaviorInGame.transform.localPosition = Vector3.zero;
+                equipementCardBehaviorInGame.transform.localEulerAngles = Vector3.zero;
                 equipementCardBehaviorInGame.gameObject.layer = LayerMask.NameToLayer("Card");
                 equipementCard.SetActive(true);
                 defenseControls.currentResource += equipementCardBehaviorInGame.equipement.cost;
