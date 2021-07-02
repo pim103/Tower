@@ -16,7 +16,8 @@ namespace Games.Players
         private const int PLAYER_SPEED = 10;
 
         [SerializeField] private LayerMask interactWithCamera;
-        
+
+        [SerializeField] private GameObject statCanvas;
         [SerializeField] private Slider hpBar;
         [SerializeField] private Slider ressourcesBar;
 
@@ -73,7 +74,8 @@ namespace Games.Players
             {
                 return;
             }
-            
+
+            statCanvas.SetActive(true);
             Player player = new Player();
 
             entity = player;
