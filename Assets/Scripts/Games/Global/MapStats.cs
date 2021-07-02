@@ -9,5 +9,6 @@ namespace Games.Global
         [SerializeField] public Transform startPos;
         [SerializeField] public GameObject endZone;
         [SerializeField] public GameObject endDoor;
+        [SerializeField] public GameObject endFx;
     }
 }

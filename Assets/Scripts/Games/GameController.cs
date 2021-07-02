@@ -155,6 +155,7 @@ namespace Games {
                 objectsInScene.startPos = mapStatsList[level].startPos;
                 objectsInScene.endZone = mapStatsList[level].endZone;
                 objectsInScene.endDoor = mapStatsList[level].endDoor;
+                objectsInScene.endFx = mapStatsList[level].endFx;
                 gameGridController.GenerateAndInitFakeGrid(mapStatsList[level]);
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);

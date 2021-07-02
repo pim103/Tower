@@ -35,5 +35,6 @@ namespace Games
         public Transform startPos;
         public GameObject endZone;
         public GameObject endDoor;
+        public GameObject endFx;
     }
 }
