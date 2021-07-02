@@ -66,6 +66,15 @@ namespace Games.Global.Spells.SpellsController
             if (entity.GetTypeEntity() == TypeEntity.ALLIES)
             {
                 entity.entityPrefab.animator.SetTrigger("doingShortSwordAttack");
+                if (entity.weapon.category.id == 4)
+                {
+                    entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.bowAttackClip);
+                }
+                else if (entity.weapon.category.id == 5)
+                {
+                    entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.swordAttackClip);
+                }
+
                 //entity.entityPrefab.animator.ResetTrigger("doingShortSwordAttack");
             }
             else

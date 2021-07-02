@@ -330,6 +330,23 @@ namespace Games.Players
             }
 
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
+            if (wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight)
+            {
+                //audioSource.PlayOneShot(footstepsClip);
+                if (footstepsRoutine == null)
+                {
+                    footstepsRoutine = StartCoroutine(PlayFootsteps());
+                }
+            }
+            else
+            {
+                if (footstepsRoutine != null)
+                {
+                    StopCoroutine(footstepsRoutine);
+                }
+
+                footstepsRoutine = null;
+            }
 
             if (!intentBlocked)
             {

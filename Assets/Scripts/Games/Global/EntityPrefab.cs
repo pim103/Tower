@@ -61,6 +61,13 @@ namespace Games.Global
         public Coroutine ragdollCoroutine;
 
         [SerializeField] private Rigidbody[] entityRigidbodies;
+        [SerializeField] public AudioSource audioSource;
+        [SerializeField] public AudioClip hitClip;
+        [SerializeField] public AudioClip swordAttackClip;
+        [SerializeField] public AudioClip bowAttackClip;
+        [SerializeField] public AudioClip footstepsClip;
+
+        public Coroutine footstepsRoutine;
 
         private void FixedUpdate()
         {
@@ -455,6 +462,15 @@ namespace Games.Global
             animator.enabled = true;
             navMeshAgent.enabled = true;
             ragdollCoroutine = null;
+        }
+
+        public IEnumerator PlayFootsteps()
+        {
+            while (true)
+            {
+                audioSource.PlayOneShot(footstepsClip);
+                yield return new WaitForSeconds(0.4f);
+            }
         }
     }
 }

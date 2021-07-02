@@ -130,11 +130,6 @@ namespace Games.Global.Spells.SpellBehavior
 
         public void ClearValues()
         {
-            foreach (Entity entity in enemiesTouchedBySpell)
-            {
-                entity.inNefastSpells.Remove(this);
-            }
-
             square.SetActive(false);
             sphere.SetActive(false);
             cone.SetActive(false);
@@ -218,15 +213,14 @@ namespace Games.Global.Spells.SpellBehavior
             }
             
             Entity entityEnter = other.GetComponent<ColliderEntityExposer>().entityPrefab.entity;
+            if (enemiesTouchedBySpell.Contains(entityEnter))
+            {
+                return false;
+            }
 
             if ( (casterOfSpell.GetTypeEntity() == TypeEntity.MOB && entityEnter.GetTypeEntity() == TypeEntity.ALLIES ) ||
                  (casterOfSpell.GetTypeEntity() == TypeEntity.ALLIES && entityEnter.GetTypeEntity() == TypeEntity.MOB ))
             {
-                if (enemiesTouchedBySpell.Contains(entityEnter))
-                {
-                    return false;
-                }
-
                 if (isEnter)
                 {
                     enemiesTouchedBySpell.Add(entityEnter);
@@ -267,7 +261,8 @@ namespace Games.Global.Spells.SpellBehavior
             if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
             {
                 //entityPrefab.LaunchEnableRagdoll(20);
-                // entityPrefab.animator.SetTrigger("Got Hit");
+                entityPrefab.animator.SetTrigger("Got Hit");
+                entityPrefab.audioSource.PlayOneShot(entityPrefab.hitClip);
             }
 
             if ((hasFindingAction || doSomething) && !spellComponent.spellToInstantiate.passingThroughEntity)
