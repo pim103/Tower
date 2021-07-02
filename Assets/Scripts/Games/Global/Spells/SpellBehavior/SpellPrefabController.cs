@@ -134,7 +134,7 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 entity.inNefastSpells.Remove(this);
             }
-            
+
             square.SetActive(false);
             sphere.SetActive(false);
             cone.SetActive(false);

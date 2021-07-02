@@ -20,18 +20,14 @@ namespace Games.Global.TreeBehavior.LeafBehavior
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             List<Spell> wantedSpells = UtilsLeaf.HasSpellFromTag(monster, wantedTag);
-            Spell spell = UtilsLeaf.CheckCanLaunchSpell(wantedSpells,monster);
+            Spell spell = UtilsLeaf.CheckCanLaunchSpell(wantedSpells, monster);
 
             if (SpellController.CastSpell(monster, spell))
             {
                 return TreeStatus.SUCCESS;
             }
-            else
-            {
-                return TreeStatus.FAILURE;
-            }
 
-            return TreeStatus.RUNNING;
+            return TreeStatus.FAILURE;
         }
 
         protected override void OnReset()

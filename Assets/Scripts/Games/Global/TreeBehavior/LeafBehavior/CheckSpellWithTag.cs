@@ -4,6 +4,7 @@ using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.TreeBehavior.TestTreeBehavior;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
@@ -21,7 +22,12 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             List<Spell> wantedSpell = UtilsLeaf.HasSpellFromTag(monster, wantedTag);
 
-            if (wantedSpell != null)
+            if (wantedTag.Contains(SpellTag.HealHimself))
+            {
+                Debug.Log("Just check");
+            }
+
+            if (wantedSpell != null && wantedSpell.Count > 0)
             {
                 if (UtilsLeaf.CheckCanLaunchSpell(wantedSpell, monster) != null)
                 {
@@ -29,12 +35,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 }
             }
 
-            if (wantedSpell.Count == 0)
-            {
-                return TreeStatus.FAILURE;
-            }
-
-            return TreeStatus.RUNNING;
+            return TreeStatus.FAILURE;
         }
 
         protected override void OnReset()

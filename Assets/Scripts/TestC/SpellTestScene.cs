@@ -111,6 +111,10 @@ namespace TestC
                 GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(6);
                 InstantiateGroupsMonster(groups, Vector3.one, null);
             }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                player.entity.hp = player.entity.initialHp;
+            }
         }
 
         private static void LoadScene()
