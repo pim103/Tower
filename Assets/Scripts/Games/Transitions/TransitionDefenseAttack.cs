@@ -62,7 +62,7 @@ namespace Games.Transitions
             objectsInScene.waitingText.text = "";
             objectsInScene.counterText.text = "";
 
-            while(defenseTimer > 0 && !hasValidated)
+            while(defenseTimer > 1 && !hasValidated)
             {
                 counter.text = defenseTimer.ToString();
                 if (defenseTimer <= 10 && !defenseControls.defenseUiController.keyAlreadyPut)

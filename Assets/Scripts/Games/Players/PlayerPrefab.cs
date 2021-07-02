@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Games.Global;
@@ -64,10 +65,16 @@ namespace Games.Players
             wantToGoRight = false;
             pressDefenseButton = false;
 
+            statCanvas.SetActive(false);
             Player player = entity as Player;
             player?.ResetStats();
         }
-        
+
+        private void OnEnable()
+        {
+            statCanvas.SetActive(false);
+        }
+
         private void Start()
         {
             if (isFakePlayer)
@@ -75,7 +82,6 @@ namespace Games.Players
                 return;
             }
 
-            statCanvas.SetActive(true);
             Player player = new Player();
 
             entity = player;

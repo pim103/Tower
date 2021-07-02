@@ -172,7 +172,7 @@ namespace TestC
 
             Identity weapon = new Identity();
             // 4 : bow | 5 : sword
-            weapon.InitIdentityData(IdentityType.CategoryWeapon, 5);
+            weapon.InitIdentityData(IdentityType.CategoryWeapon, 4);
 
             ChooseDeckAndClass.currentRoleIdentity = classe;
             ChooseDeckAndClass.currentWeaponIdentity = weapon;

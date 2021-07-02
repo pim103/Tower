@@ -160,7 +160,7 @@ namespace Games {
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);
                 initDefensePhase.Init(mapStatsList[level].mapSize, mapStatsList[level].floors);
-                
+
                 Debug.Log("PlayDef");
                 try
                 {
