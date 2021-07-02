@@ -93,18 +93,17 @@ namespace TestC
                 SpellController.CastSpell(player.entity, player.entity.spells[12]);
             }
 
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                LoadScene();
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 escapeCanvas.SetActive(Cursor.visible);
 
-                if (Cursor.visible)
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                else
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
+                Cursor.visible = !Cursor.visible;
+                Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
             }
 
             if (Input.GetKeyDown(KeyCode.R))
@@ -112,6 +111,11 @@ namespace TestC
                 GroupsMonster groups = DataObject.MonsterList.GetGroupsMonsterById(6);
                 InstantiateGroupsMonster(groups, Vector3.one, null);
             }
+        }
+
+        private static void LoadScene()
+        {
+            GameController.LoadMainMenu();
         }
 
         public void InstantiateGroupsMonster(GroupsMonster groups, Vector3 position, List<int> equipment)
@@ -176,8 +180,6 @@ namespace TestC
             player.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
 
-            // CreateTestSpell();
-
             SpellController.CastPassiveSpell(player.entity);
         }
 
@@ -186,154 +188,6 @@ namespace TestC
             player.spell1.text = spell.nameSpell;
             player.entity.spells.Clear();
             player.entity.spells.Add(spell);
-        }
-
-        private void CreateTestSpell()
-        {
-            // Spell spell = SpellController.LoadSpellByName("Hold");
-            // LoadSpell(spell);
-            
-//            Dictionary<Trigger, List<ActionTriggered>> actions = new Dictionary<Trigger, List<ActionTriggered>>();
-//            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());
-//
-//            ActionTriggered firstAction = new ActionTriggered
-//            {
-//                damageDeal = 15,
-//                startFrom = StartFrom.AllEnemiesInArea
-//            };
-//            actions[Trigger.INTERVAL].Add(firstAction);
-//
-//            SpellComponent firstSpellComponent = new SpellComponent
-//            {
-//                spellToInstantiate = new SpellToInstantiate
-//                {
-//                    geometry = Geometry.Sphere,
-//                    scale = Vector3.one,
-//                    incrementAmplitudeByTime = Vector3.one
-//                },
-//                trajectory = new Trajectory
-//                {
-//                    followCategory = FollowCategory.FOLLOW_TARGET,
-////                    speed = 5,
-////                    spellPath = SpellPathSerializer.TryToImportVertexPath()
-//                },
-//                actions = actions,
-//                spellDuration = 5,
-//                spellInterval = 1
-//            };
-//
-//            Spell firstTestSpell = new Spell
-//            {
-//                cooldown = 0,
-//                cost = 0,
-//                activeSpellComponent = firstSpellComponent
-//            };
-//
-//            player.spell1.text = "Test spell";
-//            player.entity.spells.Add(firstTestSpell);
-//            
-//            /* ================================= 2ND SPELL ================================= */
-//            SpellComponent secondSpellComponent = new SpellComponent
-//            {
-//                spellToInstantiate = new SpellToInstantiate
-//                {
-//                    geometry = Geometry.Sphere,
-//                    scale = Vector3.one,
-//                    height = 1
-//                },
-//                trajectory = new Trajectory
-//                {
-//                    speed = 10,
-//                    spellPath = SpellPathSerializer.TryToImportSecondVertexPath(),
-//                    endOfPathInstruction = EndOfPathInstruction.Loop,
-//                    followCategory = FollowCategory.FOLLOW_TARGET
-//                },
-//                actions = actions,
-//                spellDuration = 10,
-//                spellInterval = 0.05f
-//            };
-//
-//            Spell secondTestSpell = new Spell
-//            {
-//                cooldown = 0,
-//                cost = 0,
-//                activeSpellComponent = secondSpellComponent
-//            };
-//
-//            player.spell2.text = "spell 2";
-//            player.entity.spells.Add(secondTestSpell);
-//            
-//            /* ================================= 3ND SPELL ================================= */
-//            Dictionary<Trigger, List<ActionTriggered>> actionsChild2 = new Dictionary<Trigger, List<ActionTriggered>>();
-//            actionsChild2.Add(Trigger.ON_TRIGGER_ENTER, new List<ActionTriggered>());
-//
-//            ActionTriggered actionTriggeredChild2 = new ActionTriggered
-//            {
-//                damageDeal = 110,
-//                startFrom = StartFrom.AllEnemiesInArea
-//            };
-//            actionsChild2[Trigger.ON_TRIGGER_ENTER].Add(actionTriggeredChild2);
-//
-//            SpellComponent spellcomp = new SpellComponent
-//            {
-//                spellToInstantiate = new SpellToInstantiate
-//                {
-//                    geometry = Geometry.Square,
-//                    height = 1,
-//                    scale = Vector3.one + Vector3.forward * 4 + Vector3.right * 4,
-//                },
-//                actions = actionsChild2
-//            };
-//            
-//            Dictionary<Trigger, List<ActionTriggered>> actionsChild = new Dictionary<Trigger, List<ActionTriggered>>();
-//            actionsChild.Add(Trigger.START, new List<ActionTriggered>());
-//            
-//            ActionTriggered actionTriggeredChild = new ActionTriggered
-//            {
-//                spellComponent = spellcomp,
-//                startFrom = StartFrom.Caster
-//            };
-//            actionsChild[Trigger.START].Add(actionTriggeredChild);
-//            
-//            MovementSpell thirdSpellComponentChild = new MovementSpell
-//            {
-//                movementSpellType = MovementSpellType.TpWithTarget,
-//                actions = actionsChild
-//            };
-//
-//            actions.Clear();
-//            actions.Add(Trigger.INTERVAL, new List<ActionTriggered>());
-//
-//            ActionTriggered actionTriggered = new ActionTriggered
-//            {
-//                spellComponent = thirdSpellComponentChild,
-//                startFrom = StartFrom.RandomEnemyInArea
-//            };
-//            actions[Trigger.INTERVAL].Add(actionTriggered);
-//            
-//            SpellComponent thirdSpellComponent = new SpellComponent
-//            {
-//                spellToInstantiate = new SpellToInstantiate
-//                {
-//                    geometry = Geometry.Sphere,
-//                    scale = Vector3.one + Vector3.forward * 10 + Vector3.right * 10,
-//                    height = 1
-//                },
-//                actions = actions,
-//                spellDuration = 5,
-//                spellInterval = 1f
-//            };
-//
-//            Spell thirdSpell = new Spell
-//            {
-//                cooldown = 0,
-//                cost = 0,
-//                activeSpellComponent = thirdSpellComponent,
-//                startFrom = StartFrom.CursorTarget
-//            };
-//
-//            player.spell3.text = "Compliqué";
-//            player.entity.spells.Add(thirdSpell);
         }
     }
 }

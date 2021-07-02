@@ -7,7 +7,6 @@ using Networking;
 using Networking.Client;
 using Networking.Client.Room;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Games
@@ -68,7 +67,6 @@ namespace Games
                                 break;
                             case "LeavingMatchmaking":
                                 NetworkingController.CurrentRoomToken = "GENERAL";
-                                GameController.LoadMainMenu();
                                 break;
                         }
 
@@ -89,7 +87,7 @@ namespace Games
                         NetworkingController.IsConnected = false;
                         NetworkingController.ConnectionClosed = args.Code;
                         NetworkingController.ConnectionStart = false;
-                        SceneManager.LoadScene("MenuScene");
+                        GameController.LoadMainMenu();
                     }
                 };
             }

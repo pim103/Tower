@@ -79,7 +79,7 @@ namespace Networking.Client
             
             Debug.Log(json.TrimEnd(',', ' ') + "}");
 
-            wsGame.Send(json.TrimEnd(',', ' ') + "}");
+            wsGame?.Send(json.TrimEnd(',', ' ') + "}");
         }
         
         public static void ChatSender(string target, string roomId, string senderName, string message)

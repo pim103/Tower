@@ -101,6 +101,7 @@ namespace Games {
                 setSocket.Add("tokenPlayer", NetworkingController.AuthToken);
                 setSocket.Add("room", NetworkingController.CurrentRoomToken);
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "quitMatchmaking", TowersWebSocket.FromDictToString(setSocket));
+                LoadMainMenu();
             });
             staticRoomId = roomId;
 
