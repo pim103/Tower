@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Games.Global.Entities;
 using Games.Global.Spells;
@@ -7,12 +8,13 @@ using Games.Global.TreeBehavior.TestTreeBehavior;
 
 public class UtilsLeaf
 {
-    public static List<Spell> HasSpellFromTag(SpellTag tag, Monster monster)
+    public static List<Spell> HasSpellFromTag(Monster monster, List<SpellTag> tags)
     {
         List<Spell> wantedSpell = new List<Spell>();
+
         foreach (Spell spell in monster.spells)
         {
-            if (spell.spellTag == tag)
+            if (tags.Contains(spell.spellTag))
             {
                 wantedSpell.Add(spell);
             }

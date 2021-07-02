@@ -8,24 +8,22 @@ namespace Games.Global.TreeBehavior.LeafBehavior
     {
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
-            if (DataObject.monsterInScene != null && DataObject.monsterInScene.Count > 0)
+            Monster monster = (behaviorStatus as GameContext)?.CurrentMonster;
+            
+            foreach (var effect in monster.GetUnderEffects())
             {
-                Monster monster = (behaviorStatus as GameContext)?.CurrentMonster;
+                List<TypeEffect> badEffects = new List<TypeEffect>();
+                badEffects.AddRange(EffectController.DebuffEffect);
+                badEffects.AddRange(EffectController.MovementControlEffect);
                 
-                foreach (var effect in monster.GetUnderEffects())
+                foreach (var badEffect in badEffects)
                 {
-                    List<TypeEffect> badEffects = new List<TypeEffect>();
-                    badEffects.AddRange(EffectController.DebuffEffect);
-                    badEffects.AddRange(EffectController.MovementControlEffect);
+                    if (effect.typeEffect == badEffect)
+                        return TreeStatus.SUCCESS;
                     
-                    foreach (var badEffect in badEffects)
-                    {
-                        if (effect.typeEffect == badEffect)
-                            return TreeStatus.SUCCESS;
-                        
-                    }
                 }
             }
+
             return TreeStatus.FAILURE;
         }
 

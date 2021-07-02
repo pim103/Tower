@@ -78,12 +78,13 @@ namespace Menus
         public void InitMenu()
         {
             Debug.Log("Registration Menu");
-            //throw new System.NotImplementedException();
         }
+
         public void CallRegister()
         {
             StartCoroutine(Register());
         }
+
         IEnumerator Register()
         {
             WWWForm form = new WWWForm();

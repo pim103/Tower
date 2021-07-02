@@ -15,6 +15,11 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 Monster monster = (behaviorStatus as GameContext)?.CurrentMonster;
                 PlayerPrefab player = DataObject.playerInScene.First().Value;
 
+                if (player.entity == null)
+                {
+                    return TreeStatus.FAILURE;
+                }
+
                 foreach (var effect in player.entity.GetUnderEffects())
                 {
                     List<TypeEffect> goodEffects = new List<TypeEffect>();

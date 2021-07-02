@@ -1,19 +1,21 @@
-using Games.Global.Entities;
+﻿using Games.Global.Entities;
+using Games.Global.Spells.SpellsController;
 using Games.Global.TreeBehavior.TestTreeBehavior;
-using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class MonsterInAOE : Leaf
+    public class LaunchBasicAttack : Leaf
     {
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
 
-            if (UtilsLeaf.IsInAOE(monster))
+            if (monster.basicAttack != null)
             {
-                Debug.Log("Monster is in AOE!");
-                return TreeStatus.SUCCESS;
+                if (SpellController.CastSpell(monster, monster.basicAttack))
+                {
+                    return TreeStatus.SUCCESS;
+                }
             }
 
             return TreeStatus.FAILURE;
@@ -21,6 +23,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 
         protected override void OnReset()
         {
+            
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.TreeBehavior.TestTreeBehavior;
@@ -8,16 +9,17 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 {
     public class CheckSpellWithTag : Leaf
     {
-        private SpellTag wantedTag;
-        public CheckSpellWithTag(SpellTag tag)
+        private List<SpellTag> wantedTag;
+
+        public CheckSpellWithTag(params SpellTag[] tags)
         {
-            wantedTag = tag;
+            wantedTag = tags.ToList();
         }
 
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
-            List<Spell> wantedSpell = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
+            List<Spell> wantedSpell = UtilsLeaf.HasSpellFromTag(monster, wantedTag);
 
             if (wantedSpell != null)
             {

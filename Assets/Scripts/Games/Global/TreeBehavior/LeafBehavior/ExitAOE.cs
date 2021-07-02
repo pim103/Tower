@@ -16,13 +16,11 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 
                 if (!UtilsLeaf.IsInAOE(monster))
                 {
-                    Debug.Log("Imma head out!");
                     return TreeStatus.SUCCESS;
                 }
                 monster.entityPrefab.MoveOutFromAOE(monster.inNefastSpells.First());
             }
 
-            Debug.Log("Nigerundayoooooooooooooo !");
             return TreeStatus.RUNNING;
         }
 

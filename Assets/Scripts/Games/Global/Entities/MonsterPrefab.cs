@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using Games.Global.Spells;
-using Games.Global.Weapons;
+using Games.Global.TreeBehavior.TestTreeBehavior;
 using Games.Players;
 using UnityEngine;
-using UnityEngine.AI;
 using Slider = UnityEngine.UI.Slider;
 
 namespace Games.Global.Entities
@@ -16,6 +14,8 @@ namespace Games.Global.Entities
         public List<GameObject> objectsToLoot;
 
         [SerializeField] private GameObject root;
+
+        private MonsterBasicBehavior behavior;
 
         private PlayerPrefab playerPrefab;
 
@@ -48,6 +48,9 @@ namespace Games.Global.Entities
             entity.SetTypeEntity(TypeEntity.MOB);
             entity.playerInBack = new List<int>();
             initialRootPosition = root.transform.localPosition;
+
+            behavior = new MonsterBasicBehavior();
+            behavior?.InitBehaviorTree(monster);
         }
 
         private void Update()
@@ -71,6 +74,8 @@ namespace Games.Global.Entities
             {
                 hpBar.transform.position = root.transform.position + Vector3.up * 2;
             }
+
+            behavior?.UpdateBehaviorTree();
         }
 
         public void SetMonster(Monster monster)

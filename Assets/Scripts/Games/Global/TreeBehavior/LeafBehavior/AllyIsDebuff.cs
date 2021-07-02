@@ -29,12 +29,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                         {
                             if (effect.typeEffect == badEffect)
                             {
-                                {
-                                    {
-                                        currentMonster.entityPrefab.target = monster;
-                                        return TreeStatus.SUCCESS;
-                                    }
-                                }
+                                currentMonster.entityPrefab.target = monster;
+                                return TreeStatus.SUCCESS;
                             }
                         }
                     }

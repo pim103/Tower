@@ -164,7 +164,7 @@ namespace TestC
             
             Identity classe = new Identity();
             // 1 : Warrior | 2 : Mage | 3 : Rogue | 4 : Ranger
-            classe.InitIdentityData(IdentityType.Role, DataObject.ClassesList.GetFirstClasses().id);
+            classe.InitIdentityData(IdentityType.Role, 4);
 
             Identity weapon = new Identity();
             // 4 : bow | 5 : sword

@@ -216,6 +216,8 @@ namespace Games {
             CurrentRoom.loadGameDefense = false;
             CurrentRoom.loadGameAttack = false;
             CurrentRoom.generateAttackGrid = false;
+            CurrentRoom.loadGame = false;
+            CurrentRoom.loadRoleAndDeck = false;
         }
 
         private async Task AttackPhase()

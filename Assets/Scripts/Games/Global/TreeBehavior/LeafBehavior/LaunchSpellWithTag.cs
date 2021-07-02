@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Games.Global.Entities;
 using Games.Global.Spells;
 using Games.Global.Spells.SpellsController;
@@ -8,15 +9,17 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 {
     public class LaunchSpellWithTag : Leaf
     {
-        private SpellTag wantedTag;
-        public LaunchSpellWithTag(SpellTag tag)
+        private List<SpellTag> wantedTag;
+
+        public LaunchSpellWithTag(params SpellTag[] tags)
         {
-            wantedTag = tag;
+            wantedTag = tags.ToList();
         }
+
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
-            List<Spell> wantedSpells = UtilsLeaf.HasSpellFromTag(wantedTag,monster);
+            List<Spell> wantedSpells = UtilsLeaf.HasSpellFromTag(monster, wantedTag);
             Spell spell = UtilsLeaf.CheckCanLaunchSpell(wantedSpells,monster);
 
             if (SpellController.CastSpell(monster, spell))
