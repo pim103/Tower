@@ -100,7 +100,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
             // Use spell
             Sequence useDistanceSpell = new Sequence(
                 new CheckSight(),
-                new CheckEnemyInRange(DistanceNeeded.Distance),
+                new CheckInRange(DistanceNeeded.Distance),
                 new LaunchSpellWithTag(SpellTag.DistanceDamage, SpellTag.DistanceControl));
 
             Selector farAwayDistance = new Selector(useDistanceSpell, new MoveToTarget(DistanceNeeded.Distance, Target.Player));
@@ -110,7 +110,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
                 farAwayDistance);
 
             Sequence useMeleeSpell = new Sequence(new CheckSight(),
-                new CheckEnemyInRange(DistanceNeeded.Melee), 
+                new CheckInRange(DistanceNeeded.Melee), 
                 new LaunchSpellWithTag(SpellTag.MeleeDamage, SpellTag.MeleeControl));
 
             Selector farAwayMelee = new Selector(useMeleeSpell, new MoveToTarget(DistanceNeeded.Melee, Target.Player));
@@ -122,7 +122,7 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
             // Use basic attack
             Sequence useBasicAttackWhenPossible = new Sequence(
                 new CheckSight(), 
-                new CheckEnemyInRange(distanceNeeded), new LaunchBasicAttack());
+                new CheckInRange(distanceNeeded), new LaunchBasicAttack());
 
             Selector useBasicAttackOrMove =
                 new Selector(useBasicAttackWhenPossible, new MoveToTarget(distanceNeeded, Target.Player)); 

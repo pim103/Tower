@@ -18,6 +18,12 @@ namespace Games.Global.Spells
                 return false;
             }
 
+            if ((caster.GetTypeEntity() == TypeEntity.MOB && enemy.GetTypeEntity() == TypeEntity.MOB) ||
+                (caster.GetTypeEntity() == TypeEntity.ALLIES && enemy.GetTypeEntity() == TypeEntity.ALLIES))
+            {
+                return false;
+            }
+
             bool damageIsNull = (enemy.isIntangible && damageType == DamageType.Physical) ||
                                 (enemy.hasAntiSpell && damageType == DamageType.Magical) ||
                                 caster.isBlind ||

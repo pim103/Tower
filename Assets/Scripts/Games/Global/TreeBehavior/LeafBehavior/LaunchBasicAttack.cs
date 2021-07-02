@@ -10,12 +10,9 @@ namespace Games.Global.TreeBehavior.LeafBehavior
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
 
-            if (monster.basicAttack != null)
+            if (monster.entityPrefab.PlayBasicAttack())
             {
-                if (SpellController.CastSpell(monster, monster.basicAttack))
-                {
-                    return TreeStatus.SUCCESS;
-                }
+                return TreeStatus.SUCCESS;
             }
 
             return TreeStatus.FAILURE;

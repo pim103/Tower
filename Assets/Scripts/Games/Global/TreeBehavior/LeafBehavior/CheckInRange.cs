@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Games.Global.TreeBehavior.LeafBehavior
 {
-    public class CheckEnemyInRange : Leaf
+    public class CheckInRange : Leaf
     {
         private readonly DistanceNeeded distanceNeeded;
 
-        public CheckEnemyInRange(DistanceNeeded distanceNeeded)
+        public CheckInRange(DistanceNeeded distanceNeeded)
         {
             this.distanceNeeded = distanceNeeded;
         }
@@ -20,8 +20,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
             PlayerPrefab player = DataObject.playerInScene.First().Value;
 
-            float distanceFromPlayer = Vector3.Distance(monster.entityPrefab.transform.position, player.transform.forward);
-            float maxDistance = distanceNeeded == DistanceNeeded.Distance ? 30f : 5f;
+            float distanceFromPlayer = Vector3.Distance(monster.entityPrefab.transform.position, player.transform.position);
+            float maxDistance = distanceNeeded == DistanceNeeded.Distance ? 20f : 2f;
 
             if (distanceFromPlayer < maxDistance)
             {

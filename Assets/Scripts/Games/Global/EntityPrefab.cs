@@ -131,7 +131,7 @@ namespace Games.Global
             }
         }
 
-        public void PlayBasicAttack()
+        public bool PlayBasicAttack()
         {
             SpellInterpreter.TriggerWhenEntityAttack(entity.activeSpellComponents);
 
@@ -140,7 +140,10 @@ namespace Games.Global
             if (entity.basicAttack != null)
             {
                 SpellController.CastSpell(entity, entity.basicAttack);
+                return true;
             }
+
+            return false;
         }
 
         public void CancelBasicAttack()

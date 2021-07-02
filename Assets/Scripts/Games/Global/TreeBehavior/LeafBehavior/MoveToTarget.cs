@@ -46,10 +46,10 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             EntityPrefab entityTarget = DataObject.playerInScene.First().Value;
             float distanceFromPlayer = Vector3.Distance(monster.entityPrefab.transform.position, entityTarget.transform.position);
 
-            if (distanceFromPlayer < 30.0f)
+            if (distanceFromPlayer < 20.0f)
             {
                 Vector3 dest = (entityTarget.transform.position - monster.entityPrefab.transform.position).normalized;
-                
+
                 if (monster.entityPrefab.navMeshAgent.SetDestination(dest))
                 {
                     return TreeStatus.RUNNING;
@@ -70,7 +70,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             float distanceFromPlayer = Vector3.Distance(monster.entityPrefab.transform.position, entityTarget.transform.position);
             if (distanceNeeded == DistanceNeeded.Distance)
             {
-                if (distanceFromPlayer > 30.0f)
+                if (distanceFromPlayer > 20.0f)
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {
@@ -87,7 +87,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             }
             else
             {
-                if (distanceFromPlayer > 5.0f)
+                if (distanceFromPlayer > 2.0f)
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {

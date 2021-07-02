@@ -21,48 +21,26 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 
             EntityPrefab target = useTargetLock ? monster.entityPrefab.target.entityPrefab : DataObject.playerInScene.First().Value;
             
-            Ray ray = new Ray(monster.entityPrefab.transform.position, target.transform.forward);
+            Ray ray = new Ray(monster.entityPrefab.transform.position + Vector3.up * 1,
+                (target.transform.position - monster.entityPrefab.transform.position));
+
+            monster.entityPrefab.transform.LookAt(target.transform);
 
             RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, 1000, ~LayerMask.GetMask("Weapon")))
             {
-                if (hitInfo.collider.CompareTag("Player"))
+                if (hitInfo.collider.CompareTag("Player") && !useTargetLock)
                 {
-                    float distanceFromPlayer = Vector3.Distance(monster.entityPrefab.transform.position, target.transform.forward);
-                    if (monster.monsterType == MonsterType.Distance || monster.monsterType == MonsterType.Support)
-                    {
-                        if (distanceFromPlayer < 30.0f)
-                        {
-                            return TreeStatus.SUCCESS;
-                        }
-                        else
-                        {
-                            return TreeStatus.FAILURE;
-                        }
-                    }
-                    else
-                    {
-                        if (distanceFromPlayer < 5.0f)
-                        {
-                            return TreeStatus.SUCCESS;
-                        }
-                        else
-                        {
-                            return TreeStatus.FAILURE;
-                        }
-                    }
+                    return TreeStatus.SUCCESS;
                 }
-                else
+
+                if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Monster") && useTargetLock)
                 {
-                    return TreeStatus.FAILURE;
+                    return TreeStatus.SUCCESS;
                 }
-            }
-            else
-            {
-                return TreeStatus.FAILURE;
             }
 
-            return TreeStatus.RUNNING;
+            return TreeStatus.FAILURE;
         }
 
         protected override void OnReset()
