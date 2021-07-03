@@ -98,7 +98,7 @@ namespace DeckBuilding
                     if (monster.model != null)
                     {
                         GameObject monsterGameObject = Instantiate(monster.model, pGroupParent, true);
-                        monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
+                        //monsterGameObject.GetComponent<CapsuleCollider>().enabled = false;
                         monsterGameObject.GetComponent<NavMeshAgent>().enabled = false;
                         
                         MonsterPrefab monsterPrefab = monsterGameObject.GetComponent<MonsterPrefab>();

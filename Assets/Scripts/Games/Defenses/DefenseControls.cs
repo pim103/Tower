@@ -315,58 +315,9 @@ namespace Games.Defenses
                 }
             }
             
-            if(Input.GetKeyDown(KeyCode.Mouse1) && objectInHand){
-
-                if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
-                {
-                    defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.meleeWeaponSlot);
-                    defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.rangedWeaponSlot);
-
-                    currentCardBehaviorInGame.meleeWeaponSlot = null;
-                    currentCardBehaviorInGame.rangedWeaponSlot = null;
-                    currentCardBehaviorInGame.keySlot = null;
-                    defenseUiController.PutKeyBackToSlot();
-
-                    currentCardBehaviorInGame.groupParent.SetActive(false);
-                    currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
-                    currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
-                    if (currentCardBehaviorInGame.group != null)
-                    {
-                        currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
-                    }
-
-                    objectInHand.transform.SetParent(currentCardBehaviorInGame.ownCardContainer);
-                    objectInHand.transform.localPosition = Vector3.zero;
-                    objectInHand.transform.localEulerAngles = Vector3.zero;
-                    objectInHand.layer = LayerMask.NameToLayer("Card");
-                    objectInHand = null;
-                    if (currentCardBehaviorInGame.group != null)
-                    {
-                        currentResource += currentCardBehaviorInGame.group.cost;
-                    }
-                    else
-                    {
-                        currentResource += currentCardBehaviorInGame.equipement.cost;
-                    }
-                    defenseUiController.currentResourceText.text = currentResource.ToString();
-                } else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
-                {
-                    objectInHand.SetActive(false);
-                    objectInHand = null;
-                    defenseUiController.currentWallNumber += 1;
-                    defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
-                } else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
-                {
-                    objectInHand.SetActive(false);
-                    objectInHand = null;
-                    currentResource += 1;
-                    defenseUiController.currentResourceText.text = currentResource.ToString();
-                }
-                else if(objectInHand.layer == LayerMask.NameToLayer("Key"))
-                {
-                    objectInHand = null;
-                    defenseUiController.PutKeyBackToSlot();
-                }
+            if(Input.GetKeyDown(KeyCode.Mouse1) && objectInHand)
+            {
+                CheckObjectBackToHand();
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f && objectInHand && objectInHand.layer == LayerMask.NameToLayer("Trap"))
@@ -459,6 +410,10 @@ namespace Games.Defenses
             {
                 lockCam = !lockCam;
                 Cursor.lockState = !lockCam ? CursorLockMode.Locked : CursorLockMode.None;
+                if (objectInHand)
+                {
+                    CheckObjectBackToHand();
+                }
             }
             Movement();
             if (!lockCam)
@@ -563,8 +518,8 @@ namespace Games.Defenses
             Camera camera = GetComponent<Camera>();
             GameObject cameraPoint = camera.gameObject;
             
-            /*vertical = Mathf.Clamp(vertical, -90f, 90f);            
-            horizontal = Mathf.Clamp(horizontal, -90f, 90f);*/            
+            //vertical = Mathf.Clamp(vertical, -90f, 90f);            
+            //horizontal = Mathf.Clamp(horizontal, -90f, 90f);            
             cameraPoint.transform.Rotate(-vertical, 0, 0, Space.Self);
             cameraPoint.transform.Rotate(0, horizontal, 0, Space.Self);
             
@@ -582,6 +537,60 @@ namespace Games.Defenses
 
             cameraPoint.transform.localRotation = q;*/
 
+        }
+
+        private void CheckObjectBackToHand()
+        {
+            if (objectInHand.layer == LayerMask.NameToLayer("CardInHand"))
+            {
+                defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.meleeWeaponSlot);
+                defenseUiController.PutCardBackToHand(currentCardBehaviorInGame.rangedWeaponSlot);
+
+                currentCardBehaviorInGame.meleeWeaponSlot = null;
+                currentCardBehaviorInGame.rangedWeaponSlot = null;
+                currentCardBehaviorInGame.keySlot = null;
+                defenseUiController.PutKeyBackToSlot();
+
+                currentCardBehaviorInGame.groupParent.SetActive(false);
+                currentCardBehaviorInGame.groupParent.transform.localPosition = Vector3.zero;
+                currentCardBehaviorInGame.ownMeshRenderer.enabled = true;
+                if (currentCardBehaviorInGame.group != null)
+                {
+                    currentCardBehaviorInGame.rangeMeshRenderer.enabled = false;
+                }
+
+                objectInHand.transform.SetParent(currentCardBehaviorInGame.ownCardContainer);
+                objectInHand.transform.localPosition = Vector3.zero;
+                objectInHand.transform.localEulerAngles = Vector3.zero;
+                objectInHand.layer = LayerMask.NameToLayer("Card");
+                objectInHand = null;
+                if (currentCardBehaviorInGame.group != null)
+                {
+                    currentResource += currentCardBehaviorInGame.group.cost;
+                }
+                else
+                {
+                    currentResource += currentCardBehaviorInGame.equipement.cost;
+                }
+                defenseUiController.currentResourceText.text = currentResource.ToString();
+            } else if (objectInHand.layer == LayerMask.NameToLayer("Wall"))
+            {
+                objectInHand.SetActive(false);
+                objectInHand = null;
+                defenseUiController.currentWallNumber += 1;
+                defenseUiController.wallButtonText.text = "Mur x" + defenseUiController.currentWallNumber;
+            } else if (objectInHand.layer == LayerMask.NameToLayer("Trap"))
+            {
+                objectInHand.SetActive(false);
+                objectInHand = null;
+                currentResource += 1;
+                defenseUiController.currentResourceText.text = currentResource.ToString();
+            }
+            else if(objectInHand.layer == LayerMask.NameToLayer("Key"))
+            {
+                objectInHand = null;
+                defenseUiController.PutKeyBackToSlot();
+            }
         }
     }
 }
