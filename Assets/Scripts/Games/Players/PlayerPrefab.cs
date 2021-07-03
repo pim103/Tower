@@ -72,7 +72,7 @@ namespace Games.Players
 
         private void OnEnable()
         {
-            statCanvas.SetActive(false);
+            statCanvas.SetActive(true);
         }
 
         private void Start()

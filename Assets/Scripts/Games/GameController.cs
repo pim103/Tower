@@ -267,6 +267,8 @@ namespace Games {
             instance.objectsInScene.mainCamera.SetActive(true);
             instance.endGameMenu.SetActive(true);
 
+            GameController.otherPlayerDie = false;
+
             if (hasWon)
             {
                 Debug.Log("Vous avez gagné");

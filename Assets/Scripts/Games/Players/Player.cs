@@ -81,7 +81,6 @@ namespace Games.Players
         {
             Classes classe = DataObject.ClassesList.GetClassesFromId(idClasses);
             InitClasses(classe);
-            
         }
 
         public void InitClasses(Classes classes)
