@@ -64,6 +64,7 @@ namespace Games.Players
             wantToGoLeft = false;
             wantToGoRight = false;
             pressDefenseButton = false;
+            canDoSomething = true;
 
             statCanvas.SetActive(false);
             Player player = entity as Player;

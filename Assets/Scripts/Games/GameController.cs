@@ -244,9 +244,9 @@ namespace Games {
             int nbSec = TransitionMenuGame.timerAttack % 60;
 
             instance.waitingOpponentBeforeDefense.SetActive(true);
-            instance.waitingOpponentEndTimer.text = nbMin + (nbMin > 0 ? "min" : "") + nbSec;
+            instance.waitingOpponentEndTimer.text = nbMin + (nbMin > 0 ? "min" : "") + nbSec + "sec";
         }
-        
+
         private async Task AttackPhase()
         {
             ContainerController.ActiveContainerOfCurrentPhase(Phase.Attack);

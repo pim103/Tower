@@ -41,7 +41,20 @@ namespace DeckBuilding
         {
             Debug.Log("id : "+id);
             Debug.Log("decks : "+decks.Count);
-            return Tools.Clone(decks.First(deck => deck.id == id));
+            Deck deck = Tools.Clone(decks.First(decks => decks.id == id));
+
+            Deck newDeck = new Deck();
+            newDeck.cards = new Dictionary<int, int>();
+            newDeck.type = deck.type;
+            newDeck.id = deck.id;
+            newDeck.name = deck.name;
+
+            foreach (var keyValuePair in deck.cards)
+            {
+                newDeck.cards.Add(keyValuePair.Key, keyValuePair.Value);
+            }
+            
+            return newDeck;
         }
 
         public Card GetCardById(int id)

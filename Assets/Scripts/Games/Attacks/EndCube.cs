@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
  using System.Collections;
- using Games.Defenses;
+using System.Linq;
+using Games.Defenses;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Players;
@@ -60,6 +61,7 @@ namespace Games.Attacks
             if (initDefense.currentLevel < mapPlayed)
             {
                 GameController.WaitingOpponent();
+                DataObject.playerInScene.First().Value.canDoSomething = false;
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
             }
             else

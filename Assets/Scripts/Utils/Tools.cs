@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FullSerializer;
 using PathCreation;
 using UnityEngine;
 
@@ -22,8 +23,20 @@ namespace Utils
             }
         }
 
-        public static T Clone<T>(T origin) where T : new()
+        public static T Clone<T>(T origin) where T : class
         {
+            // fsSerializer serializer = new fsSerializer();
+            // fsData data;
+            // fsData outData;
+            //
+            // serializer.TrySerialize(origin.GetType(), origin, out data);
+            // string compressedJson = fsJsonPrinter.CompressedJson(data);
+            //
+            // T cloned = null;
+            // outData = fsJsonParser.Parse(compressedJson);
+            // serializer.TryDeserialize(outData, ref cloned);
+            //
+            // return cloned;
             return (T) DeepClone(origin);
         }
 
