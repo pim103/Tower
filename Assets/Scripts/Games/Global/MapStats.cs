@@ -10,5 +10,6 @@ namespace Games.Global
         [SerializeField] public GameObject endZone;
         [SerializeField] public GameObject endDoor;
         [SerializeField] public GameObject endFx;
+        [SerializeField] public GameObject roof;
     }
 }

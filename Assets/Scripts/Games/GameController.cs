@@ -158,6 +158,7 @@ namespace Games {
                 objectsInScene.endZone = mapStatsList[level].endZone;
                 objectsInScene.endDoor = mapStatsList[level].endDoor;
                 objectsInScene.endFx = mapStatsList[level].endFx;
+                mapStatsList[level].roof.SetActive(false);
                 gameGridController.GenerateAndInitFakeGrid(mapStatsList[level]);
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);
@@ -178,6 +179,7 @@ namespace Games {
                 Debug.Log("desactmap");
                 gameGridController.DesactiveMap();
                 backGround.SetActive(false);
+                mapStatsList[level].roof.SetActive(true);
 
                 // Send defense grid
                 Debug.Log("SendGrid");
