@@ -227,7 +227,6 @@ namespace ContentEditor.UtilsEditor
                     form.AddField("monster_groups_list_nbMonster[]", monsterInGroupTreatments.monstersInGroup.nbMonster);
                     form.AddField("monster_groups_list_treatment[]", (int) monsterInGroupTreatments.treatment);
                 }
-
             }
 
             UnityWebRequest www;

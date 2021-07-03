@@ -189,6 +189,7 @@ namespace ContentEditor
             monster.att = EditorGUILayout.FloatField("Attack", monster.att);
             monster.attSpeed = EditorGUILayout.FloatField("Attack speed", monster.attSpeed);
             monster.speed = EditorGUILayout.FloatField("Speed", monster.speed);
+            monster.nbWeapon = EditorGUILayout.IntField("nbWeapon", monster.nbWeapon);
             monster.SetConstraint((TypeWeapon) EditorGUILayout.EnumPopup("Weapon constraint", monster.GetConstraint()));
 
             EditorGUILayout.LabelField("Model");
@@ -219,7 +220,17 @@ namespace ContentEditor
             {
                 Debug.Log("Need to instantiate monster");
             }
+            
+            Color currentColor = GUI.color;
+            GUI.color = Color.green;
+            if (GUILayout.Button("Sauvegarder le monstre"))
+            {
+                PrepareSaveRequest.RequestSaveMonster(monster, monster.id == 0);
+                newMonster = null;
+            }
 
+            GUI.color = currentColor;
+            
             EditorGUILayout.EndVertical();
         }
 
@@ -233,12 +244,6 @@ namespace ContentEditor
             GUILayout.FlexibleSpace();
             
             DisplayOneMonsterEditor(newMonster);
-
-            if (GUILayout.Button("Sauvegarder le nouveau monstre"))
-            {
-                PrepareSaveRequest.RequestSaveMonster(newMonster, true);
-                newMonster = null;
-            }
 
             GUILayout.FlexibleSpace();
         }
@@ -306,6 +311,25 @@ namespace ContentEditor
                 GameGridController.InitGroups(group, 1, 1, 1.5f);
             }
 
+            Color currentColor = GUI.color;
+            GUI.color = Color.green;
+            if (GUILayout.Button("Sauvegarder le groupe"))
+            {
+                List<MonsterInGroupTreatment> monsterInGroupTreatments = new List<MonsterInGroupTreatment>();
+                if (origGroupsList.ContainsKey(group.id))
+                {
+                    monsterInGroupTreatments =
+                        ContentGenerationEditor.monsterEditor.GetTreatmentForMonsterInGroup(group.monstersInGroupList,
+                            origGroupsList[group.id].monstersInGroupList);
+                }
+
+                PrepareSaveRequest.RequestSaveGroupMonster(group, group.id == 0, monsterInGroupTreatments);
+                newGroup = null;
+            }
+
+            GUI.color = currentColor;
+            
+
             EditorGUILayout.EndVertical();
         }
 
@@ -319,12 +343,6 @@ namespace ContentEditor
             GUILayout.FlexibleSpace();
             
             DisplayOneGroupEditor(newGroup);
-
-            if (GUILayout.Button("Sauvegarder le nouveau groupe"))
-            {
-                PrepareSaveRequest.RequestSaveGroupMonster(newGroup, true, null);
-                newGroup = null;
-            }
 
             GUILayout.FlexibleSpace();
         }
