@@ -264,12 +264,12 @@ namespace Games.Global.Spells.SpellBehavior
             bool doSomething = spellComponent.OnTriggerEnter(entityPrefab.entity);
             bool hasFindingAction = SpellInterpreter.PlaySpellActions(spellComponent, Trigger.ON_TRIGGER_ENTER);
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
+            /*if (other.gameObject.layer == LayerMask.NameToLayer("Monster") && entityPrefab.ragdollCoroutine == null)
             {
                 //entityPrefab.LaunchEnableRagdoll(20);
                 entityPrefab.animator.SetTrigger("Got Hit");
                 entityPrefab.audioSource.PlayOneShot(entityPrefab.hitClip);
-            }
+            }*/
 
             if ((hasFindingAction || doSomething) && !spellComponent.spellToInstantiate.passingThroughEntity)
             {

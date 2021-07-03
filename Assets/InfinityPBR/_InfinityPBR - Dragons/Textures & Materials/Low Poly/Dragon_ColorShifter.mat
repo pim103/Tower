@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Dragon_ColorShifter
-  m_Shader: {fileID: 4800000, guid: 389c822e4e25a40a7a409f71df112f6c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 04c0ff33a2c9b4f8792689e36c97ecdf, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -64,6 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaCutoff: 0.5
     - _BumpScale: 1
     - _ColorIDFuzziness: 0.01
     - _ColorIDRange: 0.01
@@ -110,6 +111,13 @@ Material:
     - _H4: 0
     - _H40: 0.0552516
     - _H41: 0.015941998
+    - _H42: 0.5
+    - _H43: 0.5
+    - _H44: 0
+    - _H45: 0
+    - _H46: 0
+    - _H47: 0
+    - _H48: 0
     - _H5: 0
     - _H6: 0
     - _H7: 0
@@ -158,6 +166,13 @@ Material:
     - _S4: 1
     - _S40: 0.6650943
     - _S41: 1
+    - _S42: 0.5
+    - _S43: 0.5
+    - _S44: 0.5
+    - _S45: 0.5
+    - _S46: 0.5
+    - _S47: 0.7404315
+    - _S48: 0.5
     - _S5: 0
     - _S6: 0
     - _S7: 0
@@ -206,6 +221,13 @@ Material:
     - _V4: 0.0754717
     - _V40: 0.7264151
     - _V41: 0.6886792
+    - _V42: 0.5
+    - _V43: 0.5
+    - _V44: 0.5
+    - _V45: 0.5
+    - _V46: 0.5
+    - _V47: 0.5
+    - _V48: 0.5
     - _V5: 0
     - _V6: 0
     - _V7: 0
@@ -253,9 +275,17 @@ Material:
     - _Color4: {r: 0, g: 0.19607843, b: 0, a: 1}
     - _Color40: {r: 1, g: 0, b: 0.5019608, a: 1}
     - _Color41: {r: 0, g: 0, b: 0.19607843, a: 1}
+    - _Color42: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color43: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color44: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color45: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color46: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color47: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
+    - _Color48: {r: 0, g: 0.19607836, b: 0.19607836, a: 0}
     - _Color5: {r: 0.76862746, g: 0, b: 0, a: 1}
     - _Color6: {r: 0.39215687, g: 0, b: 0.39215687, a: 1}
     - _Color7: {r: 0.5019608, g: 0.5019608, b: 1, a: 1}
     - _Color8: {r: 0.5019608, g: 0, b: 1, a: 1}
     - _Color9: {r: 0, g: 0, b: 0.76862746, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []

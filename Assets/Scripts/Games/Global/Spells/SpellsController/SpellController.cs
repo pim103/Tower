@@ -79,7 +79,16 @@ namespace Games.Global.Spells.SpellsController
             }
             else
             {
-                entity.entityPrefab.animator.SetTrigger("Attack 1");
+                if (entity.weapon.category.id == 4)
+                {
+                    //entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.bowAttackClip);
+                    entity.entityPrefab.animator.SetTrigger("DistanceAttack");
+                }
+                else if (entity.weapon.category.id == 5)
+                {
+                    entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.swordAttackClip);
+                }
+                entity.entityPrefab.animator.SetTrigger("MeleeAttack");
             }
             instance.StartCoroutine(PlayCastTime(entity, spell));
 

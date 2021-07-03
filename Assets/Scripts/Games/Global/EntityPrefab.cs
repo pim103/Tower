@@ -225,6 +225,7 @@ namespace Games.Global
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
                 navMeshAgent.SetDestination(heading);
+                animator.SetFloat("Locomotion",1.0f);
 
             }
             else if (aoe.meshCollider == enabled)
@@ -234,6 +235,7 @@ namespace Games.Global
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
                 navMeshAgent.SetDestination(heading);
+                animator.SetFloat("Locomotion",1.0f);
             }
             else
             {
@@ -242,6 +244,7 @@ namespace Games.Global
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
                 navMeshAgent.SetDestination(heading);
+                animator.SetFloat("Locomotion",1.0f);
             }
         }
 

@@ -312,7 +312,13 @@ namespace Games.Global
         {
             //Debug.Log(modelName + " - Damage applied = " + directDamage);
             hp -= directDamage;
-            
+
+            if (GetTypeEntity() == TypeEntity.MOB)
+            {
+                entityPrefab.animator.SetTrigger("Got Hit");
+                entityPrefab.audioSource.PlayOneShot(entityPrefab.hitClip);
+            }
+
             if (hp <= 0)
             {
                 if (originSpellComponent != null)

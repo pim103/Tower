@@ -52,6 +52,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
 
                 if (monster.entityPrefab.navMeshAgent.SetDestination(dest))
                 {
+                    Debug.Log("hein");
+                    monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                     return TreeStatus.RUNNING;
                 }
 
@@ -74,6 +76,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {
+                        Debug.Log("hein");
+                        monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                         return TreeStatus.RUNNING;
                     }
                 }
@@ -81,6 +85,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
                     {
+                        Debug.Log("zero");
+                        monster.entityPrefab.animator.SetFloat("Locomotion",0.0f);
                         return TreeStatus.SUCCESS;
                     }
                 }
@@ -91,6 +97,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {
+                        Debug.Log("hein");
+                        monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                         return TreeStatus.RUNNING;
                     }
                 }
@@ -98,6 +106,8 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 {
                     if (monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
                     {
+                        Debug.Log("zero");
+                        monster.entityPrefab.animator.SetFloat("Locomotion",0.0f);
                         return TreeStatus.SUCCESS;
                     }
                 }
