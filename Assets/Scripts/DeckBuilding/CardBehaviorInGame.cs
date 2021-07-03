@@ -55,7 +55,7 @@ namespace DeckBuilding
         {
             ownCardContainer = transform.parent;
 
-            if (card.GroupsMonster != null)
+            if (card != null && card.GroupsMonster != null)
             {
                 equipement = null;
                 group = card.GroupsMonster;
@@ -68,7 +68,7 @@ namespace DeckBuilding
                 rangeSphere.transform.localScale = new Vector3(group.radius*4,group.radius*4,group.radius*4);
                 InstantiateGroupsMonster(group, Vector3.zero, groupParent.transform);
             }
-            else if(card.Weapon != null)
+            else if(card != null && card.Weapon != null)
             {
                 group = null;
                 equipement = card.Weapon;

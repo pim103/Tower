@@ -79,6 +79,9 @@ namespace Games.Defenses
                 });
             }
 
+            monsterDeck = null;
+            weaponDeck = null;
+            
             keyObject.transform.position = keySlot.position;
         }
 
