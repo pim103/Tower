@@ -179,7 +179,7 @@ namespace Games.Players
                     }
                     if (timer != null)
                     {
-                        timer.text = spell.currentCooldown.ToString();
+                        timer.text = ((int) spell.currentCooldown).ToString();
                     }
                 } else if (bgTimer != null && bgTimer.activeSelf)
                 {
@@ -237,6 +237,11 @@ namespace Games.Players
                 wantToGoRight = tempIntent;
 
                 wasConfusing = entity.isConfuse;
+            }
+
+            if (isCharging)
+            {
+                return;
             }
 
             if (Input.GetKeyDown(KeyCode.Z))

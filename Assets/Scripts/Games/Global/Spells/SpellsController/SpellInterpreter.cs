@@ -155,12 +155,20 @@ namespace Games.Global.Spells.SpellsController
 
                 if (action.effect != null)
                 {
-                    if (action.actionOnEffectType == ActionOnEffectType.ADD)
+                    switch (action.actionOnEffectType)
                     {
-                        EffectController.ApplyEffectFromTargetsFound(spellComponent.caster, action.effect, targetsFound);
-                    } else if (action.actionOnEffectType == ActionOnEffectType.DELETE)
-                    {
-                        EffectController.DeleteEffectFromTargetsFound(action.effect, targetsFound);
+                        case ActionOnEffectType.ADD:
+                            EffectController.ApplyEffectFromTargetsFound(spellComponent.caster, action.effect, targetsFound);
+                            break;
+                        case ActionOnEffectType.DELETE:
+                            EffectController.DeleteEffectFromTargetsFound(action.effect, targetsFound);
+                            break;
+                        case ActionOnEffectType.BUFF_ATTACK:
+                            EffectController.AddEffectBuff(spellComponent.caster, action.effect, true);
+                            break;
+                        case ActionOnEffectType.BUFF_DEFENSE:
+                            EffectController.AddEffectBuff(spellComponent.caster, action.effect, false);
+                            break;
                     }
                 }
 

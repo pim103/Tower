@@ -90,6 +90,9 @@ namespace Games.Global
         public TypeEffect typeEffect { get; set; }
         public int level { get; set; }
         public float durationInSeconds { get; set; }
+        
+        // if it's a buff
+        public float durationBuff { get; set; }
 
         public Entity launcher;
         public float ressourceCost { get; set; }

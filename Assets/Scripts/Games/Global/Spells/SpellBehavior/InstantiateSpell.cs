@@ -59,12 +59,12 @@ namespace Games.Global.Spells.SpellBehavior
             {
                 // INIT GENERIC SPELL PREFAB
                 GameObject genericSpellPrefab = ObjectPooler.SharedInstance.GetPooledObject(1);
-                genericSpellPrefab.SetActive(true);
                 SpellPrefabController spellPrefabController = genericSpellPrefab.GetComponent<SpellPrefabController>();
 
                 spellPrefabController.SetSpellParameter(spellComponent, startPosition);
 
                 spellComponent.spellPrefabController = spellPrefabController;
+                genericSpellPrefab.SetActive(true);
             }
         }
 

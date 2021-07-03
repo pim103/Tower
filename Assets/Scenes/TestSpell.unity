@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571409, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6031,6 +6031,12 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &283536781 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5163097443839619416, guid: 32e32e47a578a334f9825169106daa2b,
+    type: 3}
+  m_PrefabInstance: {fileID: 394857353}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &297036260
 GameObject:
   m_ObjectHideFlags: 0
@@ -6716,6 +6722,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.0000076293945
       objectReference: {fileID: 0}
+    - target: {fileID: 3212345487763881199, guid: 32e32e47a578a334f9825169106daa2b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.1099243
+      objectReference: {fileID: 0}
     - target: {fileID: 3392448182981673967, guid: 32e32e47a578a334f9825169106daa2b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6898,6 +6909,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8212705573531692400, guid: 32e32e47a578a334f9825169106daa2b,
         type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.35003662
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212705573531692400, guid: 32e32e47a578a334f9825169106daa2b,
+        type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.0000076293945
       objectReference: {fileID: 0}
@@ -6914,7 +6930,7 @@ PrefabInstance:
     - target: {fileID: 8329901213889405925, guid: 32e32e47a578a334f9825169106daa2b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.44007874
+      value: -0.44006348
       objectReference: {fileID: 0}
     - target: {fileID: 8329901213889405925, guid: 32e32e47a578a334f9825169106daa2b,
         type: 3}
@@ -6935,6 +6951,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.0000076293945
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912137576542665938, guid: 32e32e47a578a334f9825169106daa2b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.1099243
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e32e47a578a334f9825169106daa2b, type: 3}
@@ -7427,6 +7448,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4cd883ae69f384a8d975251d52eef8c9, type: 2}
+    - target: {fileID: 3141888289597222835, guid: a1e28cc5277b74ff0ad8566e5e54bee5,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3141888289606205529, guid: a1e28cc5277b74ff0ad8566e5e54bee5,
         type: 3}
       propertyPath: m_RootOrder
@@ -7490,7 +7516,7 @@ PrefabInstance:
     - target: {fileID: 3141888289606704249, guid: a1e28cc5277b74ff0ad8566e5e54bee5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3391270716182332273, guid: a1e28cc5277b74ff0ad8566e5e54bee5,
         type: 3}
@@ -14809,6 +14835,11 @@ PrefabInstance:
       propertyPath: bgTimer3
       value: 
       objectReference: {fileID: 394857354}
+    - target: {fileID: 6879311515420388703, guid: 03518ad692d34cb4792f659eb650ba44,
+        type: 3}
+      propertyPath: statCanvas
+      value: 
+      objectReference: {fileID: 283536781}
     - target: {fileID: 6879311515420388703, guid: 03518ad692d34cb4792f659eb650ba44,
         type: 3}
       propertyPath: ressourcesBar
@@ -23695,7 +23726,7 @@ PrefabInstance:
     - target: {fileID: 5218551302825227377, guid: 97be6194801464926b2c78020bf4eb32,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5218551302834735023, guid: 97be6194801464926b2c78020bf4eb32,
         type: 3}

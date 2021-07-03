@@ -150,6 +150,40 @@ namespace Games.Global
             StartCoroutineEffect(entityAffected, effect, origin, srcDamage);
         }
 
+        public static void AddEffectBuff(Entity entityAffected, Effect effect, bool buffForAttack)
+        {
+            EffectControllerInstance.StartCoroutine(EffectBuffDisapear(entityAffected, effect, buffForAttack));
+        }
+
+        private static IEnumerator EffectBuffDisapear(Entity entityAffected, Effect effect, bool buffForAttack)
+        {
+            if (buffForAttack)
+            {
+                entityAffected.damageDealExtraEffect.Add(effect);
+            }
+            else
+            {
+                entityAffected.damageReceiveExtraEffect.Add(effect);
+            }
+
+            float durationBuff = effect.durationBuff;
+
+            while (durationBuff > 0)
+            {
+                durationBuff -= 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
+            
+            if (buffForAttack && entityAffected.damageDealExtraEffect.Contains(effect))
+            {
+                entityAffected.damageDealExtraEffect.Remove(effect);
+            }
+            else if (entityAffected.damageReceiveExtraEffect.Contains(effect))
+            {
+                entityAffected.damageReceiveExtraEffect.Remove(effect);
+            }
+        }
+
         public static void StartCoroutineEffect(Entity entity, Effect effect, Entity origin, Vector3 srcDamage)
         {
             Effect cloneEffect = Tools.Clone(effect);

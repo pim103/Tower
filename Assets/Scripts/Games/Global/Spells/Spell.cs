@@ -107,7 +107,9 @@ namespace Games.Global.Spells
     public enum ActionOnEffectType
     {
         ADD,
-        DELETE
+        DELETE,
+        BUFF_ATTACK,
+        BUFF_DEFENSE
     }
 
     public enum ConditionReduceCharge

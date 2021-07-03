@@ -381,6 +381,12 @@ namespace ContentEditor.SpellEditorComposant
                 actionTriggered.effect.level = EditorGUILayout.IntField("Niveau", actionTriggered.effect.level);
                 actionTriggered.effect.durationInSeconds = EditorGUILayout.FloatField("Durée", actionTriggered.effect.durationInSeconds);
 
+                if (actionTriggered.actionOnEffectType == ActionOnEffectType.BUFF_ATTACK || actionTriggered.actionOnEffectType == ActionOnEffectType.BUFF_DEFENSE)
+                {
+                    actionTriggered.effect.durationBuff =
+                        EditorGUILayout.FloatField("Durée du buff", actionTriggered.effect.durationBuff);
+                }
+                
                 if (actionTriggered.effect.typeEffect == TypeEffect.Expulsion)
                 {
                     actionTriggered.effect.directionExpul = (DirectionExpulsion) EditorGUILayout.EnumPopup("Direction expulsion", actionTriggered.effect.directionExpul);
