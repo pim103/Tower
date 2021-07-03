@@ -70,10 +70,11 @@ namespace Games.Global.Entities
             hpBar.value = diff;
             hpBar.transform.LookAt(playerPrefab.camera.transform);
             hpBar.transform.Rotate(Vector3.up * 180);
-            if (Vector3.Distance(root.transform.localPosition, initialRootPosition) > 0.1)
+            hpBar.transform.position = transform.position + Vector3.up * 2;
+            /*if (Vector3.Distance(root.transform.localPosition, initialRootPosition) > 0.2)
             {
                 hpBar.transform.position = root.transform.position + Vector3.up * 2;
-            }
+            }*/
 
             behavior?.UpdateBehaviorTree();
         }

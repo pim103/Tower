@@ -91,19 +91,21 @@ namespace Games.Transitions
 
         private void InstantiateCharButtons()
         {
+            int cpt = 0;
             foreach (Classes classes in DataObject.ClassesList.classes)
             {
                 GameObject charSelector = Instantiate(buttonCharTemplate, characterSelectionParent.transform);
 
                 Identity charIdentity = charSelector.GetComponent<Identity>();
                 charIdentity.title.text = classes.name;
-
+                charIdentity.previews[cpt].SetActive(true);
                 Button charButton = charSelector.GetComponent<Button>();
 
                 charIdentity.InitIdentityData(IdentityType.Role, classes.id);
                 charButton.onClick.AddListener(delegate { GetIdentityOfButton(charButton); });
 
                 IdentityOfButton.Add(charButton, charIdentity);
+                cpt++;
             }
         }
 

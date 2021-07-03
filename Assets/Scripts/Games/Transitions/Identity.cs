@@ -14,6 +14,7 @@ namespace Games.Transitions
         public Text title;
         public IdentityType identityType;
         private int identityId;
+        [SerializeField] public GameObject[] previews;
 
         public void InitIdentityData(IdentityType type, int id)
         {
