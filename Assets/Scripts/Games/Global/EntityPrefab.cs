@@ -71,6 +71,11 @@ namespace Games.Global
 
         private void FixedUpdate()
         {
+            if (navMeshAgent && entity != null)
+            {
+                navMeshAgent.speed = entity.speed / 2;
+            }
+
             if (entity.GetBehaviorType() == BehaviorType.Player)
             {
                 return;
@@ -188,34 +193,6 @@ namespace Games.Global
         {
         }
 
-        public bool CastSpell()
-        {
-            if (entity.spells == null || entity.spells.Count == 0)
-            {
-                return false;
-            }
-            
-            switch (entity.GetAttackBehaviorType())
-            {
-                case AttackBehaviorType.AllSpellsIFirst:
-                    foreach (Spell spell in entity.spells)
-                    {
-                        if (SpellController.CastSpell(entity, spell))
-                        {
-                            return true;
-                        }
-                    }
-                    break;
-                case AttackBehaviorType.Random:
-                    int rand = Random.Range(0, entity.spells.Count);
-                    SpellController.CastSpell(entity, entity.spells[rand]);
-
-                    return !entity.spells[rand].isOnCooldown;
-            }
-
-            return false;
-        }
-
         public void MoveOutFromAOE(SpellPrefabController aoe)
         {
             if (aoe.boxCollider == enabled)
@@ -248,155 +225,6 @@ namespace Games.Global
             }
         }
 
-        public void AttackTarget()
-        {
-            transform.LookAt(target.entityPrefab.transform);
-            Vector3 localEulerAngles = transform.localEulerAngles;
-            localEulerAngles.x = 0;
-            localEulerAngles.z = 0;
-            transform.localEulerAngles = localEulerAngles;
-
-            if (!CastSpell())
-            {
-                switch (entity.GetBehaviorType())
-                {
-                    // TODO : adapt range of weapon for attack
-                    case BehaviorType.Distance:
-                        PlayBasicAttack();
-                        break;
-                    case BehaviorType.Melee:
-                    case BehaviorType.MoveOnTargetAndDie:
-                        if (navMeshAgent.remainingDistance <= 3)
-                        {
-                            PlayBasicAttack();
-                        }
-                        break;
-                }
-            }
-        }
-
-        public void MoveToTarget(float range)
-        {
-            if (!navMeshAgent.enabled)
-            {
-                return;
-            }
-
-            if (entity.isFeared || entity.isCharmed)
-            {
-                navMeshAgent.SetDestination(transform.position + forcedDirection);
-                return;
-            }
-
-            if (target != null)
-            {
-                navMeshAgent.SetDestination(target.entityPrefab.transform.position);
-
-                if (navMeshAgent.remainingDistance <= range && navMeshAgent.hasPath)
-                {
-                    navMeshAgent.SetDestination(transform.position);
-                }
-            }
-        }
-
-        public void FindTarget()
-        {
-            Entity newTarget = null;
-            bool findEnemyWithTaunt = false;
-            float dist = 10000;
-            float minDistAggro = 100;
-
-            switch (entity.GetTypeEntity())
-            {
-                case TypeEntity.MOB:
-                    foreach (KeyValuePair<int, PlayerPrefab> value in DataObject.playerInScene)
-                    {
-                        PlayerPrefab player = value.Value;
-                        float newDist = Vector3.Distance(transform.position, player.transform.position);
-
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!player.entity.isInvisible && !player.entity.isUntargeatable && !player.entity.hasNoAggro)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = player.entity;
-                            }
-                        }
-
-                        if (player.entity.hasTaunt)
-                        {
-                            newTarget = player.entity;
-                            findEnemyWithTaunt = true;
-                            break;
-                        }
-                    }
-
-                    foreach (Entity summon in DataObject.invocationsInScene)
-                    {
-                        float newDist = Vector3.Distance(transform.position, summon.entityPrefab.transform.position);
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!summon.isInvisible && !summon.isUntargeatable && !summon.hasNoAggro && !findEnemyWithTaunt)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = summon;
-                            }
-                        }
-
-                        if (summon.hasTaunt)
-                        {
-                            newTarget = summon;
-                            break;
-                        }
-                    }
-
-                    break;
-                case TypeEntity.ALLIES:
-                    foreach (Monster monster in DataObject.monsterInScene)
-                    {
-                        if (!monster.entityPrefab)
-                        {
-                            continue;
-                        }
-
-                        float newDist = Vector3.Distance(transform.position, monster.entityPrefab.transform.position);
-                        if (newDist > minDistAggro)
-                        {
-                            continue;
-                        }
-
-                        if (!monster.isInvisible && !monster.isUntargeatable && !monster.hasNoAggro)
-                        {
-                            if ((dist > newDist))
-                            {
-                                dist = newDist;
-                                newTarget = monster;
-                            }
-                        }
-
-                        if (monster.hasTaunt)
-                        {
-                            newTarget = monster;
-                            break;
-                        }
-                    }
-
-                    break;
-            }
-
-            target = newTarget;
-        }
-        
         public void EntityDie()
         {
             if (entity.GetTypeEntity() == TypeEntity.MOB)
