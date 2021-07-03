@@ -100,9 +100,12 @@ namespace Games.Players
         {
             InitEntityList();
 
-            int idCategoryWeapon = ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId();
-            Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(idCategoryWeapon);
-            InitWeapon(weapon);
+            if (ChooseDeckAndClass.currentWeaponIdentity)
+            {
+                int idCategoryWeapon = ChooseDeckAndClass.currentWeaponIdentity.GetIdentityId();
+                Weapon weapon = DataObject.EquipmentList.GetFirstWeaponFromIdCategory(idCategoryWeapon);
+                InitWeapon(weapon);
+            }
 
             InitClasses(idClasses);
 

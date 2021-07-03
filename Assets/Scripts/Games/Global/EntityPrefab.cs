@@ -135,10 +135,9 @@ namespace Games.Global
         {
             SpellInterpreter.TriggerWhenEntityAttack(entity.activeSpellComponents);
 
-            entity.basicAttack.cooldown = 1 / entity.attSpeed;
-            
             if (entity.basicAttack != null)
             {
+                entity.basicAttack.cooldown = 1 / entity.attSpeed;
                 SpellController.CastSpell(entity, entity.basicAttack);
                 return true;
             }

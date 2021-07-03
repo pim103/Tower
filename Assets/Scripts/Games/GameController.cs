@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DefaultNamespace;
@@ -46,6 +47,9 @@ namespace Games {
 
         [SerializeField] private GameObject endGameMenu;
         [SerializeField] private Text endGameText;
+
+        [SerializeField] private GameObject waitingOpponentBeforeDefense;
+        [SerializeField] private Text waitingOpponentEndTimer;
 
         [SerializeField] 
         private string roomId;
@@ -106,15 +110,14 @@ namespace Games {
             staticRoomId = roomId;
 
             objectsInScene.mainCamera.SetActive(true);
-            
+
             // TODO : change index
             PlayerIndex = 0;
 
             if (phase == Phase.Attack)
             {
-                //gameGridController.GenerateAndInitFakeGrid();
-                AttackPhase();
-            } 
+                StartCoroutine(BypassToAttackPhase());
+            }
             else if (phase == Phase.Defense)
             {
                 //gameGridController.GenerateAndInitFakeGrid();
@@ -127,6 +130,15 @@ namespace Games {
             }
         }
 
+        private IEnumerator BypassToAttackPhase()
+        {
+            yield return new WaitWhile(() => !DictionaryManager.hasCardsLoad);
+
+            //gameGridController.GenerateAndInitFakeGrid();
+            mapStatsList[level].gameObject.SetActive(true);
+            AttackPhase();
+        }
+        
         private async Task StartWithSelectCharacter()
         {
             ContainerController.ActiveContainerOfCurrentPhase(Phase.RoleAndDeck);
@@ -160,6 +172,7 @@ namespace Games {
                 objectsInScene.endFx = mapStatsList[level].endFx;
                 mapStatsList[level].roof.SetActive(false);
                 gameGridController.GenerateAndInitFakeGrid(mapStatsList[level]);
+                instance.waitingOpponentBeforeDefense.SetActive(false);
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
                 //gameGridController.InitGridData(currentGameGrid);
                 initDefensePhase.Init(mapStatsList[level].mapSize, mapStatsList[level].floors);
@@ -174,8 +187,7 @@ namespace Games {
                     Console.WriteLine(e);
                     throw;
                 }
-                
-                
+
                 Debug.Log("desactmap");
                 gameGridController.DesactiveMap();
                 backGround.SetActive(false);
@@ -211,7 +223,7 @@ namespace Games {
                     level += 1;
                 }
             }
-            
+
             EndGame(isWon);
         }
 
@@ -226,6 +238,15 @@ namespace Games {
             CurrentRoom.loadRoleAndDeck = false;
         }
 
+        public static void WaitingOpponent()
+        {
+            int nbMin = TransitionMenuGame.timerAttack / 60;
+            int nbSec = TransitionMenuGame.timerAttack % 60;
+
+            instance.waitingOpponentBeforeDefense.SetActive(true);
+            instance.waitingOpponentEndTimer.text = nbMin + (nbMin > 0 ? "min" : "") + nbSec;
+        }
+        
         private async Task AttackPhase()
         {
             ContainerController.ActiveContainerOfCurrentPhase(Phase.Attack);

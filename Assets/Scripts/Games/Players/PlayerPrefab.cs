@@ -88,8 +88,15 @@ namespace Games.Players
             entity.entityPrefab = this;
 
             player.SetPlayerPrefab(this);
-            player.InitPlayer(ChooseDeckAndClass.currentRoleIdentity.GetIdentityId());
 
+            int idClasses = 1;
+            if (ChooseDeckAndClass.currentRoleIdentity)
+            {
+                idClasses = ChooseDeckAndClass.currentRoleIdentity.GetIdentityId();
+            }
+
+            player.InitPlayer(idClasses);
+            
             wantToGoBack = false;
             wantToGoForward = false;
             wantToGoLeft = false;
@@ -476,7 +483,6 @@ namespace Games.Players
                 locVel.x = horizontalMove * currentSpeed;
                 locVel.z = verticalMove * currentSpeed;
             }
-
 
             if (grounded && wantToJump)
             {

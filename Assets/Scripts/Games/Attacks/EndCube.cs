@@ -59,6 +59,7 @@ namespace Games.Attacks
             // TODO : set nb map played
             if (initDefense.currentLevel < mapPlayed)
             {
+                GameController.WaitingOpponent();
                 TowersWebSocket.TowerSender("SELF", NetworkingController.CurrentRoomToken,"null", "setDefenseReady", "null");
             }
             else
