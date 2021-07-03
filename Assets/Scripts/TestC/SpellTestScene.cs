@@ -1,15 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using ContentEditor;
-using FullSerializer;
 using Games;
 using Games.Global;
 using Games.Global.Entities;
 using Games.Global.Spells;
-using Games.Global.Spells.SpellParameter;
 using Games.Global.Spells.SpellsController;
-using Games.Global.Weapons;
 using Games.Players;
 using Games.Transitions;
 using UnityEngine;
