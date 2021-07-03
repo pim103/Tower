@@ -152,6 +152,8 @@ namespace Games {
                 backGround.SetActive(true);
                 musicSource.clip = defenseMusic;
                 musicSource.Play();
+                Debug.Log(mapStatsList[level].gameObject.name);
+                Debug.Log(mapStatsList[level].mapSize);
                 objectsInScene.startPos = mapStatsList[level].startPos;
                 objectsInScene.endZone = mapStatsList[level].endZone;
                 objectsInScene.endDoor = mapStatsList[level].endDoor;

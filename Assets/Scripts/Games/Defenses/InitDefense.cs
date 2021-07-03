@@ -28,7 +28,7 @@ namespace Games.Defenses
 
         public GameGrid defenseGrid;
 
-        [SerializeField] private GameObject[] maps;
+        //[SerializeField] private GameObject[] maps;
         
         public void Init(int size, int floors)
         {
@@ -39,7 +39,7 @@ namespace Games.Defenses
 
             defenseGrid = GameController.currentGameGrid;
             
-            maps[0].SetActive(true);
+            //maps[0].SetActive(true);
             
             Generate(size, floors);
             Vector3 pos = defenseCamera.transform.position;

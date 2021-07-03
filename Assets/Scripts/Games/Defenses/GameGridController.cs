@@ -165,6 +165,7 @@ namespace Games.Defenses
             if (!foundKey)
             {
                 objectsInScene.endDoor.SetActive(false);
+                objectsInScene.endFx.SetActive(true);
             }
 
             Debug.Log("==================================== END ====================================");

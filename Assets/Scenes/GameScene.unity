@@ -1137,7 +1137,7 @@ MonoBehaviour:
   phase: 0
   isWon: 0
   mapStatsList:
-  - {fileID: 814901378}
+  - {fileID: 814901377}
   - {fileID: 837944023}
   level: 0
   backGround: {fileID: 777746342934760058}
@@ -2566,19 +2566,13 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e28bbb9c9b56a94c87aec08db8bfd78, type: 3}
---- !u!1 &814901377 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4712392621402724393, guid: 0e28bbb9c9b56a94c87aec08db8bfd78,
-    type: 3}
-  m_PrefabInstance: {fileID: 814901376}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &814901378 stripped
+--- !u!114 &814901377 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1128921492213505886, guid: 0e28bbb9c9b56a94c87aec08db8bfd78,
     type: 3}
   m_PrefabInstance: {fileID: 814901376}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814901377}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbf24960da82a6e439c91bf663a3d14d, type: 3}
@@ -2673,6 +2667,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5107438740140011485, guid: 7781b9289f99707428700e2154caa5b3,
+        type: 3}
+      propertyPath: initDefense
+      value: 
+      objectReference: {fileID: 934534610}
+    - target: {fileID: 5107438740140011485, guid: 7781b9289f99707428700e2154caa5b3,
+        type: 3}
+      propertyPath: objectsInScene
+      value: 
+      objectReference: {fileID: 194075444}
     - target: {fileID: 7818999921456357489, guid: 7781b9289f99707428700e2154caa5b3,
         type: 3}
       propertyPath: m_IsActive
@@ -3114,8 +3118,6 @@ MonoBehaviour:
     type: 3}
   defenseCamera: {fileID: 83993298}
   gridCellList: []
-  maps:
-  - {fileID: 814901377}
 --- !u!114 &934534611
 MonoBehaviour:
   m_ObjectHideFlags: 0
