@@ -133,7 +133,7 @@ namespace Games
                     TransitionMenuGame.timerAttack = callbackMessage.callbackMessages.attackTimer;
                 }
             }
-                            
+
             if (CurrentRoom.loadGameDefense)
             {
                 if (callbackMessage.callbackMessages.defenseTimer != -1)

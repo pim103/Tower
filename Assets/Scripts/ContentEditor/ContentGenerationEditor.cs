@@ -234,10 +234,10 @@ namespace ContentEditor
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Save", GUILayout.Width(75), GUILayout.Height(25)))
-            {
-                SaveData();
-            }
+            // if (GUILayout.Button("Save", GUILayout.Width(75), GUILayout.Height(25)))
+            // {
+            //     SaveData();
+            // }
             if (GUILayout.Button("Open test scene", GUILayout.Width(150), GUILayout.Height(25)))
             {
                 EditorSceneManager.OpenScene(Application.dataPath + "/Scenes/TestSpell.unity");
