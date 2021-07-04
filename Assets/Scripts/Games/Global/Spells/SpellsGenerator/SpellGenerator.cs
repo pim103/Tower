@@ -15,6 +15,8 @@ namespace Games.Global.Spells.SpellsGenerator
         private static bool isDamage = false;
         private static bool isCac = false;
         private static bool isDistance = false;
+        private static bool isOffensiveBuff = false;
+        private static bool isDefensiveBuff = false;
 
         private static void ResetParams(bool isHeal,
             bool isSupport,
@@ -27,13 +29,15 @@ namespace Games.Global.Spells.SpellsGenerator
             SpellGenerator.isDamage = isDamage;
             SpellGenerator.isDistance = isDistance;
             SpellGenerator.isCac = isCac;
+            SpellGenerator.isOffensiveBuff = false;
+            SpellGenerator.isDefensiveBuff = false;
 
-            if (Random.Range(0, 1) == 0)
+            if (Random.Range(0, 2) == 0)
             {
                 isAnArea = true;
             }
         }
-        
+
         public static Spell GenerateSpellWithParameter(
             PathCreator path,
             bool isHeal,
@@ -55,7 +59,7 @@ namespace Games.Global.Spells.SpellsGenerator
             Spell spell = new Spell
             {
                 spellComponentFirstActivation = activeSpellComponent,
-                cooldown = Random.Range(1, 4),
+                cooldown = Random.Range(1, 10),
                 cost = Random.Range(1, 10),
                 castTime = 0,
                 nameSpell = "SpellGenerateAt_" + DateTime.Now,
@@ -102,7 +106,8 @@ namespace Games.Global.Spells.SpellsGenerator
                     disapearAtTheEndOfTrajectory = true
                 };
             }
-            else if (isAnArea)
+            // Une chance sur 2 que ça suive le caster
+            else if (isAnArea && isCac && Random.Range(0,1) == 0)
             {
                 trajectory = new Trajectory
                 {
@@ -135,13 +140,8 @@ namespace Games.Global.Spells.SpellsGenerator
             if (isDamage)
             {
                 Trigger trigger = Trigger.ON_TRIGGER_ENTER;
-                int damage = Random.Range(15, 55);
 
-                ActionTriggered actionTriggered = new ActionTriggered
-                {
-                    damageDeal = damage,
-                    startFrom = StartFrom.AllEnemiesInArea,
-                };
+                ActionTriggered actionTriggered = GenerateDamageAction();
 
                 actions.Add(trigger, new List<ActionTriggered>{ actionTriggered });
             }
@@ -160,10 +160,16 @@ namespace Games.Global.Spells.SpellsGenerator
                 ActionTriggered actionHeal = GenerateHealAction();
                 actions.Add(trigger, new List<ActionTriggered>{ actionHeal });
             }
+            else if (isSupport)
+            {
+                Trigger trigger = Trigger.START;
+                ActionTriggered actionSupport = GenerateSupportAction();
+                actions.Add(trigger, new List<ActionTriggered>{ actionSupport });
+            }
 
             return actions;
         }
-
+        
         private static ActionTriggered GenerateHealAction()
         {
             StartFrom effectAppliedFor = StartFrom.Caster;
@@ -176,26 +182,130 @@ namespace Games.Global.Spells.SpellsGenerator
                 effectAppliedFor = StartFrom.TargetEntity;
             }
 
-            int effectChosen = Random.Range(0, 1);
-
-            Effect effect = new Effect {level = Random.Range(1, 5)};
-
-            if (effectChosen == 0)
+            Effect effect = EffectForAction();
+            
+            return new ActionTriggered
             {
-                effect.typeEffect = TypeEffect.Heal;
-            }
-            else
+                damageDeal = 0,
+                actionOnEffectType = ActionOnEffectType.ADD,
+                effect = effect,
+                startFrom = effectAppliedFor
+            };
+        }
+
+        private static ActionTriggered GenerateDamageAction()
+        {
+            Effect damageEffect = null;
+            // Ajouter un effect
+            if (Random.Range(0, 3) == 0)
             {
-                effect.typeEffect = TypeEffect.Regen;
-                effect.durationInSeconds = Random.Range(3, 5);
+                damageEffect = EffectForAction();
             }
+
+            int damage = damageEffect != null ? Random.Range(5, 15) : Random.Range(15, 30);
+
+            return new ActionTriggered
+            {
+                damageDeal = damage,
+                actionOnEffectType = ActionOnEffectType.ADD,
+                effect = damageEffect,
+                startFrom = StartFrom.AllEnemiesInArea,
+            };
+        }
+
+        private static ActionTriggered GenerateSupportAction()
+        {
+            // Définie si c'est un buff offensif ou non
+            isOffensiveBuff = Random.Range(0, 2) == 0;
+            isDefensiveBuff = !isOffensiveBuff;
+
+            // Si un effet s'ajoute aux attaques de bases, ou aux dégats reçus
+            bool isExtraEffectBuff = Random.Range(0, 2) == 0;
+
+            Effect effect = EffectForAction(isExtraEffectBuff);
+
+            ActionOnEffectType effectTypeResolution = isExtraEffectBuff
+                ? isOffensiveBuff ? ActionOnEffectType.BUFF_ATTACK : ActionOnEffectType.BUFF_DEFENSE
+                : ActionOnEffectType.ADD;
 
             return new ActionTriggered
             {
                 damageDeal = 0,
+                actionOnEffectType = effectTypeResolution,
                 effect = effect,
-                startFrom = effectAppliedFor
+                startFrom = StartFrom.AllEnemiesInArea,
             };
+        }
+
+        private static Effect EffectForAction(bool isForSupportExtraEffectSpell = false)
+        {
+            Effect effect = new Effect {level = Random.Range(1, 5)};
+
+            if (isHeal)
+            {
+                // 0 == Heal - 1 == Regen
+                int effectChosen = Random.Range(0, 2);
+                if (effectChosen == 0)
+                {
+                    effect.typeEffect = TypeEffect.Heal;
+                }
+                else
+                {
+                    effect.typeEffect = TypeEffect.Regen;
+                }
+            } else if (isDamage)
+            {
+                int effectChosen = Random.Range(0, 3);
+                switch (effectChosen)
+                {
+                    case 0:
+                        effect.typeEffect = TypeEffect.Burn;
+                        break;
+                    case 1:
+                        effect.typeEffect = TypeEffect.Poison;
+                        break;
+                    case 2:
+                        effect.typeEffect = TypeEffect.Freezing;
+                        break;
+                }
+            } else if (isSupport)
+            {
+                if (isOffensiveBuff)
+                {
+                    int effectChosen = Random.Range(0, 2);
+                    switch (effectChosen)
+                    {
+                        case 0:
+                            effect.typeEffect = TypeEffect.AttackUp;
+                            break;
+                        case 1:
+                            effect.typeEffect = TypeEffect.AttackSpeedUp;
+                            break;
+                    }
+                }
+                else
+                {
+                    int effectChosen = Random.Range(0, 2);
+                    switch (effectChosen)
+                    {
+                        case 0:
+                            effect.typeEffect = TypeEffect.SpeedUp;
+                            break;
+                        case 1:
+                            effect.typeEffect = TypeEffect.DefenseUp;
+                            break;
+                    }
+                }
+            }
+
+            if (isForSupportExtraEffectSpell)
+            {
+                effect.durationBuff = Random.Range(3, 5);
+            }
+
+            effect.durationInSeconds = Random.Range(3, 5);
+
+            return effect;
         }
 
         private static string GetModelFromParameters()
@@ -211,7 +321,7 @@ namespace Games.Global.Spells.SpellsGenerator
             }
             else
             {
-                model = "FX_Swirl_Fast_01";
+                model = "Spells/FX_Swirl_Fast_01";
             }
 
             return model;
