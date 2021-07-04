@@ -174,8 +174,13 @@ namespace Games.Global.Spells.SpellsController
 
                 if (action.damageDeal > 0)
                 {
-                    float damageDeal = action.damageDeal + spellComponent.caster.att + spellComponent.caster.weapon.damage;
+                    float damageDeal = action.damageDeal + spellComponent.caster.att;
 
+                    if (spellComponent.caster.weapon != null)
+                    {
+                        damageDeal += spellComponent.caster.weapon.damage;
+                    }
+                    
                     if (spellComponent.damageMultiplierOnDistance != 0)
                     {
                         damageDeal += (int)(spellComponent.spellPrefabController.distanceTravelled *
