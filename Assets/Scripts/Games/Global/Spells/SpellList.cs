@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 using FullSerializer;
-using Games.Global.Armors;
-using Games.Global.Spells.SpellsController;
-using Games.Global.Weapons;
 using Networking;
 using TestC;
 using UnityEngine;

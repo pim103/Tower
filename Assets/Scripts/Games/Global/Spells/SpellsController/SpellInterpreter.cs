@@ -136,7 +136,7 @@ namespace Games.Global.Spells.SpellsController
             List<ActionTriggered> actionsToPlay = spellComponent.actions[trigger];
 
             foreach (ActionTriggered action in actionsToPlay)
-            {   
+            {
                 TargetsFound targetsFound =
                     SpellController.GetTargetGetWithStartForm(spellComponent.caster, action.startFrom,
                         spellComponent);
@@ -222,7 +222,7 @@ namespace Games.Global.Spells.SpellsController
                 (originalSpellCharges != 0 && spellComponent.spellCharges > 0) || 
                 (spellComponent.trajectory != null && spellComponent.trajectory.disapearAtTheEndOfTrajectory) ||
                 (spellComponent.originSpell != null && spellComponent.originSpell.isHolding))
-            {   
+            {
                 DuringIntervalSpellBehavior(spellComponent);
                 yield return new WaitForSeconds(spellInterval);
                 spellDuration -= spellInterval;

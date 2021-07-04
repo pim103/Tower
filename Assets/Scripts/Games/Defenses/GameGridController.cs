@@ -98,7 +98,9 @@ namespace Games.Defenses
                         //PoolGameObject(posX, gridCellData.y, height, (ThemeGrid)grid.theme, MapThemePrefab.IdBasicLight, Vector3.zero);
                         if (gridCellData.groupsMonster != null)
                         {
-                            if (InitGroups(gridCellData.groupsMonster, posX, gridCellData.y, height, TileOffset, currentMap, keyObject))
+                            GroupsMonster groups =
+                                DataObject.MonsterList.GetGroupsMonsterById(gridCellData.groupsMonster.id);
+                            if (InitGroups(groups, posX, gridCellData.y, height, TileOffset, currentMap, keyObject))
                             {
                                 Debug.Log("keyfound");
                                 foundKey = true;
@@ -245,7 +247,7 @@ namespace Games.Defenses
                     monster = monstersInGroup.GetMonster();
 
                     GameObject monsterGameObject = Instantiate(DataObject.MonsterList.GetMonsterById(monster.id).model);
-                    
+
                     monster.IdEntity = DataObject.nbEntityInScene;
                     DataObject.nbEntityInScene++;
                     nbMonsterInit++;
