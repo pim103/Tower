@@ -100,6 +100,7 @@ namespace Games.Defenses
                         {
                             GroupsMonster groups =
                                 DataObject.MonsterList.GetGroupsMonsterById(gridCellData.groupsMonster.id);
+                            groups.hasKey = gridCellData.groupsMonster.hasKey;
                             if (InitGroups(groups, posX, gridCellData.y, height, TileOffset, currentMap, keyObject))
                             {
                                 Debug.Log("keyfound");
