@@ -33,6 +33,8 @@ namespace Games.Players
 
         public void ResetSpellCooldownAndStatus()
         {
+            hasDivineShield = false;
+
             if (basicAttack != null)
             {
                 basicAttack.isOnCooldown = false;
@@ -42,7 +44,7 @@ namespace Games.Players
             {
                 basicDefense.isOnCooldown = false;
             }
-    
+
             foreach (Spell spell in spells)
             {
                 spell.isOnCooldown = false;

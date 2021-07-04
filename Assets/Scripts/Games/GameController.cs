@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DefaultNamespace;
 using Games.Attacks;
 using Games.Defenses;
 using Games.Global;
+using Games.Players;
 using Games.Transitions;
 using Networking;
 using Networking.Client;
@@ -276,6 +278,7 @@ namespace Games {
             int nbMin = TransitionMenuGame.timerAttack / 60;
             int nbSec = TransitionMenuGame.timerAttack % 60;
 
+            DataObject.playerInScene.First().Value.entity.hasDivineShield = true;
             instance.waitingOpponentBeforeDefense.SetActive(true);
             instance.waitingOpponentEndTimer.text = nbMin + (nbMin > 0 ? "min" : "") + nbSec + "sec";
         }
