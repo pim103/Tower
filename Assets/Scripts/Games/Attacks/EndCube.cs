@@ -48,7 +48,7 @@ namespace Games.Attacks
         {
             Cursor.lockState = CursorLockMode.None;
 
-            int mapPlayed = 2;
+            int mapPlayed = 3;
 
             int playerLayer = LayerMask.NameToLayer("Player");
 
