@@ -120,9 +120,33 @@ namespace Games {
             }
             else if (phase == Phase.Defense)
             {
-                //gameGridController.GenerateAndInitFakeGrid();
-                //StartCoroutine(GameControllerTest.CreateDefenseInstance(initDefensePhase));
+                mapStatsList[level].gameObject.SetActive(true);
+                backGround.SetActive(true);
+                musicSource.clip = defenseMusic;
+                musicSource.Play();
+                Debug.Log(mapStatsList[level].gameObject.name);
+                Debug.Log(mapStatsList[level].mapSize);
+                objectsInScene.startPos = mapStatsList[level].startPos;
+                objectsInScene.endZone = mapStatsList[level].endZone;
+                objectsInScene.endDoor = mapStatsList[level].endDoor;
+                objectsInScene.endFx = mapStatsList[level].endFx;
+                mapStatsList[level].roof.SetActive(false);
+                gameGridController.GenerateAndInitFakeGrid(mapStatsList[level]);
+                instance.waitingOpponentBeforeDefense.SetActive(false);
                 ContainerController.ActiveContainerOfCurrentPhase(Phase.Defense);
+                //gameGridController.InitGridData(currentGameGrid);
+                initDefensePhase.Init(mapStatsList[level].mapSize, mapStatsList[level].floors);
+
+                Debug.Log("PlayDef");
+                try
+                {
+                    transitionDefenseAttack.PlayDefensePhase();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
             else
             {
