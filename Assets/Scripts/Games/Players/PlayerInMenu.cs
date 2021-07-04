@@ -67,11 +67,16 @@ namespace Games.Players
                 isInMenu = !isInMenu;
                 Cursor.lockState = isInMenu ? CursorLockMode.None : CursorLockMode.Locked;
             }
-            if (NetworkingController.AuthToken == "" || isInMenu)
+            if (NetworkingController.AuthToken == "")
             {
                 return;
             }
-            
+
+            if (isInMenu && informationLayout.activeSelf)
+            {
+                informationLayout.SetActive(false);
+            }
+
             GetIntentPlayer();
         }
 
@@ -90,7 +95,7 @@ namespace Games.Players
 
         public void GetIntentPlayer()
         {
-            if (!canDoSomething)
+            if (isInMenu)
             {
                 wantToGoBack = false;
                 wantToGoForward = false;
@@ -147,7 +152,6 @@ namespace Games.Players
                     mc.ActivateMenu(MenuController.Menu.Play);
                 }
             }
-            
 
             if (!canMove)
             {
@@ -156,8 +160,6 @@ namespace Games.Players
                 wantToGoLeft = false;
                 wantToGoRight = false;
             }
-
-            canGoInCollectionMenu = false;
 
             animator.SetBool("isWalking", wantToGoBack | wantToGoForward | wantToGoLeft | wantToGoRight);
 
@@ -281,7 +283,7 @@ namespace Games.Players
                     informationLayout.SetActive(true);
                     canGoInPlayMenu = true;
                 }
-                else
+                else if (informationLayout.activeSelf)
                 {
                     informationLayout.SetActive(false);
                     canGoInCraftMenu = false;
@@ -294,9 +296,6 @@ namespace Games.Players
             {
                 positionPointed = Vector3.positiveInfinity;
             }
-
-
         }
-        
     }
 }
