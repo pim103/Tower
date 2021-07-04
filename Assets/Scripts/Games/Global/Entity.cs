@@ -357,6 +357,8 @@ namespace Games.Global
             }
         }
 
+        private bool playDeathAnimation = false;
+        
         private IEnumerator WaitForDeathAnimation()
         {
             if (entityPrefab.navMeshAgent.enabled)
@@ -364,7 +366,12 @@ namespace Games.Global
                 entityPrefab.navMeshAgent.SetDestination(entityPrefab.transform.position);
             }
 
-            entityPrefab.animator.SetTrigger("Death");
+            if (!playDeathAnimation)
+            {
+                playDeathAnimation = true;
+                entityPrefab.animator.SetTrigger("Death");
+            }
+
             yield return new WaitForSeconds(3);
 
             entityPrefab.EntityDie();
