@@ -2,6 +2,7 @@
 
 using ContentEditor.UtilsEditor;
 using Games.Global.Spells;
+using Games.Global.Spells.SpellsGenerator;
 using PathCreation;
 using TestC;
 using UnityEditor;
@@ -165,12 +166,12 @@ namespace ContentEditor
                 //     spellGenerated = SpellController.LoadSpellByName("spellGenerated2");
                 // }
 
-                // spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
+                spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
             }
-            
+
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            
+
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 

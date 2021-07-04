@@ -12,7 +12,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using Utils;
 using Debug = UnityEngine.Debug;
-using Vector3 = System.Numerics.Vector3;
 
 namespace Games.Global
 {
