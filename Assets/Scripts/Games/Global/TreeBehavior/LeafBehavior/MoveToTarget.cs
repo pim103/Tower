@@ -50,7 +50,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             {
                 Vector3 dest = (entityTarget.transform.position - monster.entityPrefab.transform.position).normalized;
 
-                if (monster.entityPrefab.navMeshAgent.SetDestination(dest))
+                if (monster.entityPrefab.navMeshAgent.enabled && monster.entityPrefab.navMeshAgent.SetDestination(dest))
                 {
                     monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                     return TreeStatus.RUNNING;
@@ -73,7 +73,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             {
                 if (distanceFromPlayer > 20.0f)
                 {
-                    if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
+                    if (monster.entityPrefab.navMeshAgent.enabled && monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {
                         monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                         return TreeStatus.RUNNING;
@@ -81,7 +81,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 }
                 else
                 {
-                    if (monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
+                    if (monster.entityPrefab.navMeshAgent.enabled && monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
                     {
                         monster.entityPrefab.animator.SetFloat("Locomotion",0.0f);
                         return TreeStatus.SUCCESS;
@@ -92,7 +92,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             {
                 if (distanceFromPlayer > 2.0f)
                 {
-                    if (monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
+                    if (monster.entityPrefab.navMeshAgent.enabled && monster.entityPrefab.navMeshAgent.SetDestination(entityTarget.transform.position))
                     {
                         monster.entityPrefab.animator.SetFloat("Locomotion",1.0f);
                         return TreeStatus.RUNNING;
@@ -100,7 +100,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
                 }
                 else
                 {
-                    if (monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
+                    if (monster.entityPrefab.navMeshAgent.enabled && monster.entityPrefab.navMeshAgent.SetDestination(monster.entityPrefab.transform.position))
                     {
                         monster.entityPrefab.animator.SetFloat("Locomotion",0.0f);
                         return TreeStatus.SUCCESS;

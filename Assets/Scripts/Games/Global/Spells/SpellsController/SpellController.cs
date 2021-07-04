@@ -65,13 +65,14 @@ namespace Games.Global.Spells.SpellsController
             
             if (entity.GetTypeEntity() == TypeEntity.ALLIES)
             {
-                entity.entityPrefab.animator.SetTrigger("doingShortSwordAttack");
                 if (entity.weapon?.category?.id == 4)
                 {
+                    entity.entityPrefab.animator.SetTrigger("doingBowAttack");
                     entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.bowAttackClip);
                 }
                 else if (entity.weapon?.category?.id == 5)
                 {
+                    entity.entityPrefab.animator.SetTrigger("doingShortSwordAttack");
                     entity.entityPrefab.audioSource.PlayOneShot(entity.entityPrefab.swordAttackClip);
                 }
 
@@ -88,7 +89,6 @@ namespace Games.Global.Spells.SpellsController
                 {
                     entity.entityPrefab.animator.SetTrigger("MeleeAttack");
                 }
-                
             }
             instance.StartCoroutine(PlayCastTime(entity, spell));
 

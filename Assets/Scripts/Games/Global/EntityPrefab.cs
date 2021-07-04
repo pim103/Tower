@@ -201,7 +201,12 @@ namespace Games.Global
                 
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
-                navMeshAgent.SetDestination(heading);
+
+                if (navMeshAgent.enabled)
+                {
+                    navMeshAgent.SetDestination(heading);
+                }
+
                 animator.SetFloat("Locomotion",1.0f);
 
             }
@@ -211,7 +216,12 @@ namespace Games.Global
                 
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
-                navMeshAgent.SetDestination(heading);
+
+                if (navMeshAgent.enabled)
+                {
+                    navMeshAgent.SetDestination(heading);
+                }
+
                 animator.SetFloat("Locomotion",1.0f);
             }
             else
@@ -220,7 +230,12 @@ namespace Games.Global
                 
                 Vector3 heading = -((boundsBox.center - transform.position) + boundsBox.size);
                 heading *= 1.5f;
-                navMeshAgent.SetDestination(heading);
+
+                if (navMeshAgent.enabled)
+                {
+                    navMeshAgent.SetDestination(heading);
+                }
+
                 animator.SetFloat("Locomotion",1.0f);
             }
         }
