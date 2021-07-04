@@ -15,6 +15,8 @@ namespace Games.Global.Spells.SpellsGenerator
         private static bool isDamage = false;
         private static bool isCac = false;
         private static bool isDistance = false;
+        private static bool isOffensiveBuff = false;
+        private static bool isDefensiveBuff = false;
 
         private static void ResetParams(bool isHeal,
             bool isSupport,
@@ -27,6 +29,8 @@ namespace Games.Global.Spells.SpellsGenerator
             SpellGenerator.isDamage = isDamage;
             SpellGenerator.isDistance = isDistance;
             SpellGenerator.isCac = isCac;
+            SpellGenerator.isOffensiveBuff = false;
+            SpellGenerator.isDefensiveBuff = false;
 
             if (Random.Range(0, 2) == 0)
             {
@@ -156,6 +160,12 @@ namespace Games.Global.Spells.SpellsGenerator
                 ActionTriggered actionHeal = GenerateHealAction();
                 actions.Add(trigger, new List<ActionTriggered>{ actionHeal });
             }
+            else if (isSupport)
+            {
+                Trigger trigger = Trigger.START;
+                ActionTriggered actionSupport = GenerateSupportAction();
+                actions.Add(trigger, new List<ActionTriggered>{ actionSupport });
+            }
 
             return actions;
         }
@@ -177,6 +187,7 @@ namespace Games.Global.Spells.SpellsGenerator
             return new ActionTriggered
             {
                 damageDeal = 0,
+                actionOnEffectType = ActionOnEffectType.ADD,
                 effect = effect,
                 startFrom = effectAppliedFor
             };
@@ -191,17 +202,42 @@ namespace Games.Global.Spells.SpellsGenerator
                 damageEffect = EffectForAction();
             }
 
-            int damage = Random.Range(10, 35);
+            int damage = damageEffect != null ? Random.Range(5, 15) : Random.Range(15, 30);
 
             return new ActionTriggered
             {
                 damageDeal = damage,
+                actionOnEffectType = ActionOnEffectType.ADD,
                 effect = damageEffect,
                 startFrom = StartFrom.AllEnemiesInArea,
             };
         }
 
-        private static Effect EffectForAction()
+        private static ActionTriggered GenerateSupportAction()
+        {
+            // Définie si c'est un buff offensif ou non
+            isOffensiveBuff = Random.Range(0, 2) == 0;
+            isDefensiveBuff = !isOffensiveBuff;
+
+            // Si un effet s'ajoute aux attaques de bases, ou aux dégats reçus
+            bool isExtraEffectBuff = Random.Range(0, 2) == 0;
+
+            Effect effect = EffectForAction(isExtraEffectBuff);
+
+            ActionOnEffectType effectTypeResolution = isExtraEffectBuff
+                ? isOffensiveBuff ? ActionOnEffectType.BUFF_ATTACK : ActionOnEffectType.BUFF_DEFENSE
+                : ActionOnEffectType.ADD;
+
+            return new ActionTriggered
+            {
+                damageDeal = 0,
+                actionOnEffectType = effectTypeResolution,
+                effect = effect,
+                startFrom = StartFrom.AllEnemiesInArea,
+            };
+        }
+
+        private static Effect EffectForAction(bool isForSupportExtraEffectSpell = false)
         {
             Effect effect = new Effect {level = Random.Range(1, 5)};
 
@@ -216,7 +252,6 @@ namespace Games.Global.Spells.SpellsGenerator
                 else
                 {
                     effect.typeEffect = TypeEffect.Regen;
-                    effect.durationInSeconds = Random.Range(3, 5);
                 }
             } else if (isDamage)
             {
@@ -233,9 +268,42 @@ namespace Games.Global.Spells.SpellsGenerator
                         effect.typeEffect = TypeEffect.Freezing;
                         break;
                 }
-
-                effect.durationInSeconds = Random.Range(3, 5);
+            } else if (isSupport)
+            {
+                if (isOffensiveBuff)
+                {
+                    int effectChosen = Random.Range(0, 2);
+                    switch (effectChosen)
+                    {
+                        case 0:
+                            effect.typeEffect = TypeEffect.AttackUp;
+                            break;
+                        case 1:
+                            effect.typeEffect = TypeEffect.AttackSpeedUp;
+                            break;
+                    }
+                }
+                else
+                {
+                    int effectChosen = Random.Range(0, 2);
+                    switch (effectChosen)
+                    {
+                        case 0:
+                            effect.typeEffect = TypeEffect.SpeedUp;
+                            break;
+                        case 1:
+                            effect.typeEffect = TypeEffect.DefenseUp;
+                            break;
+                    }
+                }
             }
+
+            if (isForSupportExtraEffectSpell)
+            {
+                effect.durationBuff = Random.Range(3, 5);
+            }
+
+            effect.durationInSeconds = Random.Range(3, 5);
 
             return effect;
         }
