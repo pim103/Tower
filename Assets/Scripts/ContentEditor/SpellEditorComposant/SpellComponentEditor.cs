@@ -79,6 +79,8 @@ namespace ContentEditor.SpellEditorComposant
             
             spellComponentEdited.nameSpellComponent = EditorGUILayout.TextField("Nom", spellComponentEdited.nameSpellComponent);
             spellComponentEdited.damageType = (DamageType) EditorGUILayout.EnumPopup("Type de dégat", spellComponentEdited.damageType);
+            spellComponentEdited.triggerRagdoll =
+                EditorGUILayout.Toggle("Active les ragdoll", spellComponentEdited.triggerRagdoll);
 
             if (spellComponentEdited.TypeSpellComponent != TypeSpellComponent.Passive)
             {

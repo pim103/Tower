@@ -188,15 +188,16 @@ namespace Games.Global.Spells.SpellBehavior
             int monsterLayer = LayerMask.NameToLayer("Monster");
             int spellLayer = LayerMask.NameToLayer("Spell");
             int wallLayer = LayerMask.NameToLayer("Wall");
+            int groundLayer = LayerMask.NameToLayer("Ground");
 
             if ((other.gameObject.layer != playerLayer && other.gameObject.layer != monsterLayer &&
-                 other.gameObject.layer != spellLayer && other.gameObject.layer != wallLayer) ||
+                 other.gameObject.layer != spellLayer && other.gameObject.layer != wallLayer && other.gameObject.layer != groundLayer) ||
                 spellComponent == null)
             {
                 return false;
             }
 
-            if (other.gameObject.layer == wallLayer)
+            if (other.gameObject.layer == wallLayer || other.gameObject.layer == groundLayer)
             {
                 if (!spellComponent.spellToInstantiate.passingThroughEntity)
                 {

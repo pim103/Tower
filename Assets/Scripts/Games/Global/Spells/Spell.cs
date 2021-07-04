@@ -195,7 +195,9 @@ namespace Games.Global.Spells
         public PathCreator pathCreator;
         public TypeSpellComponent TypeSpellComponent { get; set; }
         public SpellPrefabController spellPrefabController;
-        
+
+        public bool triggerRagdoll { get; set; } = false;
+
         public override string ToString()
         {
             return nameSpellComponent;

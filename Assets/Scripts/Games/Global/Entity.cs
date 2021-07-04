@@ -293,7 +293,14 @@ namespace Games.Global
             {
                 if (GetTypeEntity() == TypeEntity.MOB)
                 {
-                    entityPrefab.animator.SetTrigger("Got Hit");
+                    if (originSpellComponent != null && originSpellComponent.triggerRagdoll)
+                    {
+                        entityPrefab.LaunchEnableRagdoll(20);
+                    }
+                    else
+                    {
+                        entityPrefab.animator.SetTrigger("Got Hit");
+                    }
                 }
 
                 entityPrefab.audioSource.PlayOneShot(entityPrefab.hitClip);

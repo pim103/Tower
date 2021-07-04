@@ -31,7 +31,7 @@ namespace Games.Global.TreeBehavior.LeafBehavior
             this.distanceNeeded = distanceNeeded;
             this.target = target;
         }
-        
+
         public override TreeStatus OnExecute(BehaviorStatus behaviorStatus)
         {
             Monster monster = (behaviorStatus as GameContext).CurrentMonster;
