@@ -218,7 +218,8 @@ namespace Games.Global.Spells
         Movement,
         DispelHimself,
         DispelOther,
-        DispelEnemy
+        DispelEnemy,
+        Passive
     }
 
     [Serializable]
