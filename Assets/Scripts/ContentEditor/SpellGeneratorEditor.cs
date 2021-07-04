@@ -168,10 +168,10 @@ namespace ContentEditor
 
                 spellGenerated = SpellGenerator.GenerateSpellWithParameter(currentPathCreator, isHeal, isSupport, isDamage, isCac, isDistance);
             }
-            
+
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            
+
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 

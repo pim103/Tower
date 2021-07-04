@@ -10,7 +10,6 @@ using Networking.Client;
 using UnityEngine;
 using Utils;
 using Debug = UnityEngine.Debug;
-using Vector3 = System.Numerics.Vector3;
 
 namespace Games.Global
 {

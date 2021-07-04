@@ -110,6 +110,10 @@ namespace TestC
             {
                 player.entity.hp = player.entity.initialHp;
             }
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                player.entity.hp /= 2;
+            }
         }
 
         private static void LoadScene()

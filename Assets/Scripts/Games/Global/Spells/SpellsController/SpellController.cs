@@ -306,21 +306,16 @@ namespace Games.Global.Spells.SpellsController
                     break;
                 /* Can be use by Spell and ActionTriggered */
                 case StartFrom.TargetEntity:
-                    if (lastSpellComponent == null)
-                    {
-                        targetFound.position = caster.entityPrefab.target.entityPrefab.transform.position;
-                        targetFound.target = caster.entityPrefab.target;
-                    }
-                    else
-                    {
-                        targetFound.position = lastSpellComponent.targetAtCast.entityPrefab.transform.position;
-                        targetFound.target = lastSpellComponent.targetAtCast;
-                    }
+                    targetFound.target = caster.entityPrefab.target;
 
-                    if (targetFound.target != null && targetFound.target.hp <= 0)
+                    if (targetFound.target == null || targetFound.target.hp <= 0)
                     {
                         targetFound.target = null;
                         targetFound.position = Vector3.zero;
+                    }
+                    else
+                    {
+                        targetFound.position = caster.entityPrefab.target.entityPrefab.transform.position;
                     }
                     
                     break;
