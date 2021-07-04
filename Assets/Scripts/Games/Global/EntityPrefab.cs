@@ -295,7 +295,7 @@ namespace Games.Global
             {
                 rigidbody.useGravity = true;
             }
-            
+
             while (cpt < time)
             {
                 cpt++;

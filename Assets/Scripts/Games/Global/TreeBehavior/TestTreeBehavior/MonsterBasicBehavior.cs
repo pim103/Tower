@@ -28,6 +28,11 @@ namespace Games.Global.TreeBehavior.TestTreeBehavior
 
         public void UpdateBehaviorTree()
         {
+            if (gc.CurrentMonster.hp <= 0)
+            {
+                return;
+            }
+
             //gc.CurrentMonster.ApplyDamage(0.1f);
             if (gc.CurrentMonster == null)
             {

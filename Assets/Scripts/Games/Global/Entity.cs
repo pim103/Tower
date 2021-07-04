@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Games.Global.Armors;
@@ -8,6 +9,7 @@ using Games.Global.Weapons;
 using Networking;
 using Networking.Client;
 using UnityEngine;
+using UnityEngine.AI;
 using Utils;
 using Debug = UnityEngine.Debug;
 using Vector3 = System.Numerics.Vector3;
@@ -332,7 +334,7 @@ namespace Games.Global
                 {
                     SpellInterpreter.TriggerWhenEntityDie(originSpellComponent);
                 }
-                
+
                 if (shooldResurrect)
                 {
                     hp = initialHp / 2;
@@ -341,8 +343,6 @@ namespace Games.Global
                     return;
                 }
 
-                entityPrefab.EntityDie();
-
                 if (isPlayer)
                 {
                     TowersWebSocket.TowerSender("OTHERS", NetworkingController.CurrentRoomToken, "Player", "SendDeath", null);
@@ -350,7 +350,24 @@ namespace Games.Global
                     Debug.Log("Vous êtes mort");
                     Cursor.lockState = CursorLockMode.None;
                 }
+                else
+                {
+                    entityPrefab.StartCoroutine(WaitForDeathAnimation());
+                }
             }
+        }
+
+        private IEnumerator WaitForDeathAnimation()
+        {
+            if (entityPrefab.navMeshAgent.enabled)
+            {
+                entityPrefab.navMeshAgent.SetDestination(entityPrefab.transform.position);
+            }
+
+            entityPrefab.animator.SetTrigger("Death");
+            yield return new WaitForSeconds(3);
+
+            entityPrefab.EntityDie();
         }
     }
 }
