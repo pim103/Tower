@@ -28,12 +28,12 @@ namespace Games.Global.Spells.SpellsGenerator
             SpellGenerator.isDistance = isDistance;
             SpellGenerator.isCac = isCac;
 
-            if (Random.Range(0, 1) == 0)
+            if (Random.Range(0, 2) == 0)
             {
                 isAnArea = true;
             }
         }
-        
+
         public static Spell GenerateSpellWithParameter(
             PathCreator path,
             bool isHeal,
@@ -55,7 +55,7 @@ namespace Games.Global.Spells.SpellsGenerator
             Spell spell = new Spell
             {
                 spellComponentFirstActivation = activeSpellComponent,
-                cooldown = Random.Range(1, 4),
+                cooldown = Random.Range(1, 10),
                 cost = Random.Range(1, 10),
                 castTime = 0,
                 nameSpell = "SpellGenerateAt_" + DateTime.Now,
@@ -102,7 +102,8 @@ namespace Games.Global.Spells.SpellsGenerator
                     disapearAtTheEndOfTrajectory = true
                 };
             }
-            else if (isAnArea)
+            // Une chance sur 2 que ça suive le caster
+            else if (isAnArea && isCac && Random.Range(0,1) == 0)
             {
                 trajectory = new Trajectory
                 {
@@ -135,13 +136,8 @@ namespace Games.Global.Spells.SpellsGenerator
             if (isDamage)
             {
                 Trigger trigger = Trigger.ON_TRIGGER_ENTER;
-                int damage = Random.Range(15, 55);
 
-                ActionTriggered actionTriggered = new ActionTriggered
-                {
-                    damageDeal = damage,
-                    startFrom = StartFrom.AllEnemiesInArea,
-                };
+                ActionTriggered actionTriggered = GenerateDamageAction();
 
                 actions.Add(trigger, new List<ActionTriggered>{ actionTriggered });
             }
@@ -163,7 +159,7 @@ namespace Games.Global.Spells.SpellsGenerator
 
             return actions;
         }
-
+        
         private static ActionTriggered GenerateHealAction()
         {
             StartFrom effectAppliedFor = StartFrom.Caster;
@@ -176,26 +172,72 @@ namespace Games.Global.Spells.SpellsGenerator
                 effectAppliedFor = StartFrom.TargetEntity;
             }
 
-            int effectChosen = Random.Range(0, 1);
-
-            Effect effect = new Effect {level = Random.Range(1, 5)};
-
-            if (effectChosen == 0)
-            {
-                effect.typeEffect = TypeEffect.Heal;
-            }
-            else
-            {
-                effect.typeEffect = TypeEffect.Regen;
-                effect.durationInSeconds = Random.Range(3, 5);
-            }
-
+            Effect effect = EffectForAction();
+            
             return new ActionTriggered
             {
                 damageDeal = 0,
                 effect = effect,
                 startFrom = effectAppliedFor
             };
+        }
+
+        private static ActionTriggered GenerateDamageAction()
+        {
+            Effect damageEffect = null;
+            // Ajouter un effect
+            if (Random.Range(0, 3) == 0)
+            {
+                damageEffect = EffectForAction();
+            }
+
+            int damage = Random.Range(10, 35);
+
+            return new ActionTriggered
+            {
+                damageDeal = damage,
+                effect = damageEffect,
+                startFrom = StartFrom.AllEnemiesInArea,
+            };
+        }
+
+        private static Effect EffectForAction()
+        {
+            Effect effect = new Effect {level = Random.Range(1, 5)};
+
+            if (isHeal)
+            {
+                // 0 == Heal - 1 == Regen
+                int effectChosen = Random.Range(0, 2);
+                if (effectChosen == 0)
+                {
+                    effect.typeEffect = TypeEffect.Heal;
+                }
+                else
+                {
+                    effect.typeEffect = TypeEffect.Regen;
+                    effect.durationInSeconds = Random.Range(3, 5);
+                }
+            } else if (isDamage)
+            {
+                int effectChosen = Random.Range(0, 3);
+                switch (effectChosen)
+                {
+                    case 0:
+                        effect.typeEffect = TypeEffect.Burn;
+                        break;
+                    case 1:
+                        effect.typeEffect = TypeEffect.Poison;
+                        break;
+                    case 2:
+                        effect.typeEffect = TypeEffect.Freezing;
+                        break;
+                }
+
+                effect.durationInSeconds = Random.Range(3, 5);
+            }
+
+            return effect;
         }
 
         private static string GetModelFromParameters()
@@ -211,7 +253,7 @@ namespace Games.Global.Spells.SpellsGenerator
             }
             else
             {
-                model = "FX_Swirl_Fast_01";
+                model = "Spells/FX_Swirl_Fast_01";
             }
 
             return model;
