@@ -76,6 +76,7 @@ namespace Games {
         public int level = 0;
 
         [SerializeField] private GameObject backGround;
+        [SerializeField] private GameObject table;
 
         [SerializeField] private AudioClip defenseMusic;
         [SerializeField] private AudioClip attackMusic;
@@ -162,6 +163,14 @@ namespace Games {
                 }
                 mapStatsList[level].gameObject.SetActive(true);
                 backGround.SetActive(true);
+                if (mapStatsList[level].desactTable)
+                {
+                    table.SetActive(false);
+                }
+                else
+                {
+                    table.SetActive(true);
+                }
                 musicSource.clip = defenseMusic;
                 musicSource.Play();
                 Debug.Log(mapStatsList[level].gameObject.name);

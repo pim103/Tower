@@ -85,6 +85,7 @@ namespace Games.Defenses
                     }
                     else
                     {
+                        Debug.Log("path : " + pathToEnd.status);
                         currentTileController.ChangeColorToRed();
                         canPutItHere = false;
                     }
@@ -94,6 +95,7 @@ namespace Games.Defenses
                          currentTileController.isTooCloseFromAMob || 
                          (objectInHand && objectInHand.layer == LayerMask.NameToLayer("CardInHand") && currentCardBehaviorInGame.group != null && !currentCardBehaviorInGame.groupRangeBehavior.CheckContentEmpty()))
                 {
+                    Debug.Log("path : " + pathToEnd.status);
                     currentTileController.ChangeColorToRed();
                     canPutItHere = false;
                 }
@@ -141,12 +143,12 @@ namespace Games.Defenses
                         currentTileController = hit.collider.gameObject.GetComponent<GridTileController>();
                         pathToEnd = new NavMeshPath(); 
 
-                        NavMesh.CalculatePath(startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
+                        NavMesh.CalculatePath(objectsInScene.startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
 
                         if (defenseUiController.keyAlreadyPut)
                         {
                             pathToKey = new NavMeshPath();
-                            NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
+                            NavMesh.CalculatePath(objectsInScene.startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
                         }
 
                         if (pathToEnd.status == NavMeshPathStatus.PathComplete && (pathToKey.status == NavMeshPathStatus.PathComplete || !defenseUiController.keyAlreadyPut))
@@ -425,11 +427,11 @@ namespace Games.Defenses
         private void LateUpdate()
         {
             pathToEnd = new NavMeshPath(); 
-            NavMesh.CalculatePath(startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
+            NavMesh.CalculatePath(objectsInScene.startPos.transform.position,objectsInScene.endZone.transform.position,NavMesh.AllAreas,pathToEnd);
             pathToKey = new NavMeshPath();
             if (defenseUiController.keyAlreadyPut)
             {
-                NavMesh.CalculatePath(startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
+                NavMesh.CalculatePath(objectsInScene.startPos.transform.position, defenseUiController.keyObject.transform.position,NavMesh.AllAreas, pathToKey);
                 //Debug.Log(pathToKey.status);
             }
             if (pathToEnd.status != NavMeshPathStatus.PathComplete || pathToKey.status != NavMeshPathStatus.PathComplete && defenseUiController.keyAlreadyPut)

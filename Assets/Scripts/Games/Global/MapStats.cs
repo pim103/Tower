@@ -11,5 +11,6 @@ namespace Games.Global
         [SerializeField] public GameObject endDoor;
         [SerializeField] public GameObject endFx;
         [SerializeField] public GameObject roof;
+        [SerializeField] public bool desactTable;
     }
 }
